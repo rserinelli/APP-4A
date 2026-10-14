@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10, 14 ottobre 2026)
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.2, 14 ottobre 2026: pagina Il mio profilo)
   Questa pagina NON contiene dati: nomi, saldi, documenti e codici arrivano dallo
   script Apps Script solo dopo il login. Una copia della pagina mostra solo l'accesso.
   Unica cosa da cambiare qui: URL_SCRIPT (più sotto, all'inizio del codice).
@@ -463,6 +463,19 @@
   .sel-alunno label { display: block; font-size: 12px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
   .sel-alunno .campo-testo { margin: 0 0 4px; background: var(--card); }
   .sel-alunno small { display: block; color: var(--muted); font-size: 12px; }
+
+  /* ---------- Il mio profilo ---------- */
+  .chip-utente.link { cursor: pointer; }
+  .chip-utente.link:hover { color: var(--brand); text-decoration: underline; }
+  .profilo { max-width: 520px; }
+  .profilo h3.sez { margin: 0 0 10px; }
+  .prof-valore { font-weight: 800; font-size: 17px; word-break: break-all; padding: 11px 14px; border-radius: 12px; background: var(--brand-soft); }
+  .prof-riga { display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 14px; border: 1px solid var(--line); border-radius: 12px; }
+  .prof-pass { flex: 1; min-width: 0; font-weight: 800; font-size: 17px; word-break: break-all; }
+  .prof-riga .btn-mini { flex: none; padding: 7px 12px; font-size: 14px; }
+  .prof-nota { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+  .pass-riga.largo .campo-testo { padding-right: 108px; }
+  .profilo .modulo .btn-primario { margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -603,6 +616,7 @@
   }
 
   function mostra(id) { $(id).classList.remove('nascosto'); }
+  function nascondi_(nodo, si) { nodo.classList.toggle('nascosto', !!si); }
   function nascondi(id) { $(id).classList.add('nascosto'); }
 
   // ---------- Schermata di accesso ----------
@@ -733,6 +747,8 @@
     $('titoloApp').textContent = STATO.dati.titolo;
     $('sottotitoloApp').textContent = STATO.dati.sottotitolo || '';
     $('chipUtente').textContent = STATO.sessione.email;
+    $('chipUtente').className = 'chip-utente link';
+    $('chipUtente').title = 'Il mio profilo';
     document.title = STATO.dati.titolo;
     disegnaMenu();
     vaiA('home');
@@ -758,6 +774,11 @@
         el('span', { classe: 'ic', testo: p.icona || '•' }), el('span', { testo: p.titolo })
       ]));
     });
+    nav.appendChild(el('div', { classe: 'voce-admin' }, [
+      el('button', { classe: 'voce', 'data-id': 'profilo', onclick: function () { vaiA('profilo'); chiudiMenu(); } }, [
+        el('span', { classe: 'ic', testo: '👤' }), el('span', { testo: 'Il mio profilo' })
+      ])
+    ]));
     if (STATO.sessione.amministratore) {
       nav.appendChild(el('div', { classe: 'voce-admin' }, [
         el('button', { classe: 'voce', 'data-id': 'gestione', onclick: function () { vaiA('gestione'); chiudiMenu(); } }, [
@@ -769,6 +790,9 @@
 
   var PAGINA_GESTIONE = { id: 'gestione', titolo: 'Gestione accessi', descrizione: 'Solo per te · chi ha già creato la password e chi no',
     blocchi: [{ tipo: 'gestione' }] };
+  var PAGINA_PROFILO = { id: 'profilo', titolo: 'Il mio profilo', descrizione: 'La tua email di accesso e la tua password',
+    blocchi: [{ tipo: 'profilo' }] };
+  var PAGINE_FISSE = { gestione: PAGINA_GESTIONE, profilo: PAGINA_PROFILO };
 
   function apriMenu() { $('menu').classList.add('aperto'); mostra('velo'); }
   function chiudiMenu() { $('menu').classList.remove('aperto'); nascondi('velo'); }
@@ -776,13 +800,14 @@
   $('vaiHome').addEventListener('click', function () { chiudiMenu(); vaiA('home'); });
   $('vaiHome2').addEventListener('click', function () { chiudiMenu(); vaiA('home'); });
   $('velo').addEventListener('click', chiudiMenu);
+  $('chipUtente').addEventListener('click', function () { if (STATO.sessione) { chiudiMenu(); vaiA('profilo'); } });
 
   function vaiA(id) {
     STATO.pagina = id;
     Array.prototype.forEach.call(document.querySelectorAll('.voce'), function (v) {
       v.classList.toggle('attiva', v.getAttribute('data-id') === id);
     });
-    var p = id === 'gestione' ? PAGINA_GESTIONE : STATO.dati.pagine.filter(function (x) { return x.id === id; })[0];
+    var p = PAGINE_FISSE[id] || STATO.dati.pagine.filter(function (x) { return x.id === id; })[0];
     var main = $('contenuto'); main.innerHTML = '';
     if (id !== 'home') {
       main.appendChild(el('h2', { classe: 'pagina-titolo', testo: p.titolo }));
@@ -791,7 +816,7 @@
     }
     disegnaBlocchi(p.blocchi, main, id);
     applicaContatori();
-    if (id !== 'home' && id !== 'gestione') chiama('visita', { pagina: id }).catch(function () {});   // statistiche per la rappresentante
+    if (id !== 'home' && !PAGINE_FISSE[id]) chiama('visita', { pagina: id }).catch(function () {});   // statistiche per la rappresentante
     window.scrollTo(0, 0);
   }
 
@@ -1704,6 +1729,84 @@
       return box;
     },
     sezioni: function () { return griglaHome(); },
+    // Il mio profilo: email (sola lettura), password attuale con Visualizza, cambio password con doppio inserimento
+    profilo: function () {
+      var testi = (STATO.dati && STATO.dati.profilo) || {};
+      var box = el('div', { classe: 'profilo' });
+
+      // 1) Email: solo da vedere
+      box.appendChild(el('div', { classe: 'card' }, [
+        el('h3', { classe: 'sez', testo: '✉️ Email di accesso' }),
+        el('div', { classe: 'prof-valore', testo: STATO.sessione.email }),
+        el('p', { classe: 'prof-nota', testo: testi.notaEmail || 'L’email non si cambia dall’app: per modificarla chiama la rappresentante.' })
+      ]));
+
+      // 2) Password attuale: nascosta, si vede con Visualizza
+      var attuale = null, visibile = false;
+      var val = el('span', { classe: 'prof-pass mono', testo: '••••••••' });
+      var bVedi = el('button', { type: 'button', classe: 'btn-mini', testo: '👁 Visualizza' });
+      var notaAtt = el('p', { classe: 'prof-nota nascosto' });
+      function disegnaAttuale() {
+        val.textContent = visibile && attuale ? attuale : '••••••••';
+        bVedi.textContent = visibile ? 'Nascondi' : '👁 Visualizza';
+      }
+      bVedi.addEventListener('click', function () {
+        if (visibile) { visibile = false; disegnaAttuale(); return; }
+        if (attuale) { visibile = true; disegnaAttuale(); return; }
+        bVedi.disabled = true; bVedi.textContent = 'Un attimo…';
+        chiama('profilo').then(function (r) {
+          if (r.password) { attuale = r.password; visibile = true; nascondi_(notaAtt, true); }
+          else { notaAtt.textContent = 'La password attuale si potrà vedere dopo il prossimo accesso con email e password. Intanto puoi sceglierne una nuova qui sotto.'; nascondi_(notaAtt, false); }
+        }).catch(function (e) { toast(e.message || 'Non disponibile'); })
+          .then(function () { bVedi.disabled = false; disegnaAttuale(); });
+      });
+      box.appendChild(el('div', { classe: 'card' }, [
+        el('h3', { classe: 'sez', testo: '🔒 Password attuale' }),
+        el('div', { classe: 'prof-riga' }, [val, bVedi]),
+        notaAtt
+      ]));
+
+      // 3) Cambio password: due volte, con Visualizza su ciascun campo
+      function campoPass(id, etichetta) {
+        var input = el('input', { id: id, classe: 'campo-testo', type: 'password', autocomplete: 'new-password', minlength: '8', autocapitalize: 'off', spellcheck: 'false' });
+        var occhio = el('button', { type: 'button', classe: 'occhio', testo: '👁 Visualizza', onclick: function () {
+          var vedi = input.type === 'password';
+          input.type = vedi ? 'text' : 'password'; occhio.textContent = vedi ? 'Nascondi' : '👁 Visualizza';
+        } });
+        return { input: input, nodi: [el('label', { for: id, testo: etichetta }), el('div', { classe: 'pass-riga largo' }, [input, occhio])] };
+      }
+      var p1 = campoPass('profPass1', 'Nuova password (almeno 8 caratteri)');
+      var p2 = campoPass('profPass2', 'Ripeti la nuova password');
+      var err = el('p', { classe: 'errore-msg nascosto' });
+      var ok = el('p', { classe: 'esito nascosto' });
+      var salva = el('button', { classe: 'btn btn-primario', type: 'submit', testo: 'Salva la nuova password' });
+      var modulo = el('form', { classe: 'modulo', autocomplete: 'on', novalidate: 'novalidate' }, [
+        // nome utente nascosto: così il telefono propone di aggiornare la password salvata
+        el('input', { classe: 'nascosto', type: 'email', autocomplete: 'username', value: STATO.sessione.email, tabindex: '-1', 'aria-hidden': 'true' })
+      ].concat(p1.nodi, p2.nodi, [err, ok, salva]));
+      modulo.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var a = p1.input.value, b = p2.input.value;
+        nascondi_(ok, true);
+        var problema = a.length < 8 ? 'La password deve avere almeno 8 caratteri.'
+          : a.length > 100 ? 'La password è troppo lunga.'
+          : a !== b ? 'Le due password non sono uguali: ricontrolla.'
+          : attuale && a === attuale ? 'È uguale alla password attuale.' : '';
+        if (problema) { err.textContent = problema; nascondi_(err, false); return; }
+        nascondi_(err, true); salva.disabled = true; salva.textContent = 'Salvo…';
+        chiama('cambiaPassword', { password: a }).then(function (r) {
+          scrivi(CHIAVE_TOKEN, r.token);                 // questo telefono resta collegato
+          attuale = a; disegnaAttuale(); nascondi_(notaAtt, true);
+          p1.input.value = ''; p2.input.value = '';
+          ok.textContent = '✓ Password cambiata. Su altri telefoni o computer dovrai rientrare con la nuova password.';
+          nascondi_(ok, false);
+          toast('Password cambiata ✓');
+        }).catch(function (e) { if (e.codice !== 'SESSIONE') { err.textContent = e.message; nascondi_(err, false); } })
+          .then(function () { salva.disabled = false; salva.textContent = 'Salva la nuova password'; });
+      });
+      box.appendChild(el('div', { classe: 'card' }, [el('h3', { classe: 'sez', testo: '🔑 Cambia password' }), modulo]));
+      return box;
+    },
     documenti: function (b) {
       var box = el('div');
       box.appendChild(attesa('Carico i documenti…'));
