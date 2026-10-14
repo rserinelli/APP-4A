@@ -360,6 +360,12 @@
   .cal-scelta-azioni { display: flex; gap: 4px; padding: 2px 4px 6px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }
   .cal-scelta-azioni button { border: 0; background: transparent; color: var(--brand); font-weight: 700; font-size: 13px; padding: 4px 6px; border-radius: 8px; }
   .cal-scelta-azioni .chiudi { margin-left: auto; background: var(--brand); color: #fff; padding: 4px 12px; }
+  .cal-filtri { align-items: center; }
+  .cal-azione { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--card); color: var(--brand); font-size: 13px; font-weight: 700; text-decoration: none; }
+  .cal-azione:hover { border-color: var(--brand); }
+  .cal-azione.admin { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .ag-luogo { display: inline-block; margin-top: 3px; font-size: 13px; font-weight: 700; color: var(--brand); text-decoration: underline; text-underline-offset: 2px; word-break: break-word; }
   .ag-giorno { display: grid; grid-template-columns: 52px 1fr; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
   .ag-mese + .ag-giorno { border-top: 0; }
   .ag-data { text-align: center; line-height: 1.1; padding-top: 4px; }
@@ -1155,14 +1161,70 @@
   }
   function filtriCalendari(dati, ridisegna) {
     var cal = calendariDi(dati);
-    if (cal.length < 2) return null;
     STATO.calNascosti = STATO.calNascosti || {};
+    var riga = el('div', { classe: 'cal-filtri' });
+    if (cal.length > 1) riga.appendChild(sceltaCalendari(cal, ridisegna));
+    riga.appendChild(el('button', { type: 'button', classe: 'cal-azione', testo: '📲 Esporta', title: 'Aggiungi gli appuntamenti al calendario del telefono',
+      onclick: function () { esportaCalendario(dati); } }));
+    if (STATO.sessione.amministratore) {
+      riga.appendChild(el('a', { classe: 'cal-azione admin', href: 'https://calendar.google.com/calendar/r', target: '_blank', rel: 'noopener',
+        testo: '✏️ Google Calendar' }));
+    }
+    return riga;
+  }
+
+  // ---------- Esporta gli appuntamenti in un file .ics (calendario del telefono) ----------
+  function testoIcs(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+  function rigaIcs(s) {          // righe al massimo di 75 caratteri, come vuole il formato
+    var out = [], b = s;
+    while (b.length > 74) { out.push(b.slice(0, 74)); b = ' ' + b.slice(74); }
+    out.push(b);
+    return out.join('\r\n');
+  }
+  function codiceEvento(e) {
+    var s = e.data + '|' + (e.ora || '') + '|' + e.titolo + '|' + (e.calendario || ''), h = 5381;
+    for (var i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0;
+    return e.data.replace(/-/g, '') + '-' + h.toString(36) + '@app4a';
+  }
+  function esportaCalendario(dati) {
+    var oggi = oggiISO();
+    var eventi = (elencoEventi(dati) || []).filter(function (e) { return fineEvento(e) >= oggi && calendarioVisibile(e); });
+    if (!eventi.length) { toast('Nessun appuntamento da aggiungere'); return; }
+    var data = function (iso) { return iso.replace(/-/g, ''); };
+    var ora = function (h) { return h.replace(':', '') + '00'; };
+    var adesso = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+    var righe = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//App 4a primaria//IT', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'X-WR-CALNAME:4a primaria'];
+    eventi.forEach(function (e) {
+      righe.push('BEGIN:VEVENT', 'UID:' + codiceEvento(e), 'DTSTAMP:' + adesso);
+      if (e.ora) {
+        righe.push('DTSTART:' + data(e.data) + 'T' + ora(e.ora));
+        righe.push('DTEND:' + data(fineEvento(e)) + 'T' + ora(e.oraFine || e.ora));
+      } else {
+        var f = dataDa(fineEvento(e)); f.setDate(f.getDate() + 1);       // negli eventi di tutto il giorno la fine è il giorno dopo
+        righe.push('DTSTART;VALUE=DATE:' + data(e.data), 'DTEND;VALUE=DATE:' + data(isoDi(f)));
+      }
+      righe.push(rigaIcs('SUMMARY:' + testoIcs(e.titolo)));
+      if (e.luogo) righe.push(rigaIcs('LOCATION:' + testoIcs(e.luogo)));
+      var nota = [e.note, e.calendario ? '(' + e.calendario + ')' : ''].filter(Boolean).join('\n');
+      if (nota) righe.push(rigaIcs('DESCRIPTION:' + testoIcs(nota)));
+      righe.push('END:VEVENT');
+    });
+    righe.push('END:VCALENDAR');
+    var url = URL.createObjectURL(new Blob([righe.join('\r\n') + '\r\n'], { type: 'text/calendar;charset=utf-8' }));
+    var iPhone = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (iPhone) window.location.href = url;          // su iPhone si apre "Aggiungi tutti" del Calendario
+    else { var a = el('a', { href: url, download: 'appuntamenti-4a.ics' }); document.body.appendChild(a); a.click(); a.remove(); }
+    toast(eventi.length + (eventi.length === 1 ? ' appuntamento pronto' : ' appuntamenti pronti') + ': aprili con il calendario');
+    setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+  }
+
+  function sceltaCalendari(cal, ridisegna) {
     // Casella a discesa a selezione multipla: occupa una sola riga piccola
     var accesi = cal.filter(function (c) { return !STATO.calNascosti[c.nome]; });
-    var etichetta = accesi.length === cal.length ? 'Tutti i calendari'
-      : accesi.length === 0 ? 'Nessun calendario'
+    var etichetta = accesi.length === cal.length ? 'Tutti'
+      : accesi.length === 0 ? 'Nessuno'
       : accesi.length === 1 ? accesi[0].nome
-      : accesi.length + ' calendari su ' + cal.length;
+      : accesi.length + ' su ' + cal.length;
     var pallini = el('span', { classe: 'cal-pallini' }, accesi.slice(0, 6).map(function (c) { return colora(el('i'), c.colore); }));
     var menu = el('details', { classe: 'cal-scelta' });
     if (STATO.calMenuAperto) menu.open = true;
@@ -1184,7 +1246,7 @@
       lista.appendChild(colora(el('label', { classe: 'cal-voce' }, [box, el('i'), el('span', { testo: c.nome })]), c.colore));
     });
     menu.appendChild(lista);
-    return el('div', { classe: 'cal-filtri' }, [menu]);
+    return menu;
   }
   // chiude la casella dei calendari toccando fuori
   document.addEventListener('click', function (ev) {
@@ -1195,12 +1257,15 @@
     var orario = e.ora ? [el('b', { testo: e.ora }), e.oraFine ? el('span', { testo: e.oraFine }) : null] : [el('b', { testo: 'Tutto il giorno' })];
     var info = [];
     if (fineEvento(e) > e.data) { var f = dataDa(fineEvento(e)); info.push('fino a ' + GIORNI_SETT[f.getDay()].toLowerCase() + ' ' + f.getDate() + ' ' + MESI[f.getMonth()]); }
-    if (e.luogo) info.push('📍 ' + e.luogo);
+    // l'indirizzo si tocca e apre Google Maps (sul telefono l'app Maps)
+    var mappa = e.luogo ? el('a', { classe: 'ag-luogo', href: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(e.luogo),
+      target: '_blank', rel: 'noopener', testo: '📍 ' + e.luogo }) : null;
     return colora(el('div', { classe: 'ag-ev' }, [
       el('div', { classe: 'ag-ora' }, orario),
       el('div', { classe: 'ag-tx' }, [
         el('strong', { testo: e.titolo }),
         info.length ? el('small', { testo: info.join(' · ') }) : null,
+        mappa,
         e.note ? el('small', { testo: e.note }) : null,
         e.calendario ? colora(el('span', { classe: 'ag-cal' }, [el('i'), el('span', { testo: e.calendario })]), e.colore) : null
       ])
