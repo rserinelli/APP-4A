@@ -252,6 +252,7 @@
   .cassa-tx { flex: 1; min-width: 0; }
   .cassa-tx strong { display: block; font-size: 15px; }
   .cassa-tx small { display: block; color: var(--muted); font-size: 13px; }
+  .cassa-nome { display: block; font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; line-height: 1.3; }
   .cassa-az { flex: none; font-weight: 800; color: var(--brand); font-size: 15px; }
   .cassa.attivo { border-color: #9fd3b4; }
   .cassa.attivo .cassa-ic { background: #e6f4ec; }
@@ -1395,7 +1396,7 @@
         if (!alunni.length) { if (STATO.sessione.amministratore) return; alunni = [null]; }
         alunni.forEach(function (a) {
           var stato, titolo, sotto, az, scheda, link = linkRevolut(a);
-          var nome = a && a.alunno && alunni.length > 1 ? a.alunno.split(' ')[0] + ': ' : '';
+          var nome = '';
           if (!a) { stato = 'neutro'; titolo = 'Fondo cassa'; sotto = 'Apri il tuo rendiconto'; az = '›'; scheda = SCHEDA_RENDICONTO; }
           else if (a.pendenze) {
             stato = 'dapagare'; scheda = SCHEDA_PAGAMENTI; az = 'Paga';
@@ -1410,7 +1411,8 @@
           }
           var figli = [
             el('span', { classe: 'cassa-ic', testo: '💶' }),
-            el('span', { classe: 'cassa-tx' }, [el('strong', { testo: titolo }), el('small', { testo: sotto })]),
+            el('span', { classe: 'cassa-tx' }, [a && a.alunno ? el('span', { classe: 'cassa-nome', testo: a.alunno }) : null,
+              el('strong', { testo: titolo }), el('small', { testo: sotto })]),
             el('span', { classe: 'cassa-az', testo: az })
           ];
           box.appendChild(link
