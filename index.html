@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.3, 14 ottobre 2026: Home 3x3, Teatro, SVS Sport, Mensa diretta)
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.4, 14 ottobre 2026: bollini rossi "visto / non visto", uguali su ogni dispositivo)
   Questa pagina NON contiene dati: nomi, saldi, documenti e codici arrivano dallo
   script Apps Script solo dopo il login. Una copia della pagina mostra solo l'accesso.
   Unica cosa da cambiare qui: URL_SCRIPT (più sotto, all'inizio del codice).
@@ -739,7 +739,16 @@
     STATO.dati = r.contenuti;
     STATO.sessione = { email: r.utente.email, amministratore: !!r.utente.admin, alunni: r.utente.alunni || [] };
     // documenti e fondo cassa arrivano in parallelo: le pagine si aprono subito
-    STATO.documenti = chiama('documenti').catch(function () { return { errore: 'non disponibile' }; });
+    // "visti" = cosa questa email ha già aperto (salvato nello script: uguale su ogni dispositivo).
+    // Se lo script non lo sa ancora fare, i bollini tornano al vecchio criterio dei giorni.
+    STATO.visti = null; STATO.calPrima = null;
+    var visti = chiama('visti').then(function (v) {
+      var d = {};
+      (v.documenti || []).forEach(function (id) { d[id] = 1; });
+      STATO.visti = { documenti: d, calendario: v.calendario || '' };
+    }).catch(function () { STATO.visti = null; });
+    STATO.documenti = Promise.all([chiama('documenti'), visti]).then(function (r) { return r[0]; })
+      .catch(function () { return { errore: 'non disponibile' }; });
     STATO.miei = chiama('cassa').catch(function () { return { errore: 'non disponibile' }; });
     aggiornaContatori();
     avviaApp();
@@ -826,6 +835,7 @@
       if (p.descrizione) main.appendChild(el('p', { classe: 'pagina-desc', testo: p.descrizione }));
       else main.appendChild(el('div', { style: 'height:16px' }));
     }
+    if (id === 'calendario') calendarioVisto();          // prima di disegnare: gli appuntamenti nuovi restano segnati NUOVO in questa visita
     disegnaBlocchi(p.blocchi, main, id);
     applicaContatori();
     if (id !== 'home' && !PAGINE_FISSE[id]) chiama('visita', { pagina: id }).catch(function () {});   // statistiche per la rappresentante
@@ -861,10 +871,34 @@
     var o = new Date(); o.setHours(0, 0, 0, 0);
     return Math.round((o - d) / 86400000);
   }
+  // NUOVO = documento che questa email non ha ancora aperto (su qualsiasi dispositivo).
+  // Solo se lo script non è ancora aggiornato vale il vecchio criterio: data degli ultimi giorni.
   function eNuovo(f) {
+    if (STATO.visti) return !!f.id && !STATO.visti.documenti[f.id];
     if (!f.data) return false;
     var g = giorniDa(f.data);
     return g >= 0 && g <= (STATO.dati.giorniNovita || 10);
+  }
+  // Documento aperto: sparisce il NUOVO, scende il bollino e lo script se lo ricorda per questa email
+  function segnaVisto(f) {
+    if (!STATO.visti || !f.id || STATO.visti.documenti[f.id]) return;
+    STATO.visti.documenti[f.id] = 1;
+    Array.prototype.forEach.call(document.querySelectorAll('.doc[data-doc]'), function (d) {
+      if (d.getAttribute('data-doc') !== f.id) return;
+      var b = d.querySelector('.badge'); if (b) b.remove();
+    });
+    aggiornaContatori();
+    chiama('visto', { id: f.id }).catch(function () {});
+  }
+  // Appuntamento nuovo = aggiunto in Google Calendar dopo l'ultima volta che questa email ha aperto il Calendario
+  function eventoNuovo(e, dopo) { return !!(e.creato && dopo && e.creato > dopo); }
+  function calendarioVisto() {
+    STATO.documenti.then(function () {
+      if (!STATO.visti) return;
+      STATO.calPrima = STATO.visti.calendario;               // serve a segnare NUOVO durante questa visita
+      STATO.visti.calendario = new Date().toISOString();     // lo script registra la visita da solo
+      aggiornaContatori();
+    });
   }
   function elencoSezione(dati, sezione) {
     var s = dati && dati.sezioni && dati.sezioni[sezione];
@@ -884,19 +918,24 @@
       STATO.contatori = {
         comunicazioni: conta(['comunicazioni', 'moduli', 'verbali']),
         contabilita: conta(['ricevute']) + rata,
-        calendario: eventiEntro(dati, 7).length
+        calendario: STATO.visti
+          ? eventiFuturi(dati).filter(function (e) { return eventoNuovo(e, STATO.visti.calendario); }).length
+          : eventiEntro(dati, 7).length
       };
       applicaContatori();
     });
   }
   function applicaContatori() {
     var c = STATO.contatori || {};
-    var spiega = { comunicazioni: 'Documenti nuovi', contabilita: 'Novità o rata da pagare', calendario: 'Appuntamenti nei prossimi 7 giorni' };
+    var spiega = STATO.visti
+      ? { comunicazioni: 'Documenti non ancora aperti', contabilita: 'Ricevute non ancora aperte o fondo cassa da versare', calendario: 'Appuntamenti aggiunti dall’ultima visita' }
+      : { comunicazioni: 'Documenti nuovi', contabilita: 'Novità o rata da pagare', calendario: 'Appuntamenti nei prossimi 7 giorni' };
     Array.prototype.forEach.call(document.querySelectorAll('.voce[data-id], .tile[data-id]'), function (b) {
       var n = c[b.getAttribute('data-id')] || 0;
       var badge = b.querySelector('.conta');
       if (!n) { if (badge) badge.remove(); return; }
-      if (!badge) { badge = el('span', { classe: 'conta', title: spiega[b.getAttribute('data-id')] || 'Novità' }); b.appendChild(badge); }
+      if (!badge) { badge = el('span', { classe: 'conta' }); b.appendChild(badge); }
+      badge.title = spiega[b.getAttribute('data-id')] || 'Novità';
       badge.textContent = n > 9 ? '9+' : n;
     });
   }
@@ -913,8 +952,8 @@
     var titolo = el('strong', { testo: f.titolo });
     if (eNuovo(f)) titolo.appendChild(el('span', { classe: 'badge', testo: 'NUOVO' }));
     var figli = [dataBox, el('span', { classe: 'tx' }, [titolo, el('small', null, sotto)]), el('span', { classe: 'freccia', testo: f.url ? '↗' : '›' })];
-    if (f.url) return el('a', { classe: 'doc', href: f.url, target: '_blank', rel: 'noopener', title: f.nome }, figli);
-    return el('button', { classe: 'doc', title: f.nome, onclick: function () { apriFile(f); } }, figli);
+    if (f.url) return el('a', { classe: 'doc', 'data-doc': f.id, href: f.url, target: '_blank', rel: 'noopener', title: f.nome, onclick: function () { segnaVisto(f); } }, figli);
+    return el('button', { classe: 'doc', 'data-doc': f.id, title: f.nome, onclick: function () { segnaVisto(f); apriFile(f); } }, figli);
   }
 
   function apriFile(f) {
@@ -1301,7 +1340,7 @@
     return colora(el('div', { classe: 'ag-ev' }, [
       el('div', { classe: 'ag-ora' }, orario),
       el('div', { classe: 'ag-tx' }, [
-        el('strong', { testo: e.titolo }),
+        el('strong', null, [e.titolo, eventoNuovo(e, STATO.calPrima) ? el('span', { classe: 'badge', testo: 'NUOVO' }) : null]),
         info.length ? el('small', { testo: info.join(' · ') }) : null,
         mappa,
         e.note ? el('small', { testo: e.note }) : null,
