@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.5, 14 ottobre 2026: bollini "visto / non visto" + dati che si aggiornano tornando all'app)
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.7, 15 ottobre 2026: pagina Divise con date dal calendario, listino e bollino delle date nuove)
   Questa pagina NON contiene dati: nomi, saldi, documenti e codici arrivano dallo
   script Apps Script solo dopo il login. Una copia della pagina mostra solo l'accesso.
   Unica cosa da cambiare qui: URL_SCRIPT (più sotto, all'inizio del codice).
@@ -481,6 +481,17 @@
   .prof-nota { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
   .pass-riga.largo .campo-testo { padding-right: 108px; }
   .profilo .modulo .btn-primario { margin-top: 4px; }
+
+  /* ---------- Divise: listino ---------- */
+  .lis-card { padding: 6px 16px; }
+  .lis-gruppo { margin: 10px 0 2px; font-size: 13px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
+  .lis-riga { display: flex; align-items: baseline; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+  .lis-gruppo + .lis-riga { border-top: 0; }
+  .lis-nome { flex: 1; min-width: 0; }
+  .lis-nome strong { display: block; line-height: 1.3; }
+  .lis-nome small { display: block; color: var(--muted); font-size: 13px; }
+  .lis-prezzo { flex: none; font-weight: 800; font-size: 17px; color: var(--brand); font-variant-numeric: tabular-nums; }
+  .lis-nota { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
 </style>
 </head>
 <body>
@@ -738,7 +749,7 @@
   function avvia(r) {
     STATO.dati = r.contenuti;
     STATO.sessione = { email: r.utente.email, amministratore: !!r.utente.admin, alunni: r.utente.alunni || [] };
-    STATO.visti = null; STATO.calPrima = null;
+    STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null;
     var d = caricaDati(false);
     STATO.documenti = d.documenti; STATO.miei = d.miei;
     aggiornaContatori();
@@ -754,7 +765,7 @@
       var d = {};
       (v.documenti || []).forEach(function (id) { d[id] = 1; });
       if (STATO.visti) for (var id in STATO.visti.documenti) d[id] = 1;     // aperti qui un attimo fa
-      STATO.visti = { documenti: d, calendario: v.calendario || '' };
+      STATO.visti = { documenti: d, calendario: v.calendario || '', divise: v.divise || '' };
     }).catch(function () { if (!ricarica) STATO.visti = null; });
     return {
       documenti: Promise.all([chiama('documenti'), visti]).then(function (r) { return r[0]; })
@@ -871,6 +882,7 @@
       else main.appendChild(el('div', { style: 'height:16px' }));
     }
     if (id === 'calendario' && !ridisegno) calendarioVisto();          // prima di disegnare: gli appuntamenti nuovi restano segnati NUOVO in questa visita
+    if (id === 'divise' && !ridisegno) diviseViste();                  // lo stesso per le date delle divise
     disegnaBlocchi(p.blocchi, main, id);
     applicaContatori();
     if (!ridisegno && id !== 'home' && !PAGINE_FISSE[id]) chiama('visita', { pagina: id }).catch(function () {});   // statistiche per la rappresentante
@@ -936,6 +948,16 @@
       aggiornaContatori();
     });
   }
+  // Date delle divise nuove = aggiunte al calendario "BARBARIGO Divise" dopo l'ultima visita alla pagina Divise
+  function diviseViste() {
+    STATO.documenti.then(function () {
+      if (!STATO.visti) return;
+      STATO.divPrima = STATO.visti.divise;
+      STATO.visti.divise = new Date().toISOString();
+      aggiornaContatori();
+    });
+  }
+  function elencoDivise(dati) { return dati && Array.isArray(dati.divise) ? dati.divise : null; }
   function elencoSezione(dati, sezione) {
     var s = dati && dati.sezioni && dati.sezioni[sezione];
     return Array.isArray(s) ? s : null;
@@ -956,7 +978,10 @@
         contabilita: conta(['ricevute']) + rata,
         calendario: STATO.visti
           ? eventiFuturi(dati).filter(function (e) { return eventoNuovo(e, STATO.visti.calendario); }).length
-          : eventiEntro(dati, 7).length
+          : eventiEntro(dati, 7).length,
+        divise: STATO.visti
+          ? futuri(elencoDivise(dati) || []).filter(function (e) { return eventoNuovo(e, STATO.visti.divise); }).length
+          : 0
       };
       applicaContatori();
     });
@@ -964,7 +989,7 @@
   function applicaContatori() {
     var c = STATO.contatori || {};
     var spiega = STATO.visti
-      ? { comunicazioni: 'Documenti non ancora aperti', contabilita: 'Ricevute non ancora aperte o fondo cassa da versare', calendario: 'Appuntamenti aggiunti dall’ultima visita' }
+      ? { comunicazioni: 'Documenti non ancora aperti', contabilita: 'Ricevute non ancora aperte o fondo cassa da versare', calendario: 'Appuntamenti aggiunti dall’ultima visita', divise: 'Date delle divise aggiunte dall’ultima visita' }
       : { comunicazioni: 'Documenti nuovi', contabilita: 'Novità o rata da pagare', calendario: 'Appuntamenti nei prossimi 7 giorni' };
     Array.prototype.forEach.call(document.querySelectorAll('.voce[data-id], .tile[data-id]'), function (b) {
       var n = c[b.getAttribute('data-id')] || 0;
@@ -1246,12 +1271,14 @@
   function nomeGiorno(iso) { var g = -giorniDa(iso); return g === 0 ? 'Oggi' : g === 1 ? 'Domani' : null; }
   function colora(n, colore) { if (colore) n.style.setProperty('--c', colore); return n; }
 
-  function eventiFuturi(dati) {
+  // Appuntamenti da oggi in poi (quelli di più giorni già iniziati partono da oggi)
+  function futuri(lista, filtro) {
     var oggi = oggiISO();
-    return (elencoEventi(dati) || []).filter(function (e) { return fineEvento(e) >= oggi && calendarioVisibile(e); })
+    return lista.filter(function (e) { return fineEvento(e) >= oggi && (!filtro || filtro(e)); })
       .map(function (e) { var c = {}; for (var k in e) c[k] = e[k]; c.giorno = e.data < oggi ? oggi : e.data; return c; })
       .sort(function (a, b) { return a.giorno < b.giorno ? -1 : a.giorno > b.giorno ? 1 : perOrario(a, b); });
   }
+  function eventiFuturi(dati) { return futuri(elencoEventi(dati) || [], calendarioVisibile); }
   function eventiEntro(dati, giorni) {
     return eventiFuturi(dati).filter(function (e) { return -giorniDa(e.giorno) <= giorni; });
   }
@@ -1366,7 +1393,8 @@
     var m = document.querySelector('details.cal-scelta[open]');
     if (m && !m.contains(ev.target)) { m.open = false; STATO.calMenuAperto = false; }
   });
-  function rigaEvento(e) {
+  function rigaEvento(e, prima) {      // prima = ultima visita: gli eventi aggiunti dopo hanno l'etichetta NUOVO
+    if (prima === undefined) prima = STATO.calPrima;
     var orario = e.ora ? [el('b', { testo: e.ora }), e.oraFine ? el('span', { testo: e.oraFine }) : null] : [el('b', { testo: 'Tutto il giorno' })];
     var info = [];
     if (fineEvento(e) > e.data) { var f = dataDa(fineEvento(e)); info.push('fino a ' + GIORNI_SETT[f.getDay()].toLowerCase() + ' ' + f.getDate() + ' ' + MESI[f.getMonth()]); }
@@ -1376,13 +1404,32 @@
     return colora(el('div', { classe: 'ag-ev' }, [
       el('div', { classe: 'ag-ora' }, orario),
       el('div', { classe: 'ag-tx' }, [
-        el('strong', null, [e.titolo, eventoNuovo(e, STATO.calPrima) ? el('span', { classe: 'badge', testo: 'NUOVO' }) : null]),
+        el('strong', null, [e.titolo, eventoNuovo(e, prima) ? el('span', { classe: 'badge', testo: 'NUOVO' }) : null]),
         info.length ? el('small', { testo: info.join(' · ') }) : null,
         mappa,
         e.note ? el('small', { testo: e.note }) : null,
         e.calendario ? colora(el('span', { classe: 'ag-cal' }, [el('i'), el('span', { testo: e.calendario })]), e.colore) : null
       ])
     ]), e.colore);
+  }
+  // Agenda: mese, giorno e appuntamenti (usata dal Calendario e dalla pagina Divise)
+  function disegnaAgenda(box, lista, prima, seVuota) {
+    if (!lista.length) { box.appendChild(el('div', { classe: 'vuoto', testo: seVuota })); return; }
+    var mese = null, giorno = null, colonna;
+    lista.forEach(function (e) {
+      var d = dataDa(e.giorno), m = MESI[d.getMonth()] + ' ' + d.getFullYear();
+      if (m !== mese) { mese = m; box.appendChild(el('div', { classe: 'ag-mese', testo: m })); }
+      if (e.giorno !== giorno) {
+        giorno = e.giorno;
+        var nome = nomeGiorno(giorno);
+        colonna = el('div', { classe: 'ag-lista' });
+        box.appendChild(el('div', { classe: 'ag-giorno' + (nome === 'Oggi' ? ' oggi' : '') }, [
+          el('div', { classe: 'ag-data' }, [el('small', { testo: nome || GIORNI_SETT[d.getDay()] }), el('b', { testo: String(d.getDate()) })]),
+          colonna
+        ]));
+      }
+      colonna.appendChild(rigaEvento(e, prima));
+    });
   }
   function avvisoCalendario() {
     return el('div', { classe: 'avviso', testo: STATO.sessione.amministratore
@@ -1636,26 +1683,50 @@
           box.innerHTML = '';
           var filtri = filtriCalendari(dati, disegna);
           if (filtri) box.appendChild(filtri);
-          var lista = eventiFuturi(dati).slice(0, b.limite || 80);
-          if (!lista.length) { box.appendChild(el('div', { classe: 'vuoto', testo: 'Nessun appuntamento in programma.' })); return; }
-          var mese = null, giorno = null, colonna;
-          lista.forEach(function (e) {
-            var d = dataDa(e.giorno), m = MESI[d.getMonth()] + ' ' + d.getFullYear();
-            if (m !== mese) { mese = m; box.appendChild(el('div', { classe: 'ag-mese', testo: m })); }
-            if (e.giorno !== giorno) {
-              giorno = e.giorno;
-              var nome = nomeGiorno(giorno);
-              colonna = el('div', { classe: 'ag-lista' });
-              box.appendChild(el('div', { classe: 'ag-giorno' + (nome === 'Oggi' ? ' oggi' : '') }, [
-                el('div', { classe: 'ag-data' }, [el('small', { testo: nome || GIORNI_SETT[d.getDay()] }), el('b', { testo: String(d.getDate()) })]),
-                colonna
-              ]));
-            }
-            colonna.appendChild(rigaEvento(e));
-          });
+          disegnaAgenda(box, eventiFuturi(dati).slice(0, b.limite || 80), STATO.calPrima, 'Nessun appuntamento in programma.');
         }
         disegna();
       });
+      return box;
+    },
+    // Divise: date in cui Manifatture REA è a scuola (calendario "BARBARIGO Divise", solo in questa pagina)
+    divise: function (b) {
+      var box = el('div', { classe: 'agenda' });
+      box.appendChild(attesa('Carico le date…'));
+      STATO.documenti.then(function (dati) {
+        box.innerHTML = '';
+        var lista = elencoDivise(dati);
+        if (STATO.sessione.amministratore) {
+          box.appendChild(el('div', { classe: 'cal-filtri' }, [el('a', { classe: 'cal-azione admin', href: 'https://calendar.google.com/calendar/r',
+            target: '_blank', rel: 'noopener', testo: '✏️ Aggiungi le date in Google Calendar' })]));
+        }
+        if (!lista) {
+          var problema = dati && dati.divise && dati.divise.errore;
+          box.appendChild(STATO.sessione.amministratore
+            ? el('div', { classe: 'avviso', testo: '⚠️ ' + (problema || 'Lo script non manda ancora le date delle divise') + ': in Apps Script esegui provaDivise e controlla il registro.' })
+            : el('div', { classe: 'vuoto', testo: 'Le date saranno pubblicate qui a breve.' }));
+          return;
+        }
+        disegnaAgenda(box, futuri(lista).slice(0, b.limite || 40), STATO.divPrima,
+          'Nessuna data in programma. Le nuove date compaiono qui appena arrivano.');
+      });
+      return box;
+    },
+    // Listino prezzi: gruppi di voci con nome, dettaglio e prezzo
+    listino: function (b) {
+      var box = el('div');
+      if (b.nota) box.appendChild(el('p', { classe: 'lis-nota', testo: b.nota }));
+      var card = el('div', { classe: 'card lis-card' });
+      (b.gruppi || []).forEach(function (g) {
+        if (g.titolo) card.appendChild(el('div', { classe: 'lis-gruppo', testo: g.titolo }));
+        (g.voci || []).forEach(function (v) {
+          card.appendChild(el('div', { classe: 'lis-riga' }, [
+            el('span', { classe: 'lis-nome' }, [el('strong', { testo: v.nome }), v.dettaglio ? el('small', { testo: v.dettaglio }) : null]),
+            el('span', { classe: 'lis-prezzo', testo: typeof v.prezzo === 'number' ? euro(v.prezzo) : String(v.prezzo || '') })
+          ]));
+        });
+      });
+      box.appendChild(card);
       return box;
     },
     mese: function () {
@@ -1941,7 +2012,7 @@
     info: function (b) { return el('div', { classe: 'info' }, [el('span', { testo: b.etichetta }), el('strong', { testo: b.valore })]); },
     link: function (b) {
       var l = el('div', { classe: 'lista' });
-      b.voci.forEach(function (v) { l.appendChild(apriLink(v.url, v.titolo, v.nota, '🔗')); });
+      b.voci.forEach(function (v) { l.appendChild(apriLink(v.url, v.titolo, v.nota, v.icona || '🔗')); });
       return l;
     },
     cartelle: function (b) {
