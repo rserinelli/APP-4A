@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.4, 14 ottobre 2026: bollini rossi "visto / non visto", uguali su ogni dispositivo)
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.5, 14 ottobre 2026: bollini "visto / non visto" + dati che si aggiornano tornando all'app)
   Questa pagina NON contiene dati: nomi, saldi, documenti e codici arrivano dallo
   script Apps Script solo dopo il login. Una copia della pagina mostra solo l'accesso.
   Unica cosa da cambiare qui: URL_SCRIPT (più sotto, all'inizio del codice).
@@ -738,21 +738,55 @@
   function avvia(r) {
     STATO.dati = r.contenuti;
     STATO.sessione = { email: r.utente.email, amministratore: !!r.utente.admin, alunni: r.utente.alunni || [] };
-    // documenti e fondo cassa arrivano in parallelo: le pagine si aprono subito
-    // "visti" = cosa questa email ha già aperto (salvato nello script: uguale su ogni dispositivo).
-    // Se lo script non lo sa ancora fare, i bollini tornano al vecchio criterio dei giorni.
     STATO.visti = null; STATO.calPrima = null;
-    var visti = chiama('visti').then(function (v) {
-      var d = {};
-      (v.documenti || []).forEach(function (id) { d[id] = 1; });
-      STATO.visti = { documenti: d, calendario: v.calendario || '' };
-    }).catch(function () { STATO.visti = null; });
-    STATO.documenti = Promise.all([chiama('documenti'), visti]).then(function (r) { return r[0]; })
-      .catch(function () { return { errore: 'non disponibile' }; });
-    STATO.miei = chiama('cassa').catch(function () { return { errore: 'non disponibile' }; });
+    var d = caricaDati(false);
+    STATO.documenti = d.documenti; STATO.miei = d.miei;
     aggiornaContatori();
     avviaApp();
   }
+
+  // Documenti, appuntamenti, fondo cassa e "visti" arrivano in parallelo: le pagine si aprono subito.
+  // "visti" = cosa questa email ha già aperto (salvato nello script: uguale su ogni dispositivo).
+  // Se lo script non lo sa ancora fare, i bollini tornano al vecchio criterio dei giorni.
+  function caricaDati(ricarica) {
+    STATO.caricato = Date.now();
+    var visti = chiama('visti').then(function (v) {
+      var d = {};
+      (v.documenti || []).forEach(function (id) { d[id] = 1; });
+      if (STATO.visti) for (var id in STATO.visti.documenti) d[id] = 1;     // aperti qui un attimo fa
+      STATO.visti = { documenti: d, calendario: v.calendario || '' };
+    }).catch(function () { if (!ricarica) STATO.visti = null; });
+    return {
+      documenti: Promise.all([chiama('documenti'), visti]).then(function (r) { return r[0]; })
+        .catch(function () { return { errore: 'non disponibile' }; }),
+      miei: chiama('cassa').catch(function () { return { errore: 'non disponibile' }; })
+    };
+  }
+
+  // Tornando all'app (o ogni 5 minuti se resta aperta) rilegge i dati; la pagina si ridisegna solo se qualcosa è cambiato.
+  var SECONDI_RITORNO = 30, MINUTI_APERTA = 5;
+  function ricarica() {
+    if (!STATO.sessione || STATO.ricaricando) return;
+    STATO.ricaricando = true;
+    var primaDoc = STATO.documenti, primaMiei = STATO.miei;
+    var primaVisti = STATO.visti ? Object.keys(STATO.visti.documenti).length : -1;
+    var nuovi = caricaDati(true);
+    Promise.all([primaDoc, primaMiei, nuovi.documenti, nuovi.miei]).then(function (r) {
+      STATO.ricaricando = false;
+      if (!STATO.sessione || (r[2] && r[2].errore) || (r[3] && r[3].errore)) return;     // rete assente: resta com'era
+      var cambiato = JSON.stringify(r[0]) !== JSON.stringify(r[2]) || JSON.stringify(r[1]) !== JSON.stringify(r[3])
+        || primaVisti !== (STATO.visti ? Object.keys(STATO.visti.documenti).length : -1);
+      STATO.documenti = nuovi.documenti; STATO.miei = nuovi.miei; STATO.casse = {};
+      aggiornaContatori();
+      if (cambiato && !PAGINE_FISSE[STATO.pagina] && !document.querySelector('.velo-doc')) vaiA(STATO.pagina, true);
+    }, function () { STATO.ricaricando = false; });
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && STATO.caricato && Date.now() - STATO.caricato > SECONDI_RITORNO * 1000) ricarica();
+  });
+  setInterval(function () {
+    if (document.visibilityState === 'visible' && STATO.caricato && Date.now() - STATO.caricato > MINUTI_APERTA * 60000) ricarica();
+  }, 60000);
 
   // ---------- App ----------
   function avviaApp() {
@@ -816,7 +850,8 @@
   $('velo').addEventListener('click', chiudiMenu);
   $('chipUtente').addEventListener('click', function () { if (STATO.sessione) { chiudiMenu(); vaiA('profilo'); } });
 
-  function vaiA(id) {
+  function vaiA(id, ridisegno) {      // ridisegno = stessi dati aggiornati: niente visita, resta allo stesso punto
+    var scorri = ridisegno ? window.scrollY : 0;
     // pagina che è solo un collegamento (es. Mensa): apre direttamente l'altra app
     var diretta = STATO.dati.pagine.filter(function (x) { return x.id === id && x.url; })[0];
     if (diretta) {
@@ -835,11 +870,12 @@
       if (p.descrizione) main.appendChild(el('p', { classe: 'pagina-desc', testo: p.descrizione }));
       else main.appendChild(el('div', { style: 'height:16px' }));
     }
-    if (id === 'calendario') calendarioVisto();          // prima di disegnare: gli appuntamenti nuovi restano segnati NUOVO in questa visita
+    if (id === 'calendario' && !ridisegno) calendarioVisto();          // prima di disegnare: gli appuntamenti nuovi restano segnati NUOVO in questa visita
     disegnaBlocchi(p.blocchi, main, id);
     applicaContatori();
-    if (id !== 'home' && !PAGINE_FISSE[id]) chiama('visita', { pagina: id }).catch(function () {});   // statistiche per la rappresentante
-    window.scrollTo(0, 0);
+    if (!ridisegno && id !== 'home' && !PAGINE_FISSE[id]) chiama('visita', { pagina: id }).catch(function () {});   // statistiche per la rappresentante
+    if (ridisegno) Promise.all([STATO.documenti, STATO.miei]).then(function () { setTimeout(function () { window.scrollTo(0, scorri); }, 0); });
+    else window.scrollTo(0, 0);
   }
 
   // ---------- Date, novità, contatori ----------
