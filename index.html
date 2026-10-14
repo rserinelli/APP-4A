@@ -341,6 +341,25 @@
   .cal-chip.attivo { border-color: var(--brand); background: var(--brand-soft); color: var(--brand); }
   .ag-mese { margin: 22px 0 4px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
   .cal-filtri + .ag-mese, .agenda > .ag-mese:first-child { margin-top: 0; }
+  /* Casella a discesa dei calendari (selezione multipla) */
+  .cal-scelta { position: relative; }
+  .cal-scelta > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; max-width: 100%;
+    padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); font-size: 13px; font-weight: 700; color: var(--ink); }
+  .cal-scelta > summary::-webkit-details-marker { display: none; }
+  .cal-scelta[open] > summary { border-color: var(--brand); color: var(--brand); }
+  .cal-scelta-tx { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cal-pallini { display: inline-flex; gap: 3px; }
+  .cal-pallini i, .cal-voce i { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--c, var(--brand)); }
+  .cal-scelta .giu { color: var(--muted); font-size: 11px; transition: transform .15s; }
+  .cal-scelta[open] .giu { transform: rotate(180deg); }
+  .cal-scelta-lista { position: absolute; z-index: 25; top: calc(100% + 6px); left: 0; width: min(320px, calc(100vw - 32px));
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 8px 28px rgba(20,50,90,.18); padding: 6px; }
+  .cal-voce { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .cal-voce:hover { background: var(--brand-soft); }
+  .cal-voce input { width: 18px; height: 18px; margin: 0; accent-color: var(--brand); }
+  .cal-scelta-azioni { display: flex; gap: 4px; padding: 2px 4px 6px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+  .cal-scelta-azioni button { border: 0; background: transparent; color: var(--brand); font-weight: 700; font-size: 13px; padding: 4px 6px; border-radius: 8px; }
+  .cal-scelta-azioni .chiudi { margin-left: auto; background: var(--brand); color: #fff; padding: 4px 12px; }
   .ag-giorno { display: grid; grid-template-columns: 52px 1fr; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
   .ag-mese + .ag-giorno { border-top: 0; }
   .ag-data { text-align: center; line-height: 1.1; padding-top: 4px; }
@@ -1138,13 +1157,40 @@
     var cal = calendariDi(dati);
     if (cal.length < 2) return null;
     STATO.calNascosti = STATO.calNascosti || {};
-    return el('div', { classe: 'cal-filtri' }, cal.map(function (c) {
-      var spento = !!STATO.calNascosti[c.nome];
-      return colora(el('button', { classe: 'cal-chip' + (spento ? ' spento' : ''), 'aria-pressed': String(!spento), onclick: function () {
-        STATO.calNascosti[c.nome] = !spento; ridisegna(); aggiornaContatori();
-      } }, [el('i'), el('span', { testo: c.nome })]), c.colore);
-    }));
+    // Casella a discesa a selezione multipla: occupa una sola riga piccola
+    var accesi = cal.filter(function (c) { return !STATO.calNascosti[c.nome]; });
+    var etichetta = accesi.length === cal.length ? 'Tutti i calendari'
+      : accesi.length === 0 ? 'Nessun calendario'
+      : accesi.length === 1 ? accesi[0].nome
+      : accesi.length + ' calendari su ' + cal.length;
+    var pallini = el('span', { classe: 'cal-pallini' }, accesi.slice(0, 6).map(function (c) { return colora(el('i'), c.colore); }));
+    var menu = el('details', { classe: 'cal-scelta' });
+    if (STATO.calMenuAperto) menu.open = true;
+    menu.addEventListener('toggle', function () { STATO.calMenuAperto = menu.open; });
+    menu.appendChild(el('summary', { 'aria-label': 'Scegli i calendari da vedere' }, [
+      el('span', { testo: '📅' }), el('span', { classe: 'cal-scelta-tx', testo: etichetta }), pallini, el('span', { classe: 'giu', testo: '▾' })
+    ]));
+    var lista = el('div', { classe: 'cal-scelta-lista', role: 'group' });
+    function cambia() { ridisegna(); aggiornaContatori(); }
+    lista.appendChild(el('div', { classe: 'cal-scelta-azioni' }, [
+      el('button', { type: 'button', testo: 'Tutti', onclick: function () { STATO.calNascosti = {}; cambia(); } }),
+      el('button', { type: 'button', testo: 'Nessuno', onclick: function () { cal.forEach(function (c) { STATO.calNascosti[c.nome] = true; }); cambia(); } }),
+      el('button', { type: 'button', classe: 'chiudi', testo: 'Fatto', onclick: function () { STATO.calMenuAperto = false; menu.open = false; } })
+    ]));
+    cal.forEach(function (c) {
+      var box = el('input', { type: 'checkbox' });
+      box.checked = !STATO.calNascosti[c.nome];
+      box.addEventListener('change', function () { STATO.calNascosti[c.nome] = !box.checked; cambia(); });
+      lista.appendChild(colora(el('label', { classe: 'cal-voce' }, [box, el('i'), el('span', { testo: c.nome })]), c.colore));
+    });
+    menu.appendChild(lista);
+    return el('div', { classe: 'cal-filtri' }, [menu]);
   }
+  // chiude la casella dei calendari toccando fuori
+  document.addEventListener('click', function (ev) {
+    var m = document.querySelector('details.cal-scelta[open]');
+    if (m && !m.contains(ev.target)) { m.open = false; STATO.calMenuAperto = false; }
+  });
   function rigaEvento(e) {
     var orario = e.ora ? [el('b', { testo: e.ora }), e.oraFine ? el('span', { testo: e.oraFine }) : null] : [el('b', { testo: 'Tutto il giorno' })];
     var info = [];
