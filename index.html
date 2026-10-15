@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.9, 15 ottobre 2026: Prossimi appuntamenti compatti con dettagli al tocco e pulsante Espandi tutto / Nascondi tutto; dalla 10.8 Mensa nei Collegamenti, SVS Sport nella griglia, Ricevimento docenti)
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.10, 15 ottobre 2026: Calendario con schede principali in evidenza, filtro dei calendari a imbuto, icone vista compatta / estesa e "Nel mio calendario" con spiegazione; dalla 10.9 Prossimi appuntamenti compatti con dettagli al tocco; dalla 10.8 Mensa nei Collegamenti, SVS Sport nella griglia, Ricevimento docenti)
   Questa pagina NON contiene dati: nomi, saldi, documenti e codici arrivano dallo
   script Apps Script solo dopo il login. Una copia della pagina mostra solo l'accesso.
   Unica cosa da cambiare qui: URL_SCRIPT (più sotto, all'inizio del codice).
@@ -430,7 +430,35 @@
   .ag-ev.comp.aperto { padding: 10px 10px 10px 12px; }
   .ag-giu { flex: none; align-self: center; color: var(--muted); font-size: 13px; transition: transform .15s; }
   .ag-ev.comp.aperto .ag-giu { transform: rotate(180deg); }
-  .cal-azione.ag-tutti { margin-left: auto; }
+  /* ---------- Calendario v10.10: schede principali, filtro, vista, Nel mio calendario ---------- */
+  .schede-tab.principali { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; overflow: visible; margin-bottom: 12px;
+    background: var(--brand-soft); border: 1px solid #c9dff0; border-radius: 16px; }
+  .schede-tab.principali .tab { display: flex; align-items: center; justify-content: center; gap: 7px; border: 0; border-radius: 12px;
+    background: transparent; color: var(--brand); font-weight: 800; font-size: 15px; padding: 11px 6px; line-height: 1.15; }
+  .schede-tab.principali .tab svg { flex: none; }
+  .schede-tab.principali .tab.attiva { background: var(--brand); color: #fff; box-shadow: 0 2px 8px rgba(31,95,153,.35); }
+  @media (max-width: 360px) { .schede-tab.principali .tab { font-size: 14px; gap: 5px; } .schede-tab.principali .tab svg { display: none; } }
+  .cal-filtri { gap: 8px; }
+  .cal-scelta.filtro > summary { position: relative; width: 42px; height: 40px; padding: 0; border-radius: 12px; justify-content: center; }
+  .cal-scelta.filtro.ridotto > summary { border-color: var(--brand); color: var(--brand); background: var(--brand-soft); }
+  .cal-scelta.filtro[open] > summary { background: var(--brand-soft); }
+  .cal-bollino { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: var(--brand);
+    color: #fff; font-size: 11px; font-weight: 800; display: grid; place-items: center; border: 2px solid var(--bg); }
+  .cal-scelta-titolo { padding: 6px 10px 2px; font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .ag-vista { display: inline-flex; border: 1px solid var(--line); border-radius: 12px; background: var(--card); padding: 2px; }
+  .ag-vista button { width: 38px; height: 34px; border: 0; border-radius: 9px; background: transparent; display: grid; place-items: center; color: var(--muted); }
+  .ag-vista button[aria-pressed="true"] { background: var(--brand-soft); color: var(--brand); }
+  .cal-esporta { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; height: 40px; padding: 0 13px; border-radius: 12px;
+    border: 1px solid var(--brand); background: var(--card); color: var(--brand); font-weight: 800; font-size: 14px; white-space: nowrap; }
+  .cal-esporta:hover { background: var(--brand-soft); }
+  .esp-riass { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 12px; background: var(--brand-soft); margin: 0 0 12px; }
+  .esp-riass b { font-size: 26px; color: var(--brand); line-height: 1; }
+  .esp-riass span { font-size: 14px; line-height: 1.3; }
+  .esp-pallini { display: inline-flex; gap: 3px; margin-left: 5px; vertical-align: 1px; }
+  .esp-pallini i { width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--brand)); }
+  .pannello ol.esp-passi { margin: 0 0 8px; padding-left: 20px; font-size: 14px; }
+  .pannello ol.esp-passi li { margin-bottom: 4px; }
+  .pannello p.esp-nota { font-size: 12px; text-align: center; margin: 10px 0 0; }
   @media (max-width: 600px) {
     .cal-griglia { gap: 3px; }
     .cal-g { min-height: 52px; padding: 4px 2px; align-items: center; border-radius: 8px; }
@@ -1349,13 +1377,29 @@
     });
     return out;
   }
-  function filtriCalendari(dati, ridisegna) {
+  // Icone disegnate (v10.10): restano nitide e prendono il colore del pulsante
+  var ICONE = {
+    agenda: '<path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1.2" fill="currentColor"/><circle cx="3.5" cy="12" r="1.2" fill="currentColor"/><circle cx="3.5" cy="18" r="1.2" fill="currentColor"/>',
+    mese: '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    filtro: '<path d="M3 5h18l-7 8.5V20l-4-2v-4.5z"/>',
+    compatta: '<path d="M4 6h16M4 10h16M4 14h16M4 18h16"/>',
+    estesa: '<rect x="3.5" y="3.5" width="17" height="7.5" rx="2"/><rect x="3.5" y="13" width="17" height="7.5" rx="2"/>',
+    aggiungi: '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/>'
+  };
+  function icona(nome, misura) {
+    var s = el('span', { 'aria-hidden': 'true', style: 'display:inline-grid;place-items:center' });
+    s.innerHTML = '<svg width="' + (misura || 20) + '" height="' + (misura || 20) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">' + ICONE[nome] + '</svg>';
+    return s;
+  }
+  // Riga sopra agenda e mese: filtro (imbuto) · [vista compatta / estesa] · Nel mio calendario · (Rossana) Google Calendar
+  function filtriCalendari(dati, ridisegna, dopoFiltro) {
     var cal = calendariDi(dati);
     STATO.calNascosti = STATO.calNascosti || {};
     var riga = el('div', { classe: 'cal-filtri' });
     if (cal.length > 1) riga.appendChild(sceltaCalendari(cal, ridisegna));
-    riga.appendChild(el('button', { type: 'button', classe: 'cal-azione', testo: '📲 Esporta', title: 'Aggiungi gli appuntamenti al calendario del telefono',
-      onclick: function () { esportaCalendario(dati); } }));
+    if (dopoFiltro) riga.appendChild(dopoFiltro);
+    riga.appendChild(el('button', { type: 'button', classe: 'cal-esporta', title: 'Aggiungi gli appuntamenti al calendario del telefono',
+      onclick: function () { esportaCalendario(dati); } }, [icona('aggiungi', 18), el('span', { testo: 'Nel mio calendario' })]));
     if (STATO.sessione.amministratore) {
       riga.appendChild(el('a', { classe: 'cal-azione admin', href: 'https://calendar.google.com/calendar/r', target: '_blank', rel: 'noopener',
         testo: '✏️ Google Calendar' }));
@@ -1379,7 +1423,32 @@
   function esportaCalendario(dati) {
     var oggi = oggiISO();
     var eventi = (elencoEventi(dati) || []).filter(function (e) { return fineEvento(e) >= oggi && calendarioVisibile(e); });
-    if (!eventi.length) { toast('Nessun appuntamento da aggiungere'); return; }
+    if (!eventi.length) { toast('Nessun appuntamento da aggiungere: scegli almeno un calendario con l’imbuto'); return; }
+    // v10.10: prima un foglio che spiega cosa succede (quanti, quali calendari, iPhone / Android, copia di oggi)
+    var cal = calendariDi(dati), accesi = cal.filter(function (c) { return !STATO.calNascosti[c.nome]; });
+    var quali = !cal.length ? '' : accesi.length === cal.length ? 'di tutti i ' + cal.length + ' calendari' : accesi.length === 1 ? 'del calendario ' + accesi[0].nome : 'di ' + accesi.length + ' calendari su ' + cal.length;
+    var velo = el('div', { classe: 'velo-doc' });
+    var chiudi = function () { velo.remove(); };
+    velo.appendChild(el('div', { classe: 'pannello', role: 'dialog', 'aria-label': 'Aggiungi al tuo calendario' }, [
+      el('h3', { testo: '📲 Aggiungi al tuo calendario' }),
+      el('p', { testo: 'Gli appuntamenti della classe finiscono nel calendario del telefono, accanto ai tuoi.' }),
+      el('div', { classe: 'esp-riass' }, [el('b', { testo: String(eventi.length) }), el('span', null, [
+        (eventi.length === 1 ? 'appuntamento' : 'appuntamenti') + ' da oggi in poi' + (quali ? ', ' + quali : ''),
+        el('span', { classe: 'esp-pallini' }, accesi.slice(0, 6).map(function (c) { return colora(el('i'), c.colore); }))
+      ])]),
+      el('ol', { classe: 'esp-passi' }, [
+        el('li', { testo: 'Tocca “Aggiungi ora”.' }),
+        el('li', { testo: 'iPhone: si apre il Calendario, tocca “Aggiungi tutti”.' }),
+        el('li', { testo: 'Android: apri il file scaricato con l’app calendario del telefono (es. Samsung Calendar).' })
+      ]),
+      el('button', { type: 'button', classe: 'btn btn-primario', testo: 'Aggiungi ora', onclick: function () { chiudi(); scaricaIcs(eventi); } }),
+      el('button', { type: 'button', classe: 'link-piccolo', testo: 'Annulla', onclick: chiudi }),
+      el('p', { classe: 'esp-nota', testo: 'È una copia di oggi: gli appuntamenti aggiunti dopo non arrivano da soli, ripeti quando vuoi. Vuoi solo alcuni calendari? Sceglili prima con l’imbuto.' })
+    ]));
+    velo.addEventListener('click', function (e) { if (e.target === velo) chiudi(); });
+    document.body.appendChild(velo);
+  }
+  function scaricaIcs(eventi) {
     var data = function (iso) { return iso.replace(/-/g, ''); };
     var ora = function (h) { return h.replace(':', '') + '00'; };
     var adesso = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
@@ -1409,21 +1478,19 @@
   }
 
   function sceltaCalendari(cal, ridisegna) {
-    // Casella a discesa a selezione multipla: occupa una sola riga piccola
+    // Casella a selezione multipla aperta dall'icona a imbuto (v10.10); col filtro attivo l'icona mostra quanti calendari sono accesi
     var accesi = cal.filter(function (c) { return !STATO.calNascosti[c.nome]; });
-    var etichetta = accesi.length === cal.length ? 'Tutti'
-      : accesi.length === 0 ? 'Nessuno'
-      : accesi.length === 1 ? accesi[0].nome
-      : accesi.length + ' su ' + cal.length;
-    var pallini = el('span', { classe: 'cal-pallini' }, accesi.slice(0, 6).map(function (c) { return colora(el('i'), c.colore); }));
-    var menu = el('details', { classe: 'cal-scelta' });
+    var ridotto = accesi.length !== cal.length;
+    var menu = el('details', { classe: 'cal-scelta filtro' + (ridotto ? ' ridotto' : '') });
     if (STATO.calMenuAperto) menu.open = true;
     menu.addEventListener('toggle', function () { STATO.calMenuAperto = menu.open; });
-    menu.appendChild(el('summary', { 'aria-label': 'Scegli i calendari da vedere' }, [
-      el('span', { testo: '📅' }), el('span', { classe: 'cal-scelta-tx', testo: etichetta }), pallini, el('span', { classe: 'giu', testo: '▾' })
+    var spiega = ridotto ? 'Calendari: ' + accesi.length + ' su ' + cal.length + ' (tocca per scegliere)' : 'Scegli i calendari da vedere';
+    menu.appendChild(el('summary', { 'aria-label': spiega, title: spiega }, [
+      icona('filtro'), ridotto ? el('span', { classe: 'cal-bollino', testo: String(accesi.length) }) : null
     ]));
     var lista = el('div', { classe: 'cal-scelta-lista', role: 'group' });
     function cambia() { ridisegna(); aggiornaContatori(); }
+    lista.appendChild(el('div', { classe: 'cal-scelta-titolo', testo: 'Calendari da vedere' }));
     lista.appendChild(el('div', { classe: 'cal-scelta-azioni' }, [
       el('button', { type: 'button', testo: 'Tutti', onclick: function () { STATO.calNascosti = {}; cambia(); } }),
       el('button', { type: 'button', testo: 'Nessuno', onclick: function () { cal.forEach(function (c) { STATO.calNascosti[c.nome] = true; }); cambia(); } }),
@@ -1488,22 +1555,30 @@
     });
     return card;
   }
-  // Pulsante "Espandi tutto / Nascondi tutto": passa dalla vista compatta a quella estesa (vale finché l'app resta aperta)
+  // Vista compatta / vista estesa (v10.10: due icone al posto di "Espandi tutto / Nascondi tutto"; vale finché l'app resta aperta)
   function pulsanteEspandi() {
-    var b = el('button', { type: 'button', classe: 'cal-azione ag-tutti' });
-    function etichetta() { b.textContent = STATO.agendaEstesa ? '▴ Nascondi tutto' : '▾ Espandi tutto'; }
-    b.addEventListener('click', function () {
-      STATO.agendaEstesa = !STATO.agendaEstesa;
+    var gruppo = el('div', { classe: 'ag-vista', role: 'group', 'aria-label': 'Vista degli appuntamenti' });
+    var bComp = el('button', { type: 'button', title: 'Vista compatta', 'aria-label': 'Vista compatta' }, [icona('compatta')]);
+    var bEst = el('button', { type: 'button', title: 'Vista estesa', 'aria-label': 'Vista estesa' }, [icona('estesa')]);
+    function segna() {
+      bComp.setAttribute('aria-pressed', STATO.agendaEstesa ? 'false' : 'true');
+      bEst.setAttribute('aria-pressed', STATO.agendaEstesa ? 'true' : 'false');
+    }
+    function scegli(estesa) {
+      STATO.agendaEstesa = estesa;
       STATO.agendaAperti = {};
-      var box = b.closest('.agenda') || document;
+      var box = gruppo.closest('.agenda') || document;
       Array.prototype.forEach.call(box.querySelectorAll('.ag-ev.comp'), function (c) {
-        c.classList.toggle('aperto', STATO.agendaEstesa);
-        c.setAttribute('aria-expanded', STATO.agendaEstesa ? 'true' : 'false');
+        c.classList.toggle('aperto', estesa);
+        c.setAttribute('aria-expanded', estesa ? 'true' : 'false');
       });
-      etichetta();
-    });
-    etichetta();
-    return b;
+      segna();
+    }
+    bComp.addEventListener('click', function () { scegli(false); });
+    bEst.addEventListener('click', function () { scegli(true); });
+    gruppo.appendChild(bComp); gruppo.appendChild(bEst);
+    segna();
+    return gruppo;
   }
   // Agenda: mese, giorno e appuntamenti (usata dal Calendario e dalla pagina Divise)
   function disegnaAgenda(box, lista, prima, seVuota, compatta) {
@@ -1797,9 +1872,8 @@
         if (!elencoEventi(dati)) { box.innerHTML = ''; box.appendChild(avvisoCalendario()); return; }
         function disegna() {
           box.innerHTML = '';
-          var filtri = filtriCalendari(dati, disegna);
           var lista = eventiFuturi(dati).slice(0, b.limite || 80);
-          if (lista.length) filtri.appendChild(pulsanteEspandi());
+          var filtri = filtriCalendari(dati, disegna, lista.length ? pulsanteEspandi() : null);
           box.appendChild(filtri);
           box.classList.add('compatta');
           disegnaAgenda(box, lista, STATO.calPrima, 'Nessun appuntamento in programma.', true);
@@ -2225,7 +2299,13 @@
     },
     schede: function (b, chiave) {
       var box = el('div');
-      var barra = el('div', { classe: 'schede-tab', role: 'tablist' });
+      // Schede del Calendario (agenda e mese): interruttore blu a tutta larghezza con icone (v10.10); le altre restano linguette
+      var iconaScheda = function (s) {
+        var tipi = (s.blocchi || []).map(function (x) { return x.tipo; });
+        return tipi.indexOf('eventi') >= 0 ? 'agenda' : tipi.indexOf('mese') >= 0 ? 'mese' : null;
+      };
+      var principali = b.schede.length === 2 && b.schede.every(iconaScheda);
+      var barra = el('div', { classe: 'schede-tab' + (principali ? ' principali' : ''), role: 'tablist' });
       var corpo = el('div');
       var attiva = STATO.schede[chiave] || 0;
       function apri(i) {
@@ -2235,7 +2315,9 @@
         disegnaBlocchi(b.schede[i].blocchi, corpo, chiave + '-' + i);
       }
       b.schede.forEach(function (s, i) {
-        barra.appendChild(el('button', { classe: 'tab', role: 'tab', testo: s.titolo, onclick: function () { apri(i); } }));
+        barra.appendChild(principali
+          ? el('button', { classe: 'tab', role: 'tab', onclick: function () { apri(i); } }, [icona(iconaScheda(s), 18), el('span', { testo: s.titolo })])
+          : el('button', { classe: 'tab', role: 'tab', testo: s.titolo, onclick: function () { apri(i); } }));
       });
       box.appendChild(barra); box.appendChild(corpo);
       apri(attiva);
