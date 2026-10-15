@@ -14,7 +14,13 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.11, 15 ottobre 2026: Calendario con schede principali dorate, filtro a pillola con il numero dei calendari accesi, ora d'inizio nella vista compatta, appuntamenti di più giorni su ogni giorno, Rossana aggiunge / modifica / duplica / elimina gli appuntamenti dall'app; dalla 10.10 schede principali in evidenza, icone vista compatta / estesa e "Nel mio calendario" con spiegazione; dalla 10.9 Prossimi appuntamenti compatti con dettagli al tocco; dalla 10.8 Mensa nei Collegamenti, SVS Sport nella griglia, Ricevimento docenti)
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.13, 15 ottobre 2026: profilo docente per gli accessi
+  "Nessun bambino/a", riquadro rosso "Alunno non trovato" con "Segnalalo su WhatsApp", causale dei bonifici con il nome
+  dell'alunno e tasti Copia su intestatario, IBAN e causale. Nessun numero di telefono: WhatsApp si apre senza destinatario.
+  Dalla 10.12: riquadro Avvisi in cima alla Home,
+  file in arrivo e caricamento per la rappresentante, Ultime notizie con lo storico degli avvisi, fondo cassa da versare
+  con promemoria su WhatsApp, giorni senza lezione in Orario e Ricevimento, aiuto WhatsApp nell'accesso.
+  Dalla 10.11: Calendario con schede principali dorate, filtro a pillola con il numero dei calendari accesi, ora d'inizio nella vista compatta, appuntamenti di più giorni su ogni giorno, Rossana aggiunge / modifica / duplica / elimina gli appuntamenti dall'app; dalla 10.10 schede principali in evidenza, icone vista compatta / estesa e "Nel mio calendario" con spiegazione; dalla 10.9 Prossimi appuntamenti compatti con dettagli al tocco; dalla 10.8 Mensa nei Collegamenti, SVS Sport nella griglia, Ricevimento docenti)
   Questa pagina NON contiene dati: nomi, saldi, documenti e codici arrivano dallo
   script Apps Script solo dopo il login. Una copia della pagina mostra solo l'accesso.
   Unica cosa da cambiare qui: URL_SCRIPT (più sotto, all'inizio del codice).
@@ -170,6 +176,9 @@
   .mono { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; letter-spacing: .02em; }
   .btn-mini { border: 1px solid var(--line); background: transparent; color: var(--brand); border-radius: 8px;
     padding: 4px 10px; font-size: 13px; font-weight: 700; }
+  .iban-card .valore:not(.mono) { word-break: normal; overflow-wrap: anywhere; }
+  .causale-riga { margin-top: 4px; } .causale-riga + .causale-riga { margin-top: 10px; }
+  .causale-es { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
   .codice { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 12px 16px; border: 1px solid var(--line);
     border-radius: 12px; background: var(--card); margin-bottom: 10px; }
   .codice .et { font-size: 14px; color: var(--muted); min-width: 140px; }
@@ -605,6 +614,85 @@
   .ric-mail:hover { border-color: var(--brand); }
   .ric-mail span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .ric-email { display: block; margin-top: 4px; font-size: 12px; color: var(--muted); word-break: break-all; }
+  .ric-vacanza { margin-top: 4px; font-size: 12.5px; color: var(--muted); }
+
+  /* ---------- v10.12: Avvisi in Home ---------- */
+  .avvisi-card { border-color: #ecd9a6; background: linear-gradient(180deg, #fffaf0, var(--card) 70px); }
+  .avvisi-card .hcard-testa span { display: inline-flex; align-items: center; gap: 7px; }
+  .av-piu { border: 0; border-radius: 10px; padding: 6px 11px; font-size: 13px; font-weight: 800; color: #fff;
+    background: linear-gradient(180deg, #d6a93a, var(--accent)); white-space: nowrap; }
+  .av-arrivo { display: flex; align-items: center; gap: 10px; width: 100%; margin-top: 8px; padding: 9px 11px; border: 1px dashed var(--brand);
+    border-radius: 12px; background: var(--brand-soft); color: var(--brand); text-align: left; font-weight: 800; font-size: 14px; }
+  .av-arrivo .n { flex: none; min-width: 24px; height: 24px; padding: 0 6px; border-radius: 999px; background: var(--brand); color: #fff; display: grid; place-items: center; font-size: 13px; }
+  .av-arrivo .tx { flex: 1; min-width: 0; }
+  .av-arrivo small { display: block; font-weight: 600; font-size: 12px; color: var(--muted); }
+  .av { padding: 10px 0 2px; border-top: 1px solid var(--line); margin-top: 8px; }
+  .av.evidenza { background: var(--accent-soft); border-radius: 10px; padding: 10px; border-top-color: transparent; }
+  .av h4 { margin: 0; font-size: 15px; font-weight: 800; line-height: 1.3; }
+  .av p { margin: 3px 0 0; font-size: 14px; white-space: pre-line; overflow-wrap: anywhere; }
+  .av-piede { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 7px; font-size: 12px; color: var(--muted); font-weight: 700; }
+  .av-doc { display: inline-flex; align-items: center; gap: 5px; border: 0; background: transparent; padding: 0; color: var(--brand); font-weight: 800; font-size: 13px; text-align: left; }
+  .wa { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #b8e0c8; background: #e3f5ea; color: #1f8f52; border-radius: 999px;
+    padding: 4px 10px; font-size: 12.5px; font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .wa svg { flex: none; }
+  .av-mini { border: 1px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; padding: 4px 10px; font-size: 12.5px; font-weight: 800; }
+  .av-tutti { display: block; width: 100%; border: 0; background: transparent; color: var(--brand); font-weight: 800; font-size: 13px; padding: 8px 0 0; text-align: right; }
+  .av-vuoto { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+
+  /* ---------- v10.12: pannello Avviso / File (solo Rossana) ---------- */
+  .seg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; background: var(--brand-soft); border-radius: 14px; margin-bottom: 12px; }
+  .seg2 button { border: 0; border-radius: 10px; background: transparent; color: var(--brand); font-weight: 800; font-size: 14px; padding: 8px 4px; }
+  .seg2 button[aria-pressed="true"] { background: var(--brand); color: #fff; }
+  .ev-campo em { font-style: normal; font-weight: 600; font-size: 12px; color: var(--muted); }
+  .ev-spunta { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+  .ev-spunta input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--accent); flex: none; }
+  .ev-spunta small { display: block; color: var(--muted); font-weight: 600; font-size: 12.5px; }
+  .fi-lista { display: grid; gap: 6px; }
+  .fi-voce { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 12px; font-size: 14px; cursor: pointer; }
+  .fi-voce input { width: 18px; height: 18px; margin: 0; accent-color: var(--brand); flex: none; }
+  .fi-voce .tx { flex: 1; min-width: 0; }
+  .fi-voce strong { display: block; font-size: 14px; overflow-wrap: anywhere; }
+  .fi-voce small { color: var(--muted); font-size: 12px; }
+  .fi-voce.scelto { border-color: var(--brand); background: var(--brand-soft); }
+  .fi-sep { font-size: 12px; font-weight: 800; color: var(--muted); text-align: center; text-transform: uppercase; letter-spacing: .06em; margin: 2px 0; }
+  .fi-carica { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border: 1px dashed var(--muted); border-radius: 12px;
+    background: transparent; color: var(--ink); font-weight: 800; font-size: 14px; width: 100%; cursor: pointer; text-align: center; }
+  .fi-carica { position: relative; }
+  .fi-carica input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .fi-carica:focus-within { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .fi-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fi-chips button { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 6px 11px; font-size: 13px; font-weight: 800; color: var(--ink); }
+  .fi-chips button[aria-pressed="true"] { border-color: var(--ink); background: var(--brand-soft); }
+  .fi-nome { padding: 9px 12px; border-radius: 12px; background: var(--bg); font-size: 13px; font-weight: 700; overflow-wrap: anywhere; margin-bottom: 12px; }
+  .fi-nome span { display: block; font-size: 11.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .fatto-wa { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 8px; padding: 12px; border-radius: 12px;
+    background: #1f8f52; color: #fff; font-weight: 800; font-size: 16px; text-decoration: none; }
+
+  /* ---------- v10.12: fondo cassa da versare (Gestione accessi) ---------- */
+  .dv-riep { display: flex; align-items: center; gap: 14px; }
+  .dv-riep .grande { font-size: 30px; font-weight: 800; color: var(--rosso); line-height: 1; font-variant-numeric: tabular-nums; }
+  .dv-riep .tx { flex: 1; min-width: 0; font-size: 14px; }
+  .dv-riep strong { display: block; font-size: 15px; }
+  .dv-al { padding: 12px 0; border-top: 1px solid var(--line); display: grid; gap: 8px; }
+  .dv-al:first-child { border-top: 0; padding-top: 4px; }
+  .dv-testa { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .dv-nome { font-size: 13px; font-weight: 800; color: var(--accent); letter-spacing: .05em; text-transform: uppercase; }
+  .dv-imp { font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .dv-scad { display: inline-block; margin-top: 2px; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 800; background: var(--accent-soft); color: #7a5a00; }
+  .dv-scad.passata { background: #fdf0ef; color: var(--rosso); }
+  .dv-gen { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; padding: 8px 10px; border-radius: 12px; background: var(--bg); }
+  .dv-gen .em { flex: 1 1 160px; min-width: 0; font-size: 13.5px; font-weight: 700; overflow-wrap: anywhere; }
+  .dv-gen .em small { display: block; color: var(--muted); font-weight: 600; font-size: 12px; }
+  .dv-gen .em small.ok { color: var(--ok); }
+
+  /* ---------- v10.12: giorni senza lezione (Orario) ---------- */
+  .or-vacanza { display: flex; gap: 12px; align-items: center; padding: 16px; border-radius: 14px; background: var(--accent-soft); border: 1px solid #ecd9a6; margin-bottom: 22px; }
+  .or-vacanza span { font-size: 28px; }
+  .or-vacanza strong { display: block; font-size: 16px; }
+  .or-vacanza small { color: var(--muted); font-size: 13px; }
+  .or-sett th.vacanza { color: var(--accent); }
+  .or-sett td.vacanza .or-cella { opacity: .3; }
+  .login-aiuto { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 14px; color: #1f8f52; font-weight: 800; font-size: 14px; text-decoration: none; }
 </style>
 </head>
 <body>
@@ -638,6 +726,7 @@
       <p class="errore-msg nascosto" id="logErrore"></p>
       <button class="btn btn-primario" type="submit" id="btnEntra">Entra</button>
       <button class="btn btn-sec" type="button" id="vaiCodice">Primo accesso o password dimenticata</button>
+      <a class="login-aiuto" id="aiutoWhatsapp" href="https://wa.me/?text=Ciao%2C%20non%20riesco%20a%20entrare%20nell%27app%20della%204a%20primaria." target="_blank" rel="noopener">💬 Problemi ad entrare? Scrivi su WhatsApp</a>
     </form>
 
     <!-- Primo accesso / password dimenticata: 1) email -->
@@ -678,7 +767,7 @@
         <li><b>Il codice non arriva?</b> Controlla nello spam o nella posta indesiderata, poi premi "Rimanda il codice".</li>
         <li><b>Password dimenticata?</b> Stessa strada del primo accesso: ricevi un nuovo codice e scegli una nuova password.</li>
         <li><b>Sul telefono</b> puoi aggiungere l'app alla schermata Home (Condividi → "Aggiungi alla schermata Home"): resti collegato per 30 giorni.</li>
-        <li><b>Non riesci a entrare?</b> Scrivi alla rappresentante.</li>
+        <li><b>Non riesci a entrare?</b> Scrivi alla rappresentante: “Problemi ad entrare?” apre WhatsApp con il messaggio pronto, scegli tu a chi mandarlo.</li>
       </ul>
     </details>
   </div>
@@ -850,6 +939,8 @@
   });
 
   // ---------- Avvio ----------
+  // v10.12: un link come .../APP-4A/#avviso-av_123 (messaggio WhatsApp) o .../#coordinate apre l'app direttamente lì, anche dopo il login
+  var DESTINAZIONE = (location.hash || '').replace(/^#/, '');
   if (!window.__ANTEPRIMA__ && URL_SCRIPT.indexOf('https://script.google.com/') !== 0) {
     fermo('App non ancora collegata: manca l\'indirizzo dello script (URL_SCRIPT in index.html).');
   } else if (leggi(CHIAVE_TOKEN)) {
@@ -865,7 +956,7 @@
     STATO.sessione = { email: r.utente.email, amministratore: !!r.utente.admin, alunni: r.utente.alunni || [] };
     STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null;
     var d = caricaDati(false);
-    STATO.documenti = d.documenti; STATO.miei = d.miei;
+    STATO.documenti = d.documenti; STATO.miei = d.miei; STATO.inArrivo = d.inArrivo;
     aggiornaContatori();
     avviaApp();
   }
@@ -884,7 +975,11 @@
     return {
       documenti: Promise.all([chiama('documenti'), visti]).then(function (r) { return r[0]; })
         .catch(function () { return { errore: 'non disponibile' }; }),
-      miei: chiama('cassa').catch(function () { return { errore: 'non disponibile' }; })
+      miei: chiama('cassa').catch(function () { return { errore: 'non disponibile' }; }),
+      // v10.12: file nella cartella IN ARRIVO (solo la rappresentante); null = funzione non disponibile
+      inArrivo: STATO.sessione && STATO.sessione.amministratore
+        ? chiama('inArrivo').then(function (r) { return Array.isArray(r.file) ? r.file : null; }, function () { return null; })
+        : Promise.resolve(null)
     };
   }
 
@@ -893,15 +988,16 @@
   function ricarica() {
     if (!STATO.sessione || STATO.ricaricando) return;
     STATO.ricaricando = true;
-    var primaDoc = STATO.documenti, primaMiei = STATO.miei;
+    var primaDoc = STATO.documenti, primaMiei = STATO.miei, primaArrivo = STATO.inArrivo || Promise.resolve(null);
     var primaVisti = STATO.visti ? Object.keys(STATO.visti.documenti).length : -1;
     var nuovi = caricaDati(true);
-    Promise.all([primaDoc, primaMiei, nuovi.documenti, nuovi.miei]).then(function (r) {
+    Promise.all([primaDoc, primaMiei, nuovi.documenti, nuovi.miei, primaArrivo, nuovi.inArrivo]).then(function (r) {
       STATO.ricaricando = false;
       if (!STATO.sessione || (r[2] && r[2].errore) || (r[3] && r[3].errore)) return;     // rete assente: resta com'era
       var cambiato = JSON.stringify(r[0]) !== JSON.stringify(r[2]) || JSON.stringify(r[1]) !== JSON.stringify(r[3])
+        || JSON.stringify(r[4]) !== JSON.stringify(r[5])
         || primaVisti !== (STATO.visti ? Object.keys(STATO.visti.documenti).length : -1);
-      STATO.documenti = nuovi.documenti; STATO.miei = nuovi.miei; STATO.casse = {};
+      STATO.documenti = nuovi.documenti; STATO.miei = nuovi.miei; STATO.inArrivo = nuovi.inArrivo; STATO.casse = {};
       aggiornaContatori();
       if (cambiato && !PAGINE_FISSE[STATO.pagina] && !document.querySelector('.velo-doc')) vaiA(STATO.pagina, true);
     }, function () { STATO.ricaricando = false; });
@@ -925,6 +1021,16 @@
     document.title = STATO.dati.titolo;
     disegnaMenu();
     vaiA('home');
+    vaiADestinazione();
+  }
+  // v10.12: link dal messaggio WhatsApp (#avviso-… sulla Home, #coordinate in Contabilità)
+  function vaiADestinazione() {
+    var d = DESTINAZIONE; DESTINAZIONE = '';
+    if (!d) return;
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    if (d === 'coordinate') { apriScheda('contabilita', SCHEDA_PAGAMENTI); return; }
+    var m = d.match(/^avviso-(av_[\w-]+)$/);
+    if (m) STATO.avvisoDaMostrare = m[1];
   }
 
   function el(tag, attr, figli) {
@@ -961,7 +1067,7 @@
     }
   }
 
-  var PAGINA_GESTIONE = { id: 'gestione', titolo: 'Gestione accessi', descrizione: 'Solo per te · chi ha già creato la password e chi no',
+  var PAGINA_GESTIONE = { id: 'gestione', titolo: 'Gestione accessi', descrizione: 'Solo per te · password delle famiglie e fondo cassa da versare',
     blocchi: [{ tipo: 'gestione' }] };
   var PAGINA_PROFILO = { id: 'profilo', titolo: 'Il mio profilo', descrizione: 'La tua email di accesso e la tua password',
     blocchi: [{ tipo: 'profilo' }] };
@@ -981,7 +1087,7 @@
     var diretta = STATO.dati.pagine.filter(function (x) { return x.id === id && x.url; })[0];
     if (diretta) {
       window.open(diretta.url, '_blank', 'noopener');
-      chiama('visita', { pagina: id }).catch(function () {});
+      chiama('pagina', { pagina: id }).catch(function () {});
       return;
     }
     STATO.pagina = id;
@@ -999,7 +1105,7 @@
     if (id === 'divise' && !ridisegno) diviseViste();                  // lo stesso per le date delle divise
     disegnaBlocchi(p.blocchi, main, id);
     applicaContatori();
-    if (!ridisegno && id !== 'home' && !PAGINE_FISSE[id]) chiama('visita', { pagina: id }).catch(function () {});   // statistiche per la rappresentante
+    if (!ridisegno && id !== 'home' && !PAGINE_FISSE[id]) chiama('pagina', { pagina: id }).catch(function () {});   // la pagina aperta (azzera i bollini di Calendario e Divise)
     if (ridisegno) Promise.all([STATO.documenti, STATO.miei]).then(function () { setTimeout(function () { window.scrollTo(0, scorri); }, 0); });
     else window.scrollTo(0, 0);
   }
@@ -1007,13 +1113,21 @@
   // ---------- Date, novità, contatori ----------
   var GIORNI_SETT = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
   var MESI = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+  // 10.13: "Nessun bambino/a" nel foglio accessi = profilo docente (maestre…): niente fondo cassa personale
+  function senzaAlunno(nome) { return /^\s*nessun[oa]?\s+(bambin|alunn|allie)/i.test(String(nome || '')); }
+  function soloSenzaAlunno() { var a = STATO.sessione.alunni || []; return !STATO.sessione.amministratore && a.length > 0 && a.every(senzaAlunno); }
+  // Nome nel foglio accessi che non c'è nel master: messaggio WhatsApp pronto per la rappresentante (il contatto lo sceglie chi scrive)
+  function linkSegnala(nome) {
+    return 'https://wa.me/?text=' + encodeURIComponent('Ciao Rossana, nell’app della 4a non trovo il fondo cassa di ' + nome +
+      ' (mi trova come "' + nome + '", email ' + STATO.sessione.email + '). Puoi controllare? Grazie!');
+  }
   function alunniCassa(miei) { return miei && miei.cassa && Array.isArray(miei.cassa.alunni) ? miei.cassa.alunni.filter(function (a) { return !a.errore; }) : []; }
   function euro(n) { return Math.abs(n).toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }); }
   function euroSegno(n) { return (n < 0 ? '−' : '') + euro(n); }
   function dataCorta(iso) { if (!iso) return ''; var p = iso.split('-'); return (+p[2]) + ' ' + MESI[+p[1] - 1].slice(0, 3); }
   function dataMedia(iso) { if (!iso) return ''; var p = iso.split('-'); return (+p[2]) + ' ' + MESI[+p[1] - 1]; }
   var SCHEDA_PAGAMENTI = 2, SCHEDA_RENDICONTO = 0, SCHEDA_DETTAGLIO = 1;
-  // Link Revolut con importo esatto (in centesimi) e causale "Nome Cognome - versamento fondo cassa".
+  // Link Revolut con importo esatto (in centesimi) e causale "Nome Cognome - fondo cassa" (pagamento.causale in Contenuti.gs).
   function linkRevolut(a) {
     var p = STATO.dati && STATO.dati.pagamento;
     var importo = a && a.pendenze ? Math.abs(a.pendenze.importo || 0) : 0;
@@ -1265,7 +1379,15 @@
   function schedaAlunno(a) {
     var sez = el('div', { classe: 'rend' });
     sez.appendChild(el('div', { classe: 'rend-testa' }, [el('small', { testo: 'Stato fondocassa di' }), el('div', { classe: 'rend-nome', testo: a.alunno || '—' })]));
-    if (a.errore) { sez.appendChild(vuoto(a.errore + '. Scrivi alla rappresentante.')); return sez; }
+    if (a.errore) {
+      if (STATO.sessione.amministratore) { sez.appendChild(vuoto(a.errore + '.')); return sez; }
+      sez.appendChild(el('div', { classe: 'card', style: 'text-align:center;border-color:#f1b6b0;background:#fff4f2' }, [
+        el('p', { style: 'margin:0 0 6px;font-weight:800;color:var(--rosso);font-size:17px', testo: '⚠️ Alunno non trovato' }),
+        el('p', { style: 'margin:0 0 14px;color:var(--muted);font-size:14px', testo: 'Nel fondo cassa non c’è nessun alunno che si chiama “' + a.alunno + '”: forse il nome è scritto in modo diverso. Segnalalo alla rappresentante e lo sistema.' }),
+        el('a', { classe: 'btn btn-primario', style: 'background:#1f8f52', href: linkSegnala(a.alunno), target: '_blank', rel: 'noopener', testo: '💬 Segnalalo su WhatsApp' })
+      ]));
+      return sez;
+    }
     var negativo = a.saldo !== null && a.saldo < 0;
     var saldoBox = a.saldo === null || a.saldo === undefined
       ? el('div', { classe: 'rend-box spento' }, [el('span', { testo: '💶' }), el('b', { testo: 'SALDO' }), el('strong', { testo: '—' })])
@@ -1854,15 +1976,410 @@
     var n = data.getDate(), fineMese = new Date(data.getFullYear(), data.getMonth() + 1, 0).getDate();
     return d.settimane.some(function (s) { return s === 'ultimo' ? n + 7 > fineMese : Math.ceil(n / 7) === ORDINALI[s]; });
   }
-  function prossimiRicevimenti(d, quanti) {
-    var out = [], data = new Date(), adesso = data.getHours() * 60 + data.getMinutes();
+  // v10.12: vac = giorni senza lezione ({ iso: titolo }): quei ricevimenti si saltano (e si dice quali)
+  function prossimiRicevimenti(d, quanti, vac) {
+    var out = [], saltati = [], data = new Date(), adesso = data.getHours() * 60 + data.getMinutes();
     var fine = d.alle ? (+d.alle.split(':')[0] * 60 + +(d.alle.split(':')[1] || 0)) : 24 * 60;
+    vac = vac || {};
     data.setHours(12, 0, 0, 0);
-    for (var i = 0; i < 120 && out.length < quanti; i++, data.setDate(data.getDate() + 1)) {
+    for (var i = 0; i < 160 && out.length < quanti; i++, data.setDate(data.getDate() + 1)) {
       if (i === 0 && adesso >= fine) continue;                    // il ricevimento di oggi è già finito
-      if (giornoDiRicevimento(d, data)) out.push(isoDi(data));
+      if (!giornoDiRicevimento(d, data)) continue;
+      if (vac[isoDi(data)]) { saltati.push({ iso: isoDi(data), titolo: vac[isoDi(data)] }); continue; }
+      out.push(isoDi(data));
     }
+    out.saltati = saltati;
     return out;
+  }
+
+  // ====================================================================
+  //  v10.12 — AVVISI, FILE IN ARRIVO, FONDO CASSA DA VERSARE, GIORNI SENZA LEZIONE
+  // ====================================================================
+  var URL_APP = 'https://rserinelli.github.io/APP-4A/';
+  var SVG_WA = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3c.2-.6.2-1.1.2-1.3-.1-.1-.2-.2-.5-.3z"/></svg>';
+  function iconaWa(misura) {
+    var s = el('span', { 'aria-hidden': 'true', style: 'display:inline-grid;place-items:center' });
+    s.innerHTML = misura ? SVG_WA.replace(/14/g, String(misura)) : SVG_WA;
+    return s;
+  }
+  // WhatsApp con il messaggio pronto: il destinatario lo sceglie chi scrive
+  function linkWhatsapp(testo) { return 'https://wa.me/?text=' + encodeURIComponent(testo); }
+
+  // ---------- Giorni senza lezione: appuntamenti di tutto il giorno del calendario NO LEZIONI ----------
+  // { 'aaaa-mm-gg': 'Ponte dei Santi', … }. Lo script segna il calendario con vacanze: true (in mancanza, vale il nome).
+  function giorniSenzaLezione(dati) {
+    var nomi = calendariDi(dati).filter(function (c) { return c.vacanze || /no\s*lezion/i.test(c.nome || ''); }).map(function (c) { return c.nome; });
+    var mappa = {};
+    if (!nomi.length) return mappa;
+    (elencoEventi(dati) || []).forEach(function (e) {
+      if (e.ora || nomi.indexOf(e.calendario) < 0) return;
+      var d = dataDa(e.data), fine = fineEvento(e), n = 0;
+      while (isoDi(d) <= fine && n++ < 120) { if (!mappa[isoDi(d)]) mappa[isoDi(d)] = e.titolo; d.setDate(d.getDate() + 1); }
+    });
+    return mappa;
+  }
+
+  // ---------- Avvisi ----------
+  function avvisiDi(dati) { return dati && Array.isArray(dati.avvisi) ? dati.avvisi : null; }
+  function avvisoAttivo(a) { return !a.tolto && (!a.scade || a.scade >= oggiISO()); }
+  function avvisoNuovo(a) { return !!(STATO.visti && !STATO.visti.documenti[a.id]); }
+  function testoCondivisione(a) {
+    return '📢 *' + a.titolo + '*' + (a.testo ? '\n' + a.testo : '') +
+      (a.allegato ? '\n📎 ' + a.allegato.titolo + ' (lo trovi nell’app)' : '') +
+      '\n\nNell’app della 4a: ' + URL_APP + '#avviso-' + a.id;
+  }
+  // Gli avvisi mostrati in Home valgono come visti: NUOVO resta per questa visita, poi sparisce (su ogni dispositivo)
+  function segnaAvvisiVisti(lista) {
+    if (!STATO.visti) return;
+    var ids = lista.filter(function (a) { return !STATO.visti.documenti[a.id]; }).map(function (a) { return a.id; });
+    if (!ids.length) return;
+    ids.forEach(function (id) { STATO.visti.documenti[id] = 1; });
+    chiama('visto', { ids: ids, id: ids[0] }).catch(function () {});
+  }
+  function apriAllegato(al) { var f = { id: al.id, titolo: al.titolo }; segnaVisto(f); apriFile(f); }
+  function stessiDati(r) {
+    if (r && r.documenti && !r.documenti.errore) STATO.documenti = Promise.resolve(r.documenti);
+    if (r && Array.isArray(r.inArrivo)) STATO.inArrivo = Promise.resolve(r.inArrivo);
+    aggiornaContatori();
+    vaiA(STATO.pagina, true);
+  }
+  function rigaAvviso(a, conAzioni, evidenza) {
+    var piede = [];
+    if (a.allegato) piede.push(el('button', { type: 'button', classe: 'av-doc', onclick: function () { apriAllegato(a.allegato); } }, ['📎 ' + a.allegato.titolo]));
+    if (a.scade) piede.push(el('span', { testo: 'fino al ' + dataCorta(a.scade) }));
+    if (conAzioni) {
+      piede.push(el('a', { classe: 'wa', href: linkWhatsapp(testoCondivisione(a)), target: '_blank', rel: 'noopener' }, [iconaWa(), 'Condividi']));
+      piede.push(el('button', { type: 'button', classe: 'av-mini', testo: 'Togli', onclick: function () { chiediTogli(a); } }));
+    }
+    return el('div', { classe: 'av' + (evidenza ? ' evidenza' : ''), id: 'avviso-' + a.id }, [
+      el('h4', null, [a.titolo, avvisoNuovo(a) ? el('span', { classe: 'badge', testo: 'NUOVO' }) : null]),
+      a.testo ? el('p', { testo: a.testo }) : null,
+      piede.length ? el('div', { classe: 'av-piede' }, piede) : null
+    ]);
+  }
+  // Un avviso a tutto schermo (da Ultime notizie, o da un link quando non è più in Home)
+  function apriAvviso(a) {
+    var velo = el('div', { classe: 'velo-doc' });
+    var chiudi = function () { velo.remove(); };
+    var stato = avvisoAttivo(a) ? 'In Home' + (a.scade ? ' fino al ' + dataCorta(a.scade) : '') : a.tolto ? 'Tolto dalla Home' : 'Scaduto il ' + dataCorta(a.scade);
+    var admin = STATO.sessione.amministratore;
+    velo.appendChild(el('div', { classe: 'pannello ev-foglio', role: 'dialog', 'aria-label': 'Avviso' }, [
+      el('h3', { testo: '📢 ' + a.titolo }),
+      el('p', { testo: (a.creato ? 'Pubblicato il ' + dataMedia(a.creato) + ' · ' : '') + stato }),
+      a.testo ? el('p', { style: 'color:var(--ink);white-space:pre-line;font-size:15px', testo: a.testo }) : null,
+      a.allegato ? el('button', { type: 'button', classe: 'btn btn-sec', onclick: function () { chiudi(); apriAllegato(a.allegato); } }, ['📎 ' + a.allegato.titolo]) : null,
+      admin ? el('a', { classe: 'btn btn-sec', href: linkWhatsapp(testoCondivisione(a)), target: '_blank', rel: 'noopener' }, [iconaWa(16), 'Condividi su WhatsApp']) : null,
+      admin && avvisoAttivo(a) ? el('button', { type: 'button', classe: 'btn btn-sec', testo: 'Togli dalla Home', onclick: function () { chiudi(); chiediTogli(a); } }) : null,
+      el('button', { type: 'button', classe: 'link-piccolo', testo: 'Chiudi', onclick: chiudi })
+    ]));
+    velo.addEventListener('click', function (x) { if (x.target === velo) chiudi(); });
+    document.body.appendChild(velo);
+    segnaAvvisiVisti([a]);
+  }
+  function chiediTogli(a) {
+    var velo = el('div', { classe: 'velo-doc' });
+    var chiudi = function () { velo.remove(); };
+    var annulla = el('button', { type: 'button', testo: 'Annulla', onclick: chiudi });
+    var togli = el('button', { type: 'button', classe: 'elimina', testo: 'Togli' });
+    var errore = el('p', { classe: 'ev-errore nascosto', role: 'alert' });
+    togli.addEventListener('click', function () {
+      occupato(togli, true, 'Tolgo…'); annulla.disabled = true;
+      chiama('avvisoTogli', { id: a.id }).then(function (r) { chiudi(); stessiDati(r); toast('Tolto dalla Home: resta in Ultime notizie'); })
+        .catch(function (x) {
+          if (x.codice === 'SESSIONE') return;
+          errore.textContent = x.message; errore.classList.remove('nascosto');
+          occupato(togli, false, 'Togli'); annulla.disabled = false;
+        });
+    });
+    velo.appendChild(el('div', { classe: 'pannello ev-foglio', role: 'alertdialog', 'aria-label': 'Togliere l’avviso?' }, [
+      el('h3', { testo: 'Togliere “' + a.titolo + '” dalla Home?' }),
+      el('p', { testo: 'Le famiglie non lo vedono più in Home. Resta in Comunicazioni → Ultime notizie.' }),
+      errore,
+      el('div', { classe: 'ev-azioni' }, [annulla, togli])
+    ]));
+    velo.addEventListener('click', function (x) { if (x.target === velo) chiudi(); });
+    document.body.appendChild(velo);
+    setTimeout(function () { annulla.focus(); }, 30);
+  }
+
+  // ---------- Pannello della rappresentante: scrivere un avviso o mettere un file nell'app ----------
+  var CARTELLE_APP = [['comunicazioni', 'Comunicazioni'], ['moduli', 'Moduli'], ['verbali', 'Verbali'], ['archivio', 'Archivio'], ['ricevute', 'Ricevute']];
+  var MB_CARICA = 20;
+  function apriPannello(tipo, bozza) {
+    var velo = el('div', { classe: 'velo-doc' });
+    var foglio = el('div', { classe: 'pannello ev-foglio', role: 'dialog', 'aria-label': 'Avviso o file' });
+    var chiudi = function () { velo.remove(); };
+    velo.appendChild(foglio);
+    velo.addEventListener('click', function (x) { if (x.target === velo) chiudi(); });
+    velo.addEventListener('keydown', function (x) { if (x.key === 'Escape') chiudi(); });
+    document.body.appendChild(velo);
+    function disegna(t, b) {
+      foglio.innerHTML = '';
+      foglio.appendChild(el('h3', { testo: t === 'avviso' ? 'Nuovo avviso' : 'Metti un file nell’app' }));
+      foglio.appendChild(el('div', { classe: 'seg2', role: 'group', 'aria-label': 'Cosa vuoi fare' }, [
+        el('button', { type: 'button', 'aria-pressed': String(t === 'avviso'), testo: '📢 Avviso', onclick: function () { if (t !== 'avviso') disegna('avviso', {}); } }),
+        el('button', { type: 'button', 'aria-pressed': String(t === 'file'), testo: '📄 File', onclick: function () { if (t !== 'file') disegna('file', {}); } })
+      ]));
+      foglio.appendChild(t === 'avviso' ? moduloAvviso(b || {}, chiudi, foglio) : moduloFile(b || {}, chiudi, disegna));
+      foglio.scrollTop = 0;
+    }
+    disegna(tipo, bozza);
+  }
+  function moduloAvviso(b, chiudi, foglio) {
+    var fTitolo = el('input', { id: 'avTitolo', type: 'text', autocomplete: 'off', maxlength: '150' });
+    var fTesto = el('textarea', { id: 'avTesto', rows: '4', maxlength: '2000' });
+    var fScade = el('input', { id: 'avScade', type: 'date', min: oggiISO() });
+    var fWa = el('input', { id: 'avWa', type: 'checkbox' });
+    fTitolo.value = b.titolo || ''; fTesto.value = b.testo || ''; fScade.value = b.scade || ''; fWa.checked = true;
+    var allegato = b.allegato || null;
+    var rigaAllegato = el('div', { classe: 'ev-campo' });
+    function disegnaAllegato() {
+      rigaAllegato.innerHTML = '';
+      if (!allegato) { rigaAllegato.classList.add('nascosto'); return; }
+      rigaAllegato.classList.remove('nascosto');
+      rigaAllegato.appendChild(el('span', { testo: 'Documento allegato' }));
+      rigaAllegato.appendChild(el('div', { classe: 'fi-voce scelto' }, [el('span', { classe: 'tx' }, [el('strong', { testo: '📎 ' + allegato.titolo })]),
+        el('button', { type: 'button', classe: 'av-mini', testo: 'Togli', onclick: function () { allegato = null; disegnaAllegato(); } })]));
+    }
+    disegnaAllegato();
+    var errore = el('p', { classe: 'ev-errore nascosto', role: 'alert' });
+    var salva = el('button', { type: 'submit', classe: 'salva', testo: 'Pubblica' });
+    var modulo = el('form', { novalidate: 'novalidate' }, [
+      el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Titolo' }), fTitolo]),
+      el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Testo' }), fTesto]),
+      rigaAllegato,
+      el('label', { classe: 'ev-campo' }, [el('span', null, ['Sparisce dalla Home dopo il ', el('em', { testo: '(facoltativo)' })]), fScade]),
+      el('label', { classe: 'ev-spunta' }, [fWa, el('span', null, ['Dopo la pubblicazione condividi su WhatsApp',
+        el('small', { testo: 'Il messaggio contiene titolo, testo e il link che apre l’app su questo avviso: scegli tu la chat.' })])]),
+      errore,
+      el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Annulla', onclick: chiudi }), salva])
+    ]);
+    modulo.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var t = fTitolo.value.replace(/\s+/g, ' ').trim(), scade = fScade.value;
+      var msg = !t ? 'Scrivi il titolo.' : scade && scade < oggiISO() ? 'La data è già passata: l’avviso non comparirebbe in Home.' : '';
+      if (msg) { errore.textContent = msg; errore.classList.remove('nascosto'); return; }
+      errore.classList.add('nascosto');
+      occupato(salva, true, 'Pubblico…');
+      var richiesta = { titolo: t, testo: fTesto.value.trim(), scade: scade };
+      if (allegato) { richiesta.allegato = allegato.id; richiesta.allegatoTitolo = allegato.titolo; }
+      chiama('avvisoNuovo', richiesta).then(function (r) {
+        if (STATO.visti && r.id) STATO.visti.documenti[r.id] = 1;          // chi lo scrive non lo vede come NUOVO
+        stessiDati(r);
+        var a = (avvisiDi(r.documenti) || []).filter(function (x) { return x.id === r.id; })[0]
+          || { id: r.id, titolo: t, testo: richiesta.testo, allegato: allegato };
+        // il link di WhatsApp si apre con un tocco (iPhone non apre WhatsApp da solo dopo il salvataggio)
+        foglio.innerHTML = '';
+        foglio.appendChild(el('h3', { testo: 'Avviso pubblicato ✓' }));
+        foglio.appendChild(el('p', { testo: 'Lo vedono subito tutte le famiglie, in cima alla Home.' }));
+        if (fWa.checked) foglio.appendChild(el('a', { classe: 'fatto-wa', href: linkWhatsapp(testoCondivisione(a)), target: '_blank', rel: 'noopener', onclick: function () { setTimeout(chiudi, 300); } }, [iconaWa(18), 'Condividi su WhatsApp']));
+        foglio.appendChild(el('button', { type: 'button', classe: 'link-piccolo', testo: 'Chiudi', onclick: chiudi }));
+      }).catch(function (x) {
+        if (x.codice === 'SESSIONE') return;
+        errore.textContent = x.codice === 'AZIONE' || /non riuscita/i.test(x.message) ? 'Lo script non sa ancora pubblicare avvisi: incolla Codice.gs 10.9 e fai Nuova versione.' : x.message;
+        errore.classList.remove('nascosto');
+        occupato(salva, false, 'Pubblica');
+      });
+    });
+    setTimeout(function () { (fTitolo.value ? fTesto : fTitolo).focus(); }, 30);
+    return modulo;
+  }
+  function nomeSenzaEstensione(n) { return String(n || '').replace(/\.[a-z0-9]{2,5}$/i, ''); }
+  function estensione(n) { var m = String(n || '').match(/\.([a-z0-9]{2,5})$/i); return m ? '.' + m[1].toLowerCase() : ''; }
+  // "2026-10-08 - Invito.pdf" → { data, titolo }; "IMG_4127.jpeg" → { titolo: "IMG 4127" }
+  function leggiNomeFile(n) {
+    var base = nomeSenzaEstensione(n), m = base.match(/^(\d{4})[-_.](\d{1,2})[-_.](\d{1,2})\s*[-–—_]?\s*(.*)$/);
+    if (m) return { data: m[1] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[3]).slice(-2), titolo: (m[4] || '').replace(/_/g, ' ').trim() };
+    return { titolo: base.replace(/[_]+/g, ' ').replace(/\s+/g, ' ').trim() };
+  }
+  function misuraFile(b) { return !b ? '' : b < 1024 * 1024 ? Math.max(1, Math.round(b / 1024)) + ' KB' : (b / 1024 / 1024).toFixed(1).replace('.', ',') + ' MB'; }
+  function quandoBreve(s) {          // "2026-10-15T10:42" → "15 ott, 10:42"
+    if (!s) return '';
+    var p = s.split('T'), oggi = oggiISO();
+    return (p[0] === oggi ? 'oggi' : dataCorta(p[0])) + (p[1] ? ' alle ' + p[1] : '');
+  }
+  function moduloFile(b, chiudi, disegna) {
+    var sorgente = null, sezione = b.sezione || 'comunicazioni', titoloToccato = false;
+    var fData = el('input', { id: 'fiData', type: 'date' }), fTitolo = el('input', { id: 'fiTitolo', type: 'text', autocomplete: 'off', maxlength: '120' });
+    var fAvviso = el('input', { id: 'fiAvviso', type: 'checkbox' });
+    fData.value = oggiISO();
+    fTitolo.addEventListener('input', function () { titoloToccato = true; aggiornaNome(); });
+    fData.addEventListener('change', aggiornaNome);
+    var lista = el('div', { classe: 'fi-lista' }, [el('div', { classe: 'stato', testo: 'Guardo nella cartella IN ARRIVO…' })]);
+    var input = el('input', { id: 'fiScegli', type: 'file', accept: '.pdf,image/*,.doc,.docx,.xls,.xlsx,.ppt,.pptx' });
+    var etichettaScegli = el('span', { testo: '📎 Scegli dal telefono o dal computer' });
+    var scegli = el('label', { classe: 'fi-carica' }, [input, etichettaScegli]);
+    var chips = el('div', { classe: 'fi-chips', role: 'group', 'aria-label': 'Cartella' });
+    var nome = el('div', { classe: 'fi-nome' });
+    var errore = el('p', { classe: 'ev-errore nascosto', role: 'alert' });
+    var salva = el('button', { type: 'submit', classe: 'salva' });
+    function nomeCartella() { return CARTELLE_APP.filter(function (c) { return c[0] === sezione; })[0][1]; }
+    function aggiornaNome() {
+      var t = fTitolo.value.replace(/[\\\/:*?"<>|#%]+/g, ' ').replace(/\s+/g, ' ').trim();
+      var ext = sorgente ? estensione(sorgente.nome) : '';
+      nome.innerHTML = '';
+      nome.appendChild(el('span', { testo: 'Nome su Drive' }));
+      nome.appendChild(document.createTextNode(sorgente && t && fData.value ? fData.value + ' - ' + t + ext : 'scegli il file e scrivi il titolo'));
+      salva.textContent = 'Metti in ' + nomeCartella();
+    }
+    function disegnaChips() {
+      chips.innerHTML = '';
+      CARTELLE_APP.forEach(function (c) {
+        chips.appendChild(el('button', { type: 'button', 'aria-pressed': String(c[0] === sezione), testo: c[1], onclick: function () { sezione = c[0]; disegnaChips(); aggiornaNome(); } }));
+      });
+    }
+    function scegliSorgente(s) {
+      sorgente = s;
+      Array.prototype.forEach.call(lista.querySelectorAll('.fi-voce'), function (v) { v.classList.toggle('scelto', !!(s && s.tipo === 'arrivo' && v.getAttribute('data-id') === s.id)); });
+      if (!s || s.tipo !== 'file') { input.value = ''; etichettaScegli.textContent = '📎 Scegli dal telefono o dal computer'; scegli.classList.remove('scelto'); }
+      if (s) {
+        var letto = leggiNomeFile(s.nome);
+        if (letto.data) fData.value = letto.data;
+        if (!titoloToccato) fTitolo.value = letto.titolo;
+      }
+      aggiornaNome();
+    }
+    input.addEventListener('change', function () {
+      var f = input.files && input.files[0];
+      if (!f) return;
+      Array.prototype.forEach.call(lista.querySelectorAll('input[type=radio]'), function (r) { r.checked = false; });
+      scegliSorgente({ tipo: 'file', nome: f.name, file: f });
+      etichettaScegli.textContent = '📎 ' + f.name + ' · ' + misuraFile(f.size);
+    });
+    (STATO.inArrivo || Promise.resolve(null)).then(function (arrivo) {
+      lista.innerHTML = '';
+      arrivo = arrivo || [];
+      if (!arrivo.length) { lista.appendChild(el('div', { classe: 'stato', testo: 'La cartella IN ARRIVO è vuota. Da un documento sul telefono: Condividi → Drive → IN ARRIVO.' })); return; }
+      arrivo.forEach(function (f, i) {
+        var r = el('input', { type: 'radio', name: 'fiArrivo' });
+        r.addEventListener('change', function () { if (r.checked) scegliSorgente({ tipo: 'arrivo', id: f.id, nome: f.nome }); });
+        lista.appendChild(el('label', { classe: 'fi-voce', 'data-id': f.id }, [r, el('span', { classe: 'tx' }, [el('strong', { testo: f.nome }),
+          el('small', { testo: [quandoBreve(f.quando), misuraFile(f.dimensione)].filter(Boolean).join(' · ') })])]));
+        if (i === 0 && !sorgente) { r.checked = true; scegliSorgente({ tipo: 'arrivo', id: f.id, nome: f.nome }); }
+      });
+    });
+    disegnaChips(); aggiornaNome();
+    var modulo = el('form', { novalidate: 'novalidate' }, [
+      el('div', { classe: 'ev-campo' }, [el('span', { testo: 'Da IN ARRIVO' }), lista]),
+      el('div', { classe: 'fi-sep', testo: 'oppure' }),
+      el('div', { classe: 'ev-campo' }, [scegli]),
+      el('div', { classe: 'ev-campo' }, [el('span', { testo: 'Cartella' }), chips]),
+      el('div', { classe: 'ev-due', style: 'grid-template-columns:1fr 1.5fr' }, [
+        el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Data' }), fData]),
+        el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Titolo' }), fTitolo])
+      ]),
+      nome,
+      el('label', { classe: 'ev-spunta' }, [fAvviso, el('span', null, ['Scrivi anche un avviso collegato',
+        el('small', { testo: 'Dopo si apre il modulo dell’avviso, con il file già allegato.' })])]),
+      errore,
+      el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Annulla', onclick: chiudi }), salva])
+    ]);
+    function sbaglio(msg) { errore.textContent = msg; errore.classList.remove('nascosto'); occupato(salva, false, 'Metti in ' + nomeCartella()); }
+    modulo.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var t = fTitolo.value.replace(/\s+/g, ' ').trim();
+      var msg = !sorgente ? 'Scegli un file da IN ARRIVO o dal telefono.' : !fData.value ? 'Scegli la data.' : !t ? 'Scrivi il titolo.'
+        : sorgente.tipo === 'file' && sorgente.file.size > MB_CARICA * 1024 * 1024 ? 'Il file è troppo grande (al massimo ' + MB_CARICA + ' MB).' : '';
+      if (msg) { errore.textContent = msg; errore.classList.remove('nascosto'); return; }
+      errore.classList.add('nascosto');
+      var base = { sezione: sezione, data: fData.value, titolo: t };
+      var invio;
+      if (sorgente.tipo === 'arrivo') {
+        occupato(salva, true, 'Sposto…');
+        invio = chiama('fileSposta', Object.assign({ id: sorgente.id }, base));
+      } else {
+        occupato(salva, true, 'Carico…');
+        invio = new Promise(function (ok, no) {
+          var lettore = new FileReader();
+          lettore.onload = function () { ok(String(lettore.result).replace(/^data:[^,]*,/, '')); };
+          lettore.onerror = function () { no(new Error('Non riesco a leggere il file. Riprova.')); };
+          lettore.readAsDataURL(sorgente.file);
+        }).then(function (dati) {
+          return chiama('fileCarica', Object.assign({ nome: sorgente.nome, mime: sorgente.file.type || '', dati: dati }, base));
+        });
+      }
+      invio.then(function (r) {
+        if (STATO.visti && r.file) STATO.visti.documenti[r.file.id] = 1;
+        stessiDati(r);
+        toast('Messo in ' + nomeCartella() + ': le famiglie lo vedono subito');
+        if (fAvviso.checked && r.file) disegna('avviso', { titolo: t, allegato: { id: r.file.id, titolo: t } });
+        else chiudi();
+      }).catch(function (x) {
+        if (x.codice === 'SESSIONE') return;
+        sbaglio(x.codice === 'AZIONE' ? 'Lo script non sa ancora spostare i file: incolla Codice.gs 10.9 e fai Nuova versione.' : x.message);
+      });
+    });
+    return modulo;
+  }
+
+  // ---------- Gestione accessi: fondo cassa da versare con promemoria su WhatsApp ----------
+  function frasePromemoria(g, a) {
+    var p = g.promemoria || {}, passata = !a.scadenza || a.scadenza < oggiISO();
+    var t = (passata ? p.dopo : p.prima) || p.prima || p.dopo || '';
+    var imp = (a.importo || 0).toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return t.replace(/\{alunno\}/g, a.alunno).replace(/\{importo\}/g, imp)
+      .replace(/\{scadenza\}/g, a.scadenza ? dataMedia(a.scadenza) : '').replace(/\{link\}/g, (g.urlApp || URL_APP) + '#coordinate');
+  }
+  // Ultime notizie: un avviso nello storico (si apre a tutto schermo)
+  function rigaAvvisoStorico(a) {
+    var p = a.creato ? a.creato.split('-') : null;
+    var stato = avvisoAttivo(a) ? 'in Home' : a.tolto ? 'tolto dalla Home' : 'scaduto';
+    var titolo = el('strong', { testo: a.titolo });
+    if (avvisoNuovo(a)) titolo.appendChild(el('span', { classe: 'badge', testo: 'NUOVO' }));
+    return el('button', { type: 'button', classe: 'doc', onclick: function () { apriAvviso(a); } }, [
+      p ? el('span', { classe: 'data' }, [el('b', { testo: String(+p[2]) }), el('span', { testo: MESI[+p[1] - 1].slice(0, 3) })]) : el('span', { classe: 'data' }, [el('b', { testo: '📢' })]),
+      el('span', { classe: 'tx' }, [titolo, el('small', null, [el('span', { classe: 'etichetta', testo: 'Avviso' }), '📢 ' + stato + (a.allegato ? ' · 📎 documento' : '')])]),
+      el('span', { classe: 'freccia', testo: '›' })
+    ]);
+  }
+  function cardDaVersare(g) {
+    var card = el('div', { classe: 'card' });
+    function disegna() {
+      card.innerHTML = '';
+      var lista = g.daVersare, oggi = oggiISO();
+      var scaduti = lista.filter(function (a) { return a.scadenza && a.scadenza < oggi; });
+      if (!lista.length) {
+        card.appendChild(el('h3', { classe: 'sez', style: 'margin-top:0', testo: '💶 Fondo cassa da versare' }));
+        card.appendChild(el('p', { classe: 'stato', style: 'margin:0', testo: 'Nessun fondo cassa da versare 🎉' }));
+        return;
+      }
+      var totale = lista.reduce(function (t, a) { return t + (a.importo || 0); }, 0);
+      card.appendChild(el('div', { classe: 'dv-riep' }, [el('span', { classe: 'grande', testo: euro(totale) }),
+        el('span', { classe: 'tx' }, [el('strong', { testo: 'Fondo cassa da versare' }),
+          lista.length + (lista.length === 1 ? ' alunno' : ' alunni') + (scaduti.length ? ' · ' + scaduti.length + ' con la scadenza passata' : '')])]));
+      var solo = !!STATO.dvScaduti && scaduti.length;
+      card.appendChild(el('div', { classe: 'filtri', style: 'margin:12px 0 4px' }, [
+        el('button', { type: 'button', classe: 'cal-chip' + (solo ? '' : ' attivo'), testo: 'Tutti (' + lista.length + ')', onclick: function () { STATO.dvScaduti = false; disegna(); } }),
+        scaduti.length ? el('button', { type: 'button', classe: 'cal-chip' + (solo ? ' attivo' : ''), testo: 'Scaduti (' + scaduti.length + ')', onclick: function () { STATO.dvScaduti = true; disegna(); } }) : null
+      ]));
+      var righe = el('div');
+      (solo ? scaduti : lista).forEach(function (a) {
+        var passata = a.scadenza && a.scadenza < oggi;
+        var blocco = el('div', { classe: 'dv-al' }, [el('div', { classe: 'dv-testa' }, [
+          el('span', null, [el('span', { classe: 'dv-nome', testo: a.alunno }), el('br'),
+            a.scadenza ? el('span', { classe: 'dv-scad' + (passata ? ' passata' : ''), testo: (passata ? 'scaduta il ' : 'entro il ') + dataCorta(a.scadenza) }) : null]),
+          el('span', { classe: 'dv-imp', testo: euro(a.importo || 0) })])]);
+        if (!a.genitori.length) blocco.appendChild(el('div', { classe: 'dv-gen' }, [el('span', { classe: 'em' }, ['Nessuna email nel foglio accessi'])]));
+        var frase = frasePromemoria(g, a);
+        a.genitori.forEach(function (p) {
+          var nota = el('small', { classe: p.ricordato ? 'ok' : '', testo: p.ricordato ? '✓ Ricordato il ' + dataCorta(isoDi(new Date(p.ricordato))) : 'non ancora ricordato' });
+          blocco.appendChild(el('div', { classe: 'dv-gen' }, [
+            el('span', { classe: 'em' }, [p.email, nota]),
+            frase ? el('a', { classe: 'wa', href: linkWhatsapp(frase), target: '_blank', rel: 'noopener', onclick: function () {
+              chiama('ricordato', { alunno: a.alunno, email: p.email, scadenza: a.scadenza }).then(function (r) {
+                p.ricordato = r.ricordato || new Date().toISOString();
+                nota.className = 'ok'; nota.textContent = '✓ Ricordato il ' + dataCorta(isoDi(new Date(p.ricordato)));
+              }).catch(function () {});
+            } }, [iconaWa(), 'Ricorda su WhatsApp']) : null
+          ]));
+        });
+        righe.appendChild(blocco);
+      });
+      card.appendChild(righe);
+      card.appendChild(el('p', { classe: 'classe-nota', testo: 'WhatsApp si apre con il messaggio pronto e il link alle Coordinate: scegli tu il contatto. Importi e scadenze arrivano dal master.' }));
+    }
+    disegna();
+    return card;
   }
 
   var RENDER = {
@@ -1877,6 +2394,14 @@
       var fine = righe.reduce(function (m, r) { return Math.max(m, minuti(r.alle)); }, 0);
       var giornoUtile = oggi > 4 ? 0 : (ora >= fine ? (oggi + 1) % 5 : oggi);
       var scelta = STATO.orarioGiorno != null ? STATO.orarioGiorno : giornoUtile;
+      // v10.12: ogni linguetta è il prossimo giorno con quel nome (oggi compreso); nel fine settimana la settimana dopo
+      var lunedi = new Date(); lunedi.setHours(12, 0, 0, 0); lunedi.setDate(lunedi.getDate() - oggi + (oggi > 4 ? 7 : 0));
+      function dataDi(g) { var d = new Date(lunedi); d.setDate(d.getDate() + g + (oggi <= 4 && g < oggi ? 7 : 0)); return d; }
+      var vac = {};
+      STATO.documenti.then(function (dati) {
+        vac = giorniSenzaLezione(dati);
+        if (Object.keys(vac).length && box.isConnected) apri(STATO.orarioGiorno != null ? STATO.orarioGiorno : scelta);
+      });
 
       var box = el('div');
       var barra = el('div', { classe: 'schede-tab', role: 'tablist' });
@@ -1893,8 +2418,15 @@
       function inCorso(r, g) { return g === oggi && ora >= minuti(r.dalle) && ora < minuti(r.alle); }
 
       function giorno(g) {
-        var etichetta = g === oggi && oggi < 5 ? 'Oggi' : g === giornoUtile && g !== oggi ? (oggi > 4 ? 'Prossima settimana' : 'Domani') : '';
-        corpo.appendChild(el('h3', { classe: 'or-titolo' }, [GIORNI[g], etichetta ? el('small', { testo: ' · ' + etichetta }) : null]));
+        var d = dataDi(g), quale = Math.round((dataDa(isoDi(d)) - dataDa(oggiISO())) / 86400000);
+        var etichetta = quale === 0 ? 'Oggi' : quale === 1 ? 'Domani' : '';
+        corpo.appendChild(el('h3', { classe: 'or-titolo' }, [GIORNI[g], el('small', { testo: ' · ' + (etichetta ? etichetta + ', ' : '') + d.getDate() + ' ' + MESI[d.getMonth()] })]));
+        var vacanza = vac[isoDi(d)];
+        if (vacanza) {
+          corpo.appendChild(el('div', { classe: 'or-vacanza' }, [el('span', { testo: '🏖️' }),
+            el('div', null, [el('strong', { testo: (etichetta ? etichetta + ' niente lezione' : 'Niente lezione') }), el('small', { testo: vacanza })])]));
+          return;
+        }
         var lista = el('div', { classe: 'or-lista' });
         righe.forEach(function (r) {
           if (r.pausa) { lista.appendChild(el('div', { classe: 'or-pausa' + (inCorso(r, g) ? ' adesso' : ''), testo: r.pausa + ' ' + r.dalle + '–' + r.alle })); return; }
@@ -1912,14 +2444,15 @@
       function settimana() {
         var t = el('table', { classe: 'or-sett' });
         t.appendChild(el('thead', null, [el('tr', null, [el('th')].concat(GIORNI.map(function (g, i) {
-          return el('th', { classe: i === oggi ? 'oggi' : '', testo: g.slice(0, 3) });
+          var v = vac[isoDi(dataDi(i))];
+          return el('th', { classe: (i === oggi ? 'oggi' : '') + (v ? ' vacanza' : ''), title: v || null, testo: (v ? '🏖️ ' : '') + g.slice(0, 3) });
         })))]));
         var tb = el('tbody');
         righe.forEach(function (r) {
           if (r.pausa) { tb.appendChild(el('tr', null, [el('td'), el('td', { classe: 'pausa', colspan: '5', testo: r.pausa + ' ' + r.dalle + '–' + r.alle })])); return; }
           tb.appendChild(el('tr', null, [el('td', { classe: 'h' }, [el('b', { testo: r.dalle }), el('span', { testo: r.alle })])].concat(r.materie.map(function (nome, i) {
             var m = info(nome);
-            return el('td', { classe: i === oggi && inCorso(r, i) ? 'oggi' : '' }, [colora(el('div', { classe: 'or-cella', title: nome }, [
+            return el('td', { classe: (i === oggi && inCorso(r, i) ? 'oggi' : '') + (vac[isoDi(dataDi(i))] ? ' vacanza' : '') }, [colora(el('div', { classe: 'or-cella', title: nome }, [
               el('span', { classe: 'em', testo: m.icona }), el('span', { classe: 'lungo', testo: nome }), el('span', { classe: 'corto', testo: m.breve || nome })
             ]), m.colore)]);
           }))));
@@ -1949,6 +2482,36 @@
       return box;
     },
     // ---------- Home compatta ----------
+    // v10.12: riquadro Avvisi in cima alla Home (i genitori lo vedono solo se ci sono avvisi; la rappresentante sempre)
+    avvisi: function (b) {
+      var admin = STATO.sessione.amministratore;
+      var card = el('div', { classe: 'hcard avvisi-card nascosto' });
+      Promise.all([STATO.documenti, STATO.inArrivo || Promise.resolve(null)]).then(function (r) {
+        var tutti = avvisiDi(r[0]), arrivo = r[1];
+        var cerca = STATO.avvisoDaMostrare; STATO.avvisoDaMostrare = null;
+        if (!tutti) return;                                                    // script non ancora aggiornato
+        var attivi = tutti.filter(avvisoAttivo);
+        var cercato = cerca ? tutti.filter(function (a) { return a.id === cerca; })[0] : null;
+        if (cercato && !avvisoAttivo(cercato)) apriAvviso(cercato);            // link a un avviso che non è più in Home
+        if (!attivi.length && !admin) return;
+        card.classList.remove('nascosto');
+        card.appendChild(el('div', { classe: 'hcard-testa' }, [el('span', { testo: '📢 ' + (b.titolo || 'Avvisi') }),
+          admin ? el('button', { type: 'button', classe: 'av-piu', testo: '+ Avviso / File', onclick: function () { apriPannello('avviso'); } }) : null]));
+        if (admin && arrivo && arrivo.length) {
+          card.appendChild(el('button', { type: 'button', classe: 'av-arrivo', onclick: function () { apriPannello('file'); } }, [
+            el('span', { classe: 'n', testo: String(arrivo.length) }),
+            el('span', { classe: 'tx' }, ['File in arrivo',
+              el('small', { testo: 'Condivisi su Drive nella cartella IN ARRIVO: scegli dove metterli' })]),
+            el('span', { 'aria-hidden': 'true', testo: '›' })]));
+        }
+        attivi.forEach(function (a) { card.appendChild(rigaAvviso(a, admin, cercato === a)); });
+        if (!attivi.length) card.appendChild(el('p', { classe: 'av-vuoto', testo: 'Nessun avviso in Home: le famiglie non vedono questo riquadro.' }));
+        if (tutti.length) card.appendChild(el('button', { type: 'button', classe: 'av-tutti', testo: 'Tutti gli avvisi →', onclick: function () { apriScheda('comunicazioni', 0); } }));
+        segnaAvvisiVisti(attivi);
+        if (cercato && avvisoAttivo(cercato)) setTimeout(function () { var n = $('avviso-' + cercato.id); if (n) n.scrollIntoView({ block: 'center' }); }, 50);
+      });
+      return card;
+    },
     prossimi: function (b) {
       var giorni = b.giorni || 7;
       var card = el('div', { classe: 'hcard' }, [
@@ -1980,6 +2543,24 @@
       STATO.miei.then(function (dati) {
         box.innerHTML = '';
         var alunni = alunniCassa(dati);
+        // 10.13: profilo docente = riquadro "Profilo docente"; un riquadro rosso per ogni nome che non c'è nel master
+        var mancanti = dati && dati.cassa && Array.isArray(dati.cassa.alunni) ? dati.cassa.alunni.filter(function (a) { return a.errore && !senzaAlunno(a.alunno); }) : [];
+        if (!STATO.sessione.amministratore) mancanti.forEach(function (a) {
+          box.appendChild(el('a', { classe: 'hcard cassa dapagare', href: linkSegnala(a.alunno), target: '_blank', rel: 'noopener' }, [
+            el('span', { classe: 'cassa-ic', testo: '⚠️' }),
+            el('span', { classe: 'cassa-tx' }, [el('span', { classe: 'cassa-nome', testo: a.alunno }), el('strong', { testo: 'Alunno non trovato' }),
+              el('small', { testo: 'Segnalalo alla rappresentante' })]),
+            el('span', { classe: 'cassa-az', style: 'background:#1f8f52', testo: '💬' })]));
+        });
+        if (soloSenzaAlunno()) {
+          box.appendChild(el('button', { classe: 'hcard cassa neutro', onclick: function () { apriScheda('contabilita', SCHEDA_RENDICONTO); } }, [
+            el('span', { classe: 'cassa-ic', testo: '👩‍🏫' }),
+            el('span', { classe: 'cassa-tx' }, [el('span', { classe: 'cassa-nome', testo: 'Profilo docente' }),
+              el('strong', { testo: 'Nessun alunno assegnato' }), el('small', { testo: 'Rendiconto di classe e ricevute' })]),
+            el('span', { classe: 'cassa-az', testo: '›' })]));
+          return;
+        }
+        if (!alunni.length && mancanti.length) return;
         if (!alunni.length) { if (STATO.sessione.amministratore) return; alunni = [null]; }
         alunni.forEach(function (a) {
           var stato, titolo, sotto, az, scheda, link = linkRevolut(a);
@@ -2013,6 +2594,14 @@
     rendiconto: function () {
       if (STATO.sessione.amministratore) return selettoreAlunno();
       var box = el('div');
+      if (soloSenzaAlunno()) {
+        box.appendChild(el('div', { classe: 'rend' }, [
+          el('div', { classe: 'rend-testa' }, [el('small', { testo: 'Stato fondocassa di' }), el('div', { classe: 'rend-nome', testo: 'Profilo docente' })]),
+          el('div', { classe: 'vuoto' }, [el('strong', { style: 'display:block;color:var(--ink);margin-bottom:4px', testo: 'Nessun bambino assegnato' }),
+            'Al profilo docente non è assegnato nessun fondo cassa personale. Il rendiconto di classe e le ricevute sono nella scheda accanto.'])
+        ]));
+        return box;
+      }
       box.appendChild(attesa('Leggo il tuo fondo cassa…'));
       STATO.miei.then(function (dati) {
         box.innerHTML = '';
@@ -2158,12 +2747,20 @@
     // Ricevimento docenti: giorno, orario, prossime date calcolate e pulsante per scrivere all'insegnante
     ricevimento: function (b) {
       var box = el('div');
+      // v10.12: si disegna subito, poi di nuovo quando arrivano i giorni senza lezione dal calendario
+      STATO.documenti.then(function (dati) { var v = giorniSenzaLezione(dati); if (Object.keys(v).length) disegna(v); });
+      disegna({});
+      return box;
+      function disegna(vac) {
+      box.innerHTML = '';
       if (b.nota) box.appendChild(el('div', { classe: 'ric-nota' }, [el('span', { testo: '✉️' }), el('span', { testo: b.nota })]));
       var alunni = (STATO.sessione.alunni || []).join(', ');
       var oggiIso = oggiISO();
       (b.docenti || []).forEach(function (d) {
-        var date = prossimiRicevimenti(d, 2);
+        var date = prossimiRicevimenti(d, 2, vac);
         var oggi = date[0] === oggiIso;
+        // con le settimane (primo, ultimo…) si dice quale ricevimento salta per la vacanza
+        var saltato = d.settimane && date.saltati.length && (!date[1] || date.saltati[0].iso < date[1]) ? date.saltati[0] : null;
         var pross = null;
         if (date.length && d.settimane) {
           pross = el('div', { classe: 'ric-pross' }, [
@@ -2175,6 +2772,7 @@
         } else if (oggi) {
           pross = el('div', { classe: 'ric-pross' }, [el('span', { classe: 'ric-oggi', testo: 'OGGI' }), d.alle ? 'fino alle ' + d.alle : '']);
         }
+        alunni = (STATO.sessione.alunni || []).filter(function (n) { return !senzaAlunno(n); }).join(', ');
         var oggetto = 'Richiesta colloquio' + (alunni ? ' - ' + alunni : '') + ' (4a primaria)';
         var mail = d.email ? el('a', { classe: 'ric-mail', href: 'mailto:' + d.email + '?subject=' + encodeURIComponent(oggetto) }, [
           el('span', { testo: '✉️ Scrivi per il colloquio' })]) : null;
@@ -2185,13 +2783,14 @@
             el('span', { classe: 'ric-nome', testo: d.nome }),
             el('div', { classe: 'ric-quando' }, [d.quando || '', d.dalle ? ' · ' : '', d.dalle ? el('b', { testo: d.dalle + '–' + d.alle }) : null]),
             pross,
+            saltato ? el('div', { classe: 'ric-vacanza', testo: '🏖️ Il ' + dataLunga(saltato.iso) + ' non c’è: ' + saltato.titolo }) : null,
             mail,
             d.email ? el('small', { classe: 'ric-email', testo: d.email }) : null
           ])
         ]));
       });
       if (b.piede) box.appendChild(el('p', { classe: 'or-nota', testo: b.piede }));
-      return box;
+      }
     },
     // Listino prezzi: gruppi di voci con nome, dettaglio e prezzo
     listino: function (b) {
@@ -2276,24 +2875,20 @@
       var box = el('div', { classe: 'gestione' });
       var filtro = '', soloSenza = false;
       box.appendChild(attesa('Carico gli accessi…'));
-      function quando(iso) {
-        if (!iso) return '';
-        var d = new Date(iso);
-        return d.getDate() + ' ' + MESI[d.getMonth()].slice(0, 3) + ', ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
-      }
       function disegna(g) {
         box.innerHTML = '';
         var tutte = [];
         g.alunni.forEach(function (a) { a.persone.forEach(function (p) { if (!tutte.some(function (x) { return x.email === p.email; })) tutte.push(p); }); });
         var attive = tutte.filter(function (p) { return p.attiva; }).length;
-        var famiglieOk = g.alunni.filter(function (a) { return a.persone.some(function (p) { return p.attiva; }); }).length;
+        var veri = g.alunni.filter(function (a) { return !a.docente && !senzaAlunno(a.alunno); });   // 10.13: senza il profilo docente
+        var famiglieOk = veri.filter(function (a) { return a.persone.some(function (p) { return p.attiva; }); }).length;
         var senza = tutte.filter(function (p) { return !p.attiva; }).map(function (p) { return p.email; });
 
         var riep = el('div', { classe: 'card' }, [
           el('div', { classe: 'riepilogo' }, [
             el('span', { classe: 'grande', testo: attive + '/' + tutte.length }),
             el('div', { classe: 'tx' }, [el('strong', { testo: 'genitori hanno creato la password' }),
-              el('small', { style: 'display:block;color:var(--muted)', testo: famiglieOk + ' alunni su ' + g.alunni.length + ' hanno almeno un genitore attivo' })])
+              el('small', { style: 'display:block;color:var(--muted)', testo: famiglieOk + ' alunni su ' + veri.length + ' hanno almeno un genitore attivo' })])
           ]),
           el('div', { classe: 'barra-prog' }, [el('i', { style: 'width:' + (tutte.length ? Math.round(attive / tutte.length * 100) : 0) + '%' })]),
           el('div', { classe: 'azioni-riga' }, [
@@ -2303,26 +2898,28 @@
           el('small', { style: 'display:block;color:var(--muted);margin-top:10px', testo: 'Nel foglio AREA_RISERVATA_accessi: colonna A alunno, colonna B email. Le modifiche valgono entro ' + (g.minutiCache === 1 ? 'un minuto' : (g.minutiCache || 1) + ' minuti') + '.' })
         ]);
         box.appendChild(riep);
-        var sez = (g.sezioni || []).filter(function (x) { return x.visite > 0; });
-        if (sez.length) {
-          var max = sez[0].visite, barre = el('div', { classe: 'barre' });
-          (g.sezioni || []).forEach(function (x) {
-            barre.appendChild(el('div', { classe: 'barre-riga' + (x.visite ? '' : ' zero') }, [
-              el('span', { classe: 'nm', testo: x.sezione }),
-              el('span', { classe: 'tr' }, [el('i', { style: 'width:' + Math.round(x.visite / max * 100) + '%' })]),
-              el('span', { classe: 'vl', testo: String(x.visite) })
+        // v10.12: fondo cassa da versare, con il promemoria su WhatsApp per ogni genitore
+        if (Array.isArray(g.daVersare)) box.appendChild(cardDaVersare(g));
+        // classifica mandata dallo script con i suoi testi (Contenuti.gs → TESTI_GESTIONE)
+        var cl = g.classifica, voci = cl && Array.isArray(cl.voci) ? cl.voci : [];
+        if (voci.some(function (x) { return x.valore > 0; })) {
+          var max = Math.max.apply(null, voci.map(function (x) { return x.valore; })), barre = el('div', { classe: 'barre' });
+          voci.forEach(function (x) {
+            barre.appendChild(el('div', { classe: 'barre-riga' + (x.valore ? '' : ' zero') }, [
+              el('span', { classe: 'nm', testo: x.nome }),
+              el('span', { classe: 'tr' }, [el('i', { style: 'width:' + Math.round(x.valore / max * 100) + '%' })]),
+              el('span', { classe: 'vl', testo: String(x.valore) })
             ]));
           });
-          var tot = (g.sezioni || []).reduce(function (t, x) { return t + x.visite; }, 0);
-          var accTot = tutte.reduce(function (t, p) { return t + (p.accessi || 0); }, 0);
           box.appendChild(el('div', { classe: 'card' }, [
-            el('h3', { classe: 'sez', style: 'margin-top:0', testo: 'Sezioni più aperte dalla classe' }),
+            el('h3', { classe: 'sez', style: 'margin-top:0', testo: cl.titolo || '' }),
             barre,
-            el('p', { classe: 'classe-nota', testo: accTot + ' accessi e ' + tot + ' visite alle sezioni in tutto (la Home non si conta; riaprire l’app entro 30 minuti non conta come nuovo accesso).' })
+            cl.nota ? el('p', { classe: 'classe-nota', testo: cl.nota }) : null
           ]));
         }
         if (g.senzaEmail && g.senzaEmail.length) box.appendChild(el('div', { classe: 'avviso', testo: '⚠️ Alunni del fondo cassa senza nessuna email nel foglio accessi: ' + g.senzaEmail.join(', ') }));
-        if (g.nonNelMaster && g.nonNelMaster.length) box.appendChild(el('div', { classe: 'avviso', testo: '⚠️ Nel foglio accessi ma non trovati nel fondo cassa (controlla come sono scritti): ' + g.nonNelMaster.join(', ') }));
+        var nonTrovati = (g.nonNelMaster || []).filter(function (n) { return !senzaAlunno(n) && n !== 'Profilo docente'; });   // 10.13: i profili docente non sono un errore
+        if (nonTrovati.length) box.appendChild(el('div', { classe: 'avviso', testo: '⚠️ Nel foglio accessi ma non trovati nel fondo cassa (controlla come sono scritti): ' + nonTrovati.join(', ') }));
 
         var ca = el('div', { classe: 'card' });
         var cerca = el('input', { classe: 'cerca', type: 'search', placeholder: 'Cerca per alunno o email…', 'aria-label': 'Cerca negli accessi', value: filtro });
@@ -2335,11 +2932,7 @@
         ca.appendChild(elenco);
         function rigaPersona(p, nome) {
           var stato = p.attiva ? el('span', { classe: 'stato-pass si', testo: '✓ password creata' }) : el('span', { classe: 'stato-pass no', testo: 'non ancora entrato' });
-          var info = [];
-          if (p.accessi) info.push(p.accessi + (p.accessi === 1 ? ' accesso' : ' accessi'));
-          if (p.ultimo) info.push('ultimo ' + quando(p.ultimo));
-          if (p.preferita) info.push('apre di più: ' + p.preferita);
-          info = info.join(' · ');
+          var info = p.info || '';
           return el('div', { classe: 'riga' }, [
             el('div', { classe: 'tx' }, [el('strong', { testo: p.email }), el('small', null, [stato, info])]),
             p.attiva && p.email !== STATO.sessione.email ? el('button', { classe: 'btn-no', testo: 'Reimposta', onclick: function () {
@@ -2354,7 +2947,7 @@
             var sue = a.persone.filter(function (p) { return (!q || (a.alunno + ' ' + p.email).toLowerCase().indexOf(q) >= 0) && (!soloSenza || !p.attiva); });
             if (!sue.length) return;
             trovati++;
-            elenco.appendChild(el('div', { classe: 'gruppo', testo: a.alunno }));
+            elenco.appendChild(el('div', { classe: 'gruppo', testo: a.docente ? '👩‍🏫 Profilo docente · nessun alunno' : a.alunno }));
             sue.forEach(function (p) { elenco.appendChild(rigaPersona(p, a.alunno)); });
           });
           if (!q && !soloSenza && g.amministratori.length) {
@@ -2479,11 +3072,19 @@
         corpo.innerHTML = '';
         var tutti = [];
         Object.keys(SEZIONI_NOVITA).forEach(function (k) {
-          (elencoSezione(dati, k) || []).forEach(function (f) { if (f.data) tutti.push({ f: f, et: SEZIONI_NOVITA[k] }); });
+          (elencoSezione(dati, k) || []).forEach(function (f) { if (f.data) tutti.push({ f: f, et: SEZIONI_NOVITA[k], data: f.data }); });
         });
-        tutti.sort(function (a, b) { return a.f.data < b.f.data ? 1 : a.f.data > b.f.data ? -1 : 0; });
+        // v10.12: lo storico degli avvisi (anche scaduti o tolti dalla Home), mescolato ai documenti per data
+        (avvisiDi(dati) || []).forEach(function (a) { tutti.push({ a: a, data: a.creato || '' }); });
+        tutti.sort(function (a, b) { return a.data < b.data ? 1 : a.data > b.data ? -1 : 0; });
         if (!tutti.length) { corpo.appendChild(el('div', { classe: 'vuoto', testo: 'Le ultime comunicazioni compariranno qui.' })); return; }
-        tutti.slice(0, b.limite || 5).forEach(function (x) { corpo.appendChild(rigaDocumento(x.f, x.et)); });
+        var limite = b.limite || 5;
+        function disegna(quanti) {
+          corpo.innerHTML = '';
+          tutti.slice(0, quanti).forEach(function (x) { corpo.appendChild(x.a ? rigaAvvisoStorico(x.a) : rigaDocumento(x.f, x.et)); });
+          if (tutti.length > quanti) corpo.appendChild(el('button', { type: 'button', classe: 'mov-tutti', testo: 'Mostra tutto (' + tutti.length + ')', onclick: function () { disegna(tutti.length); } }));
+        }
+        disegna(limite);
       });
       return card;
     },
@@ -2521,12 +3122,16 @@
       ]);
     },
     iban: function (b) {
+      if (soloSenzaAlunno() && /fondo cassa/i.test(b.titolo || '')) {
+        return el('div', { classe: 'avviso' }, [el('strong', { style: 'display:block;margin-bottom:2px', testo: '👩‍🏫 Profilo docente' }),
+          'Il profilo docente non è abilitato al pagamento verso il fondo cassa di classe.']);
+      }
       var c = el('div', { classe: 'card iban-card' }, [
         el('h4', { testo: b.titolo }),
         b.nota ? el('p', { classe: 'nota', testo: b.nota }) : null,
-        campo('Intestatario', b.intestatario, false),
+        campo('Intestatario', b.intestatario, true),
         campo('IBAN', b.iban, true, true),
-        campo('Causale', b.causale, false)
+        campoCausale(b)
       ]);
       if (b.linkCarta) c.appendChild(el('a', { classe: 'btn btn-primario', href: b.linkCarta.url, target: '_blank', rel: 'noopener', testo: b.linkCarta.titolo + ' ↗' }));
       return c;
@@ -2575,6 +3180,22 @@
     }
   };
 
+  // Causale con il nome vero dell'alunno ("Adele Gatto Agostinelli 4a primaria"); con più figli una riga per figlio.
+  // Profilo docente e testi senza causaleAlunno: la causale generica di Contenuti.gs.
+  function campoCausale(b) {
+    var nomi = (STATO.sessione.alunni || []).filter(function (n) { return !senzaAlunno(n); });
+    if (!b.causaleAlunno || !nomi.length) return campo('Causale', b.causale, true);
+    var classe = STATO.dati.classe || '4a primaria';
+    var righe = nomi.map(function (n) {
+      var chi = n + ' ' + classe, testo = b.causaleAlunno.replace(/\{alunno\}/g, chi).replace(/\{nome\}/g, n);
+      return el('div', { classe: 'causale-riga' }, [
+        el('div', { classe: 'valore-riga' }, [el('span', { classe: 'valore', testo: testo }),
+          el('button', { classe: 'btn-mini', testo: 'Copia', onclick: function () { copia(testo, /breve descrizione/.test(testo) ? 'Causale copiata: sostituisci “breve descrizione”' : 'Causale copiata'); } })]),
+        b.esempioAlunno ? el('small', { classe: 'causale-es', testo: 'es: ' + b.esempioAlunno.replace(/\{alunno\}/g, chi) }) : null
+      ]);
+    });
+    return el('div', { classe: 'campo' }, [el('label', { testo: nomi.length > 1 ? 'Causale (una per figlio)' : 'Causale' })].concat(righe));
+  }
   function campo(etichetta, valore, copiabile, mono) {
     return el('div', { classe: 'campo' }, [
       el('label', { testo: etichetta }),
