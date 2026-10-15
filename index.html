@@ -2815,7 +2815,7 @@
   // Le pagine arrivano una alla volta (azione "libroPagina"); la ricerca la fa lo script (azione "libroCerca").
   // Su questo telefono l'app ricorda l'ultimo libro aperto e l'ultima pagina di ogni libro (solo comodità, niente dati).
   var CHIAVE_LIBRI = 'app4a_libri', MAX_STAMPA = 30;
-  var LB = { scelto: null, kit: false, stampa: [], immagini: {}, ordine: [] };
+  var LB = { scelto: null, kit: false, stampa: [], immagini: {}, ordine: [], link: {}, senzaLink: {} };
   function memoriaLibri() { try { return JSON.parse(localStorage.getItem(CHIAVE_LIBRI) || '{}') || {}; } catch (e) { return {}; } }
   function ricordaLibro(id, n) {
     var m = memoriaLibri(); m.ultimo = { libro: id, n: n }; m.pagine = m.pagine || {}; m.pagine[id] = n;
@@ -2854,22 +2854,58 @@
     var px = css * Math.min(window.devicePixelRatio || 1, 3);
     return Math.max(800, Math.min(1600, Math.ceil(px / 200) * 200));
   }
-  // Immagine di una pagina: chiesta allo script una volta sola, poi tenuta in memoria (al massimo 40 pagine)
+  // v10.18: LINK DIRETTI. Lo script (azione "libroLink", script 10.14) manda in una volta i link delle immagini di tutte le pagine,
+  // preparati da Google Drive e validi qualche ora: il telefono scarica le pagine direttamente da Google, senza aspettare lo script.
+  // Se i link non ci sono (script vecchio) o non si aprono, la pagina arriva dallo script come prima ("libroPagina").
+  function linkLibro(libro, nuovi) {
+    var c = LB.link[libro];
+    if (!c || nuovi || Date.now() - c.quando > 35 * 60000) {
+      c = LB.link[libro] = { quando: Date.now(), p: chiama('libroLink', { libro: libro }).then(function (r) { return r && r.link ? r.link : null; }, function () { return null; }) };
+    }
+    return c.p;
+  }
+  function caricaImg(url) {                // l'immagine scaricata qui resta nella memoria del browser: mostrarla poi è immediato
+    return new Promise(function (ok, no) {
+      var im = new Image();
+      try { im.referrerPolicy = 'no-referrer'; } catch (e) {}
+      var t = setTimeout(function () { im.src = ''; no(new Error('lenta')); }, 20000);
+      im.onload = function () { clearTimeout(t); if (im.naturalWidth > 50) ok(url); else no(new Error('vuota')); };
+      im.onerror = function () { clearTimeout(t); no(new Error('non aperta')); };
+      im.src = url;
+    });
+  }
+  function paginaDiretta(libro, n, w, riprova) {
+    if (LB.senzaLink[libro]) return Promise.reject(new Error('senza link'));
+    return linkLibro(libro).then(function (m) {
+      if (!m || !m[n]) throw new Error('senza link');
+      return caricaImg(m[n] + '=w' + w).catch(function (e) {
+        if (riprova) { LB.senzaLink[libro] = true; throw e; }     // due volte no: per questo libro si torna allo script
+        return linkLibro(libro, true).then(function () { return paginaDiretta(libro, n, w, true); });
+      });
+    });
+  }
+  function paginaDalloScript(libro, n, w) {
+    return chiama('libroPagina', w ? { libro: libro, n: n, w: w } : { libro: libro, n: n }).then(function (r) {
+      var bin = atob(r.dati), arr = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+      return { url: URL.createObjectURL(new Blob([arr], { type: r.mime || 'image/jpeg' })), mime: r.mime || 'image/jpeg', dati: r.dati };
+    });
+  }
+  // Immagine di una pagina: chiesta una volta sola, poi tenuta in memoria (al massimo 40 pagine).
+  // Con la larghezza w (sfogliare e zoom) prima il link diretto; senza w (stampa) sempre l'originale dallo script.
   function immaginePagina(libro, n, w) {
     w = w || 0;
     var k = libro + '|' + n + '|' + w;
     if (!LB.immagini[k]) {
-      LB.immagini[k] = chiama('libroPagina', w ? { libro: libro, n: n, w: w } : { libro: libro, n: n }).then(function (r) {
-        var bin = atob(r.dati), arr = new Uint8Array(bin.length);
-        for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
-        return { url: URL.createObjectURL(new Blob([arr], { type: r.mime || 'image/jpeg' })), mime: r.mime || 'image/jpeg', dati: r.dati };
-      });
+      LB.immagini[k] = w
+        ? paginaDiretta(libro, n, w).then(function (url) { return { url: url, diretto: true }; }, function () { return paginaDalloScript(libro, n, w); })
+        : paginaDalloScript(libro, n, 0);
       LB.immagini[k].catch(function () { delete LB.immagini[k]; });
       LB.ordine.push(k);
       while (LB.ordine.length > 40) {
         var via = LB.ordine.shift(), vecchia = LB.immagini[via];
         delete LB.immagini[via];
-        if (vecchia) vecchia.then(function (x) { URL.revokeObjectURL(x.url); }, function () {});
+        if (vecchia) vecchia.then(function (x) { if (!x.diretto) URL.revokeObjectURL(x.url); }, function () {});
       }
     }
     return LB.immagini[k];
@@ -3050,6 +3086,7 @@
       if (!libriPronti(l)) { toast('Libro non disponibile'); return; }
       if (daHome || STATO.pagina !== 'libri') chiama('pagina', { pagina: 'libri' }).catch(function () {});
       LB.scelto = l.id;
+      linkLibro(l.id);                                               // v10.18: i link di tutte le pagine, in una volta
       mostraLettore(l, paginaVicina(l, n || l.pagine[0]));
     });
   }
@@ -3058,6 +3095,7 @@
     if (vecchio) vecchio.remove();
     var zoom = false, x0 = null, y0 = null, ultimoTocco = 0, originale = false, W = larghezzaAnteprima();
     var img = el('img', { alt: '' });
+    try { img.referrerPolicy = 'no-referrer'; } catch (e) {}
     var scena = el('div', { classe: 'lb-scena' });
     var prima = el('button', { type: 'button', classe: 'lb-freccia sx', 'aria-label': 'Pagina precedente', testo: '‹' });
     var dopo = el('button', { type: 'button', classe: 'lb-freccia dx', 'aria-label': 'Pagina successiva', testo: '›' });
@@ -3102,9 +3140,9 @@
         if (chiesta !== n) return;
         attesaImg.remove(); scena.insertBefore(el('div', { classe: 'errore', testo: e.codice === 'RETE' ? 'Pagina non arrivata: controlla internet e tocca di nuovo la freccia.' : (e.message || 'Pagina non disponibile') }), prima);
       });
-      // le due pagine dopo e quella prima arrivano in anticipo (leggere), così sfogliare è subito
+      // v10.18: le tre pagine dopo e quella prima arrivano in anticipo, così sfogliare è subito
       var i = indice();
-      [l.pagine[i + 1], l.pagine[i - 1], l.pagine[i + 2]].forEach(function (p) { if (p !== undefined) immaginePagina(l.id, p, W).catch(function () {}); });
+      [l.pagine[i + 1], l.pagine[i - 1], l.pagine[i + 2], l.pagine[i + 3]].forEach(function (p) { if (p !== undefined) immaginePagina(l.id, p, W).catch(function () {}); });
     }
     function sposta(d) { var i = indice() + d; if (i >= 0 && i < l.pagine.length) vai(l.pagine[i]); }
     function cambiaZoom() {
@@ -3112,7 +3150,7 @@
       // v10.17: con lo zoom arriva in sottofondo la pagina originale, più nitida; resta finché si cambia pagina
       if (zoom && !originale) {
         var chiesta = n;
-        immaginePagina(l.id, n).then(function (x) { if (chiesta === n && !originale) { originale = true; img.src = x.url; } }).catch(function () {});
+        immaginePagina(l.id, n, 2400).then(function (x) { if (chiesta === n && !originale) { originale = true; img.src = x.url; } }).catch(function () {});   // v10.18: pagina grande dal link diretto
       }
     }
     prima.addEventListener('click', function () { sposta(-1); });
