@@ -828,6 +828,9 @@
   .lb-scaffale { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 8px; }
   .lb-gruppo { grid-column: 1 / -1; margin-top: 8px; font-size: 13px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; border-bottom: 2px solid var(--accent-soft); padding-bottom: 4px; }
   .lb-gruppo:first-child, .lb-kit-tit + .lb-gruppo { margin-top: 0; }
+  /* v10.19: un gruppo con un solo libro (Inglese, Religione) e il Kit docente ("Altro") hanno l'intestazione sopra il libro, nella stessa riga */
+  .lb-cella { display: grid; gap: 6px; align-content: start; min-width: 0; margin-top: 8px; }
+  .lb-cella .lb-gruppo { grid-column: auto; margin-top: 0; font-size: 11.5px; letter-spacing: .03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .lb-vol { border: 0; background: transparent; padding: 0; color: var(--ink); text-align: center; font-weight: 800; font-size: 12px; line-height: 1.2; display: grid; gap: 5px; align-content: start; min-width: 0; overflow-wrap: anywhere; }
   .lb-vol .stato { font-size: 10.5px; color: var(--muted); font-weight: 700; }
   .lb-vol.attivo .lb-cop { outline: 3px solid var(--oro); outline-offset: 3px; }
@@ -3005,16 +3008,22 @@
           scaffale.appendChild(el('button', { type: 'button', classe: 'lb-kit-torna', testo: '← Tutti i libri', onclick: function () { LB.kit = false; disegnaScaffale(); } }));
           scaffale.appendChild(el('div', { classe: 'lb-kit-tit', testo: '🧰 Kit docente · ' + kitLibri.length + ' libri' }));
         }
+        // v10.19: un gruppo con un solo libro ha l'intestazione sopra il libro (Inglese, Religione), gli altri una riga intera
         var gruppo = null;
+        function quanti(g) { return mostra.filter(function (x) { return x.gruppo === g; }).length; }
         mostra.forEach(function (l) {
-          if (l.gruppo !== gruppo) { gruppo = l.gruppo; scaffale.appendChild(el('div', { classe: 'lb-gruppo', testo: gruppo || 'Libri' })); }
+          if (l.gruppo !== gruppo) {
+            gruppo = l.gruppo;
+            if (gruppo && quanti(gruppo) === 1) { scaffale.appendChild(el('div', { classe: 'lb-cella' }, [el('div', { classe: 'lb-gruppo', testo: gruppo }), voceLibro(l)])); return; }
+            scaffale.appendChild(el('div', { classe: 'lb-gruppo', testo: gruppo || 'Libri' }));
+          }
           scaffale.appendChild(voceLibro(l));
         });
         if (!LB.kit && kitLibri.length) {
-          if (!gruppo) scaffale.appendChild(el('div', { classe: 'lb-gruppo', testo: 'Altri libri' }));
-          scaffale.appendChild(el('button', { type: 'button', classe: 'lb-vol', onclick: function () { LB.kit = true; disegnaScaffale(); } }, [
-            copertina({ nome: 'Kit docente', simbolo: '🧰', colore: '#4a5568' }, true), el('span', { testo: 'Kit docente' }),
-            el('span', { classe: 'stato', testo: kitLibri.length + ' libri ›' })]));
+          scaffale.appendChild(el('div', { classe: 'lb-cella' }, [el('div', { classe: 'lb-gruppo', testo: 'Altro' }),
+            el('button', { type: 'button', classe: 'lb-vol', onclick: function () { LB.kit = true; disegnaScaffale(); } }, [
+              copertina({ nome: 'Kit docente', simbolo: '🧰', colore: '#4a5568' }, true), el('span', { testo: 'Kit docente' }),
+              el('span', { classe: 'stato', testo: kitLibri.length + ' libri ›' })])]));
         }
       }
       function voceLibro(l) {
@@ -3168,7 +3177,7 @@
     bScegli.addEventListener('click', function () {
       if (scelta()) { LB.stampa = LB.stampa.filter(function (s) { return !(s.libro === l.id && s.n === n); }); toast('Pagina ' + etPag(n) + ' tolta dalla stampa'); }
       else if (LB.stampa.length >= MAX_STAMPA) { toast('Al massimo ' + MAX_STAMPA + ' pagine alla volta'); return; }
-      else { LB.stampa.push({ libro: l.id, n: n }); ordinaStampa(); toast('Pagina ' + etPag(n) + ' aggiunta · ' + LB.stampa.length + ' da stampare'); }
+      else { LB.stampa.push({ libro: l.id, n: n }); ordinaStampa(); paginaStampa(l.id, n).catch(function () {}); toast('Pagina ' + etPag(n) + ' aggiunta · ' + LB.stampa.length + ' da stampare'); }
       aggiornaPiede();
     });
     bStampa.addEventListener('click', function () {
@@ -3234,10 +3243,35 @@
   // ---------- Stampa: le pagine scelte in un solo PDF A4, una pagina per foglio ----------
   // PDF scritto dall'app stessa (nessuna libreria da scaricare): ogni pagina è un'immagine JPEG su un foglio A4.
   // Le pagine passano prima da un canvas, così il PDF riceve sempre un JPEG a colori anche se l'originale è PNG o in bianco e nero.
-  function jpegDa(url, larghezzaMax) {
+  // v10.20: STAMPA. Ogni pagina si prepara una volta sola (e resta pronta finché l'app è aperta):
+  // 1) dal link diretto di Google, larga 1800 (velocissimo); 2) se no, dallo script nella versione leggera da 1800;
+  // 3) se no, l'originale dallo script. Ogni strada si riprova da sola prima di arrendersi.
+  var PRONTE_STAMPA = {};
+  function riprova(fn, volte) {
+    return fn().catch(function (e) {
+      if (volte <= 1 || (e && e.codice === 'SESSIONE')) throw e;
+      return new Promise(function (ok) { setTimeout(ok, 1500); }).then(function () { return riprova(fn, volte - 1); });
+    });
+  }
+  function paginaStampa(libro, n) {
+    var k = libro + '|' + n;
+    if (!PRONTE_STAMPA[k]) {
+      PRONTE_STAMPA[k] = linkLibro(libro)
+        .then(function (m) { if (!m || !m[n]) throw new Error('senza link'); return jpegDa(m[n] + '=w1800', 1800, true); })
+        .catch(function () { return riprova(function () { return paginaDalloScript(libro, n, 1800).then(function (x) { return jpegDa(x.url, 1800).then(function (j) { URL.revokeObjectURL(x.url); return j; }); }); }, 3); })
+        .catch(function () { return riprova(function () { return paginaDalloScript(libro, n, 0).then(function (x) { return jpegDa(x.url, 1800).then(function (j) { URL.revokeObjectURL(x.url); return j; }); }); }, 2); });
+      PRONTE_STAMPA[k].catch(function () { delete PRONTE_STAMPA[k]; });
+    }
+    return PRONTE_STAMPA[k];
+  }
+  function jpegDa(url, larghezzaMax, incrociata) {
     return new Promise(function (ok, no) {
       var im = new Image();
+      if (incrociata) { im.crossOrigin = 'anonymous'; try { im.referrerPolicy = 'no-referrer'; } catch (e) {} }   // v10.20: link diretto di Google
+      var t = setTimeout(function () { im.src = ''; no(new Error('Pagina lenta')); }, 30000);
       im.onload = function () {
+        clearTimeout(t);
+        try {
         var scala = Math.min(1, larghezzaMax / im.naturalWidth), c = document.createElement('canvas');
         c.width = Math.round(im.naturalWidth * scala); c.height = Math.round(im.naturalHeight * scala);
         var g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(im, 0, 0, c.width, c.height);
@@ -3248,8 +3282,9 @@
           fr.onerror = function () { no(new Error('Pagina non convertita')); };
           fr.readAsArrayBuffer(b);
         }, 'image/jpeg', 0.9);
+        } catch (e) { no(new Error('Pagina non convertita')); }     // immagine "protetta" dal browser: si usa l'altra strada
       };
-      im.onerror = function () { no(new Error('Pagina non leggibile')); };
+      im.onerror = function () { clearTimeout(t); no(new Error('Pagina non leggibile')); };
       im.src = url;
     });
   }
@@ -3312,7 +3347,7 @@
           var aggiunte = 0;
           nuove.forEach(function (p) {
             if (LB.stampa.length >= MAX_STAMPA) return;
-            if (!LB.stampa.some(function (s) { return s.libro === libroAperto.id && s.n === p; })) { LB.stampa.push({ libro: libroAperto.id, n: p }); aggiunte++; }
+            if (!LB.stampa.some(function (s) { return s.libro === libroAperto.id && s.n === p; })) { LB.stampa.push({ libro: libroAperto.id, n: p }); aggiunte++; paginaStampa(libroAperto.id, p).catch(function () {}); }
           });
           ordinaStampa();
           if (LB.stampa.length >= MAX_STAMPA) toast('Al massimo ' + MAX_STAMPA + ' pagine alla volta');
@@ -3336,14 +3371,21 @@
         esito.innerHTML = '';
         var fatte = 0;
         var aggiorna = function () { bottone.textContent = 'Preparo ' + fatte + ' di ' + pagine.length + '…'; };
-        // al massimo 4 pagine chieste insieme allo script
-        var coda = pagine.slice(), risultati = {}, attivi = [];
+        // v10.20: due pagine alla volta; una pagina che non arriva non blocca le altre (quelle pronte restano pronte)
+        var coda = pagine.slice(), risultati = {}, mancano = [], attivi = [];
         function prossima() {
           var s = coda.shift(); if (!s) return Promise.resolve();
-          return immaginePagina(s.libro, s.n).then(function (x) { return jpegDa(x.url, 1800).then(function (j) { risultati[s.libro + '|' + s.n] = j; fatte++; aggiorna(); }); }).then(prossima);
+          return paginaStampa(s.libro, s.n).then(function (j) { risultati[s.libro + '|' + s.n] = j; fatte++; aggiorna(); },
+            function () { mancano.push(s); }).then(prossima);
         }
-        for (var i = 0; i < Math.min(4, coda.length); i++) attivi.push(prossima());
+        aggiorna();
+        for (var i = 0; i < Math.min(2, coda.length); i++) attivi.push(prossima());
         Promise.all(attivi).then(function () {
+          if (mancano.length) {
+            var e = new Error((mancano.length === 1 ? 'Non è arrivata la pagina ' : 'Non sono arrivate le pagine ') +
+              mancano.map(function (s) { return etPag(s.n); }).join(', ') + '. Tocca Riprova: le altre sono già pronte.');
+            throw e;
+          }
           var pdf = pdfA4(pagine.map(function (s) { return risultati[s.libro + '|' + s.n]; }));
           var primo = pagine[0], ultimo = pagine[pagine.length - 1];
           var nome = (unLibro ? nomeCorto(primo.libro) + ' pag ' + etPag(primo.n) + (pagine.length > 1 ? '-' + etPag(ultimo.n) : '') : 'Pagine dei libri') + '.pdf';
