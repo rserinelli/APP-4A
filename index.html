@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.16, 15 ottobre 2026: SCARICA L'APP nella schermata di accesso e nel menu (Android un tocco, iPhone 4 passi + video video/guida-iphone.mp4; service worker sw.js). Dalla 10.15: ACCESSO CON EMAIL O CELLULARE (prefisso + numero), "Password dimenticata?" con due strade, primo ingresso sul profilo, password mandate dalla rappresentante su WhatsApp o per email in Gestione accessi. Dalla 10.14: LIBRI sfogliabili. In Home
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.17, 15 ottobre 2026: copertine C1 e C2 prima di tutte le pagine (C3 e C4 dopo l'ultima; serve lo script 10.13), "Vai a pagina" nel lettore; pagine leggere per sfogliare (anteprima della larghezza dello schermo, originale con lo zoom e in stampa; serve lo script 10.13); tolto dalla Home il riquadro dei libri "Continua a leggere" / Tutti i libri / Cerca un argomento, ai libri si va dall'icona Libri. Versione 10.16: SCARICA L'APP nella schermata di accesso e nel menu (Android un tocco, iPhone 4 passi + video video/guida-iphone.mp4; service worker sw.js). Dalla 10.15: ACCESSO CON EMAIL O CELLULARE (prefisso + numero), "Password dimenticata?" con due strade, primo ingresso sul profilo, password mandate dalla rappresentante su WhatsApp o per email in Gestione accessi. Dalla 10.14: LIBRI sfogliabili. In Home
   "Continua a leggere"; pagina Libri con ricerca per parola, scaffale a gruppi (4 per riga, Kit docente a parte),
   vai a pagina e argomenti; lettore a tutto schermo con sfoglio, zoom e link per WhatsApp (#libro-mat-42);
   stampa di più pagine in un solo PDF A4. Serve lo script 10.11.
@@ -863,6 +863,8 @@
   .lb-freccia:disabled { opacity: .2; }
   .lb-scena.zoom .lb-freccia { display: none; }
   .lb-num { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 4px 12px; font-weight: 800; }
+  .lb-vai-cop { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .lb-vai-cop button { flex: 1 1 auto; padding: 10px 12px; border-radius: 12px; border: 1px solid #d9c27a; background: #fbf6e6; color: #5a4300; font: inherit; font-weight: 700; cursor: pointer; }
   .lb-num b { font-size: 22px; font-variant-numeric: tabular-nums; }
   .lb-num .seg { font-size: 12px; padding: 2px 9px; border-radius: 999px; background: var(--oro); color: #0f1b2c; }
   .lb-piede { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; background: rgba(255,255,255,.05);
@@ -1450,8 +1452,8 @@
     var m = d.match(/^avviso-(av_[\w-]+)$/);
     if (m) STATO.avvisoDaMostrare = m[1];
     // v10.14: .../#libro-mat-42 apre il libro su quella pagina
-    var lb = d.match(/^libro-([a-z0-9]+)-(\d{1,4})$/i);
-    if (lb) { STATO.libroDaAprire = { libro: lb[1], n: +lb[2] }; vaiA('libri'); }
+    var lb = d.match(/^libro-([a-z0-9]+)-(\d{1,4}|c[1-4])$/i);            // v10.17: anche #libro-mat-c1 (copertina)
+    if (lb) { STATO.libroDaAprire = { libro: lb[1], n: numDaEt(lb[2]) }; vaiA('libri'); }
   }
 
   function el(tag, attr, figli) {
@@ -2830,17 +2832,34 @@
     c.style.background = 'linear-gradient(160deg,' + (l.colore || '#1f5f99') + ',' + (l.colore || '#1f5f99') + 'cc)';
     return c;
   }
+  // v10.17: le copertine arrivano dallo script con numeri speciali: C1 = -2 e C2 = -1 (prima di tutte le pagine), C3 = 99993 e C4 = 99994 (dopo l'ultima)
+  var COPERTINE = { '-2': 'C1', '-1': 'C2', '99993': 'C3', '99994': 'C4' };
+  function etPag(n) { return COPERTINE[n] || String(n); }
+  function eCopertina(n) { return !!COPERTINE[n]; }
+  function numDaEt(v) {               // "42" → 42, "c1" o "C 2" → numero della copertina
+    var t = String(v || '').trim(), c = t.match(/^c\s*([1-4])$/i);
+    return c ? [-2, -1, 99993, 99994][+c[1] - 1] : parseInt(t.replace(/\D/g, ''), 10);
+  }
+  function pagineNormali(l) { return l.pagine.filter(function (p) { return !eCopertina(p); }); }
   function paginaVicina(l, n) {        // la pagina chiesta, oppure quella che c'è subito dopo (o l'ultima)
     var p = l.pagine;
     for (var i = 0; i < p.length; i++) if (p[i] >= n) return p[i];
     return p[p.length - 1];
   }
 
+  // v10.17: per sfogliare basta un'anteprima larga quanto lo schermo (in punti reali), a gradini di 200 px tra 800 e 1600.
+  // Lo zoom e la stampa usano l'originale (w = 0). Con lo script vecchio arriva sempre l'originale.
+  function larghezzaAnteprima() {
+    var css = Math.min(window.innerWidth || 400, (screen && screen.width) || 9999);
+    var px = css * Math.min(window.devicePixelRatio || 1, 3);
+    return Math.max(800, Math.min(1600, Math.ceil(px / 200) * 200));
+  }
   // Immagine di una pagina: chiesta allo script una volta sola, poi tenuta in memoria (al massimo 40 pagine)
-  function immaginePagina(libro, n) {
-    var k = libro + '|' + n;
+  function immaginePagina(libro, n, w) {
+    w = w || 0;
+    var k = libro + '|' + n + '|' + w;
     if (!LB.immagini[k]) {
-      LB.immagini[k] = chiama('libroPagina', { libro: libro, n: n }).then(function (r) {
+      LB.immagini[k] = chiama('libroPagina', w ? { libro: libro, n: n, w: w } : { libro: libro, n: n }).then(function (r) {
         var bin = atob(r.dati), arr = new Uint8Array(bin.length);
         for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
         return { url: URL.createObjectURL(new Blob([arr], { type: r.mime || 'image/jpeg' })), mime: r.mime || 'image/jpeg', dati: r.dati };
@@ -2869,7 +2888,7 @@
       box.appendChild(el('button', { type: 'button', classe: 'lb-home', onclick: function () { apriLettore(libro.id, n || (m.pagine && m.pagine[libro.id]) || libro.pagine[0], true); } }, [
         copertina(libro),
         el('span', { classe: 'tx' }, [el('small', { testo: u ? '📚 Continua a leggere' : '📚 Libri da sfogliare' }), el('strong', { testo: libro.nome }),
-          el('span', { classe: 'pag', testo: u ? 'pag. ' + n + ' →' : 'Apri il libro →' })])
+          el('span', { classe: 'pag', testo: u ? 'pag. ' + etPag(n) + ' →' : 'Apri il libro →' })])
       ]));
       box.appendChild(el('div', { classe: 'lb-home-due' }, [
         el('button', { type: 'button', testo: '📚 Tutti i libri', onclick: function () { vaiA('libri'); } }),
@@ -2925,7 +2944,7 @@
             ris.forEach(function (x) {
               var l = libroDi(elenco, x.libro); if (!l) return;
               esiti.appendChild(el('button', { type: 'button', classe: 'lb-ris', onclick: function () { apriLettore(l.id, x.n); } }, [
-                el('b', { classe: 'n' }, [el('small', { testo: 'pag.' }), String(x.n)]),
+                el('b', { classe: 'n' }, [el('small', { testo: 'pag.' }), etPag(x.n)]),
                 el('span', { classe: 'tx' }, [el('strong', { testo: (l.kit ? 'Kit docente · ' : '') + l.nome }), evidenzia(x.testo || '', r.parole || [q])])
               ]));
             });
@@ -3016,10 +3035,10 @@
     return el('span', null, [frag]);
   }
   function vaiAPagina(l, valore) {
-    var n = parseInt(String(valore).replace(/\D/g, ''), 10);
+    var n = numDaEt(valore);
     if (!n) { toast('Scrivi il numero della pagina'); return false; }
     var vera = paginaVicina(l, n);
-    if (vera !== n) toast('La pagina ' + n + ' non c’è: ti mostro la ' + vera);
+    if (vera !== n) toast('La pagina ' + etPag(n) + ' non c’è: ti mostro la ' + etPag(vera));
     apriLettore(l.id, vera);
     return true;
   }
@@ -3037,21 +3056,21 @@
   function mostraLettore(l, n) {
     var vecchio = document.querySelector('.lb-lettore');
     if (vecchio) vecchio.remove();
-    var zoom = false, x0 = null, y0 = null, ultimoTocco = 0;
+    var zoom = false, x0 = null, y0 = null, ultimoTocco = 0, originale = false, W = larghezzaAnteprima();
     var img = el('img', { alt: '' });
     var scena = el('div', { classe: 'lb-scena' });
     var prima = el('button', { type: 'button', classe: 'lb-freccia sx', 'aria-label': 'Pagina precedente', testo: '‹' });
     var dopo = el('button', { type: 'button', classe: 'lb-freccia dx', 'aria-label': 'Pagina successiva', testo: '›' });
-    var numero = el('b'), segno = el('span', { classe: 'seg nascosto', testo: '✓ da stampare' });
+    var numero = el('b'), etichetta = el('span', { testo: 'pagina' }), segno = el('span', { classe: 'seg nascosto', testo: '✓ da stampare' });
     var bZoom = el('button', { type: 'button', classe: 'lb-btn', 'aria-label': 'Ingrandisci', testo: '＋' });
     var bScegli = el('button', { type: 'button' }), bStampa = el('button', { type: 'button' });
     var box = el('div', { classe: 'lb-lettore', role: 'dialog', 'aria-label': 'Libro ' + l.nome }, [
       el('div', { classe: 'lb-testa' }, [el('button', { type: 'button', classe: 'lb-btn', 'aria-label': 'Chiudi il libro', testo: '✕', onclick: function () { chiudi(); } }),
         el('span', { classe: 'tit', testo: (l.kit ? 'Kit docente · ' : '') + l.nome }), bZoom]),
       scena,
-      el('div', { classe: 'lb-num' }, [el('span', { testo: 'pagina' }), numero, segno]),
+      el('div', { classe: 'lb-num' }, [etichetta, numero, segno]),
       el('nav', { classe: 'lb-piede', 'aria-label': 'Azioni sulla pagina' }, [
-        el('button', { type: 'button', onclick: function () { chiediPagina(l, vai); } }, [el('span', { classe: 'ic', testo: '🔢' }), 'Vai a…']),
+        el('button', { type: 'button', onclick: function () { chiediPagina(l, vai); } }, [el('span', { classe: 'ic', testo: '🔢' }), 'Vai a pagina']),
         bScegli, bStampa,
         el('button', { type: 'button', onclick: function () { condividi(l, n); } }, [el('span', { classe: 'ic', testo: '💬' }), 'Manda su WhatsApp'])
       ])
@@ -3069,26 +3088,33 @@
     function vai(nuova) {
       n = paginaVicina(l, nuova); ricordaLibro(l.id, n);
       zoom = false; scena.classList.remove('zoom'); bZoom.textContent = '＋';
-      numero.textContent = String(n);
+      numero.textContent = etPag(n); etichetta.textContent = eCopertina(n) ? 'copertina' : 'pagina';
       prima.disabled = indice() <= 0; dopo.disabled = indice() >= l.pagine.length - 1;
       aggiornaPiede();
       Array.prototype.forEach.call(scena.querySelectorAll('.spinner, .errore'), function (x) { x.remove(); });
       img.remove();
       var attesaImg = el('div', { classe: 'spinner' }); scena.insertBefore(attesaImg, prima);
-      var chiesta = n;
-      immaginePagina(l.id, n).then(function (x) {
+      var chiesta = n; originale = false;
+      immaginePagina(l.id, n, W).then(function (x) {
         if (chiesta !== n) return;
-        attesaImg.remove(); img.src = x.url; img.alt = l.nome + ', pagina ' + n; scena.insertBefore(img, prima); scena.scrollTo(0, 0);
+        attesaImg.remove(); if (!originale) img.src = x.url; img.alt = l.nome + (eCopertina(n) ? ', copertina ' : ', pagina ') + etPag(n); scena.insertBefore(img, prima); scena.scrollTo(0, 0);
       }).catch(function (e) {
         if (chiesta !== n) return;
         attesaImg.remove(); scena.insertBefore(el('div', { classe: 'errore', testo: e.codice === 'RETE' ? 'Pagina non arrivata: controlla internet e tocca di nuovo la freccia.' : (e.message || 'Pagina non disponibile') }), prima);
       });
-      // la pagina dopo e quella prima arrivano in anticipo, così sfogliare è subito
+      // le due pagine dopo e quella prima arrivano in anticipo (leggere), così sfogliare è subito
       var i = indice();
-      [l.pagine[i + 1], l.pagine[i - 1]].forEach(function (p) { if (p !== undefined) immaginePagina(l.id, p).catch(function () {}); });
+      [l.pagine[i + 1], l.pagine[i - 1], l.pagine[i + 2]].forEach(function (p) { if (p !== undefined) immaginePagina(l.id, p, W).catch(function () {}); });
     }
     function sposta(d) { var i = indice() + d; if (i >= 0 && i < l.pagine.length) vai(l.pagine[i]); }
-    function cambiaZoom() { zoom = !zoom; scena.classList.toggle('zoom', zoom); bZoom.textContent = zoom ? '－' : '＋'; bZoom.setAttribute('aria-label', zoom ? 'Rimpicciolisci' : 'Ingrandisci'); }
+    function cambiaZoom() {
+      zoom = !zoom; scena.classList.toggle('zoom', zoom); bZoom.textContent = zoom ? '－' : '＋'; bZoom.setAttribute('aria-label', zoom ? 'Rimpicciolisci' : 'Ingrandisci');
+      // v10.17: con lo zoom arriva in sottofondo la pagina originale, più nitida; resta finché si cambia pagina
+      if (zoom && !originale) {
+        var chiesta = n;
+        immaginePagina(l.id, n).then(function (x) { if (chiesta === n && !originale) { originale = true; img.src = x.url; } }).catch(function () {});
+      }
+    }
     prima.addEventListener('click', function () { sposta(-1); });
     dopo.addEventListener('click', function () { sposta(1); });
     bZoom.addEventListener('click', cambiaZoom);
@@ -3102,9 +3128,9 @@
       if (Math.abs(dx) < 12 && Math.abs(dy) < 12 && ora - ultimoTocco < 320) { e.preventDefault(); cambiaZoom(); ultimoTocco = 0; } else ultimoTocco = ora;
     });
     bScegli.addEventListener('click', function () {
-      if (scelta()) { LB.stampa = LB.stampa.filter(function (s) { return !(s.libro === l.id && s.n === n); }); toast('Pagina ' + n + ' tolta dalla stampa'); }
+      if (scelta()) { LB.stampa = LB.stampa.filter(function (s) { return !(s.libro === l.id && s.n === n); }); toast('Pagina ' + etPag(n) + ' tolta dalla stampa'); }
       else if (LB.stampa.length >= MAX_STAMPA) { toast('Al massimo ' + MAX_STAMPA + ' pagine alla volta'); return; }
-      else { LB.stampa.push({ libro: l.id, n: n }); ordinaStampa(); toast('Pagina ' + n + ' aggiunta · ' + LB.stampa.length + ' da stampare'); }
+      else { LB.stampa.push({ libro: l.id, n: n }); ordinaStampa(); toast('Pagina ' + etPag(n) + ' aggiunta · ' + LB.stampa.length + ' da stampare'); }
       aggiornaPiede();
     });
     bStampa.addEventListener('click', function () {
@@ -3122,7 +3148,6 @@
       box.remove(); document.body.style.overflow = '';
       Array.prototype.forEach.call(document.querySelectorAll('.velo-doc.lb-sopra'), function (v) { v.remove(); });
       if (!daIndietro && history.state && history.state.lettore) { try { history.back(); } catch (e) {} }
-      if (STATO.pagina === 'home') vaiA('home', true);          // aggiorna "Continua a leggere"
     }
     document.addEventListener('keydown', tasti);
     try { history.pushState({ lettore: 1 }, ''); window.addEventListener('popstate', indietro); } catch (e) {}
@@ -3136,26 +3161,30 @@
     });
   }
   function condividi(l, n) {
-    var testo = '📚 ' + l.nome + ', pag. ' + n + '\nNell’app della 4a: ' + URL_APP + '#libro-' + l.id + '-' + n;
+    var testo = '📚 ' + l.nome + (eCopertina(n) ? ', copertina ' : ', pag. ') + etPag(n) + '\nNell’app della 4a: ' + URL_APP + '#libro-' + l.id + '-' + etPag(n).toLowerCase();
     var a = el('a', { href: linkWhatsapp(testo), target: '_blank', rel: 'noopener' });
     document.body.appendChild(a); a.click(); a.remove();
   }
   function chiediPagina(l, vai) {
     var velo = el('div', { classe: 'velo-doc lb-sopra' });
     var chiudi = function () { velo.remove(); };
+    var normali = pagineNormali(l), copertine = l.pagine.filter(eCopertina);
     var num = el('input', { id: 'lbNumero2', type: 'text', inputmode: 'numeric', pattern: '[0-9]*', maxlength: '4', placeholder: 'n. pagina', 'aria-label': 'Numero di pagina', autocomplete: 'off', enterkeyhint: 'go' });
     var form = el('form', { classe: 'pannello', novalidate: 'novalidate' }, [
-      el('h3', { classe: 'lb-pannello-tit', testo: 'Vai alla pagina' }),
-      el('p', { testo: l.nome + ' · dalla pagina ' + l.pagine[0] + ' alla ' + l.pagine[l.pagine.length - 1] }),
+      el('h3', { classe: 'lb-pannello-tit', testo: 'Vai a pagina' }),
+      el('p', { testo: l.nome + (normali.length ? ' · dalla pagina ' + normali[0] + ' alla ' + normali[normali.length - 1] : '') }),
       el('div', { classe: 'lb-vai' }, [num, el('button', { type: 'submit', classe: 'lb-grosso', testo: 'Apri' })]),
+      copertine.length ? el('div', { classe: 'lb-vai-cop' }, copertine.map(function (c) {
+        return el('button', { type: 'button', testo: '📕 Copertina ' + etPag(c), onclick: function () { chiudi(); vai(c); } });
+      })) : null,
       el('button', { type: 'button', classe: 'link-piccolo', testo: 'Annulla', onclick: chiudi })
     ]);
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
-      var x = parseInt(num.value, 10);
+      var x = numDaEt(num.value);
       if (!x) { toast('Scrivi il numero della pagina'); return; }
       var vera = paginaVicina(l, x);
-      if (vera !== x) toast('La pagina ' + x + ' non c’è: ti mostro la ' + vera);
+      if (vera !== x) toast('La pagina ' + etPag(x) + ' non c’è: ti mostro la ' + etPag(vera));
       chiudi(); vai(vera);
     });
     velo.appendChild(form);
@@ -3230,7 +3259,7 @@
         else pannello.appendChild(el('p', { testo: LB.stampa.length + (LB.stampa.length === 1 ? ' pagina' : ' pagine') + ', una per foglio A4. Tocca un numero per toglierlo.' }));
         var chips = el('div', { classe: 'lb-scelte' });
         LB.stampa.forEach(function (s, i) {
-          chips.appendChild(el('button', { type: 'button', testo: (unLibro() ? '' : nomeCorto(s.libro) + ' ') + 'pag. ' + s.n + ' ✕', 'aria-label': 'Togli la pagina ' + s.n,
+          chips.appendChild(el('button', { type: 'button', testo: (unLibro() ? '' : nomeCorto(s.libro) + ' ') + 'pag. ' + etPag(s.n) + ' ✕', 'aria-label': 'Togli la pagina ' + etPag(s.n),
             onclick: function () { LB.stampa.splice(i, 1); disegna(); } }));
         });
         pannello.appendChild(chips);
@@ -3279,7 +3308,7 @@
         Promise.all(attivi).then(function () {
           var pdf = pdfA4(pagine.map(function (s) { return risultati[s.libro + '|' + s.n]; }));
           var primo = pagine[0], ultimo = pagine[pagine.length - 1];
-          var nome = (unLibro ? nomeCorto(primo.libro) + ' pag ' + primo.n + (pagine.length > 1 ? '-' + ultimo.n : '') : 'Pagine dei libri') + '.pdf';
+          var nome = (unLibro ? nomeCorto(primo.libro) + ' pag ' + etPag(primo.n) + (pagine.length > 1 ? '-' + etPag(ultimo.n) : '') : 'Pagine dei libri') + '.pdf';
           if (urlPdf) URL.revokeObjectURL(urlPdf);
           urlPdf = URL.createObjectURL(pdf);
           esito.appendChild(el('div', { classe: 'lb-pronto' }, [el('strong', { testo: '✓ Pronto: ' + nome }),
@@ -3301,7 +3330,7 @@
   var RENDER = {
     // v10.14: libri
     libri: function () { return bloccoLibri(); },
-    libroHome: function () { return bloccoLibroHome(); },
+    libroHome: function () { return el('div', { classe: 'nascosto' }); },   // v10.17: niente libri in Home, basta l'icona Libri
     // Orario delle lezioni: giorno per giorno, vista settimana e ore per materia
     orario: function (b) {
       var GIORNI = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'];
