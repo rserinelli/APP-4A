@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.10, 15 ottobre 2026: Calendario con schede principali in evidenza, filtro dei calendari a imbuto, icone vista compatta / estesa e "Nel mio calendario" con spiegazione; dalla 10.9 Prossimi appuntamenti compatti con dettagli al tocco; dalla 10.8 Mensa nei Collegamenti, SVS Sport nella griglia, Ricevimento docenti)
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.11, 15 ottobre 2026: Calendario con schede principali dorate, filtro a pillola con il numero dei calendari accesi, ora d'inizio nella vista compatta, appuntamenti di più giorni su ogni giorno, Rossana aggiunge / modifica / duplica / elimina gli appuntamenti dall'app; dalla 10.10 schede principali in evidenza, icone vista compatta / estesa e "Nel mio calendario" con spiegazione; dalla 10.9 Prossimi appuntamenti compatti con dettagli al tocco; dalla 10.8 Mensa nei Collegamenti, SVS Sport nella griglia, Ricevimento docenti)
   Questa pagina NON contiene dati: nomi, saldi, documenti e codici arrivano dallo
   script Apps Script solo dopo il login. Una copia della pagina mostra solo l'accesso.
   Unica cosa da cambiare qui: URL_SCRIPT (più sotto, all'inizio del codice).
@@ -430,20 +430,23 @@
   .ag-ev.comp.aperto { padding: 10px 10px 10px 12px; }
   .ag-giu { flex: none; align-self: center; color: var(--muted); font-size: 13px; transition: transform .15s; }
   .ag-ev.comp.aperto .ag-giu { transform: rotate(180deg); }
-  /* ---------- Calendario v10.10: schede principali, filtro, vista, Nel mio calendario ---------- */
+  /* ---------- Calendario v10.10: schede principali, filtro, vista, Nel mio calendario (v10.11: dorate) ---------- */
   .schede-tab.principali { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; overflow: visible; margin-bottom: 12px;
-    background: var(--brand-soft); border: 1px solid #c9dff0; border-radius: 16px; }
+    background: var(--accent-soft); border: 1px solid #ecd9a6; border-radius: 16px; }
   .schede-tab.principali .tab { display: flex; align-items: center; justify-content: center; gap: 7px; border: 0; border-radius: 12px;
-    background: transparent; color: var(--brand); font-weight: 800; font-size: 15px; padding: 11px 6px; line-height: 1.15; }
+    background: transparent; color: #8a6212; font-weight: 800; font-size: 15px; padding: 11px 6px; line-height: 1.15; }
   .schede-tab.principali .tab svg { flex: none; }
-  .schede-tab.principali .tab.attiva { background: var(--brand); color: #fff; box-shadow: 0 2px 8px rgba(31,95,153,.35); }
+  .schede-tab.principali .tab.attiva { background: linear-gradient(180deg, #d6a93a, var(--accent)); color: #fff; box-shadow: 0 2px 8px rgba(176,125,26,.4); }
   @media (max-width: 360px) { .schede-tab.principali .tab { font-size: 14px; gap: 5px; } .schede-tab.principali .tab svg { display: none; } }
   .cal-filtri { gap: 8px; }
-  .cal-scelta.filtro > summary { position: relative; width: 42px; height: 40px; padding: 0; border-radius: 12px; justify-content: center; }
-  .cal-scelta.filtro.ridotto > summary { border-color: var(--brand); color: var(--brand); background: var(--brand-soft); }
-  .cal-scelta.filtro[open] > summary { background: var(--brand-soft); }
-  .cal-bollino { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: var(--brand);
-    color: #fff; font-size: 11px; font-weight: 800; display: grid; place-items: center; border: 2px solid var(--bg); }
+  /* v10.11: filtro a pillola (tre cursori + numero dei calendari accesi, sempre visibile) */
+  .cal-scelta.filtro > summary { gap: 8px; height: 40px; padding: 0 5px 0 12px; border: 2px solid var(--ink); border-radius: 999px; color: var(--ink); }
+  .cal-scelta.filtro[open] > summary { border-color: var(--ink); color: var(--ink); background: var(--brand-soft); }
+  .cal-scelta.filtro > summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .cal-num { min-width: 28px; height: 28px; padding: 0 6px; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 800; font-size: 15px;
+    display: grid; place-items: center; font-variant-numeric: tabular-nums; }
+  .cal-scelta.filtro .cal-voce input { accent-color: var(--ink); }
+  .cal-scelta.filtro .cal-scelta-azioni .chiudi { background: var(--ink); }
   .cal-scelta-titolo { padding: 6px 10px 2px; font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
   .ag-vista { display: inline-flex; border: 1px solid var(--line); border-radius: 12px; background: var(--card); padding: 2px; }
   .ag-vista button { width: 38px; height: 34px; border: 0; border-radius: 9px; background: transparent; display: grid; place-items: center; color: var(--muted); }
@@ -451,6 +454,45 @@
   .cal-esporta { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; height: 40px; padding: 0 13px; border-radius: 12px;
     border: 1px solid var(--brand); background: var(--card); color: var(--brand); font-weight: 800; font-size: 14px; white-space: nowrap; }
   .cal-esporta:hover { background: var(--brand-soft); }
+  /* v10.11: ora d'inizio nella vista compatta, appuntamenti di più giorni su ogni giorno */
+  .ag-orac { color: var(--brand); font-weight: 800; font-variant-numeric: tabular-nums; margin-right: 6px; }
+  .ag-durata { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 2px; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+  .ag-durata em { font-style: normal; padding: 0 7px; border-radius: 999px; background: color-mix(in srgb, var(--c, #1f5f99) 14%, #fff); color: var(--ink); font-weight: 800; }
+  .ag-ev.segue { background: color-mix(in srgb, var(--c, #1f5f99) 5%, #fff); }
+  /* v10.11: Rossana gestisce gli appuntamenti dall'app */
+  .cal-nuovo { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px; border-radius: 12px; border: 0;
+    background: linear-gradient(180deg, #d6a93a, var(--accent)); color: #fff; font-weight: 800; font-size: 14px; white-space: nowrap; }
+  .cal-nuovo:focus-visible, .ag-admin button:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .ag-admin { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
+  .ag-admin button { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line); background: var(--card); color: var(--brand);
+    border-radius: 10px; padding: 6px 10px; font-size: 13px; font-weight: 800; }
+  .ag-admin button.del { color: #b23b3b; }
+  .ag-ripete { display: block; margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--line); font-size: 12.5px; color: var(--muted); font-weight: 700; }
+  .ag-ripete a { color: var(--accent); }
+  .pannello.ev-foglio { max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); overflow-y: auto; }
+  .pannello.ev-foglio h3 { margin-bottom: 12px; font-size: 19px; }
+  .ev-campo { display: grid; gap: 4px; margin-bottom: 12px; }
+  .ev-campo > span { font-size: 13px; font-weight: 800; color: var(--muted); }
+  .ev-campo input, .ev-campo textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--card);
+    color: var(--ink); font: inherit; min-width: 0; }
+  .ev-campo input:focus, .ev-campo textarea:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+  .ev-due { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .ev-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ev-chips label { position: relative; display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border: 1px solid var(--line); border-radius: 999px;
+    font-size: 13px; font-weight: 700; cursor: pointer; }
+  .ev-chips label i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+  .ev-chips input { position: absolute; opacity: 0; pointer-events: none; }
+  .ev-chips label.scelto { border-color: var(--ink); background: var(--brand-soft); }
+  .ev-chips label:focus-within { outline: 2px solid var(--brand); outline-offset: 1px; }
+  .ev-interr { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: 700; }
+  .ev-interr input { width: 20px; height: 20px; accent-color: var(--accent); }
+  .ev-errore { margin: 0 0 12px; padding: 8px 12px; border-radius: 10px; background: #fdf0ef; color: #b23b3b; font-size: 14px; font-weight: 700; }
+  .ev-azioni { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+  .ev-azioni button { border-radius: 12px; padding: 12px; font-weight: 800; font-size: 15px; border: 1px solid var(--line); background: var(--card); color: var(--brand); }
+  .ev-azioni .salva { border: 0; background: var(--brand); color: #fff; }
+  .ev-azioni .elimina { border: 0; background: #b23b3b; color: #fff; }
+  .ev-azioni button:disabled { opacity: .6; }
+  .pannello p.ev-google { margin: 12px 0 0; font-size: 12.5px; text-align: center; }
   .esp-riass { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 12px; background: var(--brand-soft); margin: 0 0 12px; }
   .esp-riass b { font-size: 26px; color: var(--brand); line-height: 1; }
   .esp-riass span { font-size: 14px; line-height: 1.3; }
@@ -1360,6 +1402,23 @@
   function eventiEntro(dati, giorni) {
     return eventiFuturi(dati).filter(function (e) { return -giorniDa(e.giorno) <= giorni; });
   }
+  // v10.11: nei Prossimi appuntamenti quelli di più giorni compaiono su ogni giorno da oggi in poi (gn = giorno n, gtot = giorni in tutto)
+  function perOgniGiorno(lista) {
+    var oggi = oggiISO(), out = [];
+    lista.forEach(function (e) {
+      var fine = fineEvento(e);
+      if (fine === e.data) { out.push(e); return; }
+      var tot = Math.round((dataDa(fine) - dataDa(e.data)) / 86400000) + 1, d = dataDa(e.data);
+      for (var n = 1; n <= tot && n <= 400; n++, d.setDate(d.getDate() + 1)) {
+        var g = isoDi(d);
+        if (g < oggi) continue;
+        var c = {}; for (var k in e) c[k] = e[k];
+        c.giorno = g; c.gn = n; c.gtot = tot;
+        out.push(c);
+      }
+    });
+    return out.sort(function (a, b) { return a.giorno < b.giorno ? -1 : a.giorno > b.giorno ? 1 : perOrario(a, b); });
+  }
   function eventiPerGiorno(dati) {
     var mappa = {};
     (elencoEventi(dati) || []).filter(calendarioVisibile).forEach(function (e) {
@@ -1386,23 +1445,40 @@
     estesa: '<rect x="3.5" y="3.5" width="17" height="7.5" rx="2"/><rect x="3.5" y="13" width="17" height="7.5" rx="2"/>',
     aggiungi: '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/>'
   };
+  // v10.11: icona del filtro a pillola (tre cursori)
+  function iconaCursori() {
+    var s = el('span', { 'aria-hidden': 'true', style: 'display:inline-grid;place-items:center' });
+    s.innerHTML = '<svg width="30" height="24" viewBox="0 0 30 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5h24M3 12h24M3 19h24"/><circle cx="17" cy="5" r="2.8" fill="#fff"/><circle cx="21" cy="12" r="2.8" fill="#fff"/><circle cx="10" cy="19" r="2.8" fill="#fff"/></svg>';
+    return s;
+  }
   function icona(nome, misura) {
     var s = el('span', { 'aria-hidden': 'true', style: 'display:inline-grid;place-items:center' });
     s.innerHTML = '<svg width="' + (misura || 20) + '" height="' + (misura || 20) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">' + ICONE[nome] + '</svg>';
     return s;
   }
-  // Riga sopra agenda e mese: filtro (imbuto) · [vista compatta / estesa] · Nel mio calendario · (Rossana) Google Calendar
-  function filtriCalendari(dati, ridisegna, dopoFiltro) {
+  // Riga sopra agenda e mese: filtro (pillola) · [vista compatta / estesa] · Nel mio calendario · (Rossana) + Nuovo
+  // giornoNuovo = giorno proposto da "+ Nuovo" (nella vista mese il giorno scelto)
+  function filtriCalendari(dati, ridisegna, dopoFiltro, giornoNuovo) {
     var cal = calendariDi(dati);
     STATO.calNascosti = STATO.calNascosti || {};
+    STATO.calModificabili = Array.isArray(dati && dati.modificabili) ? dati.modificabili : null;
+    STATO.calDati = dati;
     var riga = el('div', { classe: 'cal-filtri' });
     if (cal.length > 1) riga.appendChild(sceltaCalendari(cal, ridisegna));
     if (dopoFiltro) riga.appendChild(dopoFiltro);
     riga.appendChild(el('button', { type: 'button', classe: 'cal-esporta', title: 'Aggiungi gli appuntamenti al calendario del telefono',
       onclick: function () { esportaCalendario(dati); } }, [icona('aggiungi', 18), el('span', { testo: 'Nel mio calendario' })]));
     if (STATO.sessione.amministratore) {
-      riga.appendChild(el('a', { classe: 'cal-azione admin', href: 'https://calendar.google.com/calendar/r', target: '_blank', rel: 'noopener',
-        testo: '✏️ Google Calendar' }));
+      // v10.11: con lo script 10.8 Rossana aggiunge gli appuntamenti dall'app; Google Calendar resta nel modulo come scorciatoia
+      if (STATO.calModificabili && STATO.calModificabili.length) {
+        riga.appendChild(el('button', { type: 'button', classe: 'cal-nuovo', testo: '+ Nuovo', onclick: function () {
+          var oggi = oggiISO();
+          moduloEvento(dati, 'nuovo', null, giornoNuovo && giornoNuovo >= oggi ? giornoNuovo : oggi);
+        } }));
+      } else {
+        riga.appendChild(el('a', { classe: 'cal-azione admin', href: 'https://calendar.google.com/calendar/r', target: '_blank', rel: 'noopener',
+          testo: '✏️ Google Calendar' }));
+      }
     }
     return riga;
   }
@@ -1423,7 +1499,7 @@
   function esportaCalendario(dati) {
     var oggi = oggiISO();
     var eventi = (elencoEventi(dati) || []).filter(function (e) { return fineEvento(e) >= oggi && calendarioVisibile(e); });
-    if (!eventi.length) { toast('Nessun appuntamento da aggiungere: scegli almeno un calendario con l’imbuto'); return; }
+    if (!eventi.length) { toast('Nessun appuntamento da aggiungere: scegli almeno un calendario con il filtro'); return; }
     // v10.10: prima un foglio che spiega cosa succede (quanti, quali calendari, iPhone / Android, copia di oggi)
     var cal = calendariDi(dati), accesi = cal.filter(function (c) { return !STATO.calNascosti[c.nome]; });
     var quali = !cal.length ? '' : accesi.length === cal.length ? 'di tutti i ' + cal.length + ' calendari' : accesi.length === 1 ? 'del calendario ' + accesi[0].nome : 'di ' + accesi.length + ' calendari su ' + cal.length;
@@ -1443,7 +1519,7 @@
       ]),
       el('button', { type: 'button', classe: 'btn btn-primario', testo: 'Aggiungi ora', onclick: function () { chiudi(); scaricaIcs(eventi); } }),
       el('button', { type: 'button', classe: 'link-piccolo', testo: 'Annulla', onclick: chiudi }),
-      el('p', { classe: 'esp-nota', testo: 'È una copia di oggi: gli appuntamenti aggiunti dopo non arrivano da soli, ripeti quando vuoi. Vuoi solo alcuni calendari? Sceglili prima con l’imbuto.' })
+      el('p', { classe: 'esp-nota', testo: 'È una copia di oggi: gli appuntamenti aggiunti dopo non arrivano da soli, ripeti quando vuoi. Vuoi solo alcuni calendari? Sceglili prima con il filtro.' })
     ]));
     velo.addEventListener('click', function (e) { if (e.target === velo) chiudi(); });
     document.body.appendChild(velo);
@@ -1478,15 +1554,14 @@
   }
 
   function sceltaCalendari(cal, ridisegna) {
-    // Casella a selezione multipla aperta dall'icona a imbuto (v10.10); col filtro attivo l'icona mostra quanti calendari sono accesi
+    // Casella a selezione multipla aperta da una pillola con tre cursori e il numero dei calendari accesi, sempre visibile (v10.11)
     var accesi = cal.filter(function (c) { return !STATO.calNascosti[c.nome]; });
-    var ridotto = accesi.length !== cal.length;
-    var menu = el('details', { classe: 'cal-scelta filtro' + (ridotto ? ' ridotto' : '') });
+    var menu = el('details', { classe: 'cal-scelta filtro' });
     if (STATO.calMenuAperto) menu.open = true;
     menu.addEventListener('toggle', function () { STATO.calMenuAperto = menu.open; });
-    var spiega = ridotto ? 'Calendari: ' + accesi.length + ' su ' + cal.length + ' (tocca per scegliere)' : 'Scegli i calendari da vedere';
+    var spiega = 'Scegli i calendari: ' + accesi.length + ' su ' + cal.length + (accesi.length === 1 ? ' acceso' : ' accesi');
     menu.appendChild(el('summary', { 'aria-label': spiega, title: spiega }, [
-      icona('filtro'), ridotto ? el('span', { classe: 'cal-bollino', testo: String(accesi.length) }) : null
+      iconaCursori(), el('span', { classe: 'cal-num', testo: String(accesi.length) })
     ]));
     var lista = el('div', { classe: 'cal-scelta-lista', role: 'group' });
     function cambia() { ridisegna(); aggiornaContatori(); }
@@ -1526,34 +1601,196 @@
     if (prima === undefined) prima = STATO.calPrima;
     var orario = e.ora ? [el('b', { testo: e.ora }), e.oraFine ? el('span', { testo: e.oraFine }) : null] : [el('b', { testo: 'Tutto il giorno' })];
     var info = [];
-    if (fineEvento(e) > e.data) { var f = dataDa(fineEvento(e)); info.push('fino a ' + GIORNI_SETT[f.getDay()].toLowerCase() + ' ' + f.getDate() + ' ' + MESI[f.getMonth()]); }
+    if (fineEvento(e) > e.data && !e.gtot) { var f = dataDa(fineEvento(e)); info.push('fino a ' + GIORNI_SETT[f.getDay()].toLowerCase() + ' ' + f.getDate() + ' ' + MESI[f.getMonth()]); }
     // l'indirizzo si tocca e apre Google Maps (sul telefono l'app Maps)
     var mappa = e.luogo ? el('a', { classe: 'ag-luogo', href: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(e.luogo),
       target: '_blank', rel: 'noopener', testo: '📍 ' + e.luogo }) : null;
     // nella vista compatta i dettagli (orario, durata, note, calendario) hanno la classe ag-extra e restano nascosti finché non si apre
     var extra = compatta ? 'ag-extra' : null;
-    var card = colora(el('div', { classe: 'ag-ev' }, [
+    // v10.11, vista compatta: ora d'inizio accanto al titolo (non per quelli di tutto il giorno; nei giorni successivi di un ponte no)
+    var oraInizio = compatta && e.ora && (!e.gn || e.gn === 1) ? el('span', { classe: 'ag-orac', testo: e.ora }) : null;
+    // v10.11: appuntamenti di più giorni, "giorno 2 di 4" e le date, visibili anche nella vista compatta
+    var durata = e.gtot > 1 ? el('span', { classe: 'ag-durata' }, [el('em', { testo: 'giorno ' + e.gn + ' di ' + e.gtot }),
+      'dal ' + dataCorta(e.data) + ' al ' + dataCorta(fineEvento(e))]) : null;
+    var card = colora(el('div', { classe: 'ag-ev' + (e.gn > 1 ? ' segue' : '') }, [
       el('div', { classe: 'ag-ora' + (compatta ? ' ag-extra' : '') }, orario),
       el('div', { classe: 'ag-tx' }, [
-        el('strong', null, [e.titolo, eventoNuovo(e, prima) ? el('span', { classe: 'badge', testo: 'NUOVO' }) : null]),
+        el('strong', null, [oraInizio, e.titolo, eventoNuovo(e, prima) ? el('span', { classe: 'badge', testo: 'NUOVO' }) : null]),
+        durata,
         info.length ? el('small', { classe: extra, testo: info.join(' · ') }) : null,
         mappa,
         e.note ? el('small', { classe: extra, testo: e.note }) : null,
-        e.calendario ? colora(el('span', { classe: 'ag-cal' + (compatta ? ' ag-extra' : '') }, [el('i'), el('span', { testo: e.calendario })]), e.colore) : null
+        e.calendario ? colora(el('span', { classe: 'ag-cal' + (compatta ? ' ag-extra' : '') }, [el('i'), el('span', { testo: e.calendario })]), e.colore) : null,
+        compatta || e.ci === CI_DIVISE ? azioniRossana(e) : null        // Divise: pulsanti sempre visibili sotto ogni data
       ]),
       compatta ? el('span', { classe: 'ag-giu', 'aria-hidden': 'true', testo: '▾' }) : null
     ]), e.colore);
     if (!compatta) return card;
-    var chiave = codiceEvento(e), aperto = eventoAperto(chiave);
-    card.className = 'ag-ev comp' + (aperto ? ' aperto' : '');
+    var chiave = codiceEvento(e) + (e.gn ? '|' + e.giorno : ''), aperto = eventoAperto(chiave);
+    card.className = 'ag-ev comp' + (e.gn > 1 ? ' segue' : '') + (aperto ? ' aperto' : '');
     card.setAttribute('role', 'button');
     card.setAttribute('tabindex', '0');
     card.setAttribute('aria-expanded', aperto ? 'true' : 'false');
-    card.addEventListener('click', function (ev) { if (!ev.target.closest('a')) apriChiudiEvento(card, chiave); });     // l'indirizzo apre Maps, non i dettagli
+    card.addEventListener('click', function (ev) { if (!ev.target.closest('a, button')) apriChiudiEvento(card, chiave); });     // l'indirizzo apre Maps e i pulsanti di Rossana fanno altro: non aprono né chiudono
     card.addEventListener('keydown', function (ev) {
       if ((ev.key === 'Enter' || ev.key === ' ') && ev.target === card) { ev.preventDefault(); apriChiudiEvento(card, chiave); }
     });
     return card;
+  }
+  // ---------- v10.11: Rossana aggiunge, modifica, duplica ed elimina gli appuntamenti dall'app ----------
+  // Lo script (10.8) manda per ogni appuntamento id e ci (= quale calendario) e l'elenco dei calendari modificabili.
+  // I COMPLEANNI (si ripetono ogni anno) e gli appuntamenti che si ripetono restano su Google Calendar.
+  // Il calendario "BARBARIGO Divise" ha ci = -1 (CI_DIVISE): si gestisce dalla pagina Divise.
+  var URL_GOOGLE_CALENDAR = 'https://calendar.google.com/calendar/r';
+  var CI_DIVISE = -1;
+  function gestibile(e) {
+    if (!STATO.sessione.amministratore || !e.id || e.ripete) return false;
+    if (e.ci === CI_DIVISE) return !!STATO.diviseGestibili;
+    var m = STATO.calModificabili;
+    return !!(m && m.indexOf(e.ci) >= 0);
+  }
+  function azioniRossana(e) {
+    if (!STATO.sessione.amministratore || !e.id) return null;
+    if (e.ci === CI_DIVISE ? !STATO.diviseGestibili : !STATO.calModificabili) return null;
+    if (!gestibile(e)) {
+      return el('span', { classe: 'ag-ripete ag-extra' }, [e.ripete ? '🔁 Si ripete ogni anno: si cambia da ' : 'Questo calendario si cambia da ',
+        el('a', { href: URL_GOOGLE_CALENDAR, target: '_blank', rel: 'noopener', testo: 'Google Calendar' })]);
+    }
+    var dati = STATO.calDati;
+    return el('div', { classe: 'ag-admin ag-extra' }, [
+      el('button', { type: 'button', testo: '✏️ Modifica', onclick: function () { moduloEvento(dati, 'modifica', e); } }),
+      el('button', { type: 'button', testo: '⧉ Duplica', onclick: function () { moduloEvento(dati, 'duplica', e); } }),
+      el('button', { type: 'button', classe: 'del', testo: '🗑️ Elimina', onclick: function () { chiediElimina(e); } })
+    ]);
+  }
+  // Dopo un salvataggio lo script manda subito gli appuntamenti aggiornati: la pagina si ridisegna al suo posto
+  function dopoSalvataggio(r, ci) {
+    if (r && r.documenti && !r.documenti.errore) STATO.documenti = Promise.resolve(r.documenti);
+    if (STATO.visti) STATO.visti[ci === CI_DIVISE ? 'divise' : 'calendario'] = new Date().toISOString();   // quello che aggiunge Rossana non le fa il bollino
+    var c = calendariDi(r && r.documenti).filter(function (x) { return x.ci === ci; })[0];
+    if (c && STATO.calNascosti) delete STATO.calNascosti[c.nome];               // il calendario scelto torna visibile
+    STATO.calMenuAperto = false;
+    aggiornaContatori();
+    vaiA(STATO.pagina, true);
+  }
+  // modo: 'nuovo' | 'modifica' | 'duplica'; e = appuntamento di partenza; giorno = data proposta per un nuovo appuntamento
+  function moduloEvento(dati, modo, e, giorno) {
+    var divise = !!(e && e.ci === CI_DIVISE);
+    var cal = divise ? [{ nome: 'BARBARIGO Divise', colore: e.colore || '#1f5f99', ci: CI_DIVISE }]
+      : calendariDi(dati).filter(function (c) { return (STATO.calModificabili || []).indexOf(c.ci) >= 0; });
+    if (!cal.length) { toast('Nessun calendario modificabile dall’app'); return; }
+    e = e || { titolo: '', data: giorno || oggiISO(), ci: cal[0].ci };
+    var scelto = cal.some(function (c) { return c.ci === e.ci; }) ? e.ci : cal[0].ci;
+    var fTitolo = el('input', { type: 'text', autocomplete: 'off', maxlength: '200' });
+    var fTutto = el('input', { type: 'checkbox' });
+    var fDal = el('input', { type: 'date' }), fAl = el('input', { type: 'date' });
+    var fOra = el('input', { type: 'time' }), fOraF = el('input', { type: 'time' });
+    var fLuogo = el('input', { type: 'text', autocomplete: 'off', maxlength: '300' });
+    var fNote = el('textarea', { rows: '2', maxlength: '2000' });
+    fTitolo.value = e.titolo || ''; fTutto.checked = !e.ora; fDal.value = e.data; fAl.value = fineEvento(e);
+    fOra.value = e.ora || '17:00'; fOraF.value = e.oraFine || (e.ora ? e.ora : '18:00');
+    fLuogo.value = e.luogo || ''; fNote.value = e.note || '';
+    var chips = el('div', { classe: 'ev-chips', role: 'radiogroup', 'aria-label': 'Calendario' });
+    function segnaChip() { Array.prototype.forEach.call(chips.children, function (l) { l.classList.toggle('scelto', +l.getAttribute('data-ci') === scelto); }); }
+    cal.forEach(function (c) {
+      var r = el('input', { type: 'radio', name: 'evCal' });
+      r.checked = c.ci === scelto;
+      r.addEventListener('change', function () { scelto = c.ci; segnaChip(); });
+      chips.appendChild(colora(el('label', { 'data-ci': String(c.ci) }, [r, el('i'), el('span', { testo: c.nome.replace(/^BARBARIGO\s+/i, '').replace(/^4a Calendario\s+/i, '') })]), c.colore));
+    });
+    segnaChip();
+    var ore = el('div', { classe: 'ev-due' }, [
+      el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Dalle' }), fOra]),
+      el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Alle' }), fOraF])
+    ]);
+    function mostraOre() { ore.classList.toggle('nascosto', fTutto.checked); }
+    fTutto.addEventListener('change', mostraOre); mostraOre();
+    // cambiando il giorno d'inizio, il giorno di fine si sposta insieme (la durata resta uguale)
+    var dalPrima = fDal.value;
+    fDal.addEventListener('change', function () {
+      if (fDal.value && dalPrima && fAl.value) {
+        var f = dataDa(fAl.value); f.setDate(f.getDate() + Math.round((dataDa(fDal.value) - dataDa(dalPrima)) / 86400000)); fAl.value = isoDi(f);
+      }
+      if (fDal.value && (!fAl.value || fAl.value < fDal.value)) fAl.value = fDal.value;
+      if (fDal.value) dalPrima = fDal.value;
+    });
+    var errore = el('p', { classe: 'ev-errore nascosto', role: 'alert' });
+    var salva = el('button', { type: 'submit', classe: 'salva', testo: modo === 'duplica' ? 'Crea la copia' : 'Salva' });
+    var velo = el('div', { classe: 'velo-doc' });
+    var chiudi = function () { velo.remove(); };
+    var modulo = el('form', { classe: 'pannello ev-foglio', role: 'dialog', 'aria-label': 'Appuntamento', novalidate: 'novalidate' }, [
+      el('h3', { testo: divise ? (modo === 'modifica' ? 'Modifica la data delle divise' : modo === 'duplica' ? 'Duplica la data delle divise' : 'Nuova data delle divise')
+        : modo === 'modifica' ? 'Modifica appuntamento' : modo === 'duplica' ? 'Duplica appuntamento' : 'Nuovo appuntamento' }),
+      el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Titolo' }), fTitolo]),
+      el('div', { classe: 'ev-campo' }, [el('span', { testo: 'Calendario' }), chips]),
+      el('label', { classe: 'ev-interr' }, [fTutto, ' Tutto il giorno']),
+      el('div', { classe: 'ev-due' }, [
+        el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Dal giorno' }), fDal]),
+        el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Al giorno' }), fAl])
+      ]),
+      ore,
+      el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Luogo (si apre su Maps)' }), fLuogo]),
+      el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Note' }), fNote]),
+      errore,
+      el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Annulla', onclick: chiudi }), salva]),
+      divise ? null : el('p', { classe: 'ev-google' }, ['Compleanni e appuntamenti che si ripetono: ',
+        el('a', { href: URL_GOOGLE_CALENDAR, target: '_blank', rel: 'noopener', testo: 'apri Google Calendar' })])
+    ]);
+    modulo.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var t = fTitolo.value.replace(/\s+/g, ' ').trim(), dal = fDal.value, al = fAl.value || dal, tutto = fTutto.checked;
+      var msg = !t ? 'Scrivi il titolo.' : !dal ? 'Scegli il giorno.' : al < dal ? 'Il giorno di fine viene prima di quello di inizio.'
+        : (!tutto && (!fOra.value || !fOraF.value)) ? 'Scrivi gli orari, oppure scegli “Tutto il giorno”.'
+        : (!tutto && dal === al && fOraF.value <= fOra.value) ? 'L’ora di fine deve venire dopo quella di inizio.' : '';
+      if (msg) { errore.textContent = msg; errore.classList.remove('nascosto'); return; }
+      errore.classList.add('nascosto');
+      var richiesta = { cal: scelto, titolo: t, dal: dal, al: al, tutto: tutto, ora: tutto ? '' : fOra.value, oraFine: tutto ? '' : fOraF.value,
+        luogo: fLuogo.value.trim(), note: fNote.value.trim() };
+      if (modo === 'modifica') { richiesta.id = e.id; richiesta.calDa = e.ci; }
+      occupato(salva, true, 'Salvo…');
+      chiama(modo === 'modifica' ? 'eventoModifica' : 'eventoNuovo', richiesta).then(function (r) {
+        chiudi();
+        dopoSalvataggio(r, scelto);
+        toast(modo === 'modifica' ? 'Modificato: lo vedono subito tutti' : modo === 'duplica' ? 'Copia creata' : 'Appuntamento aggiunto');
+      }).catch(function (x) {
+        if (x.codice === 'SESSIONE') return;
+        errore.textContent = x.message; errore.classList.remove('nascosto');
+        occupato(salva, false, modo === 'duplica' ? 'Crea la copia' : 'Salva');
+      });
+    });
+    velo.appendChild(modulo);
+    velo.addEventListener('click', function (x) { if (x.target === velo) chiudi(); });
+    velo.addEventListener('keydown', function (x) { if (x.key === 'Escape') chiudi(); });
+    document.body.appendChild(velo);
+    setTimeout(function () { (modo === 'duplica' ? fDal : fTitolo).focus(); }, 30);
+  }
+  function chiediElimina(e) {
+    var velo = el('div', { classe: 'velo-doc' });
+    var chiudi = function () { velo.remove(); };
+    var annulla = el('button', { type: 'button', testo: 'Annulla', onclick: chiudi });
+    var elimina = el('button', { type: 'button', classe: 'elimina', testo: 'Elimina' });
+    var errore = el('p', { classe: 'ev-errore nascosto', role: 'alert' });
+    elimina.addEventListener('click', function () {
+      occupato(elimina, true, 'Elimino…'); annulla.disabled = true;
+      chiama('eventoElimina', { id: e.id, cal: e.ci }).then(function (r) {
+        chiudi(); dopoSalvataggio(r, null); toast('Eliminato');
+      }).catch(function (x) {
+        if (x.codice === 'SESSIONE') return;
+        errore.textContent = x.message; errore.classList.remove('nascosto');
+        occupato(elimina, false, 'Elimina'); annulla.disabled = false;
+      });
+    });
+    var piuGiorni = fineEvento(e) > e.data ? 'Tutti i giorni, dal ' + dataCorta(e.data) + ' al ' + dataCorta(fineEvento(e)) + '. ' : '';
+    velo.appendChild(el('div', { classe: 'pannello ev-foglio', role: 'alertdialog', 'aria-label': 'Eliminare l’appuntamento?' }, [
+      el('h3', { testo: 'Eliminare “' + e.titolo + '”?' }),
+      el('p', { testo: piuGiorni + 'Sparisce dal calendario di tutte le famiglie. Non si può annullare.' }),
+      errore,
+      el('div', { classe: 'ev-azioni' }, [annulla, elimina])
+    ]));
+    velo.addEventListener('click', function (x) { if (x.target === velo) chiudi(); });
+    velo.addEventListener('keydown', function (x) { if (x.key === 'Escape') chiudi(); });
+    document.body.appendChild(velo);
+    setTimeout(function () { annulla.focus(); }, 30);
   }
   // Vista compatta / vista estesa (v10.10: due icone al posto di "Espandi tutto / Nascondi tutto"; vale finché l'app resta aperta)
   function pulsanteEspandi() {
@@ -1872,7 +2109,7 @@
         if (!elencoEventi(dati)) { box.innerHTML = ''; box.appendChild(avvisoCalendario()); return; }
         function disegna() {
           box.innerHTML = '';
-          var lista = eventiFuturi(dati).slice(0, b.limite || 80);
+          var lista = perOgniGiorno(eventiFuturi(dati).slice(0, b.limite || 80));
           var filtri = filtriCalendari(dati, disegna, lista.length ? pulsanteEspandi() : null);
           box.appendChild(filtri);
           box.classList.add('compatta');
@@ -1889,7 +2126,20 @@
       STATO.documenti.then(function (dati) {
         box.innerHTML = '';
         var lista = elencoDivise(dati);
-        if (STATO.sessione.amministratore) {
+        STATO.diviseGestibili = !!(dati && dati.diviseGestibili && lista);
+        STATO.calDati = dati;
+        if (STATO.sessione.amministratore && STATO.diviseGestibili) {
+          // v10.11: Rossana aggiunge le date dall'app; la nuova data parte dall'ultima (titolo, orari, luogo), con il giorno di oggi
+          var ultima = lista.slice().sort(function (a, c) { return a.data < c.data ? 1 : a.data > c.data ? -1 : 0; })[0]
+            || { titolo: 'DIVISE', ora: '08:00', oraFine: '10:30', luogo: 'Via Trevignano Romano 12, Roma' };
+          box.appendChild(el('div', { classe: 'cal-filtri' }, [
+            el('button', { type: 'button', classe: 'cal-nuovo', testo: '+ Nuova data', onclick: function () {
+              moduloEvento(dati, 'nuovo', { titolo: ultima.titolo, data: oggiISO(), ora: ultima.ora, oraFine: ultima.oraFine,
+                luogo: ultima.luogo, note: ultima.note, colore: ultima.colore, ci: CI_DIVISE });
+            } }),
+            el('a', { classe: 'cal-azione admin', href: URL_GOOGLE_CALENDAR, target: '_blank', rel: 'noopener', testo: '✏️ Google Calendar' })
+          ]));
+        } else if (STATO.sessione.amministratore) {
           box.appendChild(el('div', { classe: 'cal-filtri' }, [el('a', { classe: 'cal-azione admin', href: 'https://calendar.google.com/calendar/r',
             target: '_blank', rel: 'noopener', testo: '✏️ Aggiungi le date in Google Calendar' })]));
         }
@@ -1974,7 +2224,7 @@
         function vai(mese) { vista = mese; STATO.meseVista = vista; disegna(); }
         function disegna() {
           box.innerHTML = '';
-          var filtri = filtriCalendari(dati, disegna);
+          var filtri = filtriCalendari(dati, disegna, null, STATO.giornoScelto);
           if (filtri) box.appendChild(filtri);
           var perGiorno = eventiPerGiorno(dati);
           var prima = el('button', { classe: 'cal-nav', 'aria-label': 'Mese precedente', testo: '‹', onclick: function () { vai(new Date(vista.getFullYear(), vista.getMonth() - 1, 1)); } });
