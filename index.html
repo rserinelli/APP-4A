@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.8, 15 ottobre 2026: Mensa nei Collegamenti con l'icona dell'app mensa, SVS Sport nella griglia, Ricevimento docenti in tabella)
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.9, 15 ottobre 2026: Prossimi appuntamenti compatti con dettagli al tocco e pulsante Espandi tutto / Nascondi tutto; dalla 10.8 Mensa nei Collegamenti, SVS Sport nella griglia, Ricevimento docenti)
   Questa pagina NON contiene dati: nomi, saldi, documenti e codici arrivano dallo
   script Apps Script solo dopo il login. Una copia della pagina mostra solo l'accesso.
   Unica cosa da cambiare qui: URL_SCRIPT (più sotto, all'inizio del codice).
@@ -414,6 +414,23 @@
   .cal-dett { margin-top: 6px; }
   .cal-dett h3.sez::first-letter { text-transform: uppercase; }
   .cal-dett .ag-ev { margin-bottom: 8px; }
+  /* Prossimi appuntamenti compatti (10.9): titolo e indirizzo, i dettagli si aprono toccando */
+  .agenda.compatta .ag-giorno { padding: 6px 0; gap: 10px; }
+  .agenda.compatta .ag-data { padding-top: 2px; }
+  .agenda.compatta .ag-data b { font-size: 20px; }
+  .agenda.compatta .ag-giorno.oggi .ag-data b { width: 34px; height: 34px; font-size: 17px; }
+  .agenda.compatta .ag-mese { margin-top: 16px; }
+  .agenda.compatta .ag-lista { gap: 6px; }
+  .ag-ev.comp { cursor: pointer; padding: 7px 10px 7px 12px; gap: 10px; align-items: flex-start; }
+  .ag-ev.comp:hover { border-color: var(--brand); border-left-color: var(--c, var(--brand)); }
+  .ag-ev.comp:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; }
+  .ag-ev.comp .ag-tx strong { font-size: 15px; line-height: 1.3; }
+  .ag-ev.comp .ag-luogo { margin-top: 1px; }
+  .ag-ev.comp:not(.aperto) .ag-extra { display: none; }
+  .ag-ev.comp.aperto { padding: 10px 10px 10px 12px; }
+  .ag-giu { flex: none; align-self: center; color: var(--muted); font-size: 13px; transition: transform .15s; }
+  .ag-ev.comp.aperto .ag-giu { transform: rotate(180deg); }
+  .cal-azione.ag-tutti { margin-left: auto; }
   @media (max-width: 600px) {
     .cal-griglia { gap: 3px; }
     .cal-g { min-height: 52px; padding: 4px 2px; align-items: center; border-radius: 8px; }
@@ -1426,7 +1443,19 @@
     var m = document.querySelector('details.cal-scelta[open]');
     if (m && !m.contains(ev.target)) { m.open = false; STATO.calMenuAperto = false; }
   });
-  function rigaEvento(e, prima) {      // prima = ultima visita: gli eventi aggiunti dopo hanno l'etichetta NUOVO
+  // Prossimi appuntamenti compatti (10.9): si vedono solo titolo e indirizzo; toccando si aprono i dettagli.
+  // STATO.agendaEstesa = vista scelta con "Espandi tutto / Nascondi tutto"; STATO.agendaAperti = appuntamenti aperti o chiusi a mano.
+  function eventoAperto(chiave) {
+    var a = STATO.agendaAperti || {};
+    return chiave in a ? a[chiave] : !!STATO.agendaEstesa;
+  }
+  function apriChiudiEvento(card, chiave) {
+    var aperto = !eventoAperto(chiave);
+    (STATO.agendaAperti = STATO.agendaAperti || {})[chiave] = aperto;
+    card.classList.toggle('aperto', aperto);
+    card.setAttribute('aria-expanded', aperto ? 'true' : 'false');
+  }
+  function rigaEvento(e, prima, compatta) {      // prima = ultima visita: gli eventi aggiunti dopo hanno l'etichetta NUOVO
     if (prima === undefined) prima = STATO.calPrima;
     var orario = e.ora ? [el('b', { testo: e.ora }), e.oraFine ? el('span', { testo: e.oraFine }) : null] : [el('b', { testo: 'Tutto il giorno' })];
     var info = [];
@@ -1434,19 +1463,50 @@
     // l'indirizzo si tocca e apre Google Maps (sul telefono l'app Maps)
     var mappa = e.luogo ? el('a', { classe: 'ag-luogo', href: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(e.luogo),
       target: '_blank', rel: 'noopener', testo: '📍 ' + e.luogo }) : null;
-    return colora(el('div', { classe: 'ag-ev' }, [
-      el('div', { classe: 'ag-ora' }, orario),
+    // nella vista compatta i dettagli (orario, durata, note, calendario) hanno la classe ag-extra e restano nascosti finché non si apre
+    var extra = compatta ? 'ag-extra' : null;
+    var card = colora(el('div', { classe: 'ag-ev' }, [
+      el('div', { classe: 'ag-ora' + (compatta ? ' ag-extra' : '') }, orario),
       el('div', { classe: 'ag-tx' }, [
         el('strong', null, [e.titolo, eventoNuovo(e, prima) ? el('span', { classe: 'badge', testo: 'NUOVO' }) : null]),
-        info.length ? el('small', { testo: info.join(' · ') }) : null,
+        info.length ? el('small', { classe: extra, testo: info.join(' · ') }) : null,
         mappa,
-        e.note ? el('small', { testo: e.note }) : null,
-        e.calendario ? colora(el('span', { classe: 'ag-cal' }, [el('i'), el('span', { testo: e.calendario })]), e.colore) : null
-      ])
+        e.note ? el('small', { classe: extra, testo: e.note }) : null,
+        e.calendario ? colora(el('span', { classe: 'ag-cal' + (compatta ? ' ag-extra' : '') }, [el('i'), el('span', { testo: e.calendario })]), e.colore) : null
+      ]),
+      compatta ? el('span', { classe: 'ag-giu', 'aria-hidden': 'true', testo: '▾' }) : null
     ]), e.colore);
+    if (!compatta) return card;
+    var chiave = codiceEvento(e), aperto = eventoAperto(chiave);
+    card.className = 'ag-ev comp' + (aperto ? ' aperto' : '');
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-expanded', aperto ? 'true' : 'false');
+    card.addEventListener('click', function (ev) { if (!ev.target.closest('a')) apriChiudiEvento(card, chiave); });     // l'indirizzo apre Maps, non i dettagli
+    card.addEventListener('keydown', function (ev) {
+      if ((ev.key === 'Enter' || ev.key === ' ') && ev.target === card) { ev.preventDefault(); apriChiudiEvento(card, chiave); }
+    });
+    return card;
+  }
+  // Pulsante "Espandi tutto / Nascondi tutto": passa dalla vista compatta a quella estesa (vale finché l'app resta aperta)
+  function pulsanteEspandi() {
+    var b = el('button', { type: 'button', classe: 'cal-azione ag-tutti' });
+    function etichetta() { b.textContent = STATO.agendaEstesa ? '▴ Nascondi tutto' : '▾ Espandi tutto'; }
+    b.addEventListener('click', function () {
+      STATO.agendaEstesa = !STATO.agendaEstesa;
+      STATO.agendaAperti = {};
+      var box = b.closest('.agenda') || document;
+      Array.prototype.forEach.call(box.querySelectorAll('.ag-ev.comp'), function (c) {
+        c.classList.toggle('aperto', STATO.agendaEstesa);
+        c.setAttribute('aria-expanded', STATO.agendaEstesa ? 'true' : 'false');
+      });
+      etichetta();
+    });
+    etichetta();
+    return b;
   }
   // Agenda: mese, giorno e appuntamenti (usata dal Calendario e dalla pagina Divise)
-  function disegnaAgenda(box, lista, prima, seVuota) {
+  function disegnaAgenda(box, lista, prima, seVuota, compatta) {
     if (!lista.length) { box.appendChild(el('div', { classe: 'vuoto', testo: seVuota })); return; }
     var mese = null, giorno = null, colonna;
     lista.forEach(function (e) {
@@ -1461,7 +1521,7 @@
           colonna
         ]));
       }
-      colonna.appendChild(rigaEvento(e, prima));
+      colonna.appendChild(rigaEvento(e, prima, compatta));
     });
   }
   function avvisoCalendario() {
@@ -1738,8 +1798,11 @@
         function disegna() {
           box.innerHTML = '';
           var filtri = filtriCalendari(dati, disegna);
-          if (filtri) box.appendChild(filtri);
-          disegnaAgenda(box, eventiFuturi(dati).slice(0, b.limite || 80), STATO.calPrima, 'Nessun appuntamento in programma.');
+          var lista = eventiFuturi(dati).slice(0, b.limite || 80);
+          if (lista.length) filtri.appendChild(pulsanteEspandi());
+          box.appendChild(filtri);
+          box.classList.add('compatta');
+          disegnaAgenda(box, lista, STATO.calPrima, 'Nessun appuntamento in programma.', true);
         }
         disegna();
       });
