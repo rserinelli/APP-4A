@@ -14,7 +14,11 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.13, 15 ottobre 2026: profilo docente per gli accessi
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.16, 15 ottobre 2026: SCARICA L'APP nella schermata di accesso e nel menu (Android un tocco, iPhone 4 passi + video video/guida-iphone.mp4; service worker sw.js). Dalla 10.15: ACCESSO CON EMAIL O CELLULARE (prefisso + numero), "Password dimenticata?" con due strade, primo ingresso sul profilo, password mandate dalla rappresentante su WhatsApp o per email in Gestione accessi. Dalla 10.14: LIBRI sfogliabili. In Home
+  "Continua a leggere"; pagina Libri con ricerca per parola, scaffale a gruppi (4 per riga, Kit docente a parte),
+  vai a pagina e argomenti; lettore a tutto schermo con sfoglio, zoom e link per WhatsApp (#libro-mat-42);
+  stampa di più pagine in un solo PDF A4. Serve lo script 10.11.
+  Dalla 10.13: profilo docente per gli accessi
   "Nessun bambino/a", riquadro rosso "Alunno non trovato" con "Segnalalo su WhatsApp", causale dei bonifici con il nome
   dell'alunno e tasti Copia su intestatario, IBAN e causale. Nessun numero di telefono: WhatsApp si apre senza destinatario.
   Dalla 10.12: riquadro Avvisi in cima alla Home,
@@ -692,7 +696,192 @@
   .or-vacanza small { color: var(--muted); font-size: 13px; }
   .or-sett th.vacanza { color: var(--accent); }
   .or-sett td.vacanza .or-cella { opacity: .3; }
+  /* ---------- v10.15: accesso con email o cellulare, password dimenticata, primo ingresso, invio delle password ---------- */
+  .modo-acc { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin: 0 0 16px; background: var(--brand-soft); border-radius: 14px; }
+  .modo-acc button { border: 0; border-radius: 10px; background: transparent; color: var(--brand); font-weight: 800; font-size: 15px; padding: 9px 4px; }
+  .modo-acc button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 4px rgba(20,50,90,.15); }
+  .tel-riga { display: grid; grid-template-columns: 118px minmax(0, 1fr); gap: 8px; }
+  .tel-riga select { appearance: auto; font-weight: 800; padding-left: 10px; padding-right: 4px; }
+  .tel-riga input { min-width: 0; }
+  .scelta-acc { display: flex; gap: 12px; align-items: flex-start; width: 100%; text-align: left; padding: 14px; margin: 0 0 10px; border: 1px solid var(--line);
+    border-radius: 14px; background: var(--card); color: var(--ink); text-decoration: none; font: inherit; }
+  .scelta-acc:hover, .scelta-acc[aria-expanded="true"] { border-color: var(--brand); }
+  .scelta-acc .ic { flex: none; width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-size: 20px; background: var(--brand-soft); }
+  .scelta-acc.wa .ic { background: #e7f6ec; }
+  .scelta-acc .tx { flex: 1; min-width: 0; white-space: normal; }
+  .scelta-acc strong { display: block; font-size: 16px; }
+  .scelta-acc small { display: block; color: var(--muted); font-size: 13.5px; line-height: 1.4; font-weight: 600; white-space: normal; overflow-wrap: anywhere; }
+  .zona-rifai { margin: -2px 0 14px; padding: 12px; border: 1px dashed var(--line); border-radius: 14px; }
+  .btn-wa { background: #1f9d55; color: #fff; width: 100%; margin-bottom: 10px; }
+  .btn-wa:disabled { background: #eef1f5; color: #9aa6b4; }
+  .primo-card { border: 2px solid var(--oro); background: linear-gradient(180deg, #fffaf0, var(--card) 70%); }
+  .primo-card h3.sez { margin: 0 0 4px; }
+  .primo-card > p { margin: 0 0 12px; font-size: 15px; }
+  .pass-grande { display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 14px; border: 1px dashed var(--accent); border-radius: 12px; background: var(--card); margin-bottom: 12px; }
+  .pass-grande .mono { flex: 1; min-width: 0; font-size: 22px; font-weight: 800; overflow-wrap: anywhere; }
+  .promemoria { margin: 0 0 12px; padding: 10px 12px; border-radius: 12px; background: var(--warn-bg); border: 1px solid var(--warn-line); font-size: 14px; font-weight: 700; }
+  .promemoria.forte { background: #fdf0ef; border-color: #f2c9c4; color: #8f2a22; }
+  .vai-home { margin-top: 4px; }
+  /* Gestione accessi: password mandate */
+  .pw-numeri { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+  .pw-numeri div { text-align: center; padding: 10px 4px; border-radius: 12px; background: var(--brand-soft); }
+  .pw-numeri b { display: block; font-size: 22px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .pw-numeri small { display: block; font-size: 11.5px; font-weight: 800; color: var(--muted); line-height: 1.25; }
+  .pw-numeri .da { background: var(--accent-soft); } .pw-numeri .da b { color: var(--accent); }
+  .pw-numeri .ok { background: #e6f4ec; } .pw-numeri .ok b { color: var(--ok); }
+  .pw-invio h3 { margin: 0 0 4px; font-size: 18px; font-weight: 800; }
+  .pw-invio > p { margin: 0 0 12px; font-size: 14px; color: var(--muted); }
+  .pw-due { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .pw-due .btn { width: 100%; margin: 0; flex-direction: column; gap: 0; line-height: 1.2; padding: 12px 6px; font-size: 15px; }
+  .pw-due .btn small { font-weight: 700; font-size: 12px; opacity: .9; }
+  .gestione .persona { padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .gestione .persona:last-child { border-bottom: 0; }
+  .persona .chi { display: grid; gap: 1px; min-width: 0; }
+  .persona .chi b { font-size: 15px; overflow-wrap: anywhere; }
+  .persona .chi .tel-r { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .persona .manca { color: var(--muted); font-weight: 600; font-style: italic; }
+  .persona .info { display: block; color: var(--muted); font-size: 12.5px; margin-top: 4px; }
+  .pw-stato { display: inline-block; margin-top: 6px; padding: 2px 9px; border-radius: 999px; font-size: 12.5px; font-weight: 800; }
+  .pw-stato.da { background: var(--accent-soft); color: #7a5a00; }
+  .pw-stato.inviata { background: var(--brand-soft); color: var(--brand); }
+  .pw-stato.dentro { background: #e6f4ec; color: #1e6b3d; }
+  .pw-prima { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 6px; font-size: 13px; color: var(--muted); }
+  .pw-prima .mono { color: var(--ink); font-weight: 800; }
+  .pw-azioni { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .pw-azioni button { display: inline-flex; align-items: center; gap: 5px; border-radius: 10px; padding: 7px 11px; font-size: 13.5px; font-weight: 800;
+    border: 1px solid var(--line); background: var(--card); color: var(--brand); }
+  .pw-azioni .wa { background: #1f9d55; border-color: #1f9d55; color: #fff; }
+  .pw-azioni .em { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .pw-azioni button:disabled { background: #eef1f5; border-color: #eef1f5; color: #9aa6b4; cursor: default; }
+  .pw-azioni .reimp { color: #b23b3b; margin-left: auto; }
+  .bolla-wa { background: #ece5dd; border-radius: 14px; padding: 12px 12px 12px 30px; margin-bottom: 10px; }
+  .bolla-wa div { background: #dcf8c6; border-radius: 12px 12px 4px 12px; padding: 10px 12px; font-size: 14px; line-height: 1.45; white-space: pre-line; overflow-wrap: anywhere; }
+  .pw-prog { height: 8px; border-radius: 999px; background: #e7f6ec; overflow: hidden; margin: 8px 0 12px; }
+  .pw-prog i { display: block; height: 100%; background: #1f9d55; border-radius: 999px; }
+  .pw-dest { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 12px; background: #eef1f5; margin-bottom: 10px; }
+  .pw-dest .av { flex: none; width: 38px; height: 38px; border-radius: 50%; background: #1f9d55; color: #fff; display: grid; place-items: center; font-weight: 800; }
+  .pw-dest b { display: block; overflow-wrap: anywhere; } .pw-dest small { display: block; color: var(--muted); font-size: 13px; }
+  .pw-radio { display: flex; gap: 10px; align-items: flex-start; padding: 11px 12px; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; cursor: pointer; }
+  .pw-radio input { margin-top: 4px; accent-color: var(--brand); width: 18px; height: 18px; flex: none; }
+  .pw-radio small { display: block; color: var(--muted); font-size: 13px; }
+  /* ---------- v10.16: Scarica l'app (come l'app mensa) ---------- */
+  .scarica { margin: -6px 0 18px; }
+  .btn-scarica { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 16px; border: 0; border-radius: 16px; text-align: left;
+    background: linear-gradient(180deg, #e2bd55, var(--accent)); color: #fff; box-shadow: 0 4px 14px rgba(176,125,26,.35); }
+  .btn-scarica:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+  .scarica-icona { flex: none; width: 48px; height: 48px; border-radius: 14px; background: rgba(255,255,255,.22); display: grid; place-items: center; }
+  .scarica-testi { display: grid; min-width: 0; }
+  .scarica-titolo { font-size: 19px; font-weight: 800; letter-spacing: .04em; line-height: 1.15; }
+  .scarica-sotto { font-size: 13.5px; font-weight: 700; opacity: .95; }
+  .guida { position: fixed; inset: 0; z-index: 70; background: rgba(10,25,45,.5); display: grid; place-items: end center;
+    padding: 16px max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+  .guida[hidden] { display: none; }
+  .guida-scheda { width: 100%; max-width: 440px; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); overflow-y: auto; background: var(--card);
+    border-radius: 20px; padding: 20px; box-shadow: 0 10px 40px rgba(0,0,0,.3); }
+  @media (min-width: 600px) { .guida { place-items: center; } }
+  .guida-titolo { margin: 0 0 12px; font-size: 21px; font-weight: 800; text-align: center; }
+  .guida-video-box { margin: 0 0 14px; }
+  .btn-video { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border: 0; border-radius: 14px; background: #f6d35b; color: var(--ink); text-align: left; }
+  .btn-video-play { flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--ink); color: #f6d35b; display: grid; place-items: center; font-size: 16px; padding-left: 3px; }
+  .btn-video-testo { font-weight: 800; font-size: 17px; line-height: 1.2; }
+  .btn-video-testo small { display: block; font-weight: 700; font-size: 13px; color: var(--muted); }
+  .guida-video { display: block; width: 100%; max-height: 60vh; border-radius: 14px; background: #000; }
+  .guida-passi { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 10px; }
+  .guida-passo { display: grid; grid-template-columns: 32px minmax(0, 1fr) 32px; gap: 10px; align-items: center; padding: 12px; border: 1px solid var(--line); border-radius: 14px; }
+  .guida-num { width: 30px; height: 30px; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; font-weight: 800; }
+  .guida-testo { font-size: 15px; line-height: 1.35; }
+  .guida-icona { color: var(--brand); display: grid; place-items: center; }
+  .guida-nota { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; text-align: center; }
   .login-aiuto { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 14px; color: #1f8f52; font-weight: 800; font-size: 14px; text-decoration: none; }
+
+  /* ---------- v10.14: Libri (scaffale, ricerca, lettore, stampa) ---------- */
+  .lb-cop { aspect-ratio: 3 / 4; width: 100%; max-width: 100%; border-radius: 5px 9px 9px 5px; position: relative; overflow: hidden; display: grid; place-items: center;
+    box-shadow: inset 6px 0 0 rgba(0,0,0,.15), 0 2px 6px rgba(20,50,90,.25); color: #fff; font-weight: 800; text-align: center; line-height: 1.05; }
+  .lb-cop .sim { font-size: 22px; }
+  .lb-cop .nm { position: absolute; left: 0; right: 0; bottom: 7%; font-size: 8.5px; letter-spacing: .03em; padding: 0 3px; text-transform: uppercase; overflow: hidden; max-height: 3.4em; }
+  .lb-cop.kit { overflow: visible; box-shadow: inset 6px 0 0 rgba(0,0,0,.15), 3px -3px 0 #9aa5b5, 6px -6px 0 #c3cad4, 0 2px 6px rgba(20,50,90,.25); }
+  .lb-home { display: grid; grid-template-columns: 58px 1fr; gap: 12px; align-items: center; width: 100%; text-align: left; color: var(--ink);
+    background: var(--card); border: 2px solid var(--brand); border-radius: 18px; padding: 10px 12px; box-shadow: var(--shadow); margin-bottom: 8px; }
+  .lb-home .tx { min-width: 0; }
+  .lb-home small { display: block; font-size: 12px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); }
+  .lb-home strong { display: block; font-size: 19px; font-weight: 800; line-height: 1.2; }
+  .lb-home .pag { display: inline-block; margin-top: 6px; padding: 5px 14px; border-radius: 999px; background: var(--brand); color: #fff; font-weight: 800; font-size: 15px; }
+  .lb-home .lb-cop .sim { font-size: 20px; } .lb-home .lb-cop .nm { font-size: 7px; }
+  .lb-home-due { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .lb-home-due button { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 14px; padding: 11px 6px; font-weight: 800; font-size: 14px; box-shadow: var(--shadow); }
+  .lb-eti { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 18px 0 8px; }
+  .lb-blocco > .lb-eti:first-child { margin-top: 0; }
+  .lb-cerca { position: relative; }
+  .lb-cerca input { width: 100%; font: inherit; font-size: 17px; padding: 13px 14px 13px 44px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); color: var(--ink); }
+  .lb-cerca input:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+  .lb-cerca .lente { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 18px; pointer-events: none; }
+  .lb-risultati { display: grid; gap: 8px; margin-top: 10px; }
+  .lb-risultati:empty { display: none; }
+  .lb-ris { display: grid; grid-template-columns: 54px 1fr; gap: 10px; align-items: start; width: 100%; text-align: left; border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 12px; padding: 10px; }
+  .lb-ris:hover { border-color: var(--brand); }
+  .lb-ris b.n { display: grid; place-items: center; align-content: center; height: 48px; border-radius: 10px; background: var(--brand-soft); color: var(--brand); font-size: 18px; font-weight: 800; line-height: 1; }
+  .lb-ris b.n small { display: block; font-size: 10px; }
+  .lb-ris .tx { min-width: 0; font-size: 14px; overflow-wrap: anywhere; }
+  .lb-ris .tx strong { display: block; font-size: 15px; }
+  .lb-ris mark { background: #ffe58a; color: var(--ink); border-radius: 3px; padding: 0 2px; }
+  .lb-nota { padding: 12px 14px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 12px; font-size: 14px; }
+  .lb-scaffale { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 8px; }
+  .lb-gruppo { grid-column: 1 / -1; margin-top: 8px; font-size: 13px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; border-bottom: 2px solid var(--accent-soft); padding-bottom: 4px; }
+  .lb-gruppo:first-child, .lb-kit-tit + .lb-gruppo { margin-top: 0; }
+  .lb-vol { border: 0; background: transparent; padding: 0; color: var(--ink); text-align: center; font-weight: 800; font-size: 12px; line-height: 1.2; display: grid; gap: 5px; align-content: start; min-width: 0; overflow-wrap: anywhere; }
+  .lb-vol .stato { font-size: 10.5px; color: var(--muted); font-weight: 700; }
+  .lb-vol.attivo .lb-cop { outline: 3px solid var(--oro); outline-offset: 3px; }
+  .lb-vol.spento { opacity: .55; cursor: default; }
+  .lb-vol:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 8px; }
+  .lb-kit-torna { grid-column: 1 / -1; justify-self: start; border: 1px solid var(--line); background: var(--card); color: var(--brand); border-radius: 10px; padding: 8px 14px; font-weight: 800; font-size: 14px; }
+  .lb-kit-tit { grid-column: 1 / -1; font-size: 18px; font-weight: 800; }
+  .lb-vai { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+  .lb-vai input { width: 100%; min-width: 0; font: inherit; font-size: 28px; font-weight: 800; text-align: center; padding: 8px; border: 2px solid var(--brand); border-radius: 14px; background: var(--card); color: var(--ink); font-variant-numeric: tabular-nums; }
+  .lb-vai input::placeholder { font-size: 18px; font-weight: 700; color: var(--muted); }
+  .lb-grosso { border: 0; border-radius: 14px; background: var(--brand); color: #fff; font-weight: 800; font-size: 18px; padding: 0 22px; min-height: 56px; }
+  .lb-grosso.oro { background: linear-gradient(180deg, #d6a93a, var(--accent)); width: 100%; }
+  .lb-grosso:disabled { opacity: .5; }
+  .lb-vai-libro { margin: -2px 0 8px; font-size: 13px; color: var(--muted); }
+  .lb-vai-libro b { color: var(--ink); }
+  .lb-argomenti { display: grid; gap: 6px; }
+  .lb-arg { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center; width: 100%; text-align: left; border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 12px; padding: 10px 12px; font-weight: 800; }
+  .lb-arg .em { font-size: 20px; text-align: center; }
+  .lb-arg .pp { font-size: 13px; color: var(--brand); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  .lb-lettore { position: fixed; inset: 0; z-index: 50; background: #0f1b2c; color: #fff; display: grid; grid-template-rows: auto 1fr auto auto; }
+  .lb-testa { display: flex; align-items: center; gap: 8px; padding: calc(8px + env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) 8px max(12px, env(safe-area-inset-left, 0px)); }
+  .lb-testa .tit { flex: 1; min-width: 0; font-weight: 800; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lb-btn { border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); color: #fff; border-radius: 10px; height: 40px; min-width: 40px; padding: 0 12px; font-weight: 800; font-size: 16px; }
+  .lb-scena { position: relative; overflow: auto; -webkit-overflow-scrolling: touch; display: grid; place-items: center; padding: 8px; min-height: 0; }
+  .lb-scena img { display: block; width: auto; max-width: min(100%, 760px); max-height: 100%; border-radius: 3px; box-shadow: 0 6px 24px rgba(0,0,0,.45); background: #fff; }
+  .lb-scena.zoom { place-items: start; }
+  .lb-scena.zoom img { max-width: none; max-height: none; width: 210%; }
+  .lb-scena .spinner { border-color: rgba(255,255,255,.2); border-top-color: #fff; }
+  .lb-scena .errore { max-width: 300px; text-align: center; color: #fff; opacity: .85; font-size: 15px; }
+  .lb-freccia { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 64px; border: 1px solid rgba(255,255,255,.35); border-radius: 12px; background: rgba(15,27,44,.6); color: #fff; font-size: 30px; font-weight: 800; }
+  .lb-freccia.sx { left: max(6px, env(safe-area-inset-left, 0px)); } .lb-freccia.dx { right: max(6px, env(safe-area-inset-right, 0px)); }
+  .lb-freccia:disabled { opacity: .2; }
+  .lb-scena.zoom .lb-freccia { display: none; }
+  .lb-num { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 4px 12px; font-weight: 800; }
+  .lb-num b { font-size: 22px; font-variant-numeric: tabular-nums; }
+  .lb-num .seg { font-size: 12px; padding: 2px 9px; border-radius: 999px; background: var(--oro); color: #0f1b2c; }
+  .lb-piede { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; background: rgba(255,255,255,.05);
+    padding: 6px max(10px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px)); }
+  .lb-piede button { border: 0; background: transparent; color: #fff; border-radius: 12px; padding: 8px 2px; font-weight: 800; font-size: 12px; line-height: 1.2; display: grid; gap: 2px; justify-items: center; }
+  .lb-piede button .ic { font-size: 22px; line-height: 1.1; }
+  .lb-piede button.scelta { background: var(--oro); color: #0f1b2c; }
+  .lb-piede button:focus-visible, .lb-btn:focus-visible, .lb-freccia:focus-visible { outline: 2px solid var(--oro); outline-offset: 2px; }
+  .velo-doc.lb-sopra { z-index: 60; }
+  .lb-scelte { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+  .lb-scelte button { border: 1px solid var(--line); background: var(--brand-soft); color: var(--brand); border-radius: 999px; padding: 6px 10px 6px 12px; font-weight: 800; font-size: 14px; font-variant-numeric: tabular-nums; }
+  .lb-intervallo { display: grid; grid-template-columns: 1fr auto 1fr auto; gap: 6px; align-items: center; font-weight: 800; font-size: 14px; margin: 0 0 14px; }
+  .lb-intervallo input { width: 100%; min-width: 0; font: inherit; font-size: 20px; font-weight: 800; text-align: center; padding: 8px 4px; border: 1px solid var(--line); border-radius: 12px; font-variant-numeric: tabular-nums; color: var(--ink); background: var(--card); }
+  .lb-intervallo button { border: 0; border-radius: 12px; background: var(--brand); color: #fff; font-weight: 800; padding: 0 12px; height: 46px; }
+  .lb-pronto { padding: 12px 14px; border-radius: 12px; background: #e6f4ec; color: #1e5a37; font-size: 14px; margin: 0 0 10px; }
+  .lb-pronto ol { margin: 6px 0 0; padding-left: 18px; }
+  .pannello .lb-pannello-tit { margin-bottom: 8px; }
+  .pannello p.lb-forte { color: var(--ink); font-weight: 800; margin: 0 0 6px; }
+  @media (prefers-reduced-motion: reduce) { .lb-scena img { transition: none; } }
 </style>
 </head>
 <body>
@@ -704,6 +893,19 @@
     <h1>4a primaria 2026-27</h1>
     <p class="sotto">Area riservata alle famiglie della classe</p>
 
+    <!-- v10.16: Scarica l'app (come l'app mensa): Android un tocco, iPhone guida in 4 passi con il video -->
+    <div class="scarica" id="bloccoScarica" hidden>
+      <button type="button" class="btn-scarica" id="btnScarica">
+        <span class="scarica-icona" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg>
+        </span>
+        <span class="scarica-testi">
+          <span class="scarica-titolo">SCARICA L'APP</span>
+          <span class="scarica-sotto">Gratis · in pochi secondi</span>
+        </span>
+      </button>
+    </div>
+
     <div id="accVerifica">
       <div class="spinner"></div>
       <p class="stato">Un attimo…</p>
@@ -713,11 +915,24 @@
       <p class="errore-msg" id="accFermoTesto"></p>
     </div>
 
-    <!-- Accesso con email e password -->
+    <!-- Accesso con email oppure (v10.15) con il numero di cellulare -->
     <form id="fLogin" class="modulo nascosto" autocomplete="on" novalidate>
       <p class="esito nascosto" id="logInfo"></p>
-      <label for="logEmail">Email</label>
-      <input id="logEmail" name="email" class="campo-testo" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="la tua email">
+      <div class="modo-acc" role="group" aria-label="Come vuoi entrare">
+        <button type="button" id="modoEmail" aria-pressed="false">✉️ Email</button>
+        <button type="button" id="modoTel" aria-pressed="true">📱 Cellulare</button>
+      </div>
+      <div id="zonaEmail" class="nascosto">
+        <label for="logEmail">Email</label>
+        <input id="logEmail" name="email" class="campo-testo" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="la tua email">
+      </div>
+      <div id="zonaTel">
+        <label for="logTel">Numero di cellulare</label>
+        <div class="tel-riga">
+          <select id="logPref" class="campo-testo" aria-label="Prefisso"></select>
+          <input id="logTel" name="telefono" class="campo-testo" type="tel" inputmode="tel" autocomplete="username" placeholder="333 123 4567">
+        </div>
+      </div>
       <label for="logPass">Password</label>
       <div class="pass-riga">
         <input id="logPass" name="password" class="campo-testo" type="password" autocomplete="current-password" placeholder="la tua password">
@@ -725,25 +940,45 @@
       </div>
       <p class="errore-msg nascosto" id="logErrore"></p>
       <button class="btn btn-primario" type="submit" id="btnEntra">Entra</button>
-      <button class="btn btn-sec" type="button" id="vaiCodice">Primo accesso o password dimenticata</button>
+      <button class="link-piccolo" type="button" id="vaiCodice">Password dimenticata?</button>
       <a class="login-aiuto" id="aiutoWhatsapp" href="https://wa.me/?text=Ciao%2C%20non%20riesco%20a%20entrare%20nell%27app%20della%204a%20primaria." target="_blank" rel="noopener">💬 Problemi ad entrare? Scrivi su WhatsApp</a>
     </form>
 
-    <!-- Primo accesso / password dimenticata: 1) email -->
+    <!-- Password dimenticata (v10.15): rifalla da solo con il codice via email, oppure chiedi alla rappresentante -->
     <form id="fCodice1" class="modulo nascosto" novalidate>
-      <h2>Primo accesso o nuova password</h2>
-      <p class="stato">Scrivi l'email che hai dato alla rappresentante: ti mandiamo un codice di 6 cifre per scegliere la password.</p>
-      <label for="codEmail">Email</label>
-      <input id="codEmail" class="campo-testo" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="la tua email">
-      <p class="errore-msg nascosto" id="cod1Errore"></p>
-      <button class="btn btn-primario" type="submit" id="btnManda">Mandami il codice</button>
+      <h2>Password dimenticata?</h2>
+      <p class="stato">Scegli come riaverla.</p>
+      <button type="button" class="scelta-acc" id="sceltaRifai" aria-expanded="false">
+        <span class="ic">🔁</span>
+        <span class="tx"><strong>Rifalla da solo</strong><small>Ti mandiamo un codice di 6 cifre all’email che hai dato alla rappresentante e scegli una password nuova.</small></span>
+      </button>
+      <div id="zonaRifai" class="zona-rifai nascosto">
+        <div id="codZonaEmail">
+          <label for="codEmail">La tua email</label>
+          <input id="codEmail" class="campo-testo" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="la tua email">
+        </div>
+        <div id="codZonaTel" class="nascosto">
+          <label for="codTel">Il tuo numero di cellulare</label>
+          <div class="tel-riga">
+            <select id="codPref" class="campo-testo" aria-label="Prefisso"></select>
+            <input id="codTel" class="campo-testo" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="333 123 4567">
+          </div>
+        </div>
+        <p class="errore-msg nascosto" id="cod1Errore"></p>
+        <a class="btn btn-wa nascosto" id="cod1Chiedi" target="_blank" rel="noopener">💬 Chiedi alla rappresentante</a>
+        <button class="btn btn-primario" type="submit" id="btnManda">Mandami il codice</button>
+      </div>
+      <a class="scelta-acc wa" id="sceltaChiedi" target="_blank" rel="noopener">
+        <span class="ic">💬</span>
+        <span class="tx"><strong>Chiedi alla rappresentante</strong><small>Si apre WhatsApp con il messaggio pronto: scegli tu la chat. Ti arriva una password nuova.</small></span>
+      </a>
       <button class="link-piccolo" type="button" data-torna>← Torna all'accesso</button>
     </form>
 
     <!-- 2) codice + nuova password -->
     <form id="fCodice2" class="modulo nascosto" autocomplete="on" novalidate>
       <p class="esito" id="cod2Info"></p>
-      <input id="cod2Email" class="nascosto" type="email" autocomplete="username" tabindex="-1" aria-hidden="true">
+      <input id="cod2Email" class="nascosto" type="text" autocomplete="username" tabindex="-1" aria-hidden="true">
       <label for="cod2Codice">Codice ricevuto via email</label>
       <input id="cod2Codice" class="campo-testo codice-input" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••">
       <label for="cod2Pass">Nuova password (almeno 8 caratteri)</label>
@@ -760,16 +995,33 @@
     </form>
 
     <details class="aiuto" id="aiutoAccesso">
-      <summary>Come si accede? Password dimenticata?</summary>
+      <summary>Come si accede?</summary>
       <ul>
-        <li><b>La prima volta</b> premi "Primo accesso", scrivi la tua email e ti arriva un codice di 6 cifre: con quello scegli la tua password.</li>
-        <li><b>Quale email?</b> Quella che hai dato alla rappresentante. Non serve un account Google e la password è solo dell'app: meglio diversa da quella della tua email.</li>
-        <li><b>Il codice non arriva?</b> Controlla nello spam o nella posta indesiderata, poi premi "Rimanda il codice".</li>
-        <li><b>Password dimenticata?</b> Stessa strada del primo accesso: ricevi un nuovo codice e scegli una nuova password.</li>
-        <li><b>Sul telefono</b> puoi aggiungere l'app alla schermata Home (Condividi → "Aggiungi alla schermata Home"): resti collegato per 30 giorni.</li>
+        <li><b>La prima volta</b> usa la password che ti ha mandato la rappresentante su WhatsApp o per email. Entri con il tuo <b>numero di cellulare</b> oppure con la tua <b>email</b>: scegli in alto.</li>
+        <li><b>Numero di cellulare:</b> scegli il prefisso (🇮🇹 +39 per l’Italia) e scrivi il numero, anche con gli spazi.</li>
+        <li><b>Salva la password</b> quando il telefono te lo chiede: ti serve per entrare da un altro telefono o dal computer. La vedi sempre in ☰ → Il mio profilo, dove puoi anche cambiarla.</li>
+        <li><b>Password dimenticata?</b> Se hai dato l’email, “Rifalla da solo”: ti arriva un codice (controlla anche lo spam). Altrimenti “Chiedi alla rappresentante”.</li>
+        <li><b>Sul telefono</b> tocca “Scarica l’app” in alto: su Android basta un tocco, su iPhone ci sono 4 passaggi e un video. L’icona finisce tra le tue app e resti collegato per un anno.</li>
         <li><b>Non riesci a entrare?</b> Scrivi alla rappresentante: “Problemi ad entrare?” apre WhatsApp con il messaggio pronto, scegli tu a chi mandarlo.</li>
       </ul>
     </details>
+  </div>
+</div>
+
+<!-- v10.16: guida per scaricare l'app (iPhone: 4 passi + video; Android senza finestra automatica: 3 passi) -->
+<div class="guida" id="guida" role="dialog" aria-modal="true" aria-labelledby="guidaTitolo" hidden>
+  <div class="guida-scheda">
+    <h2 id="guidaTitolo" class="guida-titolo">Scarica l'app</h2>
+    <div id="guidaVideoBox" class="guida-video-box" hidden>
+      <button type="button" class="btn-video" id="guidaVideoBtn">
+        <span class="btn-video-play" aria-hidden="true">▶</span>
+        <span class="btn-video-testo">Guarda il video<small>meno di un minuto, con la voce</small></span>
+      </button>
+      <video id="guidaVideo" class="guida-video" controls playsinline preload="none" poster="video/guida-iphone.jpg" hidden></video>
+    </div>
+    <ol id="guidaPassi" class="guida-passi"></ol>
+    <p id="guidaNota" class="guida-nota"></p>
+    <button type="button" class="btn btn-primario" id="guidaChiudi">Ho capito</button>
   </div>
 </div>
 
@@ -844,12 +1096,63 @@
   function errore(id, testo) { var e = $(id); if (testo) { e.textContent = testo; e.classList.remove('nascosto'); } else e.classList.add('nascosto'); }
   function occupato(btn, si, testo) { btn.disabled = si; if (testo) btn.textContent = testo; }
 
+  // v10.15: si entra con l'email o con il numero di cellulare (prefisso + numero). Il telefono ricorda l'ultima scelta.
+  var CHIAVE_MODO = 'app4a_modo', CHIAVE_PREF = 'app4a_prefisso', CHIAVE_TEL = 'app4a_tel';
+  var PREFISSI = [['🇮🇹', '+39', 'Italia'], ['🇬🇧', '+44', 'Regno Unito'], ['🇫🇷', '+33', 'Francia'], ['🇪🇸', '+34', 'Spagna'], ['🇩🇪', '+49', 'Germania'],
+    ['🇨🇭', '+41', 'Svizzera'], ['🇺🇸', '+1', 'Stati Uniti'], null,
+    ['🇦🇱', '+355', 'Albania'], ['🇦🇹', '+43', 'Austria'], ['🇧🇪', '+32', 'Belgio'], ['🇧🇷', '+55', 'Brasile'], ['🇨🇳', '+86', 'Cina'], ['🇵🇭', '+63', 'Filippine'],
+    ['🇬🇷', '+30', 'Grecia'], ['🇮🇳', '+91', 'India'], ['🇲🇦', '+212', 'Marocco'], ['🇳🇱', '+31', 'Paesi Bassi'], ['🇵🇱', '+48', 'Polonia'], ['🇵🇹', '+351', 'Portogallo'],
+    ['🇷🇴', '+40', 'Romania'], ['🇺🇦', '+380', 'Ucraina']];
+  var PREF_IN_CAMPO = /^\s*(\+|00)/;
+  function riempiPrefissi(sel, scelto) {
+    sel.innerHTML = '';
+    PREFISSI.forEach(function (p) {
+      if (!p) { sel.appendChild(el('option', { disabled: 'disabled', testo: '──────' })); return; }
+      var o = el('option', { value: p[1], title: p[2], testo: p[0] + ' ' + p[1] });
+      if (p[1] === scelto) o.selected = true;
+      sel.appendChild(o);
+    });
+  }
+  riempiPrefissi($('logPref'), leggi(CHIAVE_PREF) || '+39');
+  riempiPrefissi($('codPref'), leggi(CHIAVE_PREF) || '+39');
+  var MODO = leggi(CHIAVE_MODO) || (leggi(CHIAVE_EMAIL) ? 'email' : 'tel');
+  function modoAccesso(m) {
+    MODO = m === 'email' ? 'email' : 'tel';
+    $('modoEmail').setAttribute('aria-pressed', MODO === 'email' ? 'true' : 'false');
+    $('modoTel').setAttribute('aria-pressed', MODO === 'tel' ? 'true' : 'false');
+    nascondi_($('zonaEmail'), MODO !== 'email'); nascondi_($('zonaTel'), MODO !== 'tel');
+    errore('logErrore', '');
+  }
+  $('modoEmail').addEventListener('click', function () { modoAccesso('email'); $('logEmail').focus(); });
+  $('modoTel').addEventListener('click', function () { modoAccesso('tel'); $('logTel').focus(); });
+  // Email o numero dai campi: { email } | { telefono: "+39 3471112233" } | { errore }
+  function credenziale(modo, campoEmail, campoPref, campoTel) {
+    if (modo === 'email') {
+      var e = campoEmail.value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return { errore: e ? 'Scrivi un indirizzo email valido.' : 'Scrivi la tua email.' };
+      return { email: e };
+    }
+    var n = campoTel.value.trim();
+    var cifre = n.replace(/\D/g, '');
+    if (cifre.length < 6) return { errore: cifre ? 'Il numero sembra troppo corto: controllalo.' : 'Scrivi il tuo numero di cellulare.' };
+    return { telefono: PREF_IN_CAMPO.test(n) ? n : campoPref.value + ' ' + n };      // chi scrive già +39… o 0039… nel campo va bene lo stesso
+  }
+  function ricordaCredenziale(c) {
+    scrivi(CHIAVE_MODO, c.email ? 'email' : 'tel');
+    if (c.email) scrivi(CHIAVE_EMAIL, c.email.toLowerCase());
+    else { scrivi(CHIAVE_TEL, $('logTel').value.trim()); scrivi(CHIAVE_PREF, $('logPref').value); }
+  }
+  function testoCredenziale(c) { return c.email || c.telefono || ''; }
+
   function mostraLogin(info) {
     nascondi('app'); mostra('schermoAccesso'); solo('fLogin');
     errore('logErrore', '');
     var i = $('logInfo'); if (info) { i.textContent = info; i.classList.remove('nascosto'); } else i.classList.add('nascosto');
     if (!$('logEmail').value) $('logEmail').value = leggi(CHIAVE_EMAIL);
-    setTimeout(function () { ($('logEmail').value ? $('logPass') : $('logEmail')).focus(); }, 50);
+    if (!$('logTel').value) $('logTel').value = leggi(CHIAVE_TEL);
+    modoAccesso(MODO);
+    var campo = MODO === 'email' ? $('logEmail') : $('logTel');
+    setTimeout(function () { (campo.value ? $('logPass') : campo).focus(); }, 50);
   }
   function fermo(testo) { mostra('schermoAccesso'); nascondi('app'); solo('accFermo'); $('accFermoTesto').textContent = testo; nascondi('aiutoAccesso'); }
 
@@ -868,45 +1171,69 @@
   Array.prototype.forEach.call(document.querySelectorAll('[data-torna]'), function (b) {
     b.addEventListener('click', function () { mostraLogin(); });
   });
+  // v10.15: "Password dimenticata?" → Rifalla da solo (codice via email) oppure Chiedi alla rappresentante (WhatsApp)
+  var CODICE_PER = null;          // { email } o { telefono } della richiesta del codice
+  function linkChiedi(c) {
+    var chi = c && !c.errore ? testoCredenziale(c) : '';
+    return 'https://wa.me/?text=' + encodeURIComponent('Ciao Rossana, ho dimenticato la password dell’app della 4a. Me ne mandi una nuova?' + (chi ? ' (entro con ' + chi + ')' : ''));
+  }
   $('vaiCodice').addEventListener('click', function () {
-    solo('fCodice1'); errore('cod1Errore', '');
+    solo('fCodice1'); errore('cod1Errore', ''); nascondi('cod1Chiedi');
+    nascondi('zonaRifai'); $('sceltaRifai').setAttribute('aria-expanded', 'false');
+    nascondi_($('codZonaEmail'), MODO !== 'email'); nascondi_($('codZonaTel'), MODO !== 'tel');
     $('codEmail').value = $('logEmail').value.trim() || leggi(CHIAVE_EMAIL);
-    setTimeout(function () { $('codEmail').focus(); }, 50);
+    $('codTel').value = $('logTel').value.trim() || leggi(CHIAVE_TEL);
+    $('codPref').value = $('logPref').value;
+    $('sceltaChiedi').href = linkChiedi(credenziale(MODO, $('logEmail'), $('logPref'), $('logTel')));
+  });
+  $('sceltaRifai').addEventListener('click', function () {
+    var aperta = $('zonaRifai').classList.contains('nascosto');
+    nascondi_($('zonaRifai'), !aperta); this.setAttribute('aria-expanded', aperta ? 'true' : 'false');
+    if (aperta) setTimeout(function () { (MODO === 'email' ? $('codEmail') : $('codTel')).focus(); }, 50);
   });
 
   $('fLogin').addEventListener('submit', function (ev) {
     ev.preventDefault();
-    var email = $('logEmail').value.trim(), pass = $('logPass').value;
-    if (!email || !pass) { errore('logErrore', 'Scrivi email e password.'); return; }
+    var c = credenziale(MODO, $('logEmail'), $('logPref'), $('logTel')), pass = $('logPass').value;
+    if (c.errore) { errore('logErrore', c.errore); return; }
+    if (!pass) { errore('logErrore', 'Scrivi la password.'); return; }
     errore('logErrore', ''); occupato($('btnEntra'), true, 'Entro…');
-    chiama('entra', { email: email, password: pass }).then(function (r) {
-      scrivi(CHIAVE_EMAIL, email.toLowerCase());
+    c.password = pass;
+    chiama('entra', c).then(function (r) {
+      ricordaCredenziale(c);
       entrato(r);
     }).catch(function (e) { errore('logErrore', e.message); })
       .then(function () { occupato($('btnEntra'), false, 'Entra'); });
   });
 
-  function mandaCodice(email, btn) {
+  function mandaCodice(c, btn) {
     occupato(btn, true, 'Invio…');
-    return chiama('codice', { email: email }).then(function (r) {
-      scrivi(CHIAVE_EMAIL, email.toLowerCase());
-      $('cod2Email').value = email;
-      $('cod2Info').textContent = '📧 ' + (r.messaggio || 'Ti abbiamo mandato un codice.') + ' (' + email + ')';
+    var dati = c.email ? { email: c.email } : { telefono: c.telefono };
+    return chiama('codice', dati).then(function (r) {
+      CODICE_PER = dati;
+      if (c.email) scrivi(CHIAVE_EMAIL, c.email.toLowerCase());
+      $('cod2Email').value = testoCredenziale(c);
+      $('cod2Info').textContent = '📧 ' + (r.messaggio || 'Ti abbiamo mandato un codice.') + (c.email ? ' (' + c.email + ')' : '');
       solo('fCodice2'); errore('cod2Errore', '');
       setTimeout(function () { $('cod2Codice').focus(); }, 50);
     });
   }
   $('fCodice1').addEventListener('submit', function (ev) {
     ev.preventDefault();
-    var email = $('codEmail').value.trim(), b = $('btnManda');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errore('cod1Errore', 'Scrivi un indirizzo email valido.'); return; }
+    var b = $('btnManda');
+    var c = credenziale(MODO, $('codEmail'), $('codPref'), $('codTel'));
+    nascondi('cod1Chiedi');
+    if (c.errore) { errore('cod1Errore', c.errore); return; }
     errore('cod1Errore', '');
-    mandaCodice(email, b).catch(function (e) { errore('cod1Errore', e.message); })
-      .then(function () { occupato(b, false, 'Mandami il codice'); });
+    mandaCodice(c, b).catch(function (e) {
+      errore('cod1Errore', e.message);
+      if (e.codice === 'NOEMAIL') { $('cod1Chiedi').href = linkChiedi(c); mostra('cod1Chiedi'); }      // solo numero: niente email per il codice
+    }).then(function () { occupato(b, false, 'Mandami il codice'); });
   });
   $('btnRimanda').addEventListener('click', function () {
     var b = this;
-    mandaCodice($('cod2Email').value, b).then(function () { toast('Codice rimandato'); })
+    if (!CODICE_PER) return;
+    mandaCodice(CODICE_PER, b).then(function () { toast('Codice rimandato'); })
       .catch(function (e) { errore('cod2Errore', e.message); })
       .then(function () { occupato(b, false, 'Non è arrivato? Rimanda il codice'); });
   });
@@ -916,9 +1243,15 @@
     if (codice.length !== 6) { errore('cod2Errore', 'Il codice ha 6 cifre: lo trovi nell\'email.'); return; }
     if (p1.length < 8) { errore('cod2Errore', 'La password deve avere almeno 8 caratteri.'); return; }
     if (p1 !== p2) { errore('cod2Errore', 'Le due password non sono uguali.'); return; }
+    if (!CODICE_PER) { errore('cod2Errore', 'Chiedi prima il codice.'); return; }
     errore('cod2Errore', ''); occupato($('btnSalva'), true, 'Salvo…');
-    chiama('imposta', { email: $('cod2Email').value, codice: codice, password: p1 }).then(function (r) {
-      $('logEmail').value = $('cod2Email').value; $('logPass').value = p1;     // così il telefono può ricordarla
+    var dati = { codice: codice, password: p1 };
+    for (var k in CODICE_PER) dati[k] = CODICE_PER[k];
+    chiama('imposta', dati).then(function (r) {
+      $('logPass').value = p1;                                       // così il telefono può ricordarla
+      if (CODICE_PER.email) $('logEmail').value = CODICE_PER.email;
+      else { $('logTel').value = $('codTel').value.trim(); $('logPref').value = $('codPref').value; }
+      ricordaCredenziale(CODICE_PER);
       toast('Password salvata ✓');
       entrato(r);
     }).catch(function (e) { errore('cod2Errore', e.message); })
@@ -938,8 +1271,83 @@
     mostraLogin('Sei uscito. A presto!');
   });
 
+  // ---------- v10.16: Scarica l'app (come l'app mensa) ----------
+  // Android / Chrome: finestra d'installazione del telefono con un tocco. iPhone: Apple non lo permette, quindi 4 passi + video.
+  var INSTALLA = { prompt: null };
+  var IN_APP = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+  var IS_IOS = /iphone|ipad|ipod/i.test(navigator.userAgent || '') || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var ICO_G = {
+    puntini: '<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>',
+    condividi: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>',
+    aggiungi: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>',
+    scarica: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg>'
+  };
+  var VIDEO_GUIDA = 'video/guida-iphone.mp4';
+  try {
+    if ('serviceWorker' in navigator && location.protocol === 'https:' && !window.__ANTEPRIMA__) navigator.serviceWorker.register('sw.js').catch(function () {});
+    window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); INSTALLA.prompt = e; });
+    window.addEventListener('appinstalled', function () { $('bloccoScarica').hidden = true; INSTALLA.fatta = true; toast('App installata ✓'); });
+    $('bloccoScarica').hidden = IN_APP;
+    $('btnScarica').addEventListener('click', scaricaApp);
+    $('guidaChiudi').addEventListener('click', chiudiGuida);
+    $('guida').addEventListener('click', function (e) { if (e.target === $('guida')) chiudiGuida(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('guida').hidden) chiudiGuida(); });
+    $('guidaVideoBtn').addEventListener('click', function () {
+      var v = $('guidaVideo');
+      if (!v.getAttribute('src')) v.setAttribute('src', VIDEO_GUIDA);      // il video si scarica solo se serve
+      v.hidden = false; $('guidaVideoBtn').hidden = true;
+      var p = v.play(); if (p && p.catch) p.catch(function () {});
+    });
+    // il pulsante del video compare solo quando il file è su GitHub (cartella video)
+    if (IS_IOS && !IN_APP && !window.__ANTEPRIMA__) fetch(VIDEO_GUIDA, { method: 'HEAD' }).then(function (r) { INSTALLA.video = r.ok; }).catch(function () {});
+  } catch (errScarica) { /* accessorio: l'app parte comunque */ }
+  function scaricaApp() {
+    if (INSTALLA.prompt) {
+      var richiesta = INSTALLA.prompt; INSTALLA.prompt = null;
+      richiesta.prompt();
+      richiesta.userChoice.then(function (r) { if (r && r.outcome === 'accepted') $('bloccoScarica').hidden = true; }).catch(function () {});
+      return;
+    }
+    apriGuida();
+  }
+  function apriGuida() {
+    var elenco, nota;
+    if (IS_IOS) {
+      elenco = [
+        ['Nella barra in basso della pagina, tocca il <b>pulsante del menu</b> (in basso a sinistra)', ICO_G.puntini],
+        ['Nel menu che si apre, tocca <b>Condividi</b>. Su iPad o col telefono ruotato è già in alto a destra', ICO_G.condividi],
+        ['Scorri l’elenco e tocca <b>Aggiungi alla schermata Home</b> (icona quadrata con il +)', ICO_G.aggiungi],
+        ['Controlla che <b>Apri come app web</b> sia attivo (verde), poi tocca <b>Aggiungi</b> in alto a destra', ICO_G.scarica]
+      ];
+      nota = 'Se hai aperto il link da WhatsApp, aprilo prima con Safari.';
+    } else {
+      elenco = [
+        ['Tocca i <b>tre puntini</b> in alto a destra del browser', ICO_G.puntini],
+        ['Tocca <b>Installa app</b> (oppure <b>Aggiungi a schermata Home</b>)', ICO_G.aggiungi],
+        ['Tocca <b>Installa</b>. L’icona è sul tuo telefono!', ICO_G.scarica]
+      ];
+      nota = 'Funziona meglio con Chrome: se usi un altro browser, apri il link con Chrome.';
+    }
+    $('guidaVideoBox').hidden = !(IS_IOS && INSTALLA.video);
+    fermaVideoGuida();
+    $('guidaPassi').innerHTML = elenco.map(function (p, i) {
+      return '<li class="guida-passo"><span class="guida-num">' + (i + 1) + '</span><span class="guida-testo">' + p[0] + '</span><span class="guida-icona">' + p[1] + '</span></li>';
+    }).join('');
+    $('guidaNota').textContent = nota;
+    $('guida').hidden = false;
+    document.querySelector('.guida-scheda').scrollTop = 0;
+    try { $('guidaChiudi').focus({ preventScroll: true }); } catch (e) {}
+  }
+  function fermaVideoGuida() {
+    var v = $('guidaVideo');
+    try { v.pause(); } catch (e) {}
+    v.hidden = true; $('guidaVideoBtn').hidden = false;
+  }
+  function chiudiGuida() { fermaVideoGuida(); $('guida').hidden = true; }
+
   // ---------- Avvio ----------
   // v10.12: un link come .../APP-4A/#avviso-av_123 (messaggio WhatsApp) o .../#coordinate apre l'app direttamente lì, anche dopo il login
+  // v10.14: anche .../#libro-mat-42 (una pagina di un libro)
   var DESTINAZIONE = (location.hash || '').replace(/^#/, '');
   if (!window.__ANTEPRIMA__ && URL_SCRIPT.indexOf('https://script.google.com/') !== 0) {
     fermo('App non ancora collegata: manca l\'indirizzo dello script (URL_SCRIPT in index.html).');
@@ -953,10 +1361,13 @@
 
   function avvia(r) {
     STATO.dati = r.contenuti;
-    STATO.sessione = { email: r.utente.email, amministratore: !!r.utente.admin, alunni: r.utente.alunni || [] };
+    STATO.sessione = { email: r.utente.email, amministratore: !!r.utente.admin, alunni: r.utente.alunni || [],
+      chiave: r.utente.chiave || r.utente.email, mail: r.utente.mail === undefined ? r.utente.email : r.utente.mail, telefono: r.utente.telefono || '',
+      primoIngresso: !!r.utente.primoIngresso };                       // v10.15: password appena ricevuta dalla rappresentante → si apre il profilo
     STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null;
     var d = caricaDati(false);
     STATO.documenti = d.documenti; STATO.miei = d.miei; STATO.inArrivo = d.inArrivo;
+    caricaLibri();                                                     // v10.14: elenco dei libri
     aggiornaContatori();
     avviaApp();
   }
@@ -1020,9 +1431,16 @@
     $('chipUtente').title = 'Il mio profilo';
     document.title = STATO.dati.titolo;
     disegnaMenu();
+    if (STATO.sessione.primoIngresso) { vaiA('profilo'); return; }      // v10.15: il link del messaggio (#avviso…) resta per dopo
     vaiA('home');
     vaiADestinazione();
   }
+  // v10.15: dal profilo del primo ingresso alla Home (e al link del messaggio, se c'era)
+  function primoIngressoFatto(conferma) {
+    if (STATO.sessione.primoIngresso && conferma !== false) chiama('passwordConfermata').catch(function () {});
+    STATO.sessione.primoIngresso = false;
+  }
+  function vaiAllaHome() { primoIngressoFatto(); vaiA('home'); vaiADestinazione(); }
   // v10.12: link dal messaggio WhatsApp (#avviso-… sulla Home, #coordinate in Contabilità)
   function vaiADestinazione() {
     var d = DESTINAZIONE; DESTINAZIONE = '';
@@ -1031,6 +1449,9 @@
     if (d === 'coordinate') { apriScheda('contabilita', SCHEDA_PAGAMENTI); return; }
     var m = d.match(/^avviso-(av_[\w-]+)$/);
     if (m) STATO.avvisoDaMostrare = m[1];
+    // v10.14: .../#libro-mat-42 apre il libro su quella pagina
+    var lb = d.match(/^libro-([a-z0-9]+)-(\d{1,4})$/i);
+    if (lb) { STATO.libroDaAprire = { libro: lb[1], n: +lb[2] }; vaiA('libri'); }
   }
 
   function el(tag, attr, figli) {
@@ -1056,6 +1477,9 @@
     nav.appendChild(el('div', { classe: 'voce-admin' }, [
       el('button', { classe: 'voce', 'data-id': 'profilo', onclick: function () { vaiA('profilo'); chiudiMenu(); } }, [
         el('span', { classe: 'ic', testo: '👤' }), el('span', { testo: 'Il mio profilo' })
+      ]),
+      IN_APP || INSTALLA.fatta ? null : el('button', { classe: 'voce', onclick: function () { chiudiMenu(); scaricaApp(); } }, [      // v10.16
+        el('span', { classe: 'ic', testo: '📲' }), el('span', { testo: 'Scarica l’app' })
       ])
     ]));
     if (STATO.sessione.amministratore) {
@@ -1069,7 +1493,7 @@
 
   var PAGINA_GESTIONE = { id: 'gestione', titolo: 'Gestione accessi', descrizione: 'Solo per te · password delle famiglie e fondo cassa da versare',
     blocchi: [{ tipo: 'gestione' }] };
-  var PAGINA_PROFILO = { id: 'profilo', titolo: 'Il mio profilo', descrizione: 'La tua email di accesso e la tua password',
+  var PAGINA_PROFILO = { id: 'profilo', titolo: 'Il mio profilo', descrizione: 'Come entri nell’app e la tua password',
     blocchi: [{ tipo: 'profilo' }] };
   var PAGINE_FISSE = { gestione: PAGINA_GESTIONE, profilo: PAGINA_PROFILO };
 
@@ -1081,7 +1505,8 @@
   $('velo').addEventListener('click', chiudiMenu);
   $('chipUtente').addEventListener('click', function () { if (STATO.sessione) { chiudiMenu(); vaiA('profilo'); } });
 
-  function vaiA(id, ridisegno) {      // ridisegno = stessi dati aggiornati: niente visita, resta allo stesso punto
+  function vaiA(id, ridisegno) {
+    if (STATO.sessione && STATO.sessione.primoIngresso && id !== 'profilo') primoIngressoFatto();   // v10.15: uscire dal profilo = tiene la password ricevuta      // ridisegno = stessi dati aggiornati: niente visita, resta allo stesso punto
     var scorri = ridisegno ? window.scrollY : 0;
     // pagina che è solo un collegamento (es. Mensa): apre direttamente l'altra app
     var diretta = STATO.dati.pagine.filter(function (x) { return x.id === id && x.url; })[0];
@@ -2003,7 +2428,7 @@
     return s;
   }
   // WhatsApp con il messaggio pronto: il destinatario lo sceglie chi scrive
-  function linkWhatsapp(testo) { return 'https://wa.me/?text=' + encodeURIComponent(testo); }
+  function linkWhatsapp(testo, numero) { return 'https://wa.me/' + (numero ? String(numero).replace(/\D/g, '') : '') + '?text=' + encodeURIComponent(testo); }   // v10.15: con il numero apre la chat giusta
 
   // ---------- Giorni senza lezione: appuntamenti di tutto il giorno del calendario NO LEZIONI ----------
   // { 'aaaa-mm-gg': 'Ponte dei Santi', … }. Lo script segna il calendario con vacanze: true (in mancanza, vale il nome).
@@ -2364,8 +2789,8 @@
         a.genitori.forEach(function (p) {
           var nota = el('small', { classe: p.ricordato ? 'ok' : '', testo: p.ricordato ? '✓ Ricordato il ' + dataCorta(isoDi(new Date(p.ricordato))) : 'non ancora ricordato' });
           blocco.appendChild(el('div', { classe: 'dv-gen' }, [
-            el('span', { classe: 'em' }, [p.email, nota]),
-            frase ? el('a', { classe: 'wa', href: linkWhatsapp(frase), target: '_blank', rel: 'noopener', onclick: function () {
+            el('span', { classe: 'em' }, [p.mail || p.telefono || p.email, nota]),
+            frase ? el('a', { classe: 'wa', href: linkWhatsapp(frase, p.numero), target: '_blank', rel: 'noopener', onclick: function () {
               chiama('ricordato', { alunno: a.alunno, email: p.email, scadenza: a.scadenza }).then(function (r) {
                 p.ricordato = r.ricordato || new Date().toISOString();
                 nota.className = 'ok'; nota.textContent = '✓ Ricordato il ' + dataCorta(isoDi(new Date(p.ricordato)));
@@ -2376,13 +2801,507 @@
         righe.appendChild(blocco);
       });
       card.appendChild(righe);
-      card.appendChild(el('p', { classe: 'classe-nota', testo: 'WhatsApp si apre con il messaggio pronto e il link alle Coordinate: scegli tu il contatto. Importi e scadenze arrivano dal master.' }));
+      card.appendChild(el('p', { classe: 'classe-nota', testo: 'WhatsApp si apre con il messaggio pronto e il link alle Coordinate: sulla chat del genitore se nel foglio c’è il suo numero, altrimenti scegli tu il contatto. Importi e scadenze arrivano dal master.' }));
     }
     disegna();
     return card;
   }
 
+
+  // ---------- v10.14: LIBRI — scaffale, ricerca, vai a pagina, lettore e stampa ----------
+  // L'elenco dei libri arriva dallo script (azione "libri"): per ogni libro i numeri delle pagine, mai gli indirizzi dei file.
+  // Le pagine arrivano una alla volta (azione "libroPagina"); la ricerca la fa lo script (azione "libroCerca").
+  // Su questo telefono l'app ricorda l'ultimo libro aperto e l'ultima pagina di ogni libro (solo comodità, niente dati).
+  var CHIAVE_LIBRI = 'app4a_libri', MAX_STAMPA = 30;
+  var LB = { scelto: null, kit: false, stampa: [], immagini: {}, ordine: [] };
+  function memoriaLibri() { try { return JSON.parse(localStorage.getItem(CHIAVE_LIBRI) || '{}') || {}; } catch (e) { return {}; } }
+  function ricordaLibro(id, n) {
+    var m = memoriaLibri(); m.ultimo = { libro: id, n: n }; m.pagine = m.pagine || {}; m.pagine[id] = n;
+    try { localStorage.setItem(CHIAVE_LIBRI, JSON.stringify(m)); } catch (e) {}
+  }
+  function caricaLibri() {
+    STATO.libri = chiama('libri').then(function (r) { return Array.isArray(r.libri) ? r.libri : null; }, function () { return null; });
+    return STATO.libri;
+  }
+  function libriPronti(l) { return l && l.pagine && l.pagine.length > 0; }
+  function libroDi(elenco, id) { return (elenco || []).filter(function (l) { return l.id === id; })[0] || null; }
+  function copertina(l, kit) {
+    var c = el('div', { classe: 'lb-cop' + (kit ? ' kit' : ''), 'aria-hidden': 'true' }, [el('span', { classe: 'sim', testo: l.simbolo || '📘' }), el('span', { classe: 'nm', testo: l.nome })]);
+    c.style.background = 'linear-gradient(160deg,' + (l.colore || '#1f5f99') + ',' + (l.colore || '#1f5f99') + 'cc)';
+    return c;
+  }
+  function paginaVicina(l, n) {        // la pagina chiesta, oppure quella che c'è subito dopo (o l'ultima)
+    var p = l.pagine;
+    for (var i = 0; i < p.length; i++) if (p[i] >= n) return p[i];
+    return p[p.length - 1];
+  }
+
+  // Immagine di una pagina: chiesta allo script una volta sola, poi tenuta in memoria (al massimo 40 pagine)
+  function immaginePagina(libro, n) {
+    var k = libro + '|' + n;
+    if (!LB.immagini[k]) {
+      LB.immagini[k] = chiama('libroPagina', { libro: libro, n: n }).then(function (r) {
+        var bin = atob(r.dati), arr = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+        return { url: URL.createObjectURL(new Blob([arr], { type: r.mime || 'image/jpeg' })), mime: r.mime || 'image/jpeg', dati: r.dati };
+      });
+      LB.immagini[k].catch(function () { delete LB.immagini[k]; });
+      LB.ordine.push(k);
+      while (LB.ordine.length > 40) {
+        var via = LB.ordine.shift(), vecchia = LB.immagini[via];
+        delete LB.immagini[via];
+        if (vecchia) vecchia.then(function (x) { URL.revokeObjectURL(x.url); }, function () {});
+      }
+    }
+    return LB.immagini[k];
+  }
+
+  // ---------- Home: "Continua a leggere" ----------
+  function bloccoLibroHome() {
+    var box = el('div', { classe: 'nascosto' });
+    (STATO.libri || caricaLibri()).then(function (elenco) {
+      var pronti = (elenco || []).filter(libriPronti);
+      if (!pronti.length) return;
+      var m = memoriaLibri(), u = m.ultimo && libroDi(pronti, m.ultimo.libro);
+      var libro = u || pronti.filter(function (l) { return !l.kit; })[0] || pronti[0];
+      var n = u ? paginaVicina(libro, m.ultimo.n) : null;
+      box.classList.remove('nascosto');
+      box.appendChild(el('button', { type: 'button', classe: 'lb-home', onclick: function () { apriLettore(libro.id, n || (m.pagine && m.pagine[libro.id]) || libro.pagine[0], true); } }, [
+        copertina(libro),
+        el('span', { classe: 'tx' }, [el('small', { testo: u ? '📚 Continua a leggere' : '📚 Libri da sfogliare' }), el('strong', { testo: libro.nome }),
+          el('span', { classe: 'pag', testo: u ? 'pag. ' + n + ' →' : 'Apri il libro →' })])
+      ]));
+      box.appendChild(el('div', { classe: 'lb-home-due' }, [
+        el('button', { type: 'button', testo: '📚 Tutti i libri', onclick: function () { vaiA('libri'); } }),
+        el('button', { type: 'button', testo: '🔎 Cerca un argomento', onclick: function () { STATO.libriCerca = true; vaiA('libri'); } })
+      ]));
+    });
+    return box;
+  }
+
+  // ---------- Pagina Libri ----------
+  function bloccoLibri() {
+    var box = el('div', { classe: 'lb-blocco' });
+    box.appendChild(attesa('Carico i libri…'));
+    (STATO.libri || caricaLibri()).then(function (elenco) {
+      box.innerHTML = '';
+      if (!elenco) {
+        box.appendChild(el('div', { classe: 'lb-nota', testo: STATO.sessione.amministratore
+          ? '⚠️ Lo script non manda ancora i libri: incolla Codice.gs 10.11 e Contenuti.gs 10.11, poi Nuova versione.'
+          : 'I libri saranno disponibili a breve.' }));
+        return;
+      }
+      var m = memoriaLibri(), pronti = elenco.filter(libriPronti);
+      if (!LB.scelto || !libroDi(pronti, LB.scelto)) LB.scelto = (m.ultimo && libroDi(pronti, m.ultimo.libro) ? m.ultimo.libro : (pronti[0] || {}).id) || null;
+      var conRicerca = elenco.some(function (l) { return l.ricerca; });
+
+      // 1) ricerca
+      box.appendChild(el('div', { classe: 'lb-eti', testo: '🔎 Cerca un argomento o una parola' }));
+      var campo = el('input', { id: 'lbCerca', type: 'search', placeholder: 'es. frazioni, perimetro, Romani', 'aria-label': 'Cerca nei libri', autocomplete: 'off', enterkeyhint: 'search' });
+      box.appendChild(el('div', { classe: 'lb-cerca' }, [el('span', { classe: 'lente', 'aria-hidden': 'true', testo: '🔎' }), campo]));
+      var esiti = el('div', { classe: 'lb-risultati', 'aria-live': 'polite' });
+      box.appendChild(esiti);
+      var attesaCerca, giro = 0;
+      campo.addEventListener('input', function () {
+        clearTimeout(attesaCerca);
+        var q = campo.value.trim(), mio = ++giro;
+        esiti.innerHTML = '';
+        if (/^\d{1,4}$/.test(q) && LB.scelto) {                // un numero: apri quella pagina
+          var l = libroDi(pronti, LB.scelto);
+          esiti.appendChild(el('button', { type: 'button', classe: 'lb-ris', onclick: function () { apriLettore(l.id, paginaVicina(l, +q)); } }, [
+            el('b', { classe: 'n' }, [el('small', { testo: 'pag.' }), q]), el('span', { classe: 'tx' }, [el('strong', { testo: 'Apri la pagina ' + q }), l.nome])]));
+          return;
+        }
+        if (q.length < 3) return;
+        if (!conRicerca) { esiti.appendChild(el('div', { classe: 'lb-nota', testo: 'La ricerca per parola sarà pronta a breve. Intanto scegli il libro e scrivi il numero di pagina.' })); return; }
+        attesaCerca = setTimeout(function () {
+          esiti.appendChild(attesa('Cerco “' + q + '”…'));
+          chiama('libroCerca', { q: q }).then(function (r) {
+            if (mio !== giro) return;
+            esiti.innerHTML = '';
+            var ris = r.risultati || [];
+            if (!ris.length) { esiti.appendChild(el('div', { classe: 'lb-nota', testo: 'Nessuna pagina con “' + q + '”. Prova con un’altra parola.' })); return; }
+            esiti.appendChild(el('div', { classe: 'lb-eti', testo: r.totale + (r.totale === 1 ? ' pagina trovata' : ' pagine trovate') }));
+            ris.forEach(function (x) {
+              var l = libroDi(elenco, x.libro); if (!l) return;
+              esiti.appendChild(el('button', { type: 'button', classe: 'lb-ris', onclick: function () { apriLettore(l.id, x.n); } }, [
+                el('b', { classe: 'n' }, [el('small', { testo: 'pag.' }), String(x.n)]),
+                el('span', { classe: 'tx' }, [el('strong', { testo: (l.kit ? 'Kit docente · ' : '') + l.nome }), evidenzia(x.testo || '', r.parole || [q])])
+              ]));
+            });
+            if (r.totale > ris.length) esiti.appendChild(el('div', { classe: 'lb-nota', testo: '…e altre ' + (r.totale - ris.length) + ' pagine: aggiungi una parola per restringere.' }));
+          }).catch(function (e) { if (mio === giro && e.codice !== 'SESSIONE') { esiti.innerHTML = ''; esiti.appendChild(el('div', { classe: 'lb-nota', testo: e.message })); } });
+        }, 450);
+      });
+
+      // 2) scaffale
+      box.appendChild(el('div', { classe: 'lb-eti', testo: 'Scegli il libro' }));
+      var scaffale = el('div', { classe: 'lb-scaffale' });
+      box.appendChild(scaffale);
+      // 3) vai a pagina, 4) argomenti
+      var vai = el('div'), argomenti = el('div');
+      box.appendChild(vai); box.appendChild(argomenti);
+
+      function disegnaScaffale() {
+        scaffale.innerHTML = '';
+        var kitLibri = elenco.filter(function (l) { return l.kit; });
+        var mostra = LB.kit ? kitLibri : elenco.filter(function (l) { return !l.kit; });
+        if (LB.kit) {
+          scaffale.appendChild(el('button', { type: 'button', classe: 'lb-kit-torna', testo: '← Tutti i libri', onclick: function () { LB.kit = false; disegnaScaffale(); } }));
+          scaffale.appendChild(el('div', { classe: 'lb-kit-tit', testo: '🧰 Kit docente · ' + kitLibri.length + ' libri' }));
+        }
+        var gruppo = null;
+        mostra.forEach(function (l) {
+          if (l.gruppo !== gruppo) { gruppo = l.gruppo; scaffale.appendChild(el('div', { classe: 'lb-gruppo', testo: gruppo || 'Libri' })); }
+          scaffale.appendChild(voceLibro(l));
+        });
+        if (!LB.kit && kitLibri.length) {
+          if (!gruppo) scaffale.appendChild(el('div', { classe: 'lb-gruppo', testo: 'Altri libri' }));
+          scaffale.appendChild(el('button', { type: 'button', classe: 'lb-vol', onclick: function () { LB.kit = true; disegnaScaffale(); } }, [
+            copertina({ nome: 'Kit docente', simbolo: '🧰', colore: '#4a5568' }, true), el('span', { testo: 'Kit docente' }),
+            el('span', { classe: 'stato', testo: kitLibri.length + ' libri ›' })]));
+        }
+      }
+      function voceLibro(l) {
+        var pronto = libriPronti(l);
+        var b = el('button', { type: 'button', classe: 'lb-vol' + (l.id === LB.scelto ? ' attivo' : '') + (pronto ? '' : ' spento'), 'aria-disabled': pronto ? null : 'true' }, [
+          copertina(l), el('span', { testo: l.nome }),
+          el('span', { classe: 'stato', testo: pronto ? l.pagine.length + ' pagine' : l.errore ? 'non disponibile' : 'in arrivo' })]);
+        b.addEventListener('click', function () {
+          if (!pronto) { toast(l.nome + ': in arrivo'); return; }
+          LB.scelto = l.id; disegnaScaffale(); disegnaVai();
+          var mm = memoriaLibri();
+          apriLettore(l.id, (mm.pagine && mm.pagine[l.id]) || l.pagine[0]);
+        });
+        return b;
+      }
+      function disegnaVai() {
+        vai.innerHTML = ''; argomenti.innerHTML = '';
+        var l = libroDi(pronti, LB.scelto);
+        if (!l) return;
+        vai.appendChild(el('div', { classe: 'lb-eti', testo: 'Vai alla pagina dei compiti' }));
+        vai.appendChild(el('p', { classe: 'lb-vai-libro' }, ['nel libro ', el('b', { testo: l.nome }), ' (tocca un altro libro per cambiare)']));
+        var num = el('input', { id: 'lbNumero', type: 'text', inputmode: 'numeric', pattern: '[0-9]*', maxlength: '4', placeholder: 'n. pagina', 'aria-label': 'Numero di pagina', autocomplete: 'off', enterkeyhint: 'go' });
+        var form = el('form', { classe: 'lb-vai', novalidate: 'novalidate' }, [num, el('button', { type: 'submit', classe: 'lb-grosso', testo: 'Apri' })]);
+        form.addEventListener('submit', function (ev) { ev.preventDefault(); vaiAPagina(l, num.value); });
+        vai.appendChild(form);
+        if (l.argomenti && l.argomenti.length) {
+          argomenti.appendChild(el('div', { classe: 'lb-eti', testo: 'Argomenti di ' + l.nome }));
+          var lista = el('div', { classe: 'lb-argomenti' });
+          l.argomenti.forEach(function (a) {
+            lista.appendChild(el('button', { type: 'button', classe: 'lb-arg', onclick: function () { apriLettore(l.id, paginaVicina(l, +a.da)); } }, [
+              el('span', { classe: 'em', testo: a.icona || '📌' }), el('span', { testo: a.titolo }), el('span', { classe: 'pp', testo: 'pag. ' + a.da + (a.a ? '–' + a.a : '') })]));
+          });
+          argomenti.appendChild(lista);
+        }
+      }
+      disegnaScaffale(); disegnaVai();
+      if (STATO.libriCerca) { STATO.libriCerca = false; setTimeout(function () { campo.focus(); campo.scrollIntoView({ block: 'center' }); }, 60); }
+      if (STATO.libroDaAprire) {
+        var d = STATO.libroDaAprire; STATO.libroDaAprire = null;
+        var ll = libroDi(pronti, d.libro);
+        if (ll) apriLettore(ll.id, paginaVicina(ll, d.n)); else toast('Questo libro non è ancora disponibile');
+      }
+    });
+    return box;
+  }
+  function evidenzia(testo, parole) {
+    var frag = document.createDocumentFragment(), basso = testo.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    var segni = [];
+    parole.forEach(function (p) { p = String(p).toLowerCase(); if (p.length < 2) return; var i = 0, j; while ((j = basso.indexOf(p, i)) >= 0) { segni.push([j, j + p.length]); i = j + p.length; } });
+    segni.sort(function (a, b) { return a[0] - b[0]; });
+    var pos = 0;
+    segni.forEach(function (s) { if (s[0] < pos) return; frag.appendChild(document.createTextNode(testo.slice(pos, s[0]))); frag.appendChild(el('mark', { testo: testo.slice(s[0], s[1]) })); pos = s[1]; });
+    frag.appendChild(document.createTextNode(testo.slice(pos)));
+    return el('span', null, [frag]);
+  }
+  function vaiAPagina(l, valore) {
+    var n = parseInt(String(valore).replace(/\D/g, ''), 10);
+    if (!n) { toast('Scrivi il numero della pagina'); return false; }
+    var vera = paginaVicina(l, n);
+    if (vera !== n) toast('La pagina ' + n + ' non c’è: ti mostro la ' + vera);
+    apriLettore(l.id, vera);
+    return true;
+  }
+
+  // ---------- Lettore a tutto schermo ----------
+  function apriLettore(id, n, daHome) {
+    (STATO.libri || caricaLibri()).then(function (elenco) {
+      var l = libroDi(elenco, id);
+      if (!libriPronti(l)) { toast('Libro non disponibile'); return; }
+      if (daHome || STATO.pagina !== 'libri') chiama('pagina', { pagina: 'libri' }).catch(function () {});
+      LB.scelto = l.id;
+      mostraLettore(l, paginaVicina(l, n || l.pagine[0]));
+    });
+  }
+  function mostraLettore(l, n) {
+    var vecchio = document.querySelector('.lb-lettore');
+    if (vecchio) vecchio.remove();
+    var zoom = false, x0 = null, y0 = null, ultimoTocco = 0;
+    var img = el('img', { alt: '' });
+    var scena = el('div', { classe: 'lb-scena' });
+    var prima = el('button', { type: 'button', classe: 'lb-freccia sx', 'aria-label': 'Pagina precedente', testo: '‹' });
+    var dopo = el('button', { type: 'button', classe: 'lb-freccia dx', 'aria-label': 'Pagina successiva', testo: '›' });
+    var numero = el('b'), segno = el('span', { classe: 'seg nascosto', testo: '✓ da stampare' });
+    var bZoom = el('button', { type: 'button', classe: 'lb-btn', 'aria-label': 'Ingrandisci', testo: '＋' });
+    var bScegli = el('button', { type: 'button' }), bStampa = el('button', { type: 'button' });
+    var box = el('div', { classe: 'lb-lettore', role: 'dialog', 'aria-label': 'Libro ' + l.nome }, [
+      el('div', { classe: 'lb-testa' }, [el('button', { type: 'button', classe: 'lb-btn', 'aria-label': 'Chiudi il libro', testo: '✕', onclick: function () { chiudi(); } }),
+        el('span', { classe: 'tit', testo: (l.kit ? 'Kit docente · ' : '') + l.nome }), bZoom]),
+      scena,
+      el('div', { classe: 'lb-num' }, [el('span', { testo: 'pagina' }), numero, segno]),
+      el('nav', { classe: 'lb-piede', 'aria-label': 'Azioni sulla pagina' }, [
+        el('button', { type: 'button', onclick: function () { chiediPagina(l, vai); } }, [el('span', { classe: 'ic', testo: '🔢' }), 'Vai a…']),
+        bScegli, bStampa,
+        el('button', { type: 'button', onclick: function () { condividi(l, n); } }, [el('span', { classe: 'ic', testo: '💬' }), 'Manda su WhatsApp'])
+      ])
+    ]);
+    scena.appendChild(prima); scena.appendChild(dopo);
+    function indice() { return l.pagine.indexOf(n); }
+    function scelta() { return LB.stampa.some(function (s) { return s.libro === l.id && s.n === n; }); }
+    function aggiornaPiede() {
+      var si = scelta();
+      segno.classList.toggle('nascosto', !si);
+      bScegli.className = si ? 'scelta' : '';
+      bScegli.innerHTML = ''; bScegli.appendChild(el('span', { classe: 'ic', testo: si ? '☑' : '☐' })); bScegli.appendChild(document.createTextNode(si ? 'Scelta per la stampa' : 'Aggiungi alla stampa'));
+      bStampa.innerHTML = ''; bStampa.appendChild(el('span', { classe: 'ic', testo: '🖨️' })); bStampa.appendChild(document.createTextNode(LB.stampa.length ? 'Stampa (' + LB.stampa.length + ')' : 'Stampa questa'));
+    }
+    function vai(nuova) {
+      n = paginaVicina(l, nuova); ricordaLibro(l.id, n);
+      zoom = false; scena.classList.remove('zoom'); bZoom.textContent = '＋';
+      numero.textContent = String(n);
+      prima.disabled = indice() <= 0; dopo.disabled = indice() >= l.pagine.length - 1;
+      aggiornaPiede();
+      Array.prototype.forEach.call(scena.querySelectorAll('.spinner, .errore'), function (x) { x.remove(); });
+      img.remove();
+      var attesaImg = el('div', { classe: 'spinner' }); scena.insertBefore(attesaImg, prima);
+      var chiesta = n;
+      immaginePagina(l.id, n).then(function (x) {
+        if (chiesta !== n) return;
+        attesaImg.remove(); img.src = x.url; img.alt = l.nome + ', pagina ' + n; scena.insertBefore(img, prima); scena.scrollTo(0, 0);
+      }).catch(function (e) {
+        if (chiesta !== n) return;
+        attesaImg.remove(); scena.insertBefore(el('div', { classe: 'errore', testo: e.codice === 'RETE' ? 'Pagina non arrivata: controlla internet e tocca di nuovo la freccia.' : (e.message || 'Pagina non disponibile') }), prima);
+      });
+      // la pagina dopo e quella prima arrivano in anticipo, così sfogliare è subito
+      var i = indice();
+      [l.pagine[i + 1], l.pagine[i - 1]].forEach(function (p) { if (p !== undefined) immaginePagina(l.id, p).catch(function () {}); });
+    }
+    function sposta(d) { var i = indice() + d; if (i >= 0 && i < l.pagine.length) vai(l.pagine[i]); }
+    function cambiaZoom() { zoom = !zoom; scena.classList.toggle('zoom', zoom); bZoom.textContent = zoom ? '－' : '＋'; bZoom.setAttribute('aria-label', zoom ? 'Rimpicciolisci' : 'Ingrandisci'); }
+    prima.addEventListener('click', function () { sposta(-1); });
+    dopo.addEventListener('click', function () { sposta(1); });
+    bZoom.addEventListener('click', cambiaZoom);
+    scena.addEventListener('dblclick', function (e) { if (!e.target.closest('button')) cambiaZoom(); });
+    scena.addEventListener('touchstart', function (e) { if (e.touches.length === 1) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; } else x0 = null; }, { passive: true });
+    scena.addEventListener('touchend', function (e) {
+      if (x0 === null || e.target.closest('button')) { x0 = null; return; }
+      var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+      if (!zoom && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) { sposta(dx < 0 ? 1 : -1); return; }
+      var ora = Date.now();
+      if (Math.abs(dx) < 12 && Math.abs(dy) < 12 && ora - ultimoTocco < 320) { e.preventDefault(); cambiaZoom(); ultimoTocco = 0; } else ultimoTocco = ora;
+    });
+    bScegli.addEventListener('click', function () {
+      if (scelta()) { LB.stampa = LB.stampa.filter(function (s) { return !(s.libro === l.id && s.n === n); }); toast('Pagina ' + n + ' tolta dalla stampa'); }
+      else if (LB.stampa.length >= MAX_STAMPA) { toast('Al massimo ' + MAX_STAMPA + ' pagine alla volta'); return; }
+      else { LB.stampa.push({ libro: l.id, n: n }); ordinaStampa(); toast('Pagina ' + n + ' aggiunta · ' + LB.stampa.length + ' da stampare'); }
+      aggiornaPiede();
+    });
+    bStampa.addEventListener('click', function () {
+      if (!LB.stampa.length) { LB.stampa.push({ libro: l.id, n: n }); aggiornaPiede(); }
+      pannelloStampa(l, aggiornaPiede);
+    });
+    function tasti(e) {
+      if (document.querySelector('.velo-doc.lb-sopra')) return;
+      if (e.key === 'ArrowRight') sposta(1); else if (e.key === 'ArrowLeft') sposta(-1); else if (e.key === 'Escape') chiudi();
+    }
+    // il tasto "indietro" del telefono chiude il libro invece di uscire dall'app
+    function indietro() { chiudi(true); }
+    function chiudi(daIndietro) {
+      document.removeEventListener('keydown', tasti); window.removeEventListener('popstate', indietro);
+      box.remove(); document.body.style.overflow = '';
+      Array.prototype.forEach.call(document.querySelectorAll('.velo-doc.lb-sopra'), function (v) { v.remove(); });
+      if (!daIndietro && history.state && history.state.lettore) { try { history.back(); } catch (e) {} }
+      if (STATO.pagina === 'home') vaiA('home', true);          // aggiorna "Continua a leggere"
+    }
+    document.addEventListener('keydown', tasti);
+    try { history.pushState({ lettore: 1 }, ''); window.addEventListener('popstate', indietro); } catch (e) {}
+    document.body.appendChild(box); document.body.style.overflow = 'hidden';
+    vai(n);
+  }
+  function ordinaStampa() {
+    STATO.libri.then(function (elenco) {
+      var ordine = (elenco || []).map(function (x) { return x.id; });
+      LB.stampa.sort(function (a, b) { return ordine.indexOf(a.libro) - ordine.indexOf(b.libro) || a.n - b.n; });
+    });
+  }
+  function condividi(l, n) {
+    var testo = '📚 ' + l.nome + ', pag. ' + n + '\nNell’app della 4a: ' + URL_APP + '#libro-' + l.id + '-' + n;
+    var a = el('a', { href: linkWhatsapp(testo), target: '_blank', rel: 'noopener' });
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  function chiediPagina(l, vai) {
+    var velo = el('div', { classe: 'velo-doc lb-sopra' });
+    var chiudi = function () { velo.remove(); };
+    var num = el('input', { id: 'lbNumero2', type: 'text', inputmode: 'numeric', pattern: '[0-9]*', maxlength: '4', placeholder: 'n. pagina', 'aria-label': 'Numero di pagina', autocomplete: 'off', enterkeyhint: 'go' });
+    var form = el('form', { classe: 'pannello', novalidate: 'novalidate' }, [
+      el('h3', { classe: 'lb-pannello-tit', testo: 'Vai alla pagina' }),
+      el('p', { testo: l.nome + ' · dalla pagina ' + l.pagine[0] + ' alla ' + l.pagine[l.pagine.length - 1] }),
+      el('div', { classe: 'lb-vai' }, [num, el('button', { type: 'submit', classe: 'lb-grosso', testo: 'Apri' })]),
+      el('button', { type: 'button', classe: 'link-piccolo', testo: 'Annulla', onclick: chiudi })
+    ]);
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var x = parseInt(num.value, 10);
+      if (!x) { toast('Scrivi il numero della pagina'); return; }
+      var vera = paginaVicina(l, x);
+      if (vera !== x) toast('La pagina ' + x + ' non c’è: ti mostro la ' + vera);
+      chiudi(); vai(vera);
+    });
+    velo.appendChild(form);
+    velo.addEventListener('click', function (e) { if (e.target === velo) chiudi(); });
+    document.body.appendChild(velo);
+    setTimeout(function () { num.focus(); }, 60);
+  }
+
+  // ---------- Stampa: le pagine scelte in un solo PDF A4, una pagina per foglio ----------
+  // PDF scritto dall'app stessa (nessuna libreria da scaricare): ogni pagina è un'immagine JPEG su un foglio A4.
+  // Le pagine passano prima da un canvas, così il PDF riceve sempre un JPEG a colori anche se l'originale è PNG o in bianco e nero.
+  function jpegDa(url, larghezzaMax) {
+    return new Promise(function (ok, no) {
+      var im = new Image();
+      im.onload = function () {
+        var scala = Math.min(1, larghezzaMax / im.naturalWidth), c = document.createElement('canvas');
+        c.width = Math.round(im.naturalWidth * scala); c.height = Math.round(im.naturalHeight * scala);
+        var g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(im, 0, 0, c.width, c.height);
+        c.toBlob(function (b) {
+          if (!b) { no(new Error('Pagina non convertita')); return; }
+          var fr = new FileReader();
+          fr.onload = function () { ok({ dati: new Uint8Array(fr.result), w: c.width, h: c.height }); };
+          fr.onerror = function () { no(new Error('Pagina non convertita')); };
+          fr.readAsArrayBuffer(b);
+        }, 'image/jpeg', 0.9);
+      };
+      im.onerror = function () { no(new Error('Pagina non leggibile')); };
+      im.src = url;
+    });
+  }
+  function pdfA4(fogli) {                 // fogli: [{ dati: Uint8Array JPEG, w, h }]
+    var parti = [], pos = 0, posizioni = [], cod = new TextEncoder();
+    function scrivi(x) { var b = typeof x === 'string' ? cod.encode(x) : x; parti.push(b); pos += b.length; }
+    function oggetto(n, testo, flusso) {
+      posizioni[n] = pos; scrivi(n + ' 0 obj\n' + testo);
+      if (flusso) { scrivi('stream\n'); scrivi(flusso); scrivi('\nendstream'); }
+      scrivi('\nendobj\n');
+    }
+    var W = 595.28, H = 841.89, M = 17, kids = [];
+    fogli.forEach(function (f, i) { kids.push((3 + i * 3) + ' 0 R'); });
+    scrivi('%PDF-1.4\n%\u00e2\u00e3\u00cf\u00d3\n');
+    oggetto(1, '<< /Type /Catalog /Pages 2 0 R >>');
+    oggetto(2, '<< /Type /Pages /Count ' + fogli.length + ' /Kids [' + kids.join(' ') + '] >>');
+    fogli.forEach(function (f, i) {
+      var p = 3 + i * 3, scala = Math.min((W - 2 * M) / f.w, (H - 2 * M) / f.h), w = f.w * scala, h = f.h * scala;
+      var disegno = 'q ' + w.toFixed(2) + ' 0 0 ' + h.toFixed(2) + ' ' + ((W - w) / 2).toFixed(2) + ' ' + ((H - h) / 2).toFixed(2) + ' cm /Im0 Do Q';
+      oggetto(p, '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + W + ' ' + H + '] /Resources << /XObject << /Im0 ' + (p + 2) + ' 0 R >> >> /Contents ' + (p + 1) + ' 0 R >>');
+      oggetto(p + 1, '<< /Length ' + disegno.length + ' >>\n', cod.encode(disegno));
+      oggetto(p + 2, '<< /Type /XObject /Subtype /Image /Width ' + f.w + ' /Height ' + f.h + ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + f.dati.length + ' >>\n', f.dati);
+    });
+    var xref = pos, n = 3 + fogli.length * 3;
+    var righe = ['xref', '0 ' + n, '0000000000 65535 f '];
+    for (var k = 1; k < n; k++) righe.push(('0000000000' + posizioni[k]).slice(-10) + ' 00000 n ');
+    scrivi(righe.join('\n') + '\ntrailer\n<< /Size ' + n + ' /Root 1 0 R >>\nstartxref\n' + xref + '\n%%EOF\n');
+    return new Blob(parti, { type: 'application/pdf' });
+  }
+  function pannelloStampa(libroAperto, dopoCambio) {
+    var velo = el('div', { classe: 'velo-doc lb-sopra' });
+    var pannello = el('div', { classe: 'pannello ev-foglio', role: 'dialog', 'aria-label': 'Stampa le pagine' });
+    velo.appendChild(pannello);
+    var urlPdf = null;
+    var chiudi = function () { if (urlPdf) URL.revokeObjectURL(urlPdf); velo.remove(); if (dopoCambio) dopoCambio(); };
+    velo.addEventListener('click', function (e) { if (e.target === velo) chiudi(); });
+    document.body.appendChild(velo);
+    STATO.libri.then(function (elenco) {
+      function nomeCorto(id) { var l = libroDi(elenco, id); return l ? l.nome : id; }
+      var unLibro = function () { return LB.stampa.every(function (s) { return s.libro === LB.stampa[0].libro; }); };
+      function disegna() {
+        pannello.innerHTML = '';
+        pannello.appendChild(el('h3', { classe: 'lb-pannello-tit', testo: '🖨️ Stampa le pagine' }));
+        if (!LB.stampa.length) pannello.appendChild(el('p', { testo: 'Nessuna pagina scelta: aggiungi qui sotto quelle dei compiti.' }));
+        else pannello.appendChild(el('p', { testo: LB.stampa.length + (LB.stampa.length === 1 ? ' pagina' : ' pagine') + ', una per foglio A4. Tocca un numero per toglierlo.' }));
+        var chips = el('div', { classe: 'lb-scelte' });
+        LB.stampa.forEach(function (s, i) {
+          chips.appendChild(el('button', { type: 'button', testo: (unLibro() ? '' : nomeCorto(s.libro) + ' ') + 'pag. ' + s.n + ' ✕', 'aria-label': 'Togli la pagina ' + s.n,
+            onclick: function () { LB.stampa.splice(i, 1); disegna(); } }));
+        });
+        pannello.appendChild(chips);
+        pannello.appendChild(el('p', { classe: 'lb-forte', testo: 'Aggiungi più pagine di ' + libroAperto.nome }));
+        var da = el('input', { id: 'lbStDa', type: 'text', inputmode: 'numeric', maxlength: '4', placeholder: 'da', 'aria-label': 'Dalla pagina' });
+        var a = el('input', { id: 'lbStA', type: 'text', inputmode: 'numeric', maxlength: '4', placeholder: 'a', 'aria-label': 'Alla pagina' });
+        pannello.appendChild(el('div', { classe: 'lb-intervallo' }, [da, el('span', { testo: '→' }), a, el('button', { type: 'button', testo: 'Aggiungi', onclick: function () {
+          var x = parseInt(da.value, 10), y = parseInt(a.value, 10) || x;
+          if (!x || y < x) { toast('Scrivi due numeri di pagina, il primo più piccolo'); return; }
+          var nuove = libroAperto.pagine.filter(function (p) { return p >= x && p <= y; });
+          if (!nuove.length) { toast('Nessuna pagina tra la ' + x + ' e la ' + y); return; }
+          var aggiunte = 0;
+          nuove.forEach(function (p) {
+            if (LB.stampa.length >= MAX_STAMPA) return;
+            if (!LB.stampa.some(function (s) { return s.libro === libroAperto.id && s.n === p; })) { LB.stampa.push({ libro: libroAperto.id, n: p }); aggiunte++; }
+          });
+          ordinaStampa();
+          if (LB.stampa.length >= MAX_STAMPA) toast('Al massimo ' + MAX_STAMPA + ' pagine alla volta');
+          else toast(aggiunte + (aggiunte === 1 ? ' pagina aggiunta' : ' pagine aggiunte'));
+          setTimeout(disegna, 0);
+        } })]));
+        var prepara = el('button', { type: 'button', classe: 'lb-grosso oro', testo: 'Prepara il PDF da stampare' + (LB.stampa.length ? ' (' + LB.stampa.length + (LB.stampa.length === 1 ? ' foglio)' : ' fogli)') : '') });
+        prepara.disabled = !LB.stampa.length;
+        var esito = el('div');
+        prepara.addEventListener('click', function () { creaPdf(prepara, esito, nomeCorto, unLibro()); });
+        pannello.appendChild(prepara);
+        pannello.appendChild(esito);
+        pannello.appendChild(el('div', { classe: 'azioni-riga' }, [
+          LB.stampa.length ? el('button', { type: 'button', classe: 'btn btn-sec', testo: 'Svuota la scelta', onclick: function () { LB.stampa = []; disegna(); } }) : null,
+          el('button', { type: 'button', classe: 'btn btn-sec', testo: 'Chiudi', onclick: chiudi })
+        ]));
+      }
+      function creaPdf(bottone, esito, nomeCorto, unLibro) {
+        var pagine = LB.stampa.slice();
+        occupato(bottone, true, 'Preparo il PDF…');
+        esito.innerHTML = '';
+        var fatte = 0;
+        var aggiorna = function () { bottone.textContent = 'Preparo ' + fatte + ' di ' + pagine.length + '…'; };
+        // al massimo 4 pagine chieste insieme allo script
+        var coda = pagine.slice(), risultati = {}, attivi = [];
+        function prossima() {
+          var s = coda.shift(); if (!s) return Promise.resolve();
+          return immaginePagina(s.libro, s.n).then(function (x) { return jpegDa(x.url, 1800).then(function (j) { risultati[s.libro + '|' + s.n] = j; fatte++; aggiorna(); }); }).then(prossima);
+        }
+        for (var i = 0; i < Math.min(4, coda.length); i++) attivi.push(prossima());
+        Promise.all(attivi).then(function () {
+          var pdf = pdfA4(pagine.map(function (s) { return risultati[s.libro + '|' + s.n]; }));
+          var primo = pagine[0], ultimo = pagine[pagine.length - 1];
+          var nome = (unLibro ? nomeCorto(primo.libro) + ' pag ' + primo.n + (pagine.length > 1 ? '-' + ultimo.n : '') : 'Pagine dei libri') + '.pdf';
+          if (urlPdf) URL.revokeObjectURL(urlPdf);
+          urlPdf = URL.createObjectURL(pdf);
+          esito.appendChild(el('div', { classe: 'lb-pronto' }, [el('strong', { testo: '✓ Pronto: ' + nome }),
+            el('ol', null, [el('li', { testo: 'Tocca “Apri il PDF”.' }),
+              el('li', { testo: 'iPhone: tocca Condividi (il quadrato con la freccia) → Stampa.' }),
+              el('li', { testo: 'Android: tocca ⋮ → Stampa, oppure Condividi → Stampa.' })])]));
+          esito.appendChild(el('a', { classe: 'btn btn-primario', href: urlPdf, target: '_blank', rel: 'noopener', testo: 'Apri il PDF' }));
+          esito.appendChild(el('a', { classe: 'btn btn-sec', href: urlPdf, download: nome, testo: 'Scarica sul telefono' }));
+          occupato(bottone, false, 'Prepara di nuovo il PDF');
+        }).catch(function (e) {
+          esito.appendChild(el('p', { classe: 'errore-msg', testo: e && e.codice === 'RETE' ? 'Alcune pagine non sono arrivate: controlla internet e riprova.' : (e && e.message) || 'PDF non riuscito: riprova.' }));
+          occupato(bottone, false, 'Riprova');
+        });
+      }
+      disegna();
+    });
+  }
+
   var RENDER = {
+    // v10.14: libri
+    libri: function () { return bloccoLibri(); },
+    libroHome: function () { return bloccoLibroHome(); },
     // Orario delle lezioni: giorno per giorno, vista settimana e ore per materia
     orario: function (b) {
       var GIORNI = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'];
@@ -2872,32 +3791,58 @@
     },
     // Gestione accessi: chi ha creato la password (le modifiche si fanno nel foglio)
     gestione: function () {
+      // v10.15: le password le manda la rappresentante (WhatsApp o email); per ogni persona email, numero e stato
       var box = el('div', { classe: 'gestione' });
-      var filtro = '', soloSenza = false;
+      var filtro = '', vista = 'tutti';
       box.appendChild(attesa('Carico gli accessi…'));
+      function chiPersona(p) { return p.mail || p.telefono || p.email; }
       function disegna(g) {
         box.innerHTML = '';
         var tutte = [];
-        g.alunni.forEach(function (a) { a.persone.forEach(function (p) { if (!tutte.some(function (x) { return x.email === p.email; })) tutte.push(p); }); });
-        var attive = tutte.filter(function (p) { return p.attiva; }).length;
+        g.alunni.forEach(function (a) { a.persone.forEach(function (p) { if (!tutte.some(function (x) { return x.chiave === p.chiave; })) tutte.push(p); }); });
+        var da = tutte.filter(function (p) { return p.stato === 'da'; });
+        var inviate = tutte.filter(function (p) { return p.stato === 'inviata'; });
+        var dentro = tutte.filter(function (p) { return p.stato === 'dentro'; });
         var veri = g.alunni.filter(function (a) { return !a.docente && !senzaAlunno(a.alunno); });   // 10.13: senza il profilo docente
-        var famiglieOk = veri.filter(function (a) { return a.persone.some(function (p) { return p.attiva; }); }).length;
-        var senza = tutte.filter(function (p) { return !p.attiva; }).map(function (p) { return p.email; });
+        var famiglieOk = veri.filter(function (a) { return a.persone.some(function (p) { return p.stato === 'dentro'; }); }).length;
+        var nonEntrate = tutte.filter(function (p) { return p.stato !== 'dentro' && p.mail; }).map(function (p) { return p.mail; });
 
-        var riep = el('div', { classe: 'card' }, [
+        box.appendChild(el('div', { classe: 'card' }, [
           el('div', { classe: 'riepilogo' }, [
-            el('span', { classe: 'grande', testo: attive + '/' + tutte.length }),
-            el('div', { classe: 'tx' }, [el('strong', { testo: 'genitori hanno creato la password' }),
-              el('small', { style: 'display:block;color:var(--muted)', testo: famiglieOk + ' alunni su ' + veri.length + ' hanno almeno un genitore attivo' })])
+            el('span', { classe: 'grande', testo: dentro.length + '/' + tutte.length }),
+            el('div', { classe: 'tx' }, [el('strong', { testo: 'persone sono già entrate' }),
+              el('small', { style: 'display:block;color:var(--muted)', testo: famiglieOk + ' alunni su ' + veri.length + ' hanno almeno un genitore entrato' })])
           ]),
-          el('div', { classe: 'barra-prog' }, [el('i', { style: 'width:' + (tutte.length ? Math.round(attive / tutte.length * 100) : 0) + '%' })]),
+          el('div', { classe: 'barra-prog' }, [el('i', { style: 'width:' + (tutte.length ? Math.round(dentro.length / tutte.length * 100) : 0) + '%' })]),
+          el('div', { classe: 'pw-numeri' }, [
+            el('div', { classe: 'da' }, [el('b', { testo: String(da.length) }), el('small', { testo: 'password da mandare' })]),
+            el('div', null, [el('b', { testo: String(inviate.length) }), el('small', { testo: 'mandate, non ancora entrati' })]),
+            el('div', { classe: 'ok' }, [el('b', { testo: String(dentro.length) }), el('small', { testo: 'entrati' })])
+          ]),
           el('div', { classe: 'azioni-riga' }, [
-            senza.length ? el('button', { classe: 'btn btn-sec', testo: '📋 Copia le email di chi non è ancora entrato (' + senza.length + ')', onclick: function () { copia(senza.join(', '), senza.length + ' email copiate: incollale nei destinatari'); } }) : null,
+            nonEntrate.length ? el('button', { classe: 'btn btn-sec', testo: '📋 Copia le email di chi non è ancora entrato (' + nonEntrate.length + ')', onclick: function () { copia(nonEntrate.join(', '), nonEntrate.length + ' email copiate: incollale nei destinatari'); } }) : null,
             el('a', { classe: 'btn btn-sec', href: g.urlFoglio, target: '_blank', rel: 'noopener', testo: '✏️ Aggiungi o togli: apri il foglio accessi' })
           ]),
-          el('small', { style: 'display:block;color:var(--muted);margin-top:10px', testo: 'Nel foglio AREA_RISERVATA_accessi: colonna A alunno, colonna B email. Le modifiche valgono entro ' + (g.minutiCache === 1 ? 'un minuto' : (g.minutiCache || 1) + ' minuti') + '.' })
-        ]);
-        box.appendChild(riep);
+          el('small', { style: 'display:block;color:var(--muted);margin-top:10px', testo: 'Nel foglio AREA_RISERVATA_accessi: colonna A alunno, B email, colonna “Telefono” (D) il cellulare: per gli italiani basta il numero, per gli altri il prefisso davanti (+44 …). Ogni riga ha l’email o il telefono. Le modifiche valgono entro un minuto.' })
+        ]));
+
+        // Manda le password: WhatsApp una chat alla volta, email tutte insieme
+        var perWa = da.filter(function (p) { return p.numero && !p.doppio; });
+        var perEmail = da.filter(function (p) { return p.mail; });
+        box.appendChild(el('div', { classe: 'card pw-invio' }, [
+          el('h3', { testo: '📨 Manda le password' }),
+          el('p', { testo: 'A chi non l’ha ancora ricevuta. WhatsApp apre una chat alla volta con il messaggio pronto: tu premi Invia e torni qui. Le email partono da sole dal tuo Gmail.' }),
+          el('div', { classe: 'pw-due' }, [
+            el('button', { type: 'button', classe: 'btn btn-wa', disabled: perWa.length ? null : 'disabled', onclick: function () { invioWa(perWa, false); } },
+              ['💬 Su WhatsApp', el('small', { testo: perWa.length + (perWa.length === 1 ? ' persona' : ' persone') })]),
+            el('button', { type: 'button', classe: 'btn btn-primario', disabled: perEmail.length ? null : 'disabled', onclick: function () { invioEmail(da); } },
+              ['✉️ Per email', el('small', { testo: perEmail.length + (perEmail.length === 1 ? ' persona' : ' persone') })])
+          ])
+        ]));
+        (g.doppi || []).forEach(function (d) {
+          box.appendChild(el('div', { classe: 'avviso', testo: '⚠️ Stesso numero ' + d.telefono + ' per ' + d.persone.join(' e ') + ': con quel numero non si entra e WhatsApp resta spento finché non lo correggi nel foglio (con l’email si entra).' }));
+        });
+
         // v10.12: fondo cassa da versare, con il promemoria su WhatsApp per ogni genitore
         if (Array.isArray(g.daVersare)) box.appendChild(cardDaVersare(g));
         // classifica mandata dallo script con i suoi testi (Contenuti.gs → TESTI_GESTIONE)
@@ -2922,47 +3867,161 @@
         if (nonTrovati.length) box.appendChild(el('div', { classe: 'avviso', testo: '⚠️ Nel foglio accessi ma non trovati nel fondo cassa (controlla come sono scritti): ' + nonTrovati.join(', ') }));
 
         var ca = el('div', { classe: 'card' });
-        var cerca = el('input', { classe: 'cerca', type: 'search', placeholder: 'Cerca per alunno o email…', 'aria-label': 'Cerca negli accessi', value: filtro });
+        var cerca = el('input', { classe: 'cerca', type: 'search', placeholder: 'Cerca per alunno, email o numero…', 'aria-label': 'Cerca negli accessi', value: filtro });
         cerca.addEventListener('input', function () { filtro = cerca.value; disegnaElenco(); });
-        var chipTutti = el('button', { classe: 'cal-chip' + (soloSenza ? '' : ' attivo'), testo: 'Tutti', onclick: function () { soloSenza = false; disegna(g); } });
-        var chipSenza = el('button', { classe: 'cal-chip' + (soloSenza ? ' attivo' : ''), testo: 'Senza password (' + senza.length + ')', onclick: function () { soloSenza = true; disegna(g); } });
         ca.appendChild(cerca);
-        ca.appendChild(el('div', { classe: 'filtri' }, [chipTutti, chipSenza]));
+        ca.appendChild(el('div', { classe: 'filtri' }, [['tutti', 'Tutti'], ['da', 'Da mandare (' + da.length + ')'], ['inviata', 'Non ancora entrati (' + inviate.length + ')']].map(function (f) {
+          return el('button', { classe: 'cal-chip' + (vista === f[0] ? ' attivo' : ''), testo: f[1], onclick: function () { vista = f[0]; disegna(g); } });
+        })));
         var elenco = el('div');
         ca.appendChild(elenco);
         function rigaPersona(p, nome) {
-          var stato = p.attiva ? el('span', { classe: 'stato-pass si', testo: '✓ password creata' }) : el('span', { classe: 'stato-pass no', testo: 'non ancora entrato' });
-          var info = p.info || '';
-          return el('div', { classe: 'riga' }, [
-            el('div', { classe: 'tx' }, [el('strong', { testo: p.email }), el('small', null, [stato, info])]),
-            p.attiva && p.email !== STATO.sessione.email ? el('button', { classe: 'btn-no', testo: 'Reimposta', onclick: function () {
-              if (confirm('Reimpostare la password di ' + p.email + (nome ? ' (' + nome + ')' : '') + '?\n\nLa password viene cancellata ed esce da tutti i telefoni. Per rientrare dovrà fare "Primo accesso" e ricevere un nuovo codice via email.')) azione('reimposta', p.email, 'Password reimpostata');
-            } }) : null
+          var stato = p.stato === 'da' ? el('span', { classe: 'pw-stato da', testo: p.pronta ? 'Password pronta, non ancora mandata' : 'Password da mandare' })
+            : p.stato === 'inviata' ? el('span', { classe: 'pw-stato inviata', testo: (p.nuova ? 'Nuova password' : 'Password') + ' mandata ' + (p.canale === 'email' ? 'per email' : 'su WhatsApp') + (p.inviata ? ' il ' + p.inviata : '') + ' · non ancora entrato' })
+            : el('span', { classe: 'pw-stato dentro', testo: p.chiave === STATO.sessione.chiave ? '✓ Sei tu' : '✓ Entrato' + (p.cambiata ? ' · password scelta da lui' : ' · usa la password che gli hai mandato') });
+          var azioni = [];
+          var io = p.chiave === STATO.sessione.chiave;
+          if (p.stato !== 'dentro' && !io) {
+            var di = p.stato === 'inviata' ? 'Rimanda ' : '';
+            azioni.push(el('button', { type: 'button', classe: 'wa', disabled: p.numero && !p.doppio ? null : 'disabled',
+              title: !p.numero ? 'Nel foglio non c’è il numero' : p.doppio ? 'Numero scritto per due persone' : null,
+              onclick: function () { invioWa([p], false); } }, ['💬 ' + (di ? di + 'su ' : '') + 'WhatsApp']));
+            azioni.push(el('button', { type: 'button', classe: 'em', disabled: p.mail ? null : 'disabled', title: p.mail ? null : 'Nel foglio non c’è l’email',
+              onclick: function () { mandaEmail(p, false); } }, ['✉️ ' + (di ? di + 'per ' : '') + 'Email']));
+          }
+          if (p.attiva && !io) azioni.push(el('button', { type: 'button', classe: 'reimp', testo: '↻ Reimposta', onclick: function () { reimposta(p, nome); } }));
+          return el('div', { classe: 'persona' }, [
+            el('div', { classe: 'chi' }, [
+              p.mail ? el('b', { testo: p.mail }) : el('b', { classe: 'manca', testo: 'nessuna email' }),
+              p.telefono ? el('span', { classe: 'tel-r', testo: '📱 ' + p.telefono + (p.doppio ? '  ⚠️ su due persone' : '') }) : el('span', { classe: 'tel-r manca', testo: '📱 nessun numero' })
+            ]),
+            stato,
+            p.password ? el('div', { classe: 'pw-prima' }, [p.stato === 'dentro' ? 'Password che gli hai mandato, ancora in uso:' : 'Password:', el('span', { classe: 'mono', testo: p.password })]) : null,
+            p.info ? el('span', { classe: 'info', testo: p.info }) : null,
+            azioni.length ? el('div', { classe: 'pw-azioni' }, azioni) : null
           ]);
         }
         function disegnaElenco() {
           elenco.innerHTML = '';
           var q = filtro.toLowerCase().trim(), trovati = 0;
           g.alunni.forEach(function (a) {
-            var sue = a.persone.filter(function (p) { return (!q || (a.alunno + ' ' + p.email).toLowerCase().indexOf(q) >= 0) && (!soloSenza || !p.attiva); });
+            var sue = a.persone.filter(function (p) {
+              return (!q || (a.alunno + ' ' + (p.mail || '') + ' ' + (p.telefono || '').replace(/\s/g, '')).toLowerCase().indexOf(q.replace(/\s/g, '')) >= 0 || (a.alunno + ' ' + (p.mail || '')).toLowerCase().indexOf(q) >= 0)
+                && (vista === 'tutti' || p.stato === vista);
+            });
             if (!sue.length) return;
             trovati++;
             elenco.appendChild(el('div', { classe: 'gruppo', testo: a.docente ? '👩‍🏫 Profilo docente · nessun alunno' : a.alunno }));
             sue.forEach(function (p) { elenco.appendChild(rigaPersona(p, a.alunno)); });
           });
-          if (!q && !soloSenza && g.amministratori.length) {
+          if (!q && vista === 'tutti' && g.amministratori.length) {
             elenco.appendChild(el('div', { classe: 'gruppo', testo: 'Amministratrice' }));
             g.amministratori.forEach(function (p) { elenco.appendChild(rigaPersona(p, '')); });
           }
-          if (!trovati && (q || soloSenza)) elenco.appendChild(el('p', { classe: 'stato', testo: soloSenza && !q ? 'Tutti hanno creato la password 🎉' : 'Nessun risultato per "' + filtro + '".' }));
+          if (!trovati && (q || vista !== 'tutti')) elenco.appendChild(el('p', { classe: 'stato', testo: !q ? 'Nessuno in questo elenco 🎉' : 'Nessun risultato per "' + filtro + '".' }));
         }
         disegnaElenco();
         box.appendChild(ca);
       }
-      function azione(tipo, email, fatto) {
-        toast('Un attimo…');
-        chiama(tipo, { email: email }).then(function (g) { toast(fatto); disegna(g); })
-          .catch(function (e) { toast(e.message || 'Operazione non riuscita'); });
+
+      // Foglio dal basso (stile dei pannelli dell'app)
+      function foglio(nodi) {
+        var velo = el('div', { classe: 'velo-doc' });
+        var pannello = el('div', { classe: 'pannello ev-foglio', role: 'dialog' }, nodi);
+        velo.appendChild(pannello);
+        var chiudi = function () { velo.remove(); };
+        velo.addEventListener('click', function (e) { if (e.target === velo) chiudi(); });
+        document.body.appendChild(velo);
+        return { chiudi: chiudi, pannello: pannello };
+      }
+      function ricarica() { chiama('gestione').then(disegna).catch(function (e) { toast(e.message || 'Non disponibile'); }); }
+      function mandaEmail(p, nuova) {
+        toast('Mando l’email…');
+        chiama('passwordManda', { chiave: p.chiave, canale: 'email', nuova: nuova }).then(function () {
+          toast((nuova ? 'Nuova password mandata a ' : 'Password mandata a ') + p.mail); ricarica();
+        }).catch(function (e) { if (e.codice !== 'SESSIONE') toast(e.message); });
+      }
+      function reimposta(p, nome) {
+        var f = foglio([
+          el('h3', { testo: 'Nuova password per ' + chiPersona(p) + '?' }),
+          el('p', { testo: (nome ? nome + ' · ' : '') + 'La password di adesso smette di funzionare ed esce da tutti i telefoni. L’app ne crea una nuova: come gliela mandi?' }),
+          el('div', { classe: 'pw-due' }, [
+            el('button', { type: 'button', classe: 'btn btn-wa', disabled: p.numero && !p.doppio ? null : 'disabled', onclick: function () { f.chiudi(); invioWa([p], true); } }, ['💬 WhatsApp']),
+            el('button', { type: 'button', classe: 'btn btn-primario', disabled: p.mail ? null : 'disabled', onclick: function () { f.chiudi(); mandaEmail(p, true); } }, ['✉️ Email'])
+          ]),
+          !p.numero ? el('p', { classe: 'prof-nota', testo: 'WhatsApp è spento: nel foglio non c’è il numero.' }) : p.doppio ? el('p', { classe: 'prof-nota', testo: 'WhatsApp è spento: il numero è scritto per due persone.' })
+            : !p.mail ? el('p', { classe: 'prof-nota', testo: 'Email spenta: nel foglio non c’è l’email.' }) : null,
+          el('button', { type: 'button', classe: 'link-piccolo', testo: 'Annulla', onclick: function () { f.chiudi(); } })
+        ]);
+      }
+      // WhatsApp: una chat alla volta. Lo script prepara la password e il testo; "Apri WhatsApp" apre la chat di quel numero.
+      function invioWa(lista, nuova) {
+        var i = 0, aperti = 0;
+        var corpo = el('div');
+        var f = foglio([corpo]);
+        function passo() {
+          corpo.innerHTML = '';
+          if (i >= lista.length) {
+            corpo.appendChild(el('h3', { testo: aperti ? '✓ Fatto' : 'Nessun messaggio aperto' }));
+            corpo.appendChild(el('p', { testo: aperti ? (aperti === 1 ? 'Messaggio aperto in WhatsApp e segnato come mandato.' : aperti + ' messaggi aperti in WhatsApp e segnati come mandati.') : 'Chi hai saltato resta tra le password da mandare.' }));
+            corpo.appendChild(el('button', { type: 'button', classe: 'btn btn-primario', testo: 'Chiudi', onclick: function () { f.chiudi(); ricarica(); } }));
+            return;
+          }
+          var p = lista[i];
+          corpo.appendChild(el('h3', { testo: (nuova ? 'Nuova password' : 'Invio') + ' su WhatsApp' + (lista.length > 1 ? ' · ' + (i + 1) + ' di ' + lista.length : '') }));
+          if (lista.length > 1) corpo.appendChild(el('div', { classe: 'pw-prog' }, [el('i', { style: 'width:' + Math.round(i / lista.length * 100) + '%' })]));
+          corpo.appendChild(el('div', { classe: 'pw-dest' }, [el('span', { classe: 'av', testo: '💬' }),
+            el('span', null, [el('b', { testo: p.telefono }), el('small', { testo: p.mail || 'nessuna email' })])]));
+          var bolla = el('div', { testo: 'Preparo il messaggio…' });
+          corpo.appendChild(el('div', { classe: 'bolla-wa' }, [bolla]));
+          var apri = el('a', { classe: 'btn btn-wa', target: '_blank', rel: 'noopener', 'aria-disabled': 'true', style: 'pointer-events:none;opacity:.6', testo: 'Apri WhatsApp' });
+          var salta = el('button', { type: 'button', classe: 'btn btn-sec', testo: lista.length > 1 ? 'Salta' : 'Annulla', onclick: function () { if (lista.length === 1) { f.chiudi(); ricarica(); return; } i++; passo(); } });
+          corpo.appendChild(el('div', { classe: 'pw-due' }, [salta, apri]));
+          corpo.appendChild(el('p', { classe: 'prof-nota', testo: 'WhatsApp si apre sulla chat di questo numero con il messaggio già scritto: premi Invia e torna qui.' }));
+          chiama('passwordManda', { chiave: p.chiave, canale: 'whatsapp', nuova: nuova }).then(function (r) {
+            bolla.textContent = r.testo;
+            apri.href = linkWhatsapp(r.testo, r.numero);
+            apri.removeAttribute('aria-disabled'); apri.style.pointerEvents = ''; apri.style.opacity = '';
+            apri.addEventListener('click', function () {
+              aperti++;
+              chiama('passwordInviata', { chiave: p.chiave }).catch(function () {});
+              setTimeout(function () { i++; passo(); }, 400);
+            });
+          }).catch(function (e) {
+            if (e.codice === 'SESSIONE') return;
+            bolla.textContent = '⚠️ ' + e.message;
+          });
+        }
+        passo();
+      }
+      // Email: tutte insieme, partono dal Gmail della rappresentante
+      function invioEmail(da) {
+        var tutti = da.filter(function (p) { return p.mail; });
+        var senzaWa = tutti.filter(function (p) { return !p.numero || p.doppio; });
+        var scelta = senzaWa.length && senzaWa.length < tutti.length ? 'senza' : 'tutti';
+        var r1 = el('input', { type: 'radio', name: 'pwChi' }), r2 = el('input', { type: 'radio', name: 'pwChi' });
+        r1.checked = scelta === 'tutti'; r2.checked = scelta === 'senza';
+        var bInvia = el('button', { type: 'button', classe: 'btn btn-primario' });
+        function conta() { var n = scelta === 'tutti' ? tutti.length : senzaWa.length; bInvia.textContent = 'Manda ' + n + (n === 1 ? ' email' : ' email'); bInvia.disabled = !n; }
+        r1.addEventListener('change', function () { scelta = 'tutti'; conta(); });
+        r2.addEventListener('change', function () { scelta = 'senza'; conta(); });
+        bInvia.addEventListener('click', function () {
+          var lista = scelta === 'tutti' ? tutti : senzaWa;
+          occupato(bInvia, true, 'Mando…');
+          chiama('passwordEmail', { chiavi: lista.map(function (p) { return p.chiave; }) }).then(function (g) {
+            f.chiudi(); disegna(g);
+            toast((g.mandate || 0) + (g.mandate === 1 ? ' email mandata' : ' email mandate') + (g.saltate && g.saltate.length ? ' · ' + g.saltate.length + ' saltate' : ''));
+          }).catch(function (e) { if (e.codice !== 'SESSIONE') { toast(e.message); conta(); } });
+        });
+        var f = foglio([
+          el('h3', { testo: 'Manda le password per email' }),
+          el('p', { testo: 'Partono subito dal tuo Gmail, ognuna con la sua password.' }),
+          el('label', { classe: 'pw-radio' }, [r1, el('span', null, [el('b', { testo: 'Tutti quelli da mandare (' + tutti.length + ')' }), el('small', { testo: 'Anche chi riceverà WhatsApp: così ha la password in due posti (è la stessa).' })])]),
+          el('label', { classe: 'pw-radio' }, [r2, el('span', null, [el('b', { testo: 'Solo chi non ha WhatsApp (' + senzaWa.length + ')' }), el('small', { testo: 'Senza numero nel foglio, o con il numero scritto per due persone.' })])]),
+          bInvia,
+          el('button', { type: 'button', classe: 'link-piccolo', testo: 'Annulla', onclick: function () { f.chiudi(); } })
+        ]);
+        conta();
       }
       chiama('gestione').then(disegna).catch(function (e) {
         box.innerHTML = ''; box.appendChild(vuoto(e.message || 'Non autorizzato.'));
@@ -2970,19 +4029,63 @@
       return box;
     },
     sezioni: function () { return griglaHome(); },
-    // Il mio profilo: email (sola lettura), password attuale con Visualizza, cambio password con doppio inserimento
+    // Il mio profilo: email e numero (sola lettura), password attuale con Visualizza, cambio password con doppio inserimento.
+    // v10.15: al primo ingresso con la password mandata dalla rappresentante l'app si apre qui: "Tengo questa" oppure una nuova, e "Salvala".
     profilo: function () {
       var testi = (STATO.dati && STATO.dati.profilo) || {};
+      var ses = STATO.sessione, primo = !!ses.primoIngresso, soloNumero = !ses.mail;
       var box = el('div', { classe: 'profilo' });
+      var promemoria = soloNumero
+        ? '⚠️ Salvala: quando il telefono ti chiede di salvare la password, rispondi Sì (oppure scrivila in Note). Non hai dato l’email: se la perdi non puoi rifarla da solo, devi chiederla alla rappresentante.'
+        : '⚠️ Salvala: quando il telefono ti chiede di salvare la password, rispondi Sì (oppure scrivila in Note). Se la perdi, “Password dimenticata?” → “Rifalla da solo”.';
+      var bHome = function () {
+        return el('button', { type: 'button', classe: 'btn btn-primario vai-home', testo: '🏠 Vai alla Home', onclick: vaiAllaHome });
+      };
 
-      // 1) Email: solo da vedere
-      box.appendChild(el('div', { classe: 'card' }, [
-        el('h3', { classe: 'sez', testo: '✉️ Email di accesso' }),
-        el('div', { classe: 'prof-valore', testo: STATO.sessione.email }),
-        el('p', { classe: 'prof-nota', testo: testi.notaEmail || 'L’email non si cambia dall’app: per modificarla chiama la rappresentante.' })
-      ]));
+      // Primo ingresso: in cima la password ricevuta, il promemoria e "Tengo questa"
+      var primoBox = el('div');
+      function fatto(come) {
+        primoIngressoFatto(come === 'tengo');
+        primoBox.innerHTML = '';
+        primoBox.appendChild(el('div', { classe: 'card primo-card' }, [
+          el('h3', { classe: 'sez', testo: come === 'tengo' ? '✓ Tieni la password della rappresentante' : '✓ Password nuova salvata' }),
+          el('p', { testo: come === 'tengo' ? 'Non devi fare altro.' : 'Da adesso entri con quella nuova. La conosci solo tu.' }),
+          el('p', { classe: 'promemoria' + (soloNumero ? ' forte' : ''), testo: promemoria }),
+          bHome()
+        ]));
+        nascondi_(altro, true);
+        window.scrollTo(0, 0);
+      }
+      if (primo) {
+        var pw = el('span', { classe: 'mono', testo: '…' }), copiaB = el('button', { type: 'button', classe: 'btn-mini', testo: 'Copia', disabled: 'disabled' });
+        chiama('profilo').then(function (r) {
+          pw.textContent = r.password || '—';
+          if (r.password) { copiaB.disabled = false; copiaB.addEventListener('click', function () { copia(r.password, 'Password copiata'); }); attuale = r.password; }
+        }).catch(function () { pw.textContent = '—'; });
+        primoBox.appendChild(el('div', { classe: 'card primo-card' }, [
+          el('h3', { classe: 'sez', testo: '🔑 La tua password' }),
+          el('p', { testo: 'È quella che ti ha mandato la rappresentante. Puoi tenerla o sceglierne una nuova qui sotto.' }),
+          el('div', { classe: 'pass-grande' }, [pw, copiaB]),
+          el('p', { classe: 'promemoria' + (soloNumero ? ' forte' : ''), testo: promemoria }),
+          el('button', { type: 'button', classe: 'btn btn-primario', testo: '✓ Tengo questa', onclick: function () { fatto('tengo'); } })
+        ]));
+      }
+      box.appendChild(primoBox);
+      var altro = el('div');
+      box.appendChild(altro);
 
-      // 2) Password attuale: nascosta, si vede con Visualizza
+      // 1) Email e numero: solo da vedere
+      var righeAcc = [];
+      if (ses.mail) righeAcc.push(el('div', { classe: 'prof-valore', testo: '✉️ ' + ses.mail }));
+      if (ses.telefono) righeAcc.push(el('div', { classe: 'prof-valore', style: ses.mail ? 'margin-top:8px' : null, testo: '📱 ' + ses.telefono }));
+      if (!righeAcc.length) righeAcc.push(el('div', { classe: 'prof-valore', testo: ses.email }));
+      altro.appendChild(el('div', { classe: 'card' }, [
+        el('h3', { classe: 'sez', testo: ses.mail && ses.telefono ? 'Entri con l’email o con il numero' : ses.mail ? '✉️ Email di accesso' : '📱 Numero di accesso' }),
+      ].concat(righeAcc, [
+        el('p', { classe: 'prof-nota', testo: testi.notaEmail || 'Email e numero non si cambiano dall’app: per modificarli chiama la rappresentante.' })
+      ])));
+
+      // 2) Password attuale: nascosta, si vede con Visualizza (al primo ingresso è già in cima)
       var attuale = null, visibile = false;
       var val = el('span', { classe: 'prof-pass mono', testo: '••••••••' });
       var bVedi = el('button', { type: 'button', classe: 'btn-mini', testo: '👁 Visualizza' });
@@ -2997,11 +4100,11 @@
         bVedi.disabled = true; bVedi.textContent = 'Un attimo…';
         chiama('profilo').then(function (r) {
           if (r.password) { attuale = r.password; visibile = true; nascondi_(notaAtt, true); }
-          else { notaAtt.textContent = 'La password attuale si potrà vedere dopo il prossimo accesso con email e password. Intanto puoi sceglierne una nuova qui sotto.'; nascondi_(notaAtt, false); }
+          else { notaAtt.textContent = 'La password attuale si potrà vedere dopo il prossimo accesso con la password. Intanto puoi sceglierne una nuova qui sotto.'; nascondi_(notaAtt, false); }
         }).catch(function (e) { toast(e.message || 'Non disponibile'); })
           .then(function () { bVedi.disabled = false; disegnaAttuale(); });
       });
-      box.appendChild(el('div', { classe: 'card' }, [
+      if (!primo) altro.appendChild(el('div', { classe: 'card' }, [
         el('h3', { classe: 'sez', testo: '🔒 Password attuale' }),
         el('div', { classe: 'prof-riga' }, [val, bVedi]),
         notaAtt
@@ -3020,10 +4123,10 @@
       var p2 = campoPass('profPass2', 'Ripeti la nuova password');
       var err = el('p', { classe: 'errore-msg nascosto' });
       var ok = el('p', { classe: 'esito nascosto' });
-      var salva = el('button', { classe: 'btn btn-primario', type: 'submit', testo: 'Salva la nuova password' });
+      var salva = el('button', { classe: primo ? 'btn btn-sec' : 'btn btn-primario', type: 'submit', testo: 'Salva la nuova password' });
       var modulo = el('form', { classe: 'modulo', autocomplete: 'on', novalidate: 'novalidate' }, [
         // nome utente nascosto: così il telefono propone di aggiornare la password salvata
-        el('input', { classe: 'nascosto', type: 'email', autocomplete: 'username', value: STATO.sessione.email, tabindex: '-1', 'aria-hidden': 'true' })
+        el('input', { classe: 'nascosto', type: 'text', autocomplete: 'username', value: ses.mail || ses.telefono || ses.email, tabindex: '-1', 'aria-hidden': 'true' })
       ].concat(p1.nodi, p2.nodi, [err, ok, salva]));
       modulo.addEventListener('submit', function (ev) {
         ev.preventDefault();
@@ -3039,13 +4142,18 @@
           scrivi(CHIAVE_TOKEN, r.token);                 // questo telefono resta collegato
           attuale = a; disegnaAttuale(); nascondi_(notaAtt, true);
           p1.input.value = ''; p2.input.value = '';
+          toast('Password cambiata ✓');
+          if (primo) { primo = false; fatto('nuova'); return; }
           ok.textContent = '✓ Password cambiata. Su altri telefoni o computer dovrai rientrare con la nuova password.';
           nascondi_(ok, false);
-          toast('Password cambiata ✓');
         }).catch(function (e) { if (e.codice !== 'SESSIONE') { err.textContent = e.message; nascondi_(err, false); } })
           .then(function () { salva.disabled = false; salva.textContent = 'Salva la nuova password'; });
       });
-      box.appendChild(el('div', { classe: 'card' }, [el('h3', { classe: 'sez', testo: '🔑 Cambia password' }), modulo]));
+      altro.appendChild(el('div', { classe: 'card' }, [el('h3', { classe: 'sez', testo: primo ? 'Oppure scegline una nuova' : '🔑 Cambia password' }), modulo]));
+      if (primo) {
+        altro.appendChild(bHome());
+        altro.appendChild(el('p', { classe: 'prof-nota', style: 'text-align:center', testo: 'Se vai alla Home senza scegliere, resta la password che ti è stata mandata.' }));
+      }
       return box;
     },
     documenti: function (b) {
