@@ -832,6 +832,7 @@
   .lb-cella { display: grid; gap: 6px; align-content: start; min-width: 0; margin-top: 8px; }
   .lb-cella .lb-gruppo { grid-column: auto; margin-top: 0; font-size: 11.5px; letter-spacing: .03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .lb-vol { border: 0; background: transparent; padding: 0; color: var(--ink); text-align: center; font-weight: 800; font-size: 12px; line-height: 1.2; display: grid; gap: 5px; align-content: start; min-width: 0; overflow-wrap: anywhere; }
+  .lb-nota-stampa { margin: 6px 2px 12px; font-size: 13px; color: var(--muted); text-align: center; }
   .lb-vol .stato { font-size: 10.5px; color: var(--muted); font-weight: 700; }
   .lb-vol.attivo .lb-cop { outline: 3px solid var(--oro); outline-offset: 3px; }
   .lb-vol.spento { opacity: .55; cursor: default; }
@@ -887,6 +888,17 @@
   .pannello .lb-pannello-tit { margin-bottom: 8px; }
   .pannello p.lb-forte { color: var(--ink); font-weight: 800; margin: 0 0 6px; }
   @media (prefers-reduced-motion: reduce) { .lb-scena img { transition: none; } }
+  /* v10.21: stampa diretta delle pagine dei libri (una per foglio A4), senza costruire il PDF nell'app */
+  #lbStampaFogli { display: none; }
+  @media print {
+    @page { size: A4; margin: 6mm; }
+    body.lb-stampa { background: #fff !important; }
+    body.lb-stampa > *:not(#lbStampaFogli) { display: none !important; }
+    body.lb-stampa #lbStampaFogli { display: block !important; }
+    .lb-foglio { height: 284mm; display: flex; align-items: center; justify-content: center; break-after: page; page-break-after: always; overflow: hidden; }
+    .lb-foglio:last-child { break-after: auto; page-break-after: auto; }
+    .lb-foglio img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  }
 </style>
 </head>
 <body>
@@ -3358,12 +3370,57 @@
         prepara.disabled = !LB.stampa.length;
         var esito = el('div');
         prepara.addEventListener('click', function () { creaPdf(prepara, esito, nomeCorto, unLibro()); });
+        // v10.21: STAMPA DIRETTA (consigliata): le pagine arrivano dai link veloci, il telefono stampa o salva in PDF
+        var diretta = el('button', { type: 'button', classe: 'lb-grosso oro', testo: '🖨️ Stampa adesso' + (LB.stampa.length ? ' (' + LB.stampa.length + (LB.stampa.length === 1 ? ' foglio)' : ' fogli)') : '') });
+        diretta.disabled = !LB.stampa.length;
+        diretta.addEventListener('click', function () { stampaDiretta(diretta, esito); });
+        pannello.appendChild(diretta);
+        pannello.appendChild(el('p', { classe: 'lb-nota-stampa', testo: 'Si apre la stampa del telefono: puoi stampare oppure salvare come PDF (iPhone: Condividi → Salva su File).' }));
+        prepara.className = 'btn btn-sec';
+        prepara.textContent = 'Oppure crea il file PDF (più lento)';
         pannello.appendChild(prepara);
         pannello.appendChild(esito);
         pannello.appendChild(el('div', { classe: 'azioni-riga' }, [
           LB.stampa.length ? el('button', { type: 'button', classe: 'btn btn-sec', testo: 'Svuota la scelta', onclick: function () { LB.stampa = []; disegna(); } }) : null,
           el('button', { type: 'button', classe: 'btn btn-sec', testo: 'Chiudi', onclick: chiudi })
         ]));
+      }
+      function stampaDiretta(bottone, esito) {
+        var pagine = LB.stampa.slice(), fatte = 0;
+        var testo = bottone.textContent;
+        occupato(bottone, true, 'Preparo 0 di ' + pagine.length + '…');
+        esito.innerHTML = '';
+        function carica(s, volte) {
+          return immaginePagina(s.libro, s.n, 1800).then(function (x) {
+            return new Promise(function (ok, no) {
+              var im = new Image();
+              try { im.referrerPolicy = 'no-referrer'; } catch (e) {}
+              im.onload = function () { ok(im); };
+              im.onerror = function () { no(new Error('non letta')); };
+              im.src = x.url;
+            });
+          }).catch(function (e) {
+            if (volte <= 1) return null;
+            return new Promise(function (ok) { setTimeout(ok, 1200); }).then(function () { return carica(s, volte - 1); });
+          }).then(function (im) { if (im) { fatte++; bottone.textContent = 'Preparo ' + fatte + ' di ' + pagine.length + '…'; } return im; });
+        }
+        Promise.all(pagine.map(function (s) { return carica(s, 3); })).then(function (imgs) {
+          var mancano = pagine.filter(function (s, i) { return !imgs[i]; });
+          occupato(bottone, false, testo);
+          if (mancano.length) {
+            esito.appendChild(el('p', { classe: 'errore-msg', testo: (mancano.length === 1 ? 'Non è arrivata la pagina ' : 'Non sono arrivate le pagine ') +
+              mancano.map(function (s) { return etPag(s.n); }).join(', ') + '. Tocca di nuovo “Stampa adesso”.' }));
+            return;
+          }
+          var vecchio = document.getElementById('lbStampaFogli'); if (vecchio) vecchio.remove();
+          var fogli = el('div', { id: 'lbStampaFogli', 'aria-hidden': 'true' });
+          imgs.forEach(function (im) { fogli.appendChild(el('div', { classe: 'lb-foglio' }, [im])); });
+          document.body.appendChild(fogli);
+          document.body.classList.add('lb-stampa');
+          var fine = function () { document.body.classList.remove('lb-stampa'); window.removeEventListener('afterprint', fine); };
+          window.addEventListener('afterprint', fine);
+          setTimeout(function () { try { window.print(); } catch (e) { fine(); } }, 250);
+        });
       }
       function creaPdf(bottone, esito, nomeCorto, unLibro) {
         var pagine = LB.stampa.slice();
