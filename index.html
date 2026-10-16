@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.25, 16 ottobre 2026: COMPLEANNI con l'età — "Giulia · oggi compie 10 anni!", due o più bambini "oggi compiono 10 anni!" o, con età diverse, "Giulia compie 10 anni, Marco compie 9"; sulla torta il numero degli anni (con età diverse le 3 candeline); senza età (script vecchio o età non sicura) l'avviso resta quello della 10.24; serve lo script 10.17 (campo anni); Gestione accessi: nome del foglio "APP CLASSE accessi riservati". Versione 10.24, 16 ottobre 2026 — riparte dalla 10.23 installata, la cui intestazione diceva ancora 10.17: pupazzetto del profilo al posto di Esci (Esci dentro Il mio profilo); Prossimi 7 giorni con il mese ("Ven 16 ott"); COMPLEANNI: "Nome · sabato 24 ottobre sarà il suo compleanno" / "oggi è il suo compleanno" e avviso festoso in Home il giorno stesso; RENDICONTO DETTAGLIATO a due colonne (allievo e classe, 0,00 € se non lo riguarda, filtro Tutti / Solo di …); VISUALIZZA COME per l'amministratrice (Genitore, Docente, Errore: contorno blu e pulsante interruttore, sola lettura); Libri: ogni libro si apre dalla prima pagina (C1), tolto "Vai alla pagina dei compiti" sotto lo scaffale, ricerca visibile solo quando il testo è pronto. Serve lo script 10.16 per compleanni (riconoscimento sicuro), rendiconto a due colonne e Visualizza come. Versione 10.17, 15 ottobre 2026: copertine C1 e C2 prima di tutte le pagine (C3 e C4 dopo l'ultima; serve lo script 10.13), "Vai a pagina" nel lettore; pagine leggere per sfogliare (anteprima della larghezza dello schermo, originale con lo zoom e in stampa; serve lo script 10.13); tolto dalla Home il riquadro dei libri "Continua a leggere" / Tutti i libri / Cerca un argomento, ai libri si va dall'icona Libri. Versione 10.16: SCARICA L'APP nella schermata di accesso e nel menu (Android un tocco, iPhone 4 passi + video video/guida-iphone.mp4; service worker sw.js). Dalla 10.15: ACCESSO CON EMAIL O CELLULARE (prefisso + numero), "Password dimenticata?" con due strade, primo ingresso sul profilo, password mandate dalla rappresentante su WhatsApp o per email in Gestione accessi. Dalla 10.14: LIBRI sfogliabili. In Home
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.26, 17 ottobre 2026: LIBRI — un libro può aprire direttamente il suo sito (blocco libri di Contenuti.gs → siti, es. Religione Ponti Arcobaleno: Libro e Laboratori) con "si apre il sito ↗"; il Kit docente si può mettere subito dopo un libro scelto (kitDopo, es. dopo Tutto Chiaro) invece che in fondo allo scaffale. Versione 10.25, 16 ottobre 2026: COMPLEANNI con l'età — "Giulia · oggi compie 10 anni!", due o più bambini "oggi compiono 10 anni!" o, con età diverse, "Giulia compie 10 anni, Marco compie 9"; sulla torta il numero degli anni (con età diverse le 3 candeline); senza età (script vecchio o età non sicura) l'avviso resta quello della 10.24; serve lo script 10.17 (campo anni); Gestione accessi: nome del foglio "APP CLASSE accessi riservati". Versione 10.24, 16 ottobre 2026 — riparte dalla 10.23 installata, la cui intestazione diceva ancora 10.17: pupazzetto del profilo al posto di Esci (Esci dentro Il mio profilo); Prossimi 7 giorni con il mese ("Ven 16 ott"); COMPLEANNI: "Nome · sabato 24 ottobre sarà il suo compleanno" / "oggi è il suo compleanno" e avviso festoso in Home il giorno stesso; RENDICONTO DETTAGLIATO a due colonne (allievo e classe, 0,00 € se non lo riguarda, filtro Tutti / Solo di …); VISUALIZZA COME per l'amministratrice (Genitore, Docente, Errore: contorno blu e pulsante interruttore, sola lettura); Libri: ogni libro si apre dalla prima pagina (C1), tolto "Vai alla pagina dei compiti" sotto lo scaffale, ricerca visibile solo quando il testo è pronto. Serve lo script 10.16 per compleanni (riconoscimento sicuro), rendiconto a due colonne e Visualizza come. Versione 10.17, 15 ottobre 2026: copertine C1 e C2 prima di tutte le pagine (C3 e C4 dopo l'ultima; serve lo script 10.13), "Vai a pagina" nel lettore; pagine leggere per sfogliare (anteprima della larghezza dello schermo, originale con lo zoom e in stampa; serve lo script 10.13); tolto dalla Home il riquadro dei libri "Continua a leggere" / Tutti i libri / Cerca un argomento, ai libri si va dall'icona Libri. Versione 10.16: SCARICA L'APP nella schermata di accesso e nel menu (Android un tocco, iPhone 4 passi + video video/guida-iphone.mp4; service worker sw.js). Dalla 10.15: ACCESSO CON EMAIL O CELLULARE (prefisso + numero), "Password dimenticata?" con due strade, primo ingresso sul profilo, password mandate dalla rappresentante su WhatsApp o per email in Gestione accessi. Dalla 10.14: LIBRI sfogliabili. In Home
   "Continua a leggere"; pagina Libri con ricerca per parola, scaffale a gruppi (4 per riga, Kit docente a parte),
   vai a pagina e argomenti; lettore a tutto schermo con sfoglio, zoom e link per WhatsApp (#libro-mat-42);
   stampa di più pagine in un solo PDF A4. Serve lo script 10.11.
@@ -924,6 +924,7 @@
   /* v10.19: un gruppo con un solo libro (Inglese, Religione) e il Kit docente ("Altro") hanno l'intestazione sopra il libro, nella stessa riga */
   .lb-cella { display: grid; gap: 6px; align-content: start; min-width: 0; margin-top: 8px; }
   .lb-cella .lb-gruppo { grid-column: auto; margin-top: 0; font-size: 11.5px; letter-spacing: .03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  a.lb-vol { text-decoration: none; }   /* v10.26: libro che apre il suo sito */
   .lb-vol { border: 0; background: transparent; padding: 0; color: var(--ink); text-align: center; font-weight: 800; font-size: 12px; line-height: 1.2; display: grid; gap: 5px; align-content: start; min-width: 0; overflow-wrap: anywhere; }
   .lb-vol .stato { font-size: 10.5px; color: var(--muted); font-weight: 700; }
   .lb-vol.attivo .lb-cop { outline: 3px solid var(--oro); outline-offset: 3px; }
@@ -3337,7 +3338,11 @@
   }
 
   // ---------- Pagina Libri ----------
-  function bloccoLibri() {
+  // v10.26: b = blocco libri di Contenuti.gs. b.siti = { id: indirizzo } libri che si aprono sul loro sito (liberi, senza password);
+  // b.kitDopo = id del libro dopo cui mettere il Kit docente (senza: in fondo allo scaffale)
+  function bloccoLibri(b) {
+    b = b || {};
+    var SITI = b.siti || {};
     var box = el('div', { classe: 'lb-blocco' });
     box.appendChild(attesa('Carico i libri…'));
     (STATO.libri || caricaLibri()).then(function (elenco) {
@@ -3402,24 +3407,31 @@
           scaffale.appendChild(el('div', { classe: 'lb-kit-tit', testo: '🧰 Kit docente · ' + kitLibri.length + ' libri' }));
         }
         // v10.19: un gruppo con un solo libro ha l'intestazione sopra il libro (Inglese, Religione), gli altri una riga intera
-        var gruppo = null;
+        var gruppo = null, kitMesso = LB.kit || !kitLibri.length;
         function quanti(g) { return mostra.filter(function (x) { return x.gruppo === g; }).length; }
+        function cellaKit() {
+          kitMesso = true;
+          return el('div', { classe: 'lb-cella' }, [el('div', { classe: 'lb-gruppo', testo: 'Altro' }),
+            el('button', { type: 'button', classe: 'lb-vol', onclick: function () { LB.kit = true; disegnaScaffale(); } }, [
+              copertina({ nome: 'Kit docente', simbolo: '🧰', colore: '#4a5568' }, true), el('span', { testo: 'Kit docente' }),
+              el('span', { classe: 'stato', testo: kitLibri.length + ' libri ›' })])]);
+        }
         mostra.forEach(function (l) {
           if (l.gruppo !== gruppo) {
             gruppo = l.gruppo;
-            if (gruppo && quanti(gruppo) === 1) { scaffale.appendChild(el('div', { classe: 'lb-cella' }, [el('div', { classe: 'lb-gruppo', testo: gruppo }), voceLibro(l)])); return; }
-            scaffale.appendChild(el('div', { classe: 'lb-gruppo', testo: gruppo || 'Libri' }));
-          }
-          scaffale.appendChild(voceLibro(l));
+            if (gruppo && quanti(gruppo) === 1) scaffale.appendChild(el('div', { classe: 'lb-cella' }, [el('div', { classe: 'lb-gruppo', testo: gruppo }), voceLibro(l)]));
+            else { scaffale.appendChild(el('div', { classe: 'lb-gruppo', testo: gruppo || 'Libri' })); scaffale.appendChild(voceLibro(l)); }
+          } else scaffale.appendChild(voceLibro(l));
+          if (!kitMesso && b.kitDopo === l.id) scaffale.appendChild(cellaKit());      // v10.26: Kit docente subito dopo questo libro
         });
-        if (!LB.kit && kitLibri.length) {
-          scaffale.appendChild(el('div', { classe: 'lb-cella' }, [el('div', { classe: 'lb-gruppo', testo: 'Altro' }),
-            el('button', { type: 'button', classe: 'lb-vol', onclick: function () { LB.kit = true; disegnaScaffale(); } }, [
-              copertina({ nome: 'Kit docente', simbolo: '🧰', colore: '#4a5568' }, true), el('span', { testo: 'Kit docente' }),
-              el('span', { classe: 'stato', testo: kitLibri.length + ' libri ›' })])]));
-        }
+        if (!kitMesso) scaffale.appendChild(cellaKit());
       }
       function voceLibro(l) {
+        var sito = SITI[l.id];
+        if (sito) {                                                // v10.26: libro sul sito dell'editore, libero e senza password
+          return el('a', { classe: 'lb-vol', href: sito, target: '_blank', rel: 'noopener', title: l.nome + ' · si apre il sito' }, [
+            copertina(l), el('span', { testo: l.nome }), el('span', { classe: 'stato', testo: 'si apre il sito ↗' })]);
+        }
         var pronto = libriPronti(l);
         var b = el('button', { type: 'button', classe: 'lb-vol' + (pronto ? '' : ' spento'), 'aria-disabled': pronto ? null : 'true' }, [
           copertina(l), el('span', { testo: l.nome }),
@@ -3840,7 +3852,7 @@
 
   var RENDER = {
     // v10.14: libri
-    libri: function () { return bloccoLibri(); },
+    libri: function (b) { return bloccoLibri(b); },
     libroHome: function () { return el('div', { classe: 'nascosto' }); },   // v10.17: niente libri in Home, basta l'icona Libri
     // Orario delle lezioni: giorno per giorno, vista settimana e ore per materia
     orario: function (b) {
