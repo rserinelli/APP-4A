@@ -832,7 +832,6 @@
   .lb-cella { display: grid; gap: 6px; align-content: start; min-width: 0; margin-top: 8px; }
   .lb-cella .lb-gruppo { grid-column: auto; margin-top: 0; font-size: 11.5px; letter-spacing: .03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .lb-vol { border: 0; background: transparent; padding: 0; color: var(--ink); text-align: center; font-weight: 800; font-size: 12px; line-height: 1.2; display: grid; gap: 5px; align-content: start; min-width: 0; overflow-wrap: anywhere; }
-  .lb-nota-stampa { margin: 6px 2px 12px; font-size: 13px; color: var(--muted); text-align: center; }
   .lb-vol .stato { font-size: 10.5px; color: var(--muted); font-weight: 700; }
   .lb-vol.attivo .lb-cop { outline: 3px solid var(--oro); outline-offset: 3px; }
   .lb-vol.spento { opacity: .55; cursor: default; }
@@ -842,6 +841,7 @@
   .lb-vai { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
   .lb-vai input { width: 100%; min-width: 0; font: inherit; font-size: 28px; font-weight: 800; text-align: center; padding: 8px; border: 2px solid var(--brand); border-radius: 14px; background: var(--card); color: var(--ink); font-variant-numeric: tabular-nums; }
   .lb-vai input::placeholder { font-size: 18px; font-weight: 700; color: var(--muted); }
+  a.lb-grosso { display: flex; align-items: center; justify-content: center; text-decoration: none; text-align: center; margin: 8px 0; }   /* v10.23: Scarica il PDF (Android) */
   .lb-grosso { border: 0; border-radius: 14px; background: var(--brand); color: #fff; font-weight: 800; font-size: 18px; padding: 0 22px; min-height: 56px; }
   .lb-grosso.oro { background: linear-gradient(180deg, #d6a93a, var(--accent)); width: 100%; }
   .lb-grosso:disabled { opacity: .5; }
@@ -888,17 +888,6 @@
   .pannello .lb-pannello-tit { margin-bottom: 8px; }
   .pannello p.lb-forte { color: var(--ink); font-weight: 800; margin: 0 0 6px; }
   @media (prefers-reduced-motion: reduce) { .lb-scena img { transition: none; } }
-  /* v10.21: stampa diretta delle pagine dei libri (una per foglio A4), senza costruire il PDF nell'app */
-  #lbStampaFogli { display: none; }
-  @media print {
-    @page { size: A4; margin: 6mm; }
-    body.lb-stampa { background: #fff !important; }
-    body.lb-stampa > *:not(#lbStampaFogli) { display: none !important; }
-    body.lb-stampa #lbStampaFogli { display: block !important; }
-    .lb-foglio { height: 284mm; display: flex; align-items: center; justify-content: center; break-after: page; page-break-after: always; overflow: hidden; }
-    .lb-foglio:last-child { break-after: auto; page-break-after: auto; }
-    .lb-foglio img { max-width: 100%; max-height: 100%; object-fit: contain; }
-  }
 </style>
 </head>
 <body>
@@ -3189,7 +3178,7 @@
     bScegli.addEventListener('click', function () {
       if (scelta()) { LB.stampa = LB.stampa.filter(function (s) { return !(s.libro === l.id && s.n === n); }); toast('Pagina ' + etPag(n) + ' tolta dalla stampa'); }
       else if (LB.stampa.length >= MAX_STAMPA) { toast('Al massimo ' + MAX_STAMPA + ' pagine alla volta'); return; }
-      else { LB.stampa.push({ libro: l.id, n: n }); ordinaStampa(); paginaStampa(l.id, n).catch(function () {}); toast('Pagina ' + etPag(n) + ' aggiunta · ' + LB.stampa.length + ' da stampare'); }
+      else { LB.stampa.push({ libro: l.id, n: n }); ordinaStampa(); toast('Pagina ' + etPag(n) + ' aggiunta · ' + LB.stampa.length + ' da stampare'); }
       aggiornaPiede();
     });
     bStampa.addEventListener('click', function () {
@@ -3261,7 +3250,7 @@
   var PRONTE_STAMPA = {};
   function riprova(fn, volte) {
     return fn().catch(function (e) {
-      if (volte <= 1 || (e && e.codice === 'SESSIONE')) throw e;
+      if (volte <= 1 || (e && (e.codice === 'SESSIONE' || e.codice === 'AZIONE'))) throw e;
       return new Promise(function (ok) { setTimeout(ok, 1500); }).then(function () { return riprova(fn, volte - 1); });
     });
   }
@@ -3300,6 +3289,20 @@
       im.src = url;
     });
   }
+  // v10.22: byte da base64 e larghezza/altezza lette dall'intestazione del JPEG (niente disegno nel telefono)
+  function byteDa64(t) { var bin = atob(t), arr = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i); return arr; }
+  function misureJpeg(b) {
+    if (!b || b[0] !== 0xFF || b[1] !== 0xD8) return null;
+    var i = 2;
+    while (i + 9 < b.length) {
+      if (b[i] !== 0xFF) { i++; continue; }
+      var m = b[i + 1];
+      if (m >= 0xC0 && m <= 0xCF && m !== 0xC4 && m !== 0xC8 && m !== 0xCC) return { h: (b[i + 5] << 8) | b[i + 6], w: (b[i + 7] << 8) | b[i + 8], c: b[i + 9] };
+      if (m === 0xD8 || m === 0x01 || (m >= 0xD0 && m <= 0xD7)) { i += 2; continue; }
+      i += 2 + ((b[i + 2] << 8) | b[i + 3]);
+    }
+    return null;
+  }
   function pdfA4(fogli) {                 // fogli: [{ dati: Uint8Array JPEG, w, h }]
     var parti = [], pos = 0, posizioni = [], cod = new TextEncoder();
     function scrivi(x) { var b = typeof x === 'string' ? cod.encode(x) : x; parti.push(b); pos += b.length; }
@@ -3318,7 +3321,7 @@
       var disegno = 'q ' + w.toFixed(2) + ' 0 0 ' + h.toFixed(2) + ' ' + ((W - w) / 2).toFixed(2) + ' ' + ((H - h) / 2).toFixed(2) + ' cm /Im0 Do Q';
       oggetto(p, '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + W + ' ' + H + '] /Resources << /XObject << /Im0 ' + (p + 2) + ' 0 R >> >> /Contents ' + (p + 1) + ' 0 R >>');
       oggetto(p + 1, '<< /Length ' + disegno.length + ' >>\n', cod.encode(disegno));
-      oggetto(p + 2, '<< /Type /XObject /Subtype /Image /Width ' + f.w + ' /Height ' + f.h + ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + f.dati.length + ' >>\n', f.dati);
+      oggetto(p + 2, '<< /Type /XObject /Subtype /Image /Width ' + f.w + ' /Height ' + f.h + ' /ColorSpace ' + (f.c === 1 ? '/DeviceGray' : '/DeviceRGB') + ' /BitsPerComponent 8 /Filter /DCTDecode /Length ' + f.dati.length + ' >>\n', f.dati);
     });
     var xref = pos, n = 3 + fogli.length * 3;
     var righe = ['xref', '0 ' + n, '0000000000 65535 f '];
@@ -3359,7 +3362,7 @@
           var aggiunte = 0;
           nuove.forEach(function (p) {
             if (LB.stampa.length >= MAX_STAMPA) return;
-            if (!LB.stampa.some(function (s) { return s.libro === libroAperto.id && s.n === p; })) { LB.stampa.push({ libro: libroAperto.id, n: p }); aggiunte++; paginaStampa(libroAperto.id, p).catch(function () {}); }
+            if (!LB.stampa.some(function (s) { return s.libro === libroAperto.id && s.n === p; })) { LB.stampa.push({ libro: libroAperto.id, n: p }); aggiunte++; }
           });
           ordinaStampa();
           if (LB.stampa.length >= MAX_STAMPA) toast('Al massimo ' + MAX_STAMPA + ' pagine alla volta');
@@ -3370,14 +3373,6 @@
         prepara.disabled = !LB.stampa.length;
         var esito = el('div');
         prepara.addEventListener('click', function () { creaPdf(prepara, esito, nomeCorto, unLibro()); });
-        // v10.21: STAMPA DIRETTA (consigliata): le pagine arrivano dai link veloci, il telefono stampa o salva in PDF
-        var diretta = el('button', { type: 'button', classe: 'lb-grosso oro', testo: '🖨️ Stampa adesso' + (LB.stampa.length ? ' (' + LB.stampa.length + (LB.stampa.length === 1 ? ' foglio)' : ' fogli)') : '') });
-        diretta.disabled = !LB.stampa.length;
-        diretta.addEventListener('click', function () { stampaDiretta(diretta, esito); });
-        pannello.appendChild(diretta);
-        pannello.appendChild(el('p', { classe: 'lb-nota-stampa', testo: 'Si apre la stampa del telefono: puoi stampare oppure salvare come PDF (iPhone: Condividi → Salva su File).' }));
-        prepara.className = 'btn btn-sec';
-        prepara.textContent = 'Oppure crea il file PDF (più lento)';
         pannello.appendChild(prepara);
         pannello.appendChild(esito);
         pannello.appendChild(el('div', { classe: 'azioni-riga' }, [
@@ -3385,78 +3380,86 @@
           el('button', { type: 'button', classe: 'btn btn-sec', testo: 'Chiudi', onclick: chiudi })
         ]));
       }
-      function stampaDiretta(bottone, esito) {
-        var pagine = LB.stampa.slice(), fatte = 0;
-        var testo = bottone.textContent;
+      // v10.22: le pagine arrivano dallo script a gruppi di 6 (azione "libroStampa"), già pronte come JPEG:
+      // il telefono non disegna niente, scrive solo il PDF. Il PDF si apre con "Condividi" (funziona anche nell'app installata).
+      function creaPdf(bottone, esito, nomeCorto, unLibro) {
+        var pagine = LB.stampa.slice(), risultati = {}, fatte = 0;
+        var chiave = function (s) { return s.libro + '|' + s.n; };
+        var aggiorna = function () { bottone.textContent = 'Preparo ' + fatte + ' di ' + pagine.length + '…'; };
         occupato(bottone, true, 'Preparo 0 di ' + pagine.length + '…');
         esito.innerHTML = '';
-        function carica(s, volte) {
-          return immaginePagina(s.libro, s.n, 1800).then(function (x) {
-            return new Promise(function (ok, no) {
-              var im = new Image();
-              try { im.referrerPolicy = 'no-referrer'; } catch (e) {}
-              im.onload = function () { ok(im); };
-              im.onerror = function () { no(new Error('non letta')); };
-              im.src = x.url;
-            });
-          }).catch(function (e) {
-            if (volte <= 1) return null;
-            return new Promise(function (ok) { setTimeout(ok, 1200); }).then(function () { return carica(s, volte - 1); });
-          }).then(function (im) { if (im) { fatte++; bottone.textContent = 'Preparo ' + fatte + ' di ' + pagine.length + '…'; } return im; });
-        }
-        Promise.all(pagine.map(function (s) { return carica(s, 3); })).then(function (imgs) {
-          var mancano = pagine.filter(function (s, i) { return !imgs[i]; });
-          occupato(bottone, false, testo);
-          if (mancano.length) {
-            esito.appendChild(el('p', { classe: 'errore-msg', testo: (mancano.length === 1 ? 'Non è arrivata la pagina ' : 'Non sono arrivate le pagine ') +
-              mancano.map(function (s) { return etPag(s.n); }).join(', ') + '. Tocca di nuovo “Stampa adesso”.' }));
-            return;
-          }
-          var vecchio = document.getElementById('lbStampaFogli'); if (vecchio) vecchio.remove();
-          var fogli = el('div', { id: 'lbStampaFogli', 'aria-hidden': 'true' });
-          imgs.forEach(function (im) { fogli.appendChild(el('div', { classe: 'lb-foglio' }, [im])); });
-          document.body.appendChild(fogli);
-          document.body.classList.add('lb-stampa');
-          var fine = function () { document.body.classList.remove('lb-stampa'); window.removeEventListener('afterprint', fine); };
-          window.addEventListener('afterprint', fine);
-          setTimeout(function () { try { window.print(); } catch (e) { fine(); } }, 250);
+        var gruppi = [];
+        pagine.forEach(function (s) {
+          var g = gruppi[gruppi.length - 1];
+          if (!g || g.libro !== s.libro || g.n.length >= 6) { g = { libro: s.libro, n: [] }; gruppi.push(g); }
+          g.n.push(s.n);
         });
-      }
-      function creaPdf(bottone, esito, nomeCorto, unLibro) {
-        var pagine = LB.stampa.slice();
-        occupato(bottone, true, 'Preparo il PDF…');
-        esito.innerHTML = '';
-        var fatte = 0;
-        var aggiorna = function () { bottone.textContent = 'Preparo ' + fatte + ' di ' + pagine.length + '…'; };
-        // v10.20: due pagine alla volta; una pagina che non arriva non blocca le altre (quelle pronte restano pronte)
-        var coda = pagine.slice(), risultati = {}, mancano = [], attivi = [];
-        function prossima() {
-          var s = coda.shift(); if (!s) return Promise.resolve();
-          return paginaStampa(s.libro, s.n).then(function (j) { risultati[s.libro + '|' + s.n] = j; fatte++; aggiorna(); },
-            function () { mancano.push(s); }).then(prossima);
+        var senzaAzione = false;
+        function metti(libro, p) {
+          if (!p || !p.dati) return;
+          var b = byteDa64(p.dati), d = misureJpeg(b);
+          if (!d || d.c === 4) return;                       // non JPEG o CMYK: ci pensa la strada di riserva
+          risultati[libro + '|' + p.n] = { dati: b, w: d.w, h: d.h, c: d.c }; fatte++; aggiorna();
         }
-        aggiorna();
-        for (var i = 0; i < Math.min(2, coda.length); i++) attivi.push(prossima());
-        Promise.all(attivi).then(function () {
+        var catena = Promise.resolve();
+        gruppi.forEach(function (g) {
+          catena = catena.then(function () {
+            if (senzaAzione) return;
+            return riprova(function () { return chiama('libroStampa', { libro: g.libro, pagine: g.n, w: 1600 }); }, 3)
+              .then(function (r) { (r.pagine || []).forEach(function (p) { metti(g.libro, p); }); },
+                    function (e) { if (e && e.codice === 'AZIONE') senzaAzione = true; });
+          });
+        });
+        catena.then(function () {
+          // strada di riserva (script vecchio o pagine non arrivate): una pagina alla volta, come prima
+          var resto = pagine.filter(function (s) { return !risultati[chiave(s)]; });
+          return resto.reduce(function (pr, s) {
+            return pr.then(function () {
+              return paginaStampa(s.libro, s.n).then(function (j) { risultati[chiave(s)] = j; fatte++; aggiorna(); }, function () {});
+            });
+          }, Promise.resolve());
+        }).then(function () {
+          var mancano = pagine.filter(function (s) { return !risultati[chiave(s)]; });
           if (mancano.length) {
-            var e = new Error((mancano.length === 1 ? 'Non è arrivata la pagina ' : 'Non sono arrivate le pagine ') +
+            throw new Error((mancano.length === 1 ? 'Non è arrivata la pagina ' : 'Non sono arrivate le pagine ') +
               mancano.map(function (s) { return etPag(s.n); }).join(', ') + '. Tocca Riprova: le altre sono già pronte.');
-            throw e;
           }
-          var pdf = pdfA4(pagine.map(function (s) { return risultati[s.libro + '|' + s.n]; }));
+          pagine.forEach(function (s) { PRONTE_STAMPA[chiave(s)] = PRONTE_STAMPA[chiave(s)] || Promise.resolve(risultati[chiave(s)]); });
+          var pdf = pdfA4(pagine.map(function (s) { return risultati[chiave(s)]; }));
           var primo = pagine[0], ultimo = pagine[pagine.length - 1];
           var nome = (unLibro ? nomeCorto(primo.libro) + ' pag ' + etPag(primo.n) + (pagine.length > 1 ? '-' + etPag(ultimo.n) : '') : 'Pagine dei libri') + '.pdf';
           if (urlPdf) URL.revokeObjectURL(urlPdf);
           urlPdf = URL.createObjectURL(pdf);
-          esito.appendChild(el('div', { classe: 'lb-pronto' }, [el('strong', { testo: '✓ Pronto: ' + nome }),
-            el('ol', null, [el('li', { testo: 'Tocca “Apri il PDF”.' }),
-              el('li', { testo: 'iPhone: tocca Condividi (il quadrato con la freccia) → Stampa.' }),
-              el('li', { testo: 'Android: tocca ⋮ → Stampa, oppure Condividi → Stampa.' })])]));
-          esito.appendChild(el('a', { classe: 'btn btn-primario', href: urlPdf, target: '_blank', rel: 'noopener', testo: 'Apri il PDF' }));
-          esito.appendChild(el('a', { classe: 'btn btn-sec', href: urlPdf, download: nome, testo: 'Scarica sul telefono' }));
-          occupato(bottone, false, 'Prepara di nuovo il PDF');
+          var file = null;
+          try { file = new File([pdf], nome, { type: 'application/pdf' }); } catch (e) {}
+          var condividi = !!(file && navigator.canShare && navigator.canShare({ files: [file] }));
+          var android = /Android/i.test(navigator.userAgent || '');
+          var bCondividi = function (classe, testo) {
+            return el('button', { type: 'button', classe: classe, testo: testo, onclick: function () {
+              navigator.share({ files: [file], title: nome }).catch(function (e) { if (!e || e.name !== 'AbortError') toast('Non riuscito: usa “Scarica il PDF”'); });
+            } });
+          };
+          var titolo = el('strong', { testo: '✓ Pronto: ' + nome + ' (' + pagine.length + (pagine.length === 1 ? ' foglio)' : ' fogli)') });
+          if (android) {
+            // v10.23 ANDROID: il PDF si scarica, si apre dal messaggio "Download completato" e si stampa dal suo menu ⋮
+            esito.appendChild(el('div', { classe: 'lb-pronto' }, [titolo, el('ol', null, [
+              el('li', { testo: 'Tocca “Scarica il PDF”.' }),
+              el('li', { testo: 'In basso compare “Download completato”: tocca Apri (oppure apri il file da Download).' }),
+              el('li', { testo: 'Nel PDF tocca ⋮ (in alto a destra) → Stampa.' })])]));
+            esito.appendChild(el('a', { classe: 'lb-grosso oro', href: urlPdf, download: nome, testo: '⬇️ Scarica il PDF' }));
+            if (condividi) esito.appendChild(bCondividi('btn btn-sec', 'Manda il PDF (WhatsApp, Drive, email…)'));
+          } else {
+            // iPhone, iPad e computer: Condividi → Stampa
+            esito.appendChild(el('div', { classe: 'lb-pronto' }, [titolo, el('ol', null, condividi
+              ? [el('li', { testo: 'Tocca “Stampa o salva il PDF”.' }), el('li', { testo: 'Scegli Stampa (su iPhone scorri in basso), oppure Salva su File o WhatsApp.' })]
+              : [el('li', { testo: 'Tocca “Apri il PDF”.' }), el('li', { testo: 'Poi Condividi → Stampa, oppure il comando Stampa del computer.' })])]));
+            if (condividi) esito.appendChild(bCondividi('lb-grosso oro', '🖨️ Stampa o salva il PDF'));
+            esito.appendChild(el('a', { classe: condividi ? 'btn btn-sec' : 'btn btn-primario', href: urlPdf, target: '_blank', rel: 'noopener', testo: 'Apri il PDF' }));
+            esito.appendChild(el('a', { classe: 'btn btn-sec', href: urlPdf, download: nome, testo: 'Scarica il PDF' }));
+          }
+          occupato(bottone, false, 'Prepara di nuovo il PDF'); bottone.className = 'btn btn-sec';   // v10.23: il pulsante da toccare ora è quello sotto
         }).catch(function (e) {
-          esito.appendChild(el('p', { classe: 'errore-msg', testo: e && e.codice === 'RETE' ? 'Alcune pagine non sono arrivate: controlla internet e riprova.' : (e && e.message) || 'PDF non riuscito: riprova.' }));
+          esito.appendChild(el('p', { classe: 'errore-msg', testo: (e && e.message) || 'PDF non riuscito: riprova.' }));
           occupato(bottone, false, 'Riprova');
         });
       }
