@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.24, 16 ottobre 2026 — riparte dalla 10.23 installata, la cui intestazione diceva ancora 10.17: pupazzetto del profilo al posto di Esci (Esci dentro Il mio profilo); Prossimi 7 giorni con il mese ("Ven 16 ott"); COMPLEANNI: "Nome · sabato 24 ottobre sarà il suo compleanno" / "oggi è il suo compleanno" e avviso festoso in Home il giorno stesso; RENDICONTO DETTAGLIATO a due colonne (allievo e classe, 0,00 € se non lo riguarda, filtro Tutti / Solo di …); VISUALIZZA COME per l'amministratrice (Genitore, Docente, Errore: contorno blu e pulsante interruttore, sola lettura); Libri: ogni libro si apre dalla prima pagina (C1), tolto "Vai alla pagina dei compiti" sotto lo scaffale, ricerca visibile solo quando il testo è pronto. Serve lo script 10.16 per compleanni (riconoscimento sicuro), rendiconto a due colonne e Visualizza come. Versione 10.17, 15 ottobre 2026: copertine C1 e C2 prima di tutte le pagine (C3 e C4 dopo l'ultima; serve lo script 10.13), "Vai a pagina" nel lettore; pagine leggere per sfogliare (anteprima della larghezza dello schermo, originale con lo zoom e in stampa; serve lo script 10.13); tolto dalla Home il riquadro dei libri "Continua a leggere" / Tutti i libri / Cerca un argomento, ai libri si va dall'icona Libri. Versione 10.16: SCARICA L'APP nella schermata di accesso e nel menu (Android un tocco, iPhone 4 passi + video video/guida-iphone.mp4; service worker sw.js). Dalla 10.15: ACCESSO CON EMAIL O CELLULARE (prefisso + numero), "Password dimenticata?" con due strade, primo ingresso sul profilo, password mandate dalla rappresentante su WhatsApp o per email in Gestione accessi. Dalla 10.14: LIBRI sfogliabili. In Home
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.25, 16 ottobre 2026: COMPLEANNI con l'età — "Giulia · oggi compie 10 anni!", due o più bambini "oggi compiono 10 anni!" o, con età diverse, "Giulia compie 10 anni, Marco compie 9"; sulla torta il numero degli anni (con età diverse le 3 candeline); senza età (script vecchio o età non sicura) l'avviso resta quello della 10.24; serve lo script 10.17 (campo anni); Gestione accessi: nome del foglio "APP CLASSE accessi riservati". Versione 10.24, 16 ottobre 2026 — riparte dalla 10.23 installata, la cui intestazione diceva ancora 10.17: pupazzetto del profilo al posto di Esci (Esci dentro Il mio profilo); Prossimi 7 giorni con il mese ("Ven 16 ott"); COMPLEANNI: "Nome · sabato 24 ottobre sarà il suo compleanno" / "oggi è il suo compleanno" e avviso festoso in Home il giorno stesso; RENDICONTO DETTAGLIATO a due colonne (allievo e classe, 0,00 € se non lo riguarda, filtro Tutti / Solo di …); VISUALIZZA COME per l'amministratrice (Genitore, Docente, Errore: contorno blu e pulsante interruttore, sola lettura); Libri: ogni libro si apre dalla prima pagina (C1), tolto "Vai alla pagina dei compiti" sotto lo scaffale, ricerca visibile solo quando il testo è pronto. Serve lo script 10.16 per compleanni (riconoscimento sicuro), rendiconto a due colonne e Visualizza come. Versione 10.17, 15 ottobre 2026: copertine C1 e C2 prima di tutte le pagine (C3 e C4 dopo l'ultima; serve lo script 10.13), "Vai a pagina" nel lettore; pagine leggere per sfogliare (anteprima della larghezza dello schermo, originale con lo zoom e in stampa; serve lo script 10.13); tolto dalla Home il riquadro dei libri "Continua a leggere" / Tutti i libri / Cerca un argomento, ai libri si va dall'icona Libri. Versione 10.16: SCARICA L'APP nella schermata di accesso e nel menu (Android un tocco, iPhone 4 passi + video video/guida-iphone.mp4; service worker sw.js). Dalla 10.15: ACCESSO CON EMAIL O CELLULARE (prefisso + numero), "Password dimenticata?" con due strade, primo ingresso sul profilo, password mandate dalla rappresentante su WhatsApp o per email in Gestione accessi. Dalla 10.14: LIBRI sfogliabili. In Home
   "Continua a leggere"; pagina Libri con ricerca per parola, scaffale a gruppi (4 per riga, Kit docente a parte),
   vai a pagina e argomenti; lettore a tutto schermo con sfoglio, zoom e link per WhatsApp (#libro-mat-42);
   stampa di più pagine in un solo PDF A4. Serve lo script 10.11.
@@ -675,6 +675,7 @@
   .festa-tx { flex: 1; min-width: 0; }
   .festa-nome { display: block; font-size: 21px; font-weight: 800; line-height: 1.15; color: #a2337a; overflow-wrap: anywhere; }
   .festa-frase { display: block; font-size: 15px; font-weight: 800; color: var(--ink); }
+  .festa-eta { display: block; font-size: 14px; font-weight: 700; color: var(--ink); }   /* v10.25: età diverse */
   .festa-auguri { display: block; font-size: 13px; color: var(--muted); font-weight: 700; margin-top: 2px; }
   .festa-piede { display: flex; gap: 8px; align-items: center; padding: 0 14px 12px; font-size: 12px; color: var(--muted); font-weight: 700; }
   .palloncino { transform-box: fill-box; transform-origin: 50% 100%; animation: ondeggia 4.5s ease-in-out infinite; }
@@ -2769,14 +2770,17 @@
     vaiA(STATO.pagina, true);
   }
   // ---------- v10.24: compleanni di oggi, avviso festoso in Home (non si salva: nasce dal calendario e sparisce a mezzanotte) ----------
+  // v10.25: ogni bambino con gli anni che compie (e.anni dallo script 10.17; assente = età non scritta)
   function compleanniDiOggi(dati) {
-    var oggi = oggiISO(), nomi = [];
+    var oggi = oggiISO(), nomi = [], bimbi = [];
     (elencoEventi(dati) || []).forEach(function (e) {
       if (!eCompleanno(e) || e.data > oggi || fineEvento(e) < oggi) return;
       var n = nomeCompleanno(e);
-      if (nomi.indexOf(n) < 0) nomi.push(n);
+      if (nomi.indexOf(n) >= 0) return;
+      nomi.push(n);
+      bimbi.push({ nome: n, anni: e.anni > 0 ? Number(e.anni) : null });
     });
-    return nomi;
+    return bimbi;
   }
   var SVG_NS = 'http://www.w3.org/2000/svg', COL_FESTA = ['#f3a6b8', '#d9b44a', '#7cc0ea', '#8fd19e', '#c3a6ee'];
   function sv(tag, attr) { var e = document.createElementNS(SVG_NS, tag); for (var k in attr) e.setAttribute(k, attr[k]); return e; }
@@ -2807,27 +2811,62 @@
     });
     return svg;
   }
-  function tortaFesta() {
+  function fiammaFesta(svg, x, y) {
+    svg.appendChild(sv('ellipse', { cx: x, cy: y, rx: 2.6, ry: 4, fill: '#ffb547' }));
+    svg.appendChild(sv('ellipse', { cx: x, cy: y + 1, rx: 1.1, ry: 2, fill: '#fff3c4' }));
+  }
+  // v10.25: anni = numero scritto sulla torta con le fiammelle; senza anni le 3 candeline
+  function tortaFesta(anni) {
     var svg = sv('svg', { 'class': 'torta', width: 54, height: 58, viewBox: '0 0 54 58', 'aria-hidden': 'true' });
     svg.appendChild(sv('ellipse', { cx: 27, cy: 53, rx: 25, ry: 4, fill: '#e8dcc0' }));
     svg.appendChild(sv('rect', { x: 5, y: 34, width: 44, height: 18, rx: 4, fill: '#f3a6b8' }));
     svg.appendChild(sv('path', { d: 'M5 38 q5.5 5 11 0 t11 0 t11 0 t11 0 V34 H5 Z', fill: '#fff' }));
     svg.appendChild(sv('rect', { x: 10, y: 21, width: 34, height: 14, rx: 4, fill: '#fff4d6' }));
     svg.appendChild(sv('path', { d: 'M10 25 q4.25 4 8.5 0 t8.5 0 t8.5 0 t8.5 0 V21 H10 Z', fill: '#d9b44a' }));
+    if (anni) {
+      var cifre = String(anni).split(''), passo = 13, x0 = 27 - (cifre.length - 1) * passo / 2;
+      cifre.forEach(function (c, i) {
+        var x = x0 + i * passo, t = sv('text', { x: x, y: 23, 'text-anchor': 'middle', 'font-family': 'Nunito, system-ui, sans-serif', 'font-weight': '800',
+          'font-size': '19', fill: COL_FESTA[(i * 2 + 2) % 5], stroke: '#fff', 'stroke-width': '1.4', 'paint-order': 'stroke' });
+        t.textContent = c; svg.appendChild(t);
+        svg.appendChild(sv('rect', { x: x - 0.5, y: 6.5, width: 1, height: 3, fill: '#5a6b80' }));
+        fiammaFesta(svg, x, 3.5);
+      });
+      return svg;
+    }
     [17, 27, 37].forEach(function (x, i) {
       svg.appendChild(sv('rect', { x: x - 1.6, y: 11, width: 3.2, height: 11, rx: 1, fill: COL_FESTA[(i + 2) % 5] }));
-      svg.appendChild(sv('ellipse', { cx: x, cy: 7.5, rx: 2.6, ry: 4, fill: '#ffb547' }));
-      svg.appendChild(sv('ellipse', { cx: x, cy: 8.5, rx: 1.1, ry: 2, fill: '#fff3c4' }));
+      fiammaFesta(svg, x, 7.5);
     });
     return svg;
   }
-  function avvisoFesta(nomi) {
-    var elenco = nomi.length > 1 ? nomi.slice(0, -1).join(', ') + ' e ' + nomi[nomi.length - 1] : nomi[0];
+  function elencoNomi(n) { return n.length > 1 ? n.slice(0, -1).join(', ') + ' e ' + n[n.length - 1] : n[0]; }
+  function anniTesto(a) { return a + (a === 1 ? ' anno' : ' anni'); }
+  // v10.25: con l'età. Tutti la stessa età → "oggi compie/compiono 10 anni!"; età diverse → "oggi è il loro compleanno!" +
+  // "Giulia e Sofia compiono 10 anni, Marco compie 9"; senza età → come la 10.24. Sulla torta il numero se l'età è una sola.
+  function avvisoFesta(bimbi) {
+    bimbi = bimbi.map(function (b) { return typeof b === 'string' ? { nome: b, anni: null } : b; });
+    var nomi = bimbi.map(function (b) { return b.nome; });
+    var conEta = bimbi.filter(function (b) { return b.anni; });
+    var eta = []; conEta.forEach(function (b) { if (eta.indexOf(b.anni) < 0) eta.push(b.anni); });
+    var tutti = conEta.length === bimbi.length, frase, riga = '';
+    if (tutti && eta.length === 1) frase = 'oggi ' + (bimbi.length > 1 ? 'compiono ' : 'compie ') + anniTesto(eta[0]) + '!';
+    else {
+      frase = bimbi.length > 1 ? 'oggi è il loro compleanno!' : 'oggi è il suo compleanno!';
+      if (conEta.length) {
+        var gruppi = {}; conEta.forEach(function (b) { (gruppi[b.anni] = gruppi[b.anni] || []).push(b.nome); });
+        riga = eta.slice().sort(function (a, b) { return b - a; }).map(function (a, i) {
+          var g = gruppi[a];
+          return elencoNomi(g) + ' ' + (g.length > 1 ? 'compiono ' : 'compie ') + (i === 0 ? anniTesto(a) : a);
+        }).join(', ');
+      }
+    }
     return el('div', { classe: 'festa', role: 'note' }, [
       decorazioneFesta(),
-      el('div', { classe: 'festa-corpo' }, [tortaFesta(), el('div', { classe: 'festa-tx' }, [
-        el('span', { classe: 'festa-nome', testo: elenco }),
-        el('span', { classe: 'festa-frase', testo: nomi.length > 1 ? 'oggi è il loro compleanno!' : 'oggi è il suo compleanno!' }),
+      el('div', { classe: 'festa-corpo' }, [tortaFesta(tutti && eta.length === 1 ? eta[0] : null), el('div', { classe: 'festa-tx' }, [
+        el('span', { classe: 'festa-nome', testo: elencoNomi(nomi) }),
+        el('span', { classe: 'festa-frase', testo: frase }),
+        riga ? el('span', { classe: 'festa-eta', testo: riga }) : null,
         el('span', { classe: 'festa-auguri', testo: 'Tanti auguri da tutta la 4a 🎉' })])]),
       el('div', { classe: 'festa-piede' }, [el('span', { classe: 'badge', testo: 'NUOVO' }), el('span', { testo: 'solo oggi · dal calendario Compleanni' })])
     ]);
@@ -4328,7 +4367,7 @@
             nonEntrate.length ? el('button', { classe: 'btn btn-sec', testo: '📋 Copia le email di chi non è ancora entrato (' + nonEntrate.length + ')', onclick: function () { copia(nonEntrate.join(', '), nonEntrate.length + ' email copiate: incollale nei destinatari'); } }) : null,
             el('a', { classe: 'btn btn-sec', href: g.urlFoglio, target: '_blank', rel: 'noopener', testo: '✏️ Aggiungi o togli: apri il foglio accessi' })
           ]),
-          el('small', { style: 'display:block;color:var(--muted);margin-top:10px', testo: 'Nel foglio AREA_RISERVATA_accessi: colonna A alunno, B email, colonna “Telefono” (D) il cellulare: per gli italiani basta il numero, per gli altri il prefisso davanti (+44 …). Ogni riga ha l’email o il telefono. Le modifiche valgono entro un minuto.' })
+          el('small', { style: 'display:block;color:var(--muted);margin-top:10px', testo: 'Nel foglio “APP CLASSE accessi riservati”: colonna A alunno, B email, colonna “Telefono” (D) il cellulare: per gli italiani basta il numero, per gli altri il prefisso davanti (+44 …). Ogni riga ha l’email o il telefono. Le modifiche valgono entro un minuto.' })
         ]));
 
         // Manda le password: WhatsApp una chat alla volta, email tutte insieme
