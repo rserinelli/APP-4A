@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.17, 15 ottobre 2026: copertine C1 e C2 prima di tutte le pagine (C3 e C4 dopo l'ultima; serve lo script 10.13), "Vai a pagina" nel lettore; pagine leggere per sfogliare (anteprima della larghezza dello schermo, originale con lo zoom e in stampa; serve lo script 10.13); tolto dalla Home il riquadro dei libri "Continua a leggere" / Tutti i libri / Cerca un argomento, ai libri si va dall'icona Libri. Versione 10.16: SCARICA L'APP nella schermata di accesso e nel menu (Android un tocco, iPhone 4 passi + video video/guida-iphone.mp4; service worker sw.js). Dalla 10.15: ACCESSO CON EMAIL O CELLULARE (prefisso + numero), "Password dimenticata?" con due strade, primo ingresso sul profilo, password mandate dalla rappresentante su WhatsApp o per email in Gestione accessi. Dalla 10.14: LIBRI sfogliabili. In Home
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.24, 16 ottobre 2026 — riparte dalla 10.23 installata, la cui intestazione diceva ancora 10.17: pupazzetto del profilo al posto di Esci (Esci dentro Il mio profilo); Prossimi 7 giorni con il mese ("Ven 16 ott"); COMPLEANNI: "Nome · sabato 24 ottobre sarà il suo compleanno" / "oggi è il suo compleanno" e avviso festoso in Home il giorno stesso; RENDICONTO DETTAGLIATO a due colonne (allievo e classe, 0,00 € se non lo riguarda, filtro Tutti / Solo di …); VISUALIZZA COME per l'amministratrice (Genitore, Docente, Errore: contorno blu e pulsante interruttore, sola lettura); Libri: ogni libro si apre dalla prima pagina (C1), tolto "Vai alla pagina dei compiti" sotto lo scaffale, ricerca visibile solo quando il testo è pronto. Serve lo script 10.16 per compleanni (riconoscimento sicuro), rendiconto a due colonne e Visualizza come. Versione 10.17, 15 ottobre 2026: copertine C1 e C2 prima di tutte le pagine (C3 e C4 dopo l'ultima; serve lo script 10.13), "Vai a pagina" nel lettore; pagine leggere per sfogliare (anteprima della larghezza dello schermo, originale con lo zoom e in stampa; serve lo script 10.13); tolto dalla Home il riquadro dei libri "Continua a leggere" / Tutti i libri / Cerca un argomento, ai libri si va dall'icona Libri. Versione 10.16: SCARICA L'APP nella schermata di accesso e nel menu (Android un tocco, iPhone 4 passi + video video/guida-iphone.mp4; service worker sw.js). Dalla 10.15: ACCESSO CON EMAIL O CELLULARE (prefisso + numero), "Password dimenticata?" con due strade, primo ingresso sul profilo, password mandate dalla rappresentante su WhatsApp o per email in Gestione accessi. Dalla 10.14: LIBRI sfogliabili. In Home
   "Continua a leggere"; pagina Libri con ricerca per parola, scaffale a gruppi (4 per riga, Kit docente a parte),
   vai a pagina e argomenti; lettore a tutto schermo con sfoglio, zoom e link per WhatsApp (#libro-mat-42);
   stampa di più pagine in un solo PDF A4. Serve lo script 10.11.
@@ -94,6 +94,12 @@
   .btn-icona { border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 10px;
     width: 40px; height: 40px; display: grid; place-items: center; font-size: 18px; }
   .chip-utente { font-size: 13px; color: var(--muted); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* v10.24: pupazzetto del profilo al posto di Esci (Esci è dentro Il mio profilo) */
+  .btn-profilo { flex: none; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; padding: 0; }
+  .btn-profilo:hover { border-color: var(--brand); }
+  .esci-card { text-align: center; }
+  .esci-card .riga-esci { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+  .btn-esci { background: transparent; color: var(--danger); border: 1px solid #f2c9c4; width: 100%; }
   .esci { font-size: 14px; font-weight: 700; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--brand); }
 
   .layout { display: grid; grid-template-columns: 250px 1fr; max-width: 1200px; margin: 0 auto; }
@@ -254,7 +260,7 @@
   .hriga { display: flex; align-items: baseline; gap: 10px; padding: 6px 0; border-top: 1px solid var(--line); font-size: 15px; }
   .hriga:first-child { border-top: 0; }
   .hriga.muto { color: var(--muted); font-size: 14px; }
-  .hriga .quando { flex: none; width: 62px; font-weight: 800; color: var(--brand); font-size: 13px; text-transform: uppercase; }
+  .hriga .quando { flex: none; width: 84px; white-space: nowrap; font-weight: 800; color: var(--brand); font-size: 13px; text-transform: uppercase; }
   .hriga.urgente .quando { color: var(--rosso); }
   .hriga .cosa { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
   .pallino { flex: none; width: 8px; height: 8px; border-radius: 50%; align-self: center; background: var(--brand); }
@@ -619,6 +625,92 @@
   .ric-mail span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .ric-email { display: block; margin-top: 4px; font-size: 12px; color: var(--muted); word-break: break-all; }
   .ric-vacanza { margin-top: 4px; font-size: 12.5px; color: var(--muted); }
+
+  /* ---------- v10.24: Visualizza come ---------- */
+  .voce.voce-vista { color: #0d3fc2; font-weight: 800; }
+  .voce.voce-vista:hover { background: #e7eeff; }
+  .vista-contorno { position: fixed; inset: 0; z-index: 990; pointer-events: none;
+    box-shadow: inset 0 0 0 5px #1a5cff, inset 0 0 18px 6px rgba(26,92,255,.28); }
+  .vista-pill { position: fixed; z-index: 995; right: calc(14px + env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    display: flex; align-items: stretch; border-radius: 999px; overflow: hidden; max-width: calc(100vw - 28px); box-shadow: 0 6px 18px rgba(13,63,194,.35); }
+  .vista-pill button { border: 0; background: transparent; color: inherit; font: inherit; }
+  .vista-pill .princ { flex: 1 1 auto; display: flex; align-items: center; gap: 8px; padding: 9px 12px; font-weight: 800; font-size: 13.5px; min-width: 0; text-align: left; }
+  .vista-pill .princ .vp-occhio { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 15px; }
+  .vista-pill .princ .t { min-width: 0; line-height: 1.15; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .vista-pill .princ small { display: block; font-size: 10.5px; font-weight: 800; opacity: .85; }
+  .vista-pill .altro { flex: none; padding: 0 13px; font-size: 18px; font-weight: 800; border-left: 1px solid rgba(255,255,255,.35); }
+  .vista-pill.on { background: #1a5cff; color: #fff; }
+  .vista-pill.on .vp-occhio { background: rgba(255,255,255,.2); }
+  .vista-pill.off { background: var(--card); color: #0d3fc2; box-shadow: 0 0 0 2px #1a5cff, 0 6px 18px rgba(13,63,194,.22); }
+  .vista-pill.off .vp-occhio { background: #e7eeff; }
+  .vista-pill.off .altro { border-left-color: #e7eeff; }
+  .vista-velo { position: fixed; inset: 0; z-index: 996; background: rgba(10,25,45,.38); }
+  .vista-foglio { position: fixed; left: 0; right: 0; bottom: 0; z-index: 997; max-width: 520px; margin: 0 auto; max-height: 90vh; overflow-y: auto;
+    background: var(--card); border-radius: 22px 22px 0 0; box-shadow: 0 -10px 30px rgba(10,25,45,.2);
+    padding: 10px 16px calc(18px + env(safe-area-inset-bottom, 0px)); }
+  .vista-foglio .maniglia { width: 40px; height: 4px; border-radius: 4px; background: var(--line); margin: 0 auto 10px; }
+  .vista-foglio h3 { margin: 0; font-size: 18px; font-weight: 800; }
+  .vista-foglio > p { margin: 2px 0 12px; font-size: 13.5px; color: var(--muted); }
+  .vista-opz { display: grid; gap: 8px; }
+  .vista-v { display: grid; grid-template-columns: 40px 1fr; gap: 4px 12px; align-items: start; width: 100%; text-align: left; padding: 11px 12px;
+    border: 1.5px solid var(--line); border-radius: 14px; background: var(--card); cursor: pointer; }
+  .vista-v .e { grid-row: span 2; width: 40px; height: 40px; border-radius: 12px; background: #e7eeff; display: grid; place-items: center; font-size: 21px; }
+  .vista-v b { font-size: 15.5px; } .vista-v small { color: var(--muted); font-size: 12.5px; line-height: 1.35; }
+  .vista-v[aria-pressed="true"] { border-color: #1a5cff; box-shadow: 0 0 0 1px #1a5cff; background: #f7f9ff; }
+  .vista-v .sotto { grid-column: 2; margin-top: 6px; min-width: 0; }
+  .vista-v .sotto label { display: block; font-size: 12px; font-weight: 800; color: var(--muted); margin-bottom: 3px; }
+  .vista-v .sotto select { width: 100%; font: inherit; font-size: 14px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--ink); }
+  .vista-v .nome-err { display: inline-block; font-weight: 800; color: var(--rosso); background: #fff4f2; border: 1px solid #f1b6b0; border-radius: 8px; padding: 1px 8px; }
+  .vista-az { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+  .vista-az .btn { width: 100%; margin: 0; }
+  .vista-az .blu { background: #1a5cff; color: #fff; }
+  .vista-az .spegni { grid-column: 1 / -1; background: transparent; border: 1px dashed var(--line); color: var(--muted); font-size: 14px; padding: 9px; }
+
+  /* ---------- v10.24: compleanni ---------- */
+  .festa { position: relative; margin-top: 8px; border-radius: 14px; overflow: hidden; border: 1px solid #f1cfa3;
+    background: radial-gradient(120% 90% at 50% 0%, #fff2f5 0, #fff8e8 55%, #fffdf6 100%); }
+  .festa svg.deco { display: block; width: 100%; height: auto; }
+  .festa-corpo { position: relative; display: flex; align-items: center; gap: 12px; padding: 0 14px 10px; margin-top: -26px; }
+  .festa-corpo svg.torta { flex: none; }
+  .festa-tx { flex: 1; min-width: 0; }
+  .festa-nome { display: block; font-size: 21px; font-weight: 800; line-height: 1.15; color: #a2337a; overflow-wrap: anywhere; }
+  .festa-frase { display: block; font-size: 15px; font-weight: 800; color: var(--ink); }
+  .festa-auguri { display: block; font-size: 13px; color: var(--muted); font-weight: 700; margin-top: 2px; }
+  .festa-piede { display: flex; gap: 8px; align-items: center; padding: 0 14px 12px; font-size: 12px; color: var(--muted); font-weight: 700; }
+  .palloncino { transform-box: fill-box; transform-origin: 50% 100%; animation: ondeggia 4.5s ease-in-out infinite; }
+  .palloncino.b { animation-delay: -1.6s; } .palloncino.c { animation-delay: -3s; }
+  .stellina { transform-box: fill-box; transform-origin: center; animation: brilla 2.6s ease-in-out infinite; }
+  @keyframes ondeggia { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-5px) rotate(2deg); } }
+  @keyframes brilla { 0%,100% { opacity: .35; transform: scale(.75); } 50% { opacity: 1; transform: scale(1); } }
+  @media (prefers-reduced-motion: reduce) { .palloncino, .stellina { animation: none; } }
+  .ag-frase { display: block; font-size: 13.5px; font-weight: 700; color: var(--muted); line-height: 1.35; margin-top: 1px; }
+  .ag-ev.compleanno-oggi { background: linear-gradient(90deg, #fff4f7, var(--card) 80%); border-color: #f1cfa3; }
+  .ag-ev.compleanno-oggi .ag-frase { color: #a2337a; }
+  .hriga .cosa em { font-style: normal; color: var(--muted); font-weight: 600; }
+  /* ---------- v10.24: rendiconto dettagliato a due colonne ---------- */
+  .mov2-filtro { display: flex; gap: 6px; padding: 10px 14px 0; border-top: 1px solid var(--line); }
+  .mov2-filtro button { border: 1px solid var(--line); background: var(--card); color: var(--brand); border-radius: 999px; padding: 4px 11px; font-size: 13px; font-weight: 800; }
+  .mov2-filtro button[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .mov2-tab { padding: 2px 14px 6px; }
+  .mov2 .rm { display: grid; grid-template-columns: 40px minmax(0, 1fr) 70px 76px; gap: 8px; align-items: baseline; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .mov2 .rm.testa { padding: 10px 0 6px; font-size: 11.5px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); align-items: end; }
+  .mov2 .d { color: var(--muted); font-weight: 700; font-size: 12.5px; line-height: 1.2; }
+  .mov2 .r { min-width: 0; overflow-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; line-height: 1.3; }
+  .mov2 .rm.testa .r { hyphens: none; -webkit-hyphens: none; }
+  .mov2 .r small { display: block; color: var(--muted); font-size: 12px; white-space: pre-line; }
+  .mov2 .n { text-align: right; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 13.5px; }
+  .mov2 .n.piu { color: var(--ok); }
+  .mov2 .n.zero, .mov2 .n.vuoto { color: #9aa8b8; font-weight: 700; }
+  .mov2 .n.cl { color: var(--muted); font-weight: 700; }
+  .mov2 .rm.testa .n { font-size: 11.5px; color: var(--muted); font-weight: 800; overflow: hidden; text-overflow: ellipsis; }
+  .mov2 .rm.testa .n.al { color: var(--accent); }
+  .mov2 .rm.tot { border-bottom: 0; border-top: 2px solid var(--line); }
+  .mov2 .rm.tot + .rm.tot { border-top: 0; }
+  .mov2 .rm.tot .r { font-weight: 800; }
+  .mov2 .rm.saldo { background: var(--accent-soft); border-radius: 10px; margin: 6px -6px 4px; padding: 9px 6px; border: 0; }
+  .mov2 .rm.saldo .n { color: var(--ink); }
+  .mov2-legenda { margin: 4px 14px 14px; font-size: 12.5px; color: var(--muted); }
+  @media (max-width: 360px) { .mov2-tab { padding: 2px 10px 6px; } .mov2 .rm { grid-template-columns: 32px minmax(0, 1fr) 62px 68px; gap: 5px; font-size: 13px; } .mov2 .n { font-size: 12px; } .mov2 .d { font-size: 11.5px; } .mov2 .rm.testa { font-size: 10.5px; letter-spacing: .02em; } }
 
   /* ---------- v10.12: Avvisi in Home ---------- */
   .avvisi-card { border-color: #ecd9a6; background: linear-gradient(180deg, #fffaf0, var(--card) 70px); }
@@ -1039,7 +1131,7 @@
     <button class="logo-btn" id="vaiHome" aria-label="Torna alla Home"><img class="stemma" data-img="stemma" alt="Stemma della 4a"></button>
     <h1 class="spazio"><button class="titolo-btn" id="vaiHome2"><span id="titoloApp"></span><small id="sottotitoloApp"></small></button></h1>
     <span class="chip-utente" id="chipUtente"></span>
-    <button class="esci" id="btnEsci">Esci</button>
+    <button class="btn-profilo" id="btnProfilo" aria-label="Il mio profilo" title="Il mio profilo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></button>
   </header>
   <div class="velo nascosto" id="velo"></div>
   <div class="layout">
@@ -1049,6 +1141,11 @@
 </div>
 
 <div id="toast" class="toast nascosto" role="status"></div>
+<!-- v10.24: Visualizza come (solo amministratrice) -->
+<div id="vistaContorno" class="vista-contorno nascosto" aria-hidden="true"></div>
+<div id="vistaPill" class="vista-pill nascosto"><button type="button" class="princ" id="vistaPrinc"></button><button type="button" class="altro" id="vistaAltro" aria-label="Cambia vista o chiudi">⋯</button></div>
+<div id="vistaVelo" class="vista-velo nascosto"></div>
+<div id="vistaFoglio" class="vista-foglio nascosto" role="dialog" aria-modal="true" aria-labelledby="vistaTit"></div>
 
 <script>
 (function () {
@@ -1058,6 +1155,9 @@
   var URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbyNjL0yFWN_iHiz0YbMchoD4SJ9xIbyghddOe8wHS1s3OrwGUFH71-RLOc0TSv-uD7j/exec';
 
   var CHIAVE_TOKEN = 'app4a_sessione', CHIAVE_EMAIL = 'app4a_email';
+  // v10.24: Visualizza come. attiva = la pagina mostra la vista scelta; admin / persona = dati messi da parte per passare dall'una all'altra
+  var VISTA = { attiva: false, scelta: null, admin: null, persona: null };
+  var VISTA_SALTA = { visto: 1, pagina: 1, visita: 1, passwordConfermata: 1 };
   var STATO = { dati: null, pagina: 'home', schede: {}, sessione: null, tokenMem: '' };
   var $ = function (id) { return document.getElementById(id); };
   // Immagini incorporate (stemma della classe e loghi dei collegamenti)
@@ -1080,6 +1180,11 @@
   function chiama(azione, dati) {
     var corpo = { azione: azione, token: leggi(CHIAVE_TOKEN) };
     for (var k in (dati || {})) corpo[k] = dati[k];
+    // v10.24: "Visualizza come" (solo Rossana): i dati arrivano come li vede la persona scelta, e nulla si scrive (visti, statistiche)
+    if (VISTA.attiva && VISTA.scelta && azione !== 'vistaElenco') {
+      if (VISTA_SALTA[azione]) return Promise.resolve({ ok: true, vista: true });
+      corpo.come = VISTA.scelta;
+    }
     var p;
     if (window.__ANTEPRIMA__) p = new Promise(function (ok) { setTimeout(function () { ok(window.__ANTEPRIMA__(corpo)); }, 250); });
     else p = fetch(URL_SCRIPT, { method: 'POST', body: JSON.stringify(corpo), redirect: 'follow' })
@@ -1270,12 +1375,15 @@
     avvia(r);
   }
 
-  $('btnEsci').addEventListener('click', function () {
+  // v10.24: Esci sta dentro Il mio profilo; nell'intestazione il pupazzetto apre il profilo
+  $('btnProfilo').addEventListener('click', function () { if (STATO.sessione) { chiudiMenu(); vaiA('profilo'); } });
+  function esci() {
     scrivi(CHIAVE_TOKEN, '');
+    if (typeof spegniVista === 'function') spegniVista(true);
     STATO = { dati: null, pagina: 'home', schede: {}, sessione: null, tokenMem: '' };
     $('contenuto').innerHTML = ''; $('menu').innerHTML = '';
     mostraLogin('Sei uscito. A presto!');
-  });
+  }
 
   // ---------- v10.16: Scarica l'app (come l'app mensa) ----------
   // Android / Chrome: finestra d'installazione del telefono con un tocco. iPhone: Apple non lo permette, quindi 4 passi + video.
@@ -1492,6 +1600,9 @@
       nav.appendChild(el('div', { classe: 'voce-admin' }, [
         el('button', { classe: 'voce', 'data-id': 'gestione', onclick: function () { vaiA('gestione'); chiudiMenu(); } }, [
           el('span', { classe: 'ic', testo: '🔑' }), el('span', { testo: 'Gestione accessi' })
+        ]),
+        el('button', { classe: 'voce voce-vista', onclick: function () { chiudiMenu(); apriSceltaVista(); } }, [       // v10.24
+          el('span', { classe: 'ic', testo: '👁' }), el('span', { testo: 'Visualizza come' })
         ])
       ]));
     }
@@ -1539,6 +1650,136 @@
     if (!ridisegno && id !== 'home' && !PAGINE_FISSE[id]) chiama('pagina', { pagina: id }).catch(function () {});   // la pagina aperta (azzera i bollini di Calendario e Divise)
     if (ridisegno) Promise.all([STATO.documenti, STATO.miei]).then(function () { setTimeout(function () { window.scrollTo(0, scorri); }, 0); });
     else window.scrollTo(0, 0);
+  }
+
+  // ---------- v10.24: Visualizza come (solo Rossana) ----------
+  // Si sceglie Genitore (di quale alunno), Docente o Errore. Lo script risponde come se fosse entrata quella persona, in sola lettura.
+  // Il pulsante blu fa da interruttore: amministratrice ⇄ vista. Riaprendo l'app si riparte sempre amministratrice.
+  var VISTE = { genitore: { e: '👪', n: 'Genitore' }, docente: { e: '👩‍🏫', n: 'Docente' }, errore: { e: '⚠️', n: 'Errore' } };
+  function fotografia() {
+    return { sessione: STATO.sessione, dati: STATO.dati, visti: STATO.visti, calPrima: STATO.calPrima, divPrima: STATO.divPrima,
+      documenti: STATO.documenti, miei: STATO.miei, inArrivo: STATO.inArrivo, casse: STATO.casse, pagina: STATO.pagina, caricato: STATO.caricato };
+  }
+  function ripristina(f) { for (var k in f) STATO[k] = f[k]; }
+  function etichettaVista() {
+    var v = VISTA.scelta, x = v && VISTE[v.tipo];
+    if (!x) return '';
+    return x.e + ' ' + x.n + (v.tipo === 'genitore' && v.alunno ? ' · ' + v.alunno.split(' ')[0] : '');
+  }
+  function ridisegnaTutto(pagina) {
+    aggiornaContatori(); disegnaMenu();
+    var p = pagina && (PAGINE_FISSE[pagina] ? pagina === 'profilo' : STATO.dati.pagine.some(function (x) { return x.id === pagina && !x.url; })) ? pagina : 'home';
+    if (p === 'gestione' && !STATO.sessione.amministratore) p = 'home';
+    vaiA(p, true);
+    aggiornaVistaUI();
+  }
+  function entraVista(scelta) {
+    var stessa = VISTA.persona && VISTA.scelta && JSON.stringify(VISTA.scelta) === JSON.stringify(scelta);
+    if (!VISTA.attiva) VISTA.admin = fotografia();
+    if (stessa) { VISTA.attiva = true; var dove = STATO.pagina; ripristina(VISTA.persona); ridisegnaTutto(dove); return Promise.resolve(); }
+    VISTA.scelta = scelta; VISTA.attiva = true; VISTA.persona = null;
+    toast('Preparo la vista…');
+    return chiama('avvio').then(function (r) {
+      var dove = STATO.pagina === 'profilo' ? 'home' : STATO.pagina;
+      STATO.dati = r.contenuti;
+      STATO.sessione = { email: r.utente.email, amministratore: false, alunni: r.utente.alunni || [], chiave: r.utente.chiave, mail: '', telefono: '',
+        primoIngresso: false, vista: r.utente.vista || scelta.tipo };
+      STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null; STATO.casse = {};
+      var d = caricaDati(false);
+      STATO.documenti = d.documenti; STATO.miei = d.miei; STATO.inArrivo = d.inArrivo;
+      ridisegnaTutto(dove);
+      window.scrollTo(0, 0);
+    }).catch(function (e) {
+      VISTA.attiva = false; if (VISTA.admin) ripristina(VISTA.admin); VISTA.scelta = null;
+      ridisegnaTutto(STATO.pagina);
+      if (e.codice !== 'SESSIONE') toast(e.codice === 'AZIONE' || e.codice === 'NEGATO' ? 'Per “Visualizza come” serve lo script 10.16' : e.message);
+    });
+  }
+  function tornaAdmin() {
+    if (!VISTA.attiva) return;
+    var dove = STATO.pagina;
+    VISTA.persona = fotografia(); VISTA.attiva = false;
+    ripristina(VISTA.admin);
+    ridisegnaTutto(dove);
+  }
+  function spegniVista(silenzioso) {
+    var dove = STATO.pagina;
+    if (VISTA.attiva && VISTA.admin) ripristina(VISTA.admin);
+    var era = VISTA.attiva || VISTA.scelta;
+    VISTA.attiva = false; VISTA.scelta = null; VISTA.admin = null; VISTA.persona = null;
+    chiudiSceltaVista();
+    if (silenzioso) { aggiornaVistaUI(); return; }
+    if (era && STATO.sessione) { ridisegnaTutto(dove); toast('Visualizza come chiuso: sei amministratrice'); }
+  }
+  function aggiornaVistaUI() {
+    var on = VISTA.attiva, c = VISTA.scelta, aperto = !$('vistaFoglio').classList.contains('nascosto');
+    nascondi_($('vistaContorno'), !on);
+    nascondi_($('vistaPill'), !c || aperto || !STATO.sessione);
+    if (!c) return;
+    $('vistaPill').className = 'vista-pill ' + (on ? 'on' : 'off') + ((!c || aperto) ? ' nascosto' : '');
+    var pr = $('vistaPrinc'); pr.innerHTML = '';
+    pr.appendChild(el('span', { classe: 'vp-occhio', 'aria-hidden': 'true', testo: on ? '👁' : '🔑' }));
+    pr.appendChild(el('span', { classe: 't' }, [el('small', { testo: on ? 'Stai vedendo come' : 'Sei amministratrice' }), (on ? '' : 'Torna a ') + etichettaVista()]));
+    pr.setAttribute('aria-label', on ? 'Torna amministratrice' : 'Torna alla vista ' + etichettaVista());
+  }
+  $('vistaPrinc').addEventListener('click', function () { if (VISTA.attiva) tornaAdmin(); else if (VISTA.scelta) entraVista(VISTA.scelta); });
+  $('vistaAltro').addEventListener('click', function () { apriSceltaVista(); });
+  $('vistaVelo').addEventListener('click', function () { chiudiSceltaVista(); });
+  function chiudiSceltaVista() { nascondi('vistaFoglio'); nascondi('vistaVelo'); aggiornaVistaUI(); }
+  function apriSceltaVista() {
+    var f = $('vistaFoglio'), scelta = { tipo: (VISTA.scelta && VISTA.scelta.tipo) || 'genitore', alunno: VISTA.scelta && VISTA.scelta.alunno };
+    f.innerHTML = '';
+    f.appendChild(el('div', { classe: 'maniglia' }));
+    f.appendChild(el('h3', { id: 'vistaTit', testo: '👁 Visualizza come' }));
+    f.appendChild(el('p', { testo: 'L’app si mostra come la vede una famiglia. Puoi solo guardare: nulla viene segnato come visto né contato nelle statistiche.' }));
+    var sel = el('select', { id: 'vistaAlunno', 'aria-label': 'Alunno' }, [el('option', { value: '', testo: 'Carico gli alunni…' })]);
+    var nomeErr = el('span', { classe: 'nome-err', testo: '…' }), notaErr = el('small', { testo: '' });
+    var opz = [
+      ['genitore', 'Genitore', 'App normale: avvisi, fondo cassa, Coordinate con la causale, bollini della famiglia.',
+        el('div', { classe: 'sotto' }, [el('label', { 'for': 'vistaAlunno', testo: 'Come il genitore di' }), sel])],
+      ['docente', 'Docente', 'Profilo “Nessun bambino/a”: riquadro PROFILO DOCENTE, Contabilità senza fondo cassa personale.', null],
+      ['errore', 'Errore', 'Nome del foglio accessi che non c’è nel master: riquadro rosso e “Segnalalo su WhatsApp”.',
+        el('div', { classe: 'sotto' }, [el('label', { testo: 'Nome usato' }), nomeErr, ' ', notaErr])]
+    ];
+    var bottoni = [];
+    var lista = el('div', { classe: 'vista-opz' });
+    opz.forEach(function (o) {
+      var b = el('div', { classe: 'vista-v', role: 'button', tabindex: '0', 'aria-pressed': scelta.tipo === o[0] ? 'true' : 'false' },
+        [el('span', { classe: 'e', testo: VISTE[o[0]].e }), el('b', { testo: o[1] }), el('small', { testo: o[2] }), o[3]]);
+      function sc(ev) { if (ev && ev.target && /SELECT|OPTION/.test(ev.target.tagName)) return; scelta.tipo = o[0]; bottoni.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }); }
+      b.addEventListener('click', sc);
+      b.addEventListener('keydown', function (k) { if ((k.key === 'Enter' || k.key === ' ') && k.target === b) { k.preventDefault(); sc(); } });
+      bottoni.push(b); lista.appendChild(b);
+    });
+    f.appendChild(lista);
+    var mostraB = el('button', { type: 'button', classe: 'btn blu', testo: 'Mostra', onclick: function () {
+      if (scelta.tipo === 'genitore' && !sel.value) { toast('Scegli l’alunno'); return; }
+      var s = { tipo: scelta.tipo };
+      if (s.tipo === 'genitore') s.alunno = sel.value;
+      nascondi('vistaFoglio'); nascondi('vistaVelo');
+      entraVista(s);
+    } });
+    var az = el('div', { classe: 'vista-az' }, [el('button', { type: 'button', classe: 'btn btn-sec', testo: 'Annulla', onclick: chiudiSceltaVista }), mostraB]);
+    if (VISTA.scelta) az.appendChild(el('button', { type: 'button', classe: 'btn spegni', testo: 'Chiudi Visualizza come', onclick: function () { spegniVista(false); } }));
+    f.appendChild(az);
+    mostra('vistaVelo'); mostra('vistaFoglio'); aggiornaVistaUI();
+    VISTA.elenco = VISTA.elenco || chiama('vistaElenco');
+    VISTA.elenco.then(function (r) {
+      sel.innerHTML = '';
+      var miei = r.miei || [];
+      (r.alunni || []).slice().sort(function (a, b) { return (miei.indexOf(b) >= 0) - (miei.indexOf(a) >= 0) || a.localeCompare(b, 'it'); }).forEach(function (n) {
+        sel.appendChild(el('option', { value: n, testo: n + (miei.indexOf(n) >= 0 ? ' (tuo figlio/a)' : '') }));
+      });
+      if (scelta.alunno) sel.value = scelta.alunno;
+      var errati = r.errori || [];
+      nomeErr.textContent = errati[0] || 'Nome Esempio';
+      notaErr.textContent = errati.length ? (errati.length > 1 ? '(il primo di ' + errati.length + ' nomi sbagliati nel foglio)' : '(dal foglio accessi)') : 'esempio: oggi nel foglio non ci sono nomi sbagliati';
+    }).catch(function (e) {
+      VISTA.elenco = null;
+      sel.innerHTML = ''; sel.appendChild(el('option', { value: '', testo: 'Elenco non disponibile' }));
+      nomeErr.textContent = '—';
+      if (e.codice !== 'SESSIONE') toast(e.codice === 'AZIONE' ? 'Per “Visualizza come” serve lo script 10.16' : e.message);
+    });
   }
 
   // ---------- Date, novità, contatori ----------
@@ -1872,6 +2113,7 @@
         el('small', { testo: mov.length + (mov.length === 1 ? ' movimento' : ' movimenti') + ' · saldo ' + (a.saldo < 0 ? '−' : '+') + euro(a.saldo || 0) })]),
       el('span', { classe: 'giu', testo: '▾' })
     ]));
+    if (Array.isArray(a.tutti)) { d.appendChild(dueColonne(a)); return d; }      // v10.24 (script 10.16): allievo e classe
     var lista = el('div', { classe: 'movimenti' });
     if (!mov.length) lista.appendChild(el('div', { classe: 'mov' }, [el('span', { classe: 'mov-rag', testo: 'Nessun movimento.' })]));
     mov.forEach(function (m) { lista.appendChild(rigaMovimento(m, true)); });
@@ -1881,6 +2123,43 @@
     }
     d.appendChild(lista);
     return d;
+  }
+
+  // v10.24: rendiconto dettagliato a due colonne: quota dell'allievo (0 se il movimento non lo riguarda) e importo per tutta la classe
+  function dueColonne(a) {
+    var nome = String(a.alunno || '').split(' ')[0] || 'Alunno', tutti = a.tutti, ct = a.classeTot || {}, solo = false;
+    var box = el('div', { classe: 'mov2' });
+    var bT = el('button', { type: 'button', 'aria-pressed': 'true', testo: 'Tutti' }), bS = el('button', { type: 'button', 'aria-pressed': 'false', testo: 'Solo di ' + nome });
+    box.appendChild(el('div', { classe: 'mov2-filtro', role: 'group', 'aria-label': 'Movimenti da vedere' }, [bT, bS]));
+    var tab = el('div', { classe: 'mov2-tab' });
+    box.appendChild(tab);
+    box.appendChild(el('p', { classe: 'mov2-legenda', testo: '0,00 € = spesa della classe che non riguarda ' + nome + '. “Classe” = importo del movimento per tutta la classe.' }));
+    function imp(n, chi) {
+      if (n === null || n === undefined) return el('span', { classe: 'n vuoto', testo: '—' });
+      if (Math.abs(n) < 0.005) return el('span', { classe: 'n zero', testo: euro(0) });
+      return el('span', { classe: 'n' + (chi === 'cl' ? ' cl' : n > 0 ? ' piu' : ''), testo: (n > 0 ? '+' : '−') + euro(n) });
+    }
+    function riga(cls, d, r, nota, x, y) {
+      return el('div', { classe: 'rm' + (cls ? ' ' + cls : '') }, [el('span', { classe: 'd', testo: d }), el('span', { classe: 'r' }, [r, nota ? el('small', { testo: nota }) : null]), x, y]);
+    }
+    var piu = 0, meno = 0;
+    tutti.forEach(function (t) { if (t.quota > 0) piu += t.quota; else meno += t.quota; });
+    var versato = a.versato !== null && a.versato !== undefined ? a.versato : piu, speso = a.speso !== null && a.speso !== undefined ? a.speso : -meno;
+    function disegna() {
+      tab.innerHTML = '';
+      tab.appendChild(riga('testa', 'Data', 'Movimento', null, el('span', { classe: 'n al', testo: nome }), el('span', { classe: 'n', testo: 'Classe' })));
+      tutti.filter(function (t) { return !solo || Math.abs(t.quota) >= 0.005; }).forEach(function (t) {
+        tab.appendChild(riga('', dataCorta(t.data) || '—', t.ragione || '—', t.nota, imp(t.quota, 'al'), imp(t.classe, 'cl')));
+      });
+      tab.appendChild(riga('tot', '', 'Totale versato', null, imp(versato, 'al'), imp(ct.versato, 'cl')));
+      tab.appendChild(riga('tot', '', 'Totale speso', null, imp(-speso, 'al'), imp(ct.speso === undefined ? undefined : -ct.speso, 'cl')));
+      tab.appendChild(riga('tot saldo', '', 'Saldo', null, imp(a.saldo, 'al'), imp(ct.saldo, 'cl')));
+    }
+    function scegli(s) { solo = s; bT.setAttribute('aria-pressed', s ? 'false' : 'true'); bS.setAttribute('aria-pressed', s ? 'true' : 'false'); disegna(); }
+    bT.addEventListener('click', function () { scegli(false); });
+    bS.addEventListener('click', function () { scegli(true); });
+    disegna();
+    return box;
   }
 
   // Menu a discesa con gli alunni (amministratrice)
@@ -1943,6 +2222,19 @@
   function dataLunga(iso) { var d = dataDa(iso); return GIORNI_LUNGHI[d.getDay()] + ' ' + d.getDate() + ' ' + MESI[d.getMonth()]; }
   function nomeGiorno(iso) { var g = -giorniDa(iso); return g === 0 ? 'Oggi' : g === 1 ? 'Domani' : null; }
   function colora(n, colore) { if (colore) n.style.setProperty('--c', colore); return n; }
+  // v10.24: COMPLEANNI. Nel calendario "BARBARIGO COMPLEANNI" il titolo è "Nome: compleanno" (lo script 10.16 manda compleanno: true).
+  function eCompleanno(e) { var c = (e && e.calendario) || ''; return !!(e && (e.compleanno || (/compleann/i.test(c) && !/fest/i.test(c)))); }
+  function nomeCompleanno(e) {
+    var t = String(e.titolo || ''), i = t.indexOf(':');
+    var n = i > 0 ? t.slice(0, i) : t.replace(/(oggi\s+[èe]'?\s+il\s+suo\s+)?compleanno.*$/i, '');
+    n = n.replace(/^[\s🎂🎉]+|[\s\-–]+$/g, '').trim();
+    return n || t;
+  }
+  function fraseCompleanno(e, iso) {
+    var g = -giorniDa(iso || e.giorno || e.data);
+    return g === 0 ? 'oggi è il suo compleanno' : g > 0 ? dataLunga(iso || e.giorno || e.data) + ' sarà il suo compleanno' : 'il suo compleanno';
+  }
+  function titoloEvento(e) { return eCompleanno(e) ? '🎂 ' + nomeCompleanno(e) : e.titolo; }
 
   // Appuntamenti da oggi in poi (quelli di più giorni già iniziati partono da oggi)
   function futuri(lista, filtro) {
@@ -2165,10 +2457,12 @@
     // v10.11: appuntamenti di più giorni, "giorno 2 di 4" e le date, visibili anche nella vista compatta
     var durata = e.gtot > 1 ? el('span', { classe: 'ag-durata' }, [el('em', { testo: 'giorno ' + e.gn + ' di ' + e.gtot }),
       'dal ' + dataCorta(e.data) + ' al ' + dataCorta(fineEvento(e))]) : null;
-    var card = colora(el('div', { classe: 'ag-ev' + (e.gn > 1 ? ' segue' : '') }, [
+    var oggiComp = eCompleanno(e) && giorniDa(e.giorno || e.data) === 0;
+    var card = colora(el('div', { classe: 'ag-ev' + (e.gn > 1 ? ' segue' : '') + (oggiComp ? ' compleanno-oggi' : '') }, [
       el('div', { classe: 'ag-ora' + (compatta ? ' ag-extra' : '') }, orario),
       el('div', { classe: 'ag-tx' }, [
-        el('strong', null, [oraInizio, e.titolo, eventoNuovo(e, prima) ? el('span', { classe: 'badge', testo: 'NUOVO' }) : null]),
+        el('strong', null, [oraInizio, titoloEvento(e), eventoNuovo(e, prima) ? el('span', { classe: 'badge', testo: 'NUOVO' }) : null]),
+        eCompleanno(e) ? el('span', { classe: 'ag-frase', testo: fraseCompleanno(e) }) : null,       // v10.24
         durata,
         info.length ? el('small', { classe: extra, testo: info.join(' · ') }) : null,
         mappa,
@@ -2180,7 +2474,7 @@
     ]), e.colore);
     if (!compatta) return card;
     var chiave = codiceEvento(e) + (e.gn ? '|' + e.giorno : ''), aperto = eventoAperto(chiave);
-    card.className = 'ag-ev comp' + (e.gn > 1 ? ' segue' : '') + (aperto ? ' aperto' : '');
+    card.className = 'ag-ev comp' + (e.gn > 1 ? ' segue' : '') + (oggiComp ? ' compleanno-oggi' : '') + (aperto ? ' aperto' : '');
     card.setAttribute('role', 'button');
     card.setAttribute('tabindex', '0');
     card.setAttribute('aria-expanded', aperto ? 'true' : 'false');
@@ -2474,6 +2768,71 @@
     aggiornaContatori();
     vaiA(STATO.pagina, true);
   }
+  // ---------- v10.24: compleanni di oggi, avviso festoso in Home (non si salva: nasce dal calendario e sparisce a mezzanotte) ----------
+  function compleanniDiOggi(dati) {
+    var oggi = oggiISO(), nomi = [];
+    (elencoEventi(dati) || []).forEach(function (e) {
+      if (!eCompleanno(e) || e.data > oggi || fineEvento(e) < oggi) return;
+      var n = nomeCompleanno(e);
+      if (nomi.indexOf(n) < 0) nomi.push(n);
+    });
+    return nomi;
+  }
+  var SVG_NS = 'http://www.w3.org/2000/svg', COL_FESTA = ['#f3a6b8', '#d9b44a', '#7cc0ea', '#8fd19e', '#c3a6ee'];
+  function sv(tag, attr) { var e = document.createElementNS(SVG_NS, tag); for (var k in attr) e.setAttribute(k, attr[k]); return e; }
+  function decorazioneFesta() {
+    var W = 360, sag = 16, svg = sv('svg', { 'class': 'deco', viewBox: '0 0 360 92', 'aria-hidden': 'true' });
+    svg.appendChild(sv('path', { d: 'M0 6 Q 180 ' + (6 + sag * 2) + ' 360 6', fill: 'none', stroke: '#b07d1a', 'stroke-width': '1.2', opacity: '.7' }));
+    for (var i = 0; i < 13; i++) {
+      var t = (i + 0.5) / 13, x = t * W, y = 6 + 4 * sag * t * (1 - t);
+      svg.appendChild(sv('polygon', { points: (x - 8) + ',' + y + ' ' + (x + 8) + ',' + y + ' ' + x + ',' + (y + 15), fill: COL_FESTA[i % 5] }));
+    }
+    [[26, 44, '#f3a6b8', ''], [46, 52, '#7cc0ea', ' b'], [334, 46, '#c3a6ee', ' c'], [314, 54, '#d9b44a', '']].forEach(function (b) {
+      var cx = b[0], cy = b[1], g = sv('g', { 'class': 'palloncino' + b[3] });
+      g.appendChild(sv('path', { d: 'M' + cx + ' ' + (cy + 15) + ' C ' + (cx - 4) + ' ' + (cy + 28) + ', ' + (cx + 5) + ' ' + (cy + 36) + ', ' + cx + ' ' + (cy + 50), fill: 'none', stroke: '#9aa8b8', 'stroke-width': '1' }));
+      g.appendChild(sv('ellipse', { cx: cx, cy: cy, rx: 11, ry: 14, fill: b[2] }));
+      g.appendChild(sv('polygon', { points: (cx - 3) + ',' + (cy + 16) + ' ' + (cx + 3) + ',' + (cy + 16) + ' ' + cx + ',' + (cy + 12), fill: b[2] }));
+      g.appendChild(sv('ellipse', { cx: cx - 4, cy: cy - 5, rx: 3, ry: 4.5, fill: '#fff', opacity: '.55' }));
+      svg.appendChild(g);
+    });
+    [[88, 40, 5], [130, 58, 3.5], [250, 40, 4.5], [282, 62, 3], [205, 56, 3.5], [165, 38, 3]].forEach(function (st, j) {
+      var x = st[0], y = st[1], r = st[2], q = r * 0.32;
+      var e = sv('path', { d: 'M' + x + ' ' + (y - r) + ' L' + (x + q) + ' ' + (y - q) + ' L' + (x + r) + ' ' + y + ' L' + (x + q) + ' ' + (y + q) + ' L' + x + ' ' + (y + r) +
+        ' L' + (x - q) + ' ' + (y + q) + ' L' + (x - r) + ' ' + y + ' L' + (x - q) + ' ' + (y - q) + ' Z', fill: j % 2 ? '#d9b44a' : '#f3a6b8', 'class': 'stellina' });
+      e.style.animationDelay = (-j * 0.45) + 's';
+      svg.appendChild(e);
+    });
+    [[70, 70, '#8fd19e'], [110, 30, '#7cc0ea'], [228, 72, '#c3a6ee'], [270, 30, '#8fd19e'], [150, 74, '#d9b44a']].forEach(function (c) {
+      svg.appendChild(sv('rect', { x: c[0], y: c[1], width: 6, height: 3, rx: 1.5, fill: c[2], transform: 'rotate(' + (c[0] % 50 - 25) + ' ' + c[0] + ' ' + c[1] + ')' }));
+    });
+    return svg;
+  }
+  function tortaFesta() {
+    var svg = sv('svg', { 'class': 'torta', width: 54, height: 58, viewBox: '0 0 54 58', 'aria-hidden': 'true' });
+    svg.appendChild(sv('ellipse', { cx: 27, cy: 53, rx: 25, ry: 4, fill: '#e8dcc0' }));
+    svg.appendChild(sv('rect', { x: 5, y: 34, width: 44, height: 18, rx: 4, fill: '#f3a6b8' }));
+    svg.appendChild(sv('path', { d: 'M5 38 q5.5 5 11 0 t11 0 t11 0 t11 0 V34 H5 Z', fill: '#fff' }));
+    svg.appendChild(sv('rect', { x: 10, y: 21, width: 34, height: 14, rx: 4, fill: '#fff4d6' }));
+    svg.appendChild(sv('path', { d: 'M10 25 q4.25 4 8.5 0 t8.5 0 t8.5 0 t8.5 0 V21 H10 Z', fill: '#d9b44a' }));
+    [17, 27, 37].forEach(function (x, i) {
+      svg.appendChild(sv('rect', { x: x - 1.6, y: 11, width: 3.2, height: 11, rx: 1, fill: COL_FESTA[(i + 2) % 5] }));
+      svg.appendChild(sv('ellipse', { cx: x, cy: 7.5, rx: 2.6, ry: 4, fill: '#ffb547' }));
+      svg.appendChild(sv('ellipse', { cx: x, cy: 8.5, rx: 1.1, ry: 2, fill: '#fff3c4' }));
+    });
+    return svg;
+  }
+  function avvisoFesta(nomi) {
+    var elenco = nomi.length > 1 ? nomi.slice(0, -1).join(', ') + ' e ' + nomi[nomi.length - 1] : nomi[0];
+    return el('div', { classe: 'festa', role: 'note' }, [
+      decorazioneFesta(),
+      el('div', { classe: 'festa-corpo' }, [tortaFesta(), el('div', { classe: 'festa-tx' }, [
+        el('span', { classe: 'festa-nome', testo: elenco }),
+        el('span', { classe: 'festa-frase', testo: nomi.length > 1 ? 'oggi è il loro compleanno!' : 'oggi è il suo compleanno!' }),
+        el('span', { classe: 'festa-auguri', testo: 'Tanti auguri da tutta la 4a 🎉' })])]),
+      el('div', { classe: 'festa-piede' }, [el('span', { classe: 'badge', testo: 'NUOVO' }), el('span', { testo: 'solo oggi · dal calendario Compleanni' })])
+    ]);
+  }
+
   function rigaAvviso(a, conAzioni, evidenza) {
     var piede = [];
     if (a.allegato) piede.push(el('button', { type: 'button', classe: 'av-doc', onclick: function () { apriAllegato(a.allegato); } }, ['📎 ' + a.allegato.titolo]));
@@ -2954,25 +3313,21 @@
       if (!LB.scelto || !libroDi(pronti, LB.scelto)) LB.scelto = (m.ultimo && libroDi(pronti, m.ultimo.libro) ? m.ultimo.libro : (pronti[0] || {}).id) || null;
       var conRicerca = elenco.some(function (l) { return l.ricerca; });
 
-      // 1) ricerca
-      box.appendChild(el('div', { classe: 'lb-eti', testo: '🔎 Cerca un argomento o una parola' }));
+      // 1) ricerca — v10.24: compare solo quando almeno un libro ha il testo pronto (preparaRicerca)
+      if (!conRicerca && STATO.sessione.amministratore) box.appendChild(el('div', { classe: 'lb-nota', testo: 'Solo per te: la ricerca per parola comparirà qui quando il testo dei libri sarà pronto (nell’editor dello script: Servizi + Drive API, poi esegui preparaRicerca).' }));
+      var boxCerca = el('div', { classe: conRicerca ? '' : 'nascosto' });
+      box.appendChild(boxCerca);
+      boxCerca.appendChild(el('div', { classe: 'lb-eti', testo: '🔎 Cerca un argomento o una parola' }));
       var campo = el('input', { id: 'lbCerca', type: 'search', placeholder: 'es. frazioni, perimetro, Romani', 'aria-label': 'Cerca nei libri', autocomplete: 'off', enterkeyhint: 'search' });
-      box.appendChild(el('div', { classe: 'lb-cerca' }, [el('span', { classe: 'lente', 'aria-hidden': 'true', testo: '🔎' }), campo]));
+      boxCerca.appendChild(el('div', { classe: 'lb-cerca' }, [el('span', { classe: 'lente', 'aria-hidden': 'true', testo: '🔎' }), campo]));
       var esiti = el('div', { classe: 'lb-risultati', 'aria-live': 'polite' });
-      box.appendChild(esiti);
+      boxCerca.appendChild(esiti);
       var attesaCerca, giro = 0;
       campo.addEventListener('input', function () {
         clearTimeout(attesaCerca);
         var q = campo.value.trim(), mio = ++giro;
         esiti.innerHTML = '';
-        if (/^\d{1,4}$/.test(q) && LB.scelto) {                // un numero: apri quella pagina
-          var l = libroDi(pronti, LB.scelto);
-          esiti.appendChild(el('button', { type: 'button', classe: 'lb-ris', onclick: function () { apriLettore(l.id, paginaVicina(l, +q)); } }, [
-            el('b', { classe: 'n' }, [el('small', { testo: 'pag.' }), q]), el('span', { classe: 'tx' }, [el('strong', { testo: 'Apri la pagina ' + q }), l.nome])]));
-          return;
-        }
-        if (q.length < 3) return;
-        if (!conRicerca) { esiti.appendChild(el('div', { classe: 'lb-nota', testo: 'La ricerca per parola sarà pronta a breve. Intanto scegli il libro e scrivi il numero di pagina.' })); return; }
+        if (q.length < 3) return;                             // v10.24: il numero di pagina si sceglie dentro il libro ("Vai a pagina")
         attesaCerca = setTimeout(function () {
           esiti.appendChild(attesa('Cerco “' + q + '”…'));
           chiama('libroCerca', { q: q }).then(function (r) {
@@ -2997,9 +3352,7 @@
       box.appendChild(el('div', { classe: 'lb-eti', testo: 'Scegli il libro' }));
       var scaffale = el('div', { classe: 'lb-scaffale' });
       box.appendChild(scaffale);
-      // 3) vai a pagina, 4) argomenti
-      var vai = el('div'), argomenti = el('div');
-      box.appendChild(vai); box.appendChild(argomenti);
+      // v10.24: tolti "Vai alla pagina dei compiti" e gli argomenti sotto lo scaffale: toccando un libro si apre, e "Vai a pagina" sta nel lettore
 
       function disegnaScaffale() {
         scaffale.innerHTML = '';
@@ -3029,38 +3382,17 @@
       }
       function voceLibro(l) {
         var pronto = libriPronti(l);
-        var b = el('button', { type: 'button', classe: 'lb-vol' + (l.id === LB.scelto ? ' attivo' : '') + (pronto ? '' : ' spento'), 'aria-disabled': pronto ? null : 'true' }, [
+        var b = el('button', { type: 'button', classe: 'lb-vol' + (pronto ? '' : ' spento'), 'aria-disabled': pronto ? null : 'true' }, [
           copertina(l), el('span', { testo: l.nome }),
           el('span', { classe: 'stato', testo: pronto ? l.pagine.length + ' pagine' : l.errore ? 'non disponibile' : 'in arrivo' })]);
         b.addEventListener('click', function () {
           if (!pronto) { toast(l.nome + ': in arrivo'); return; }
-          LB.scelto = l.id; disegnaScaffale(); disegnaVai();
-          var mm = memoriaLibri();
-          apriLettore(l.id, (mm.pagine && mm.pagine[l.id]) || l.pagine[0]);
+          LB.scelto = l.id; disegnaScaffale();
+          apriLettore(l.id, l.pagine[0]);                          // v10.24: sempre dalla prima pagina (la copertina C1, se c'è)
         });
         return b;
       }
-      function disegnaVai() {
-        vai.innerHTML = ''; argomenti.innerHTML = '';
-        var l = libroDi(pronti, LB.scelto);
-        if (!l) return;
-        vai.appendChild(el('div', { classe: 'lb-eti', testo: 'Vai alla pagina dei compiti' }));
-        vai.appendChild(el('p', { classe: 'lb-vai-libro' }, ['nel libro ', el('b', { testo: l.nome }), ' (tocca un altro libro per cambiare)']));
-        var num = el('input', { id: 'lbNumero', type: 'text', inputmode: 'numeric', pattern: '[0-9]*', maxlength: '4', placeholder: 'n. pagina', 'aria-label': 'Numero di pagina', autocomplete: 'off', enterkeyhint: 'go' });
-        var form = el('form', { classe: 'lb-vai', novalidate: 'novalidate' }, [num, el('button', { type: 'submit', classe: 'lb-grosso', testo: 'Apri' })]);
-        form.addEventListener('submit', function (ev) { ev.preventDefault(); vaiAPagina(l, num.value); });
-        vai.appendChild(form);
-        if (l.argomenti && l.argomenti.length) {
-          argomenti.appendChild(el('div', { classe: 'lb-eti', testo: 'Argomenti di ' + l.nome }));
-          var lista = el('div', { classe: 'lb-argomenti' });
-          l.argomenti.forEach(function (a) {
-            lista.appendChild(el('button', { type: 'button', classe: 'lb-arg', onclick: function () { apriLettore(l.id, paginaVicina(l, +a.da)); } }, [
-              el('span', { classe: 'em', testo: a.icona || '📌' }), el('span', { testo: a.titolo }), el('span', { classe: 'pp', testo: 'pag. ' + a.da + (a.a ? '–' + a.a : '') })]));
-          });
-          argomenti.appendChild(lista);
-        }
-      }
-      disegnaScaffale(); disegnaVai();
+      disegnaScaffale();
       if (STATO.libriCerca) { STATO.libriCerca = false; setTimeout(function () { campo.focus(); campo.scrollIntoView({ block: 'center' }); }, 60); }
       if (STATO.libroDaAprire) {
         var d = STATO.libroDaAprire; STATO.libroDaAprire = null;
@@ -3577,11 +3909,13 @@
       Promise.all([STATO.documenti, STATO.inArrivo || Promise.resolve(null)]).then(function (r) {
         var tutti = avvisiDi(r[0]), arrivo = r[1];
         var cerca = STATO.avvisoDaMostrare; STATO.avvisoDaMostrare = null;
-        if (!tutti) return;                                                    // script non ancora aggiornato
+        var festa = compleanniDiOggi(r[0]);                                    // v10.24: avviso festoso del giorno, dal calendario
+        if (!tutti && !festa.length) return;                                   // script non ancora aggiornato
+        tutti = tutti || [];
         var attivi = tutti.filter(avvisoAttivo);
         var cercato = cerca ? tutti.filter(function (a) { return a.id === cerca; })[0] : null;
         if (cercato && !avvisoAttivo(cercato)) apriAvviso(cercato);            // link a un avviso che non è più in Home
-        if (!attivi.length && !admin) return;
+        if (!attivi.length && !admin && !festa.length) return;
         card.classList.remove('nascosto');
         card.appendChild(el('div', { classe: 'hcard-testa' }, [el('span', { testo: '📢 ' + (b.titolo || 'Avvisi') }),
           admin ? el('button', { type: 'button', classe: 'av-piu', testo: '+ Avviso / File', onclick: function () { apriPannello('avviso'); } }) : null]));
@@ -3592,8 +3926,9 @@
               el('small', { testo: 'Condivisi su Drive nella cartella IN ARRIVO: scegli dove metterli' })]),
             el('span', { 'aria-hidden': 'true', testo: '›' })]));
         }
+        if (festa.length) card.appendChild(avvisoFesta(festa));
         attivi.forEach(function (a) { card.appendChild(rigaAvviso(a, admin, cercato === a)); });
-        if (!attivi.length) card.appendChild(el('p', { classe: 'av-vuoto', testo: 'Nessun avviso in Home: le famiglie non vedono questo riquadro.' }));
+        if (!attivi.length && !festa.length) card.appendChild(el('p', { classe: 'av-vuoto', testo: 'Nessun avviso in Home: le famiglie non vedono questo riquadro.' }));
         if (tutti.length) card.appendChild(el('button', { type: 'button', classe: 'av-tutti', testo: 'Tutti gli avvisi →', onclick: function () { apriScheda('comunicazioni', 0); } }));
         segnaAvvisiVisti(attivi);
         if (cercato && avvisoAttivo(cercato)) setTimeout(function () { var n = $('avviso-' + cercato.id); if (n) n.scrollIntoView({ block: 'center' }); }, 50);
@@ -3615,10 +3950,11 @@
         if (!ev.length) { corpo.appendChild(el('div', { classe: 'hriga muto', testo: 'Nessuna scadenza in questi giorni 🎉' })); return; }
         ev.forEach(function (e) {
           var g = -giorniDa(e.giorno), p = e.giorno.split('-');
-          var quando = g === 0 ? 'Oggi' : g === 1 ? 'Domani' : GIORNI_SETT[new Date(+p[0], +p[1] - 1, +p[2]).getDay()] + ' ' + (+p[2]);
+          var quando = GIORNI_SETT[new Date(+p[0], +p[1] - 1, +p[2]).getDay()] + ' ' + (+p[2]) + ' ' + MESI[+p[1] - 1].slice(0, 3);   // v10.24: con il mese (oggi e domani restano in rosso)
           corpo.appendChild(el('div', { classe: 'hriga' + (g <= 1 ? ' urgente' : '') }, [
             el('span', { classe: 'quando', testo: quando }), pallino(e.colore),
-            el('span', { classe: 'cosa', testo: e.titolo }), e.ora ? el('span', { classe: 'ora', testo: e.ora }) : null
+            eCompleanno(e) ? el('span', { classe: 'cosa' }, [titoloEvento(e) + ' ', el('em', { testo: g === 0 ? '· oggi è il suo compleanno' : '· sarà il suo compleanno' })])
+              : el('span', { classe: 'cosa', testo: e.titolo }), e.ora ? el('span', { classe: 'ora', testo: e.ora }) : null
           ]));
         });
       });
@@ -3930,7 +4266,7 @@
             (function (d) {
               var iso = isoDi(d), lista = perGiorno[iso] || [], fuori = d.getMonth() !== vista.getMonth();
               var et = el('span', { classe: 'cal-eventi' });
-              lista.slice(0, 3).forEach(function (e) { et.appendChild(colora(el('span', { classe: 'cal-et', testo: e.titolo, title: e.titolo }), e.colore)); });
+              lista.slice(0, 3).forEach(function (e) { et.appendChild(colora(el('span', { classe: 'cal-et', testo: titoloEvento(e), title: titoloEvento(e) }), e.colore)); });
               if (lista.length > 3) et.appendChild(el('span', { classe: 'cal-piu', testo: '+' + (lista.length - 3) }));
               griglia.appendChild(el('button', {
                 classe: 'cal-g' + (fuori ? ' fuori' : '') + (iso === oggiIso ? ' oggi' : '') + (iso === STATO.giornoScelto ? ' scelto' : ''),
@@ -4201,6 +4537,7 @@
     // Il mio profilo: email e numero (sola lettura), password attuale con Visualizza, cambio password con doppio inserimento.
     // v10.15: al primo ingresso con la password mandata dalla rappresentante l'app si apre qui: "Tengo questa" oppure una nuova, e "Salvala".
     profilo: function () {
+      if (STATO.sessione.vista) return el('div', { classe: 'card' }, [el('p', { style: 'margin:0', testo: '👁 In “Visualizza come” il profilo non si mostra: email e password sono personali di ogni genitore. Tocca il pulsante blu per tornare amministratrice.' })]);
       var testi = (STATO.dati && STATO.dati.profilo) || {};
       var ses = STATO.sessione, primo = !!ses.primoIngresso, soloNumero = !ses.mail;
       var box = el('div', { classe: 'profilo' });
@@ -4323,6 +4660,16 @@
         altro.appendChild(bHome());
         altro.appendChild(el('p', { classe: 'prof-nota', style: 'text-align:center', testo: 'Se vai alla Home senza scegliere, resta la password che ti è stata mandata.' }));
       }
+      // v10.24: Esci (prima era nell'intestazione), con conferma
+      var conferma = el('div', { classe: 'riga-esci nascosto' }, [
+        el('button', { type: 'button', classe: 'btn btn-primario', style: 'width:auto;background:var(--danger)', testo: 'Sì, esci', onclick: esci }),
+        el('button', { type: 'button', classe: 'btn btn-sec', style: 'width:auto;margin:0', testo: 'Annulla', onclick: function () { nascondi_(conferma, true); nascondi_(bEsci, false); } })
+      ]);
+      var bEsci = el('button', { type: 'button', classe: 'btn btn-esci', testo: '🚪 Esci dall’app', onclick: function () { nascondi_(bEsci, true); nascondi_(conferma, false); } });
+      altro.appendChild(el('div', { classe: 'card esci-card' }, [
+        el('p', { classe: 'prof-nota', style: 'margin:0 0 10px', testo: 'Su questo telefono resti collegato per un anno. Esci solo se il telefono non è tuo o se vuoi entrare con un altro accesso.' }),
+        bEsci, conferma
+      ]));
       return box;
     },
     documenti: function (b) {
