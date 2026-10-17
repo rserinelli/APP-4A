@@ -14,7 +14,12 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.28, 17 ottobre 2026: GRAFICA CON LE ILLUSTRAZIONI (n. 4) —
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.0, VERSIONE DEFINITIVA, 17 ottobre 2026: LIBRI — scaffale a due
+  colonne: ogni libro è un riquadro con la copertina vera rimpicciolita (img/cop-<id>.webp, 22 file da 4–11 KB) e accanto il nome intero
+  e le pagine, bordo del colore della copertina (COLORI_COPERTINA nel codice); Religione e i libri senza foto restano con la copertina disegnata;
+  Kit docente con la copertina della guida; ricerca con la X per cancellare parola e risultati (anche con Esc).
+  Parte dalla 10.28 di GitHub; script e contenuti non cambiano.
+  Versione 10.28, 17 ottobre 2026: GRAFICA CON LE ILLUSTRAZIONI (n. 4) —
   le illustrazioni del vecchio sito (file .webp accanto a index.html su GitHub) al posto delle emoji in griglia, riquadri e menu;
   Home nuova: saluto "Ciao, famiglia di …!" con la data, "Avvisi e comunicazioni" sempre visibile, fondo cassa e Prossimi 7 giorni
   come porte di Comunicazioni, Contabilità e Calendario (illustrazione, bollino, freccetta; una riga sola quando sono vuoti),
@@ -983,6 +988,32 @@
   .lb-vol:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 8px; }
   .lb-kit-torna { grid-column: 1 / -1; justify-self: start; border: 1px solid var(--line); background: var(--card); color: var(--brand); border-radius: 10px; padding: 8px 14px; font-weight: 800; font-size: 14px; }
   .lb-kit-tit { grid-column: 1 / -1; font-size: 18px; font-weight: 800; }
+  /* ---------- v11.0: scaffale a due colonne, copertina vera rimpicciolita + nome intero accanto ---------- */
+  .lb-scaffale { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .lb-vol { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 9px; align-items: center; min-height: 72px; padding: 8px 10px 8px 9px;
+    background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--c, var(--brand)); border-radius: 12px; box-shadow: var(--shadow);
+    text-align: left; font-size: 15px; line-height: 1.15; cursor: pointer; overflow-wrap: normal; }
+  .lb-vol:hover { border-color: var(--c, var(--brand)); }
+  .lb-vol .tx { display: grid; gap: 3px; min-width: 0; }
+  .lb-vol .tx strong { font-size: 14.5px; font-weight: 900; color: var(--ink); overflow-wrap: break-word; hyphens: manual; }
+  .lb-vol .stato { font-size: 12px; }
+  .lb-vol .lb-cop { width: 42px; aspect-ratio: auto; height: 54px; border-radius: 2px 5px 5px 2px; box-shadow: inset 3px 0 0 rgba(0,0,0,.15), 0 1px 4px rgba(20,50,90,.3); }
+  .lb-vol .lb-cop .sim { font-size: 16px; }
+  .lb-vol .lb-cop .nm { display: none; }
+  .lb-vol .lb-cop.kit { box-shadow: 2px -2px 0 #9aa5b5, 4px -4px 0 #c3cad4, 0 1px 4px rgba(20,50,90,.3); }
+  .lb-cop.foto { display: block; }
+  .lb-cop.foto img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; border-radius: inherit; }
+  .lb-cella { gap: 6px; }
+  .lb-cella .lb-gruppo { font-size: 12px; }
+  @media (min-width: 700px) { .lb-scaffale { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 360px) { .lb-scaffale { gap: 6px; } .lb-vol { grid-template-columns: 34px minmax(0, 1fr); gap: 7px; padding: 7px 7px 7px 6px; border-left-width: 4px; } .lb-vol .lb-cop { width: 34px; height: 44px; } .lb-vol .tx strong { font-size: 13.5px; } .lb-vol .stato { font-size: 11px; } }
+  /* v11.0: X per cancellare la ricerca */
+  .lb-cerca input { padding-right: 50px; }
+  .lb-cerca input::-webkit-search-cancel-button { -webkit-appearance: none; display: none; }
+  .lb-x { position: absolute; right: 3px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: 0; background: transparent; padding: 0; display: grid; place-items: center; cursor: pointer; }
+  .lb-x span { width: 26px; height: 26px; border-radius: 50%; background: var(--muted); color: #fff; display: grid; place-items: center; }
+  .lb-x:hover span { background: var(--ink); }
+  .lb-x:focus-visible { outline: 2px solid var(--brand); outline-offset: -4px; border-radius: 12px; }
   .lb-vai { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
   .lb-vai input { width: 100%; min-width: 0; font: inherit; font-size: 28px; font-weight: 800; text-align: center; padding: 8px; border: 2px solid var(--brand); border-radius: 14px; background: var(--card); color: var(--ink); font-variant-numeric: tabular-nums; }
   .lb-vai input::placeholder { font-size: 18px; font-weight: 700; color: var(--muted); }
@@ -3672,9 +3703,33 @@
   }
   function libriPronti(l) { return l && l.pagine && l.pagine.length > 0; }
   function libroDi(elenco, id) { return (elenco || []).filter(function (l) { return l.id === id; })[0] || null; }
+  // v11.0: copertine vere rimpicciolite (img/cop-<id>.webp su GitHub, 150 px, pochi KB) e colore di ogni libro preso dalla copertina.
+  // Un libro senza foto (es. Religione, che apre il sito) o con la foto che non si carica resta con la copertina disegnata.
+  var COLORI_COPERTINA = {
+    let: '#2f8f3a', gra: '#d1452b', scr: '#1f74b8', art: '#d0601e',
+    sto: '#c42b5c', geo: '#3f8a2f', vsg: '#7a4aa6', atl: '#1f86a8',
+    mat: '#1f6fb2', sci: '#178f86', vms: '#cf3346', lab: '#4f9a2f',
+    ing: '#3d2b85', tut: '#c98a0c',
+    gmat: '#15969c', gsci: '#15969c', gsto: '#15969c', ggeo: '#15969c',
+    rmat: '#238f88', rsci: '#238f88', rsto: '#238f88', rgeo: '#6f9420'
+  };
+  function coloreLibro(l) { return COLORI_COPERTINA[l.id] || l.colore || '#1f5f99'; }
+  function copertinaDisegnata(c, l) {
+    c.innerHTML = '';
+    c.classList.remove('foto');
+    c.appendChild(el('span', { classe: 'sim', testo: l.simbolo || '📘' }));
+    c.appendChild(el('span', { classe: 'nm', testo: l.nome }));
+    c.style.background = 'linear-gradient(160deg,' + coloreLibro(l) + ',' + coloreLibro(l) + 'cc)';
+  }
   function copertina(l, kit) {
-    var c = el('div', { classe: 'lb-cop' + (kit ? ' kit' : ''), 'aria-hidden': 'true' }, [el('span', { classe: 'sim', testo: l.simbolo || '📘' }), el('span', { classe: 'nm', testo: l.nome })]);
-    c.style.background = 'linear-gradient(160deg,' + (l.colore || '#1f5f99') + ',' + (l.colore || '#1f5f99') + 'cc)';
+    var c = el('div', { classe: 'lb-cop' + (kit ? ' kit' : ''), 'aria-hidden': 'true' });
+    var foto = l.foto || (COLORI_COPERTINA[l.id] ? 'img/cop-' + l.id + '.webp' : '');
+    if (!foto) { copertinaDisegnata(c, l); return c; }
+    c.classList.add('foto');
+    c.style.background = coloreLibro(l);
+    var i = el('img', { src: foto, alt: '', decoding: 'async', loading: 'lazy' });
+    i.addEventListener('error', function () { copertinaDisegnata(c, l); });
+    c.appendChild(i);
     return c;
   }
   // v10.17: le copertine arrivano dallo script con numeri speciali: C1 = -2 e C2 = -1 (prima di tutte le pagine), C3 = 99993 e C4 = 99994 (dopo l'ultima)
@@ -3805,11 +3860,23 @@
       box.appendChild(boxCerca);
       boxCerca.appendChild(el('div', { classe: 'lb-eti', testo: '🔎 Cerca un argomento o una parola' }));
       var campo = el('input', { id: 'lbCerca', type: 'search', placeholder: 'es. frazioni, perimetro, Romani', 'aria-label': 'Cerca nei libri', autocomplete: 'off', enterkeyhint: 'search' });
-      boxCerca.appendChild(el('div', { classe: 'lb-cerca' }, [el('span', { classe: 'lente', 'aria-hidden': 'true', testo: '🔎' }), campo]));
+      // v11.0: la X compare appena si scrive; toccandola si cancellano la parola e i risultati e torna lo scaffale
+      var bX = el('button', { type: 'button', classe: 'lb-x nascosto', 'aria-label': 'Cancella la ricerca', title: 'Cancella la ricerca' });
+      bX.innerHTML = '<span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></span>';
+      boxCerca.appendChild(el('div', { classe: 'lb-cerca' }, [el('span', { classe: 'lente', 'aria-hidden': 'true', testo: '🔎' }), campo, bX]));
       var esiti = el('div', { classe: 'lb-risultati', 'aria-live': 'polite' });
       boxCerca.appendChild(esiti);
       var attesaCerca, giro = 0;
+      function cancellaRicerca() {
+        clearTimeout(attesaCerca); giro++;
+        campo.value = ''; esiti.innerHTML = ''; bX.classList.add('nascosto');
+        try { campo.focus({ preventScroll: true }); } catch (e) { campo.focus(); }
+      }
+      bX.addEventListener('click', cancellaRicerca);
+      campo.addEventListener('keydown', function (e) { if (e.key === 'Escape' && campo.value) { e.preventDefault(); cancellaRicerca(); } });
+      campo.addEventListener('search', function () { if (!campo.value) cancellaRicerca(); });   // X del telefono / tasto Invio a campo vuoto
       campo.addEventListener('input', function () {
+        bX.classList.toggle('nascosto', !campo.value);
         clearTimeout(attesaCerca);
         var q = campo.value.trim(), mio = ++giro;
         esiti.innerHTML = '';
@@ -3854,9 +3921,9 @@
         function cellaKit() {
           kitMesso = true;
           return el('div', { classe: 'lb-cella' }, [el('div', { classe: 'lb-gruppo', testo: 'Altro' }),
-            el('button', { type: 'button', classe: 'lb-vol', onclick: function () { LB.kit = true; disegnaScaffale(); } }, [
-              copertina({ nome: 'Kit docente', simbolo: '🧰', colore: '#4a5568' }, true), el('span', { testo: 'Kit docente' }),
-              el('span', { classe: 'stato', testo: kitLibri.length + ' libri ›' })])]);
+            colLibro(el('button', { type: 'button', classe: 'lb-vol', onclick: function () { LB.kit = true; disegnaScaffale(); } }, [
+              copertina({ id: 'kit', nome: 'Kit docente', simbolo: '🧰', colore: '#4a5568', foto: COLORI_COPERTINA.gmat ? 'img/cop-gmat.webp' : '' }, true),
+              testoLibro('Kit docente', kitLibri.length + ' libri ›')]), { colore: '#4a5568' })]);
         }
         mostra.forEach(function (l) {
           if (l.gruppo !== gruppo) {
@@ -3868,16 +3935,18 @@
         });
         if (!kitMesso) scaffale.appendChild(cellaKit());
       }
+      // v11.0: ogni libro è un riquadro (due per riga) con la copertina vera rimpicciolita a sinistra e il nome intero accanto
+      function testoLibro(nome, stato) { return el('span', { classe: 'tx' }, [el('strong', { testo: nome }), el('span', { classe: 'stato', testo: stato })]); }
+      function colLibro(n, l) { n.style.setProperty('--c', l.colore && !l.id ? l.colore : coloreLibro(l)); return n; }
       function voceLibro(l) {
         var sito = SITI[l.id];
         if (sito) {                                                // v10.26: libro sul sito dell'editore, libero e senza password
-          return el('a', { classe: 'lb-vol', href: sito, target: '_blank', rel: 'noopener', title: l.nome + ' · si apre il sito' }, [
-            copertina(l), el('span', { testo: l.nome }), el('span', { classe: 'stato', testo: 'si apre il sito ↗' })]);
+          return colLibro(el('a', { classe: 'lb-vol', href: sito, target: '_blank', rel: 'noopener', title: l.nome + ' · si apre il sito' }, [
+            copertina(l), testoLibro(l.nome, 'si apre il sito ↗')]), l);
         }
         var pronto = libriPronti(l);
-        var b = el('button', { type: 'button', classe: 'lb-vol' + (pronto ? '' : ' spento'), 'aria-disabled': pronto ? null : 'true' }, [
-          copertina(l), el('span', { testo: l.nome }),
-          el('span', { classe: 'stato', testo: pronto ? l.pagine.length + ' pagine' : l.errore ? 'non disponibile' : 'in arrivo' })]);
+        var b = colLibro(el('button', { type: 'button', classe: 'lb-vol' + (pronto ? '' : ' spento'), 'aria-disabled': pronto ? null : 'true' }, [
+          copertina(l), testoLibro(l.nome, pronto ? pagineNormali(l).length + ' pagine' : l.errore ? 'non disponibile' : 'in arrivo')]), l);
         b.addEventListener('click', function () {
           if (!pronto) { toast(l.nome + ': in arrivo'); return; }
           LB.scelto = l.id; disegnaScaffale();
