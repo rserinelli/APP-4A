@@ -12,9 +12,23 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icona-192.png">
 <link rel="apple-touch-icon" href="icona-180.png">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.26, 17 ottobre 2026: LIBRI — un libro può aprire direttamente il suo sito (blocco libri di Contenuti.gs → siti, es. Religione Ponti Arcobaleno: Libro e Laboratori) con "si apre il sito ↗"; il Kit docente si può mettere subito dopo un libro scelto (kitDopo, es. dopo Tutto Chiaro) invece che in fondo allo scaffale. Versione 10.25, 16 ottobre 2026: COMPLEANNI con l'età — "Giulia · oggi compie 10 anni!", due o più bambini "oggi compiono 10 anni!" o, con età diverse, "Giulia compie 10 anni, Marco compie 9"; sulla torta il numero degli anni (con età diverse le 3 candeline); senza età (script vecchio o età non sicura) l'avviso resta quello della 10.24; serve lo script 10.17 (campo anni); Gestione accessi: nome del foglio "APP CLASSE accessi riservati". Versione 10.24, 16 ottobre 2026 — riparte dalla 10.23 installata, la cui intestazione diceva ancora 10.17: pupazzetto del profilo al posto di Esci (Esci dentro Il mio profilo); Prossimi 7 giorni con il mese ("Ven 16 ott"); COMPLEANNI: "Nome · sabato 24 ottobre sarà il suo compleanno" / "oggi è il suo compleanno" e avviso festoso in Home il giorno stesso; RENDICONTO DETTAGLIATO a due colonne (allievo e classe, 0,00 € se non lo riguarda, filtro Tutti / Solo di …); VISUALIZZA COME per l'amministratrice (Genitore, Docente, Errore: contorno blu e pulsante interruttore, sola lettura); Libri: ogni libro si apre dalla prima pagina (C1), tolto "Vai alla pagina dei compiti" sotto lo scaffale, ricerca visibile solo quando il testo è pronto. Serve lo script 10.16 per compleanni (riconoscimento sicuro), rendiconto a due colonne e Visualizza come. Versione 10.17, 15 ottobre 2026: copertine C1 e C2 prima di tutte le pagine (C3 e C4 dopo l'ultima; serve lo script 10.13), "Vai a pagina" nel lettore; pagine leggere per sfogliare (anteprima della larghezza dello schermo, originale con lo zoom e in stampa; serve lo script 10.13); tolto dalla Home il riquadro dei libri "Continua a leggere" / Tutti i libri / Cerca un argomento, ai libri si va dall'icona Libri. Versione 10.16: SCARICA L'APP nella schermata di accesso e nel menu (Android un tocco, iPhone 4 passi + video video/guida-iphone.mp4; service worker sw.js). Dalla 10.15: ACCESSO CON EMAIL O CELLULARE (prefisso + numero), "Password dimenticata?" con due strade, primo ingresso sul profilo, password mandate dalla rappresentante su WhatsApp o per email in Gestione accessi. Dalla 10.14: LIBRI sfogliabili. In Home
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 10.28, 17 ottobre 2026: GRAFICA CON LE ILLUSTRAZIONI (n. 4) —
+  le illustrazioni del vecchio sito (file .webp accanto a index.html su GitHub) al posto delle emoji in griglia, riquadri e menu;
+  Home nuova: saluto "Ciao, famiglia di …!" con la data, "Avvisi e comunicazioni" sempre visibile, fondo cassa e Prossimi 7 giorni
+  come porte di Comunicazioni, Contabilità e Calendario (illustrazione, bollino, freccetta; una riga sola quando sono vuoti),
+  fondo cassa da versare rosa con il pulsante PAGA, griglia 3×2; pulsante "Menu" azzurro; menu con le illustrazioni, i nomi lunghi
+  e la X; schermata di accesso con "Istituto Cardinale Marcantonio Barbarigo" in Italianno, lettera metallica in rilievo.
+  Serve Contenuti.gs 10.17 (con il 10.16 la Home funziona lo stesso, ma la griglia ha ancora 9 icone). Script 10.20 per il nome della maestra nel saluto.
+  Versione 10.27, 17 ottobre 2026: ACCESSO SOLO CON L'EMAIL — un solo campo Email
+  (niente più linguette Email / Cellulare e prefisso; se si scrive un numero l'app dice che serve l'email), "Rifalla da solo" per tutti,
+  Il mio profilo solo con l'email; Gestione accessi con il saluto "Ciao <nome>!", ENTRA CON (email) e WHATSAPP (numero), numero doppio
+  solo come nota, "✉️ Ricorda per email" per chi non ha il numero e promemoria con il link per pagare con carta (testo dallo script).
+  CASELLA ⋯ ACCANTO AI FILE — in Comunicazioni & Moduli (anche Ultime notizie), Ricevute e File in arrivo: per tutti Apri, Scarica,
+  Condividi su WhatsApp (link #doc-<id>); per Rossana anche Copia il link, Rinomina, Sposta in…, Scrivi un avviso con questo file,
+  Apri in Google Drive e Cancella (cestino di Drive). Serve lo script 10.19 e Contenuti.gs 10.16.
+  Versione 10.26, 17 ottobre 2026: LIBRI — un libro può aprire direttamente il suo sito (blocco libri di Contenuti.gs → siti, es. Religione Ponti Arcobaleno: Libro e Laboratori) con "si apre il sito ↗"; il Kit docente si può mettere subito dopo un libro scelto (kitDopo, es. dopo Tutto Chiaro) invece che in fondo allo scaffale. Versione 10.25, 16 ottobre 2026: COMPLEANNI con l'età — "Giulia · oggi compie 10 anni!", due o più bambini "oggi compiono 10 anni!" o, con età diverse, "Giulia compie 10 anni, Marco compie 9"; sulla torta il numero degli anni (con età diverse le 3 candeline); senza età (script vecchio o età non sicura) l'avviso resta quello della 10.24; serve lo script 10.17 (campo anni); Gestione accessi: nome del foglio "APP CLASSE accessi riservati". Versione 10.24, 16 ottobre 2026 — riparte dalla 10.23 installata, la cui intestazione diceva ancora 10.17: pupazzetto del profilo al posto di Esci (Esci dentro Il mio profilo); Prossimi 7 giorni con il mese ("Ven 16 ott"); COMPLEANNI: "Nome · sabato 24 ottobre sarà il suo compleanno" / "oggi è il suo compleanno" e avviso festoso in Home il giorno stesso; RENDICONTO DETTAGLIATO a due colonne (allievo e classe, 0,00 € se non lo riguarda, filtro Tutti / Solo di …); VISUALIZZA COME per l'amministratrice (Genitore, Docente, Errore: contorno blu e pulsante interruttore, sola lettura); Libri: ogni libro si apre dalla prima pagina (C1), tolto "Vai alla pagina dei compiti" sotto lo scaffale, ricerca visibile solo quando il testo è pronto. Serve lo script 10.16 per compleanni (riconoscimento sicuro), rendiconto a due colonne e Visualizza come. Versione 10.17, 15 ottobre 2026: copertine C1 e C2 prima di tutte le pagine (C3 e C4 dopo l'ultima; serve lo script 10.13), "Vai a pagina" nel lettore; pagine leggere per sfogliare (anteprima della larghezza dello schermo, originale con lo zoom e in stampa; serve lo script 10.13); tolto dalla Home il riquadro dei libri "Continua a leggere" / Tutti i libri / Cerca un argomento, ai libri si va dall'icona Libri. Versione 10.16: SCARICA L'APP nella schermata di accesso e nel menu (Android un tocco, iPhone 4 passi + video video/guida-iphone.mp4; service worker sw.js). Dalla 10.15: ACCESSO CON EMAIL O CELLULARE (prefisso + numero), "Password dimenticata?" con due strade, primo ingresso sul profilo, password mandate dalla rappresentante su WhatsApp o per email in Gestione accessi. Dalla 10.14: LIBRI sfogliabili. In Home
   "Continua a leggere"; pagina Libri con ricerca per parola, scaffale a gruppi (4 per riga, Kit docente a parte),
   vai a pagina e argomenti; lettore a tutto schermo con sfoglio, zoom e link per WhatsApp (#libro-mat-42);
   stampa di più pagine in un solo PDF A4. Serve lo script 10.11.
@@ -751,6 +765,37 @@
   .fi-voce strong { display: block; font-size: 14px; overflow-wrap: anywhere; }
   .fi-voce small { color: var(--muted); font-size: 12px; }
   .fi-voce.scelto { border-color: var(--brand); background: var(--brand-soft); }
+  /* ---------- v10.27: casella a discesa ⋯ accanto ai file ---------- */
+  .doc-wrap { position: relative; display: flex; align-items: stretch; margin-bottom: 8px; }
+  .doc-wrap > .doc { margin-bottom: 0; flex: 1; min-width: 0; width: auto; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+  .doc-wrap > .piu { flex: none; width: 46px; margin-left: -1px; padding: 0; border: 1px solid var(--line); background: var(--card); color: var(--muted);
+    border-radius: 0 12px 12px 0; display: grid; place-items: center; cursor: pointer; }
+  .doc-wrap > .piu:hover, .doc-wrap.aperto > .piu { background: var(--brand-soft); color: var(--brand); }
+  .doc-wrap.aperto > .doc, .doc-wrap.aperto > .piu { border-color: var(--brand); }
+  .doc-wrap > .fi-voce { flex: 1; min-width: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+  .fi-lista .doc-wrap { margin-bottom: 0; }
+  .fi-lista .doc-wrap > .piu { width: 42px; }
+  .novita-card .doc-wrap:last-child { margin-bottom: 0; }
+  .menu-file { position: absolute; z-index: 40; right: 4px; top: calc(100% + 6px); width: min(300px, calc(100vw - 32px)); background: var(--card);
+    border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 10px 32px rgba(20,50,90,.22); padding: 6px; text-align: left; }
+  .menu-file.su { top: auto; bottom: calc(100% + 6px); }
+  .mf-testa { padding: 6px 10px 8px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+  .mf-testa b { display: block; font-size: 13.5px; line-height: 1.3; overflow-wrap: anywhere; }
+  .mf-testa small { display: block; font-size: 12px; color: var(--muted); }
+  .mf-voce { display: flex; align-items: center; gap: 11px; width: 100%; border: 0; background: transparent; text-align: left; padding: 9px 10px;
+    border-radius: 10px; font: inherit; font-weight: 700; font-size: 15px; color: var(--ink); cursor: pointer; }
+  .mf-voce:hover, .mf-voce:focus-visible { background: var(--brand-soft); outline: none; }
+  .mf-voce .ic { flex: none; width: 22px; display: grid; place-items: center; color: var(--brand); }
+  .mf-voce small { display: block; font-weight: 600; font-size: 12px; color: var(--muted); line-height: 1.3; }
+  .mf-voce.wa .ic { color: #1f8f52; }
+  .mf-voce.del, .mf-voce.del .ic { color: #b23b3b; }
+  .mf-voce.del:hover, .mf-voce.del:focus-visible { background: #fdf0ef; }
+  .mf-sep { height: 1px; background: var(--line); margin: 4px 6px; }
+  .mf-sez { padding: 6px 10px 2px; font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+  .mf-info { padding: 10px 12px; border-radius: 12px; background: var(--brand-soft); font-size: 13.5px; margin-bottom: 12px; }
+  .mf-info.giallo { background: var(--accent-soft); }
+  .mf-apri-wa { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; padding: 12px; font-weight: 800; font-size: 15px;
+    background: #1f9d55; color: #fff; text-decoration: none; }
   .fi-sep { font-size: 12px; font-weight: 800; color: var(--muted); text-align: center; text-transform: uppercase; letter-spacing: .06em; margin: 2px 0; }
   .fi-carica { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border: 1px dashed var(--muted); border-radius: 12px;
     background: transparent; color: var(--ink); font-weight: 800; font-size: 14px; width: 100%; cursor: pointer; text-align: center; }
@@ -789,13 +834,7 @@
   .or-vacanza small { color: var(--muted); font-size: 13px; }
   .or-sett th.vacanza { color: var(--accent); }
   .or-sett td.vacanza .or-cella { opacity: .3; }
-  /* ---------- v10.15: accesso con email o cellulare, password dimenticata, primo ingresso, invio delle password ---------- */
-  .modo-acc { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin: 0 0 16px; background: var(--brand-soft); border-radius: 14px; }
-  .modo-acc button { border: 0; border-radius: 10px; background: transparent; color: var(--brand); font-weight: 800; font-size: 15px; padding: 9px 4px; }
-  .modo-acc button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 4px rgba(20,50,90,.15); }
-  .tel-riga { display: grid; grid-template-columns: 118px minmax(0, 1fr); gap: 8px; }
-  .tel-riga select { appearance: auto; font-weight: 800; padding-left: 10px; padding-right: 4px; }
-  .tel-riga input { min-width: 0; }
+  /* ---------- v10.15: password dimenticata, primo ingresso, invio delle password (dalla v10.27 accesso solo con l'email) ---------- */
   .scelta-acc { display: flex; gap: 12px; align-items: flex-start; width: 100%; text-align: left; padding: 14px; margin: 0 0 10px; border: 1px solid var(--line);
     border-radius: 14px; background: var(--card); color: var(--ink); text-decoration: none; font: inherit; }
   .scelta-acc:hover, .scelta-acc[aria-expanded="true"] { border-color: var(--brand); }
@@ -832,6 +871,18 @@
   .persona .chi { display: grid; gap: 1px; min-width: 0; }
   .persona .chi b { font-size: 15px; overflow-wrap: anywhere; }
   .persona .chi .tel-r { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  /* v10.27: accesso solo email — saluto, email per entrare, numero solo per WhatsApp */
+  .persona .chi { gap: 3px; }
+  .persona .saluto-r { display: block; font-size: 12.5px; color: var(--muted); margin-bottom: 2px; }
+  .persona .riga-acc { display: flex; gap: 6px; align-items: baseline; min-width: 0; }
+  .persona .riga-acc b { min-width: 0; }
+  .pill-acc { display: inline-block; flex: none; padding: 1px 7px; border-radius: 999px; font-size: 10.5px; font-weight: 800; letter-spacing: .03em; vertical-align: 1px; }
+  .pill-acc.entra { background: var(--brand-soft); color: var(--brand); }
+  .pill-acc.wa { background: #e3f5ea; color: #17703d; }
+  .info-acc { padding: 12px 14px; border-radius: 12px; background: var(--brand-soft); font-size: 14px; margin-bottom: 14px; overflow-wrap: anywhere; }
+  .dv-gen .em-dv { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--brand); background: var(--brand); color: #fff; border-radius: 999px;
+    padding: 6px 12px; font-size: 13.5px; font-weight: 800; }
+  .dv-gen .em-dv:disabled { opacity: .7; cursor: default; }
   .persona .manca { color: var(--muted); font-weight: 600; font-style: italic; }
   .persona .info { display: block; color: var(--muted); font-size: 12.5px; margin-top: 4px; }
   .pw-stato { display: inline-block; margin-top: 6px; padding: 2px 9px; border-radius: 999px; font-size: 12.5px; font-weight: 800; }
@@ -982,6 +1033,114 @@
   .pannello .lb-pannello-tit { margin-bottom: 8px; }
   .pannello p.lb-forte { color: var(--ink); font-weight: 800; margin: 0 0 6px; }
   @media (prefers-reduced-motion: reduce) { .lb-scena img { transition: none; } }
+
+  /* ---------- v10.28 (n. 4): illustrazioni, Home nuova, pulsante Menu, menu, accesso ---------- */
+  .ill { display: block; object-fit: contain; flex: none; }
+  .tile .ic img.ill, .tile img.ill { width: 44px; height: 44px; border-radius: 0; margin: 0 auto; }
+  .griglia-home { margin: 2px 0 0; }
+  .tile.con-ill { padding: 8px 4px; gap: 2px; }
+  .home-n4 { display: flex; flex-direction: column; gap: 12px; max-width: 560px; }
+  .home-n4 > .griglia-home, .home-n4 > .hcard { margin: 0; }
+  .home-n4 .scorciatoie-titolo, .home-n4 h3.sez:first-child { margin-top: 4px; }
+  .pila { display: flex; flex-direction: column; gap: 12px; }
+  .saluto { padding: 2px 2px 0; }
+  .saluto h2 { margin: 0; font-family: 'Quicksand', 'Nunito', sans-serif; font-size: 20px; font-weight: 600; line-height: 1.2; color: #b07d1a; }
+  .saluto small { display: block; font-size: 13px; font-weight: 700; color: var(--muted); }
+  .porta { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; text-decoration: none; color: var(--ink);
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 14px; box-shadow: var(--shadow); font: inherit; }
+  .porta:hover { border-color: var(--brand); }
+  .porta .ill { width: 30px; height: 30px; }
+  .porta .tx { flex: 1; min-width: 0; }
+  .porta .tx b { display: block; font-size: 16px; font-weight: 800; line-height: 1.2; }
+  .porta .tx small { display: block; font-size: 13px; color: var(--muted); }
+  .porta .conta, .testa-porta .conta, .cassa2 .conta { flex: none; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--rosso);
+    color: #fff; font-size: 12px; font-weight: 800; display: grid; place-items: center; }
+  .freccia-tonda { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--brand); display: grid; place-items: center; }
+  .freccia-tonda svg { display: block; }
+  .riquadro { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; box-shadow: var(--shadow); }
+  .riquadro.oro { background: #fff6e0; border-color: #f0d48a; box-shadow: none; }
+  .testa-porta { display: flex; align-items: center; gap: 8px; width: 100%; margin: 0 0 8px; padding: 0; border: 0; background: transparent;
+    text-decoration: none; color: var(--ink); text-align: left; font: inherit; }
+  .testa-porta .ill { width: 30px; height: 30px; }
+  .testa-porta h3 { margin: 0; font-size: 16px; font-weight: 800; flex: 1; min-width: 0; }
+  .riquadro.oro .av { background: var(--card); border: 0; border-radius: 10px; padding: 10px 12px; margin-top: 8px; }
+  .riquadro.oro .av:first-of-type { margin-top: 0; }
+  .riquadro.oro .av.evidenza { box-shadow: 0 0 0 2px var(--oro); }
+  .riquadro.oro .av-arrivo { margin: 0 0 8px; background: var(--card); }
+  .riquadro.oro .festa { margin: 0 0 8px; }
+  .riquadro.oro .av-vuoto { margin: 0; }
+  .admin-riga { display: flex; justify-content: flex-end; margin: -2px 0 8px; }
+  .prox-righe { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+  .prox-riga { display: flex; gap: 10px; align-items: baseline; }
+  .prox-riga .quando { width: 78px; flex: none; font-weight: 800; color: var(--brand); white-space: nowrap; }
+  .prox-riga.urgente .quando { color: var(--rosso); }
+  .prox-riga .cosa { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .prox-riga .cosa em { font-style: normal; color: var(--muted); }
+  .prox-riga .ora { flex: none; color: var(--muted); font-size: 13px; }
+  .cassa2 { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; text-decoration: none; color: var(--ink); font: inherit;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; box-shadow: var(--shadow); }
+  button.cassa2:hover, a.cassa2:hover { border-color: var(--brand); }
+  .cassa2 .ill { width: 44px; height: 44px; }
+  .cassa2 .tx { flex: 1; min-width: 0; }
+  .cassa2 .nome { display: block; font-size: 14px; font-weight: 800; color: #b07d1a; letter-spacing: .03em; text-transform: uppercase; line-height: 1.3; overflow-wrap: anywhere; }
+  .cassa2 .stato2 { display: block; font-size: 17px; font-weight: 800; line-height: 1.25; }
+  .cassa2 .sotto2 { display: block; font-size: 13px; color: var(--muted); }
+  .cassa2.attivo .stato2 { color: var(--ok); }
+  .cassa2.rosa { background: #fdf0ef; border-color: #f2c9c4; }
+  .cassa2.rosa .stato2 { color: var(--danger); font-size: 16px; }
+  .cassa2.rosa .importo2 { display: block; font-size: 14px; font-weight: 700; color: var(--danger); }
+  .cassa2 .nome-riga { display: flex; align-items: center; gap: 6px; }
+  .cassa2 .nome-riga .nome { min-width: 0; }
+  .cassa2 .vai-conta { white-space: nowrap; text-align: left; display: inline-flex; align-items: center; gap: 4px; margin-top: 2px; padding: 0; border: 0; background: transparent; color: var(--brand);
+    font: inherit; font-size: 13px; font-weight: 700; text-decoration: none; cursor: pointer; }
+  .btn-paga { flex: none; display: grid; place-items: center; min-width: 76px; height: 44px; padding: 0 16px; border-radius: 12px; background: var(--rosso);
+    color: #fff; font-size: 15px; font-weight: 800; letter-spacing: .04em; text-decoration: none; box-shadow: 0 2px 6px rgba(211,58,47,.3); border: 0; font-family: inherit; }
+  .tondo-wa { flex: none; width: 30px; height: 30px; border-radius: 50%; background: #1f8f52; color: #fff; display: grid; place-items: center; }
+  /* pulsante Menu (variante 2) */
+  .btn-menu { flex: none; display: flex; align-items: center; gap: 5px; height: 40px; padding: 0 11px 0 9px; border: 1px solid #bcd6ec; border-radius: 12px;
+    background: var(--brand-soft); color: var(--brand); font-size: 13px; font-weight: 800; }
+  .btn-menu:hover { border-color: var(--brand); }
+  /* menu con le illustrazioni */
+  .menu-testa { display: none; }
+  .voce { padding: 6px 10px; border-radius: 12px; gap: 12px; font-weight: 700; }
+  .voce .ic { flex: none; width: 36px; height: 36px; display: grid; place-items: center; font-size: 20px; }
+  .voce .ic img.ill { width: 36px; height: 36px; border-radius: 0; }
+  .voce .ic img.app { width: 30px; height: 30px; border-radius: 8px; }
+  .voce .tx { flex: 1; min-width: 0; }
+  .voce.attiva { background: var(--brand-soft); color: var(--brand); font-weight: 800; }
+  .voce .esterno { flex: none; color: var(--muted); }
+  .voce .tondo { width: 36px; height: 36px; border-radius: 50%; background: var(--brand-soft); color: var(--brand); }
+  .voce .tondo.oro { background: var(--accent-soft); color: var(--accent); }
+  .voce .tondo.viola { background: #e7eeff; color: #0d3fc2; }
+  .voce-admin { margin-top: 8px; padding-top: 8px; }
+  @media (max-width: 860px) {
+    nav.menu { width: 300px; padding: 0 0 16px; box-shadow: 4px 0 24px rgba(20,50,90,.25); border-right: 0; }
+    .menu-testa { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 10px; padding: 12px 12px 12px 16px; margin-bottom: 8px;
+      background: var(--card); border-bottom: 3px solid var(--oro); }
+    .menu-testa .stemma { width: 36px; margin: 0; filter: none; }
+    .menu-testa .tx { flex: 1; min-width: 0; }
+    .menu-testa .tx b { display: block; font-size: 16px; font-weight: 800; line-height: 1.2; }
+    .menu-testa .tx small { display: block; font-size: 12px; font-weight: 600; color: var(--muted); }
+    .menu-chiudi { flex: none; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); color: var(--ink); display: grid; place-items: center; padding: 0; }
+    nav.menu > .voce, nav.menu > .voce-admin { margin-left: 10px; margin-right: 10px; width: calc(100% - 20px); }
+    .velo { background: rgba(21,36,59,.45); }
+  }
+  @media (max-width: 360px) {
+    .barra { gap: 8px; padding: 10px 12px; }
+    .barra h1 { font-size: 15px; }
+    .barra h1 small, .titolo-btn small { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .btn-menu { padding: 0 9px 0 7px; }
+  }
+  /* schermata di accesso */
+  .accesso .stemma { width: 92px; margin-bottom: 10px; }
+  .istituto { margin: 0; font-family: 'Italianno', cursive; font-weight: 400; font-size: 46px; line-height: .95;
+    background: linear-gradient(172deg, #fff4c8 0%, #f2d37a 18%, #b8862a 38%, #6e4709 50%, #c99a3a 58%, #ffe9a8 70%, #b07d1a 86%, #7a4e0c 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: .6px rgba(92,58,6,.85);
+    filter: drop-shadow(-1px -1px 0 rgba(255,255,255,.95)) drop-shadow(1px 1.5px 0 #5c3a06) drop-shadow(0 4px 4px rgba(60,35,0,.35)); }
+  .accesso h1.istituto { font-size: 46px; font-weight: 400; }
+  @media (max-width: 340px) { .accesso h1.istituto { font-size: 40px; } }
+  .filetti { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 10px 0 18px; font-size: 15px; font-weight: 800; color: var(--ink); }
+  .filetti::before, .filetti::after { content: ''; height: 1px; width: 36px; background: #e4cf92; }
 </style>
 </head>
 <body>
@@ -990,8 +1149,9 @@
 <div id="schermoAccesso" class="accesso">
   <div class="accesso-card">
     <img class="stemma" data-img="stemma" alt="Stemma della 4a">
-    <h1>4a primaria 2026-27</h1>
-    <p class="sotto">Area riservata alle famiglie della classe</p>
+    <!-- v10.28: nome dell'Istituto in Italianno, lettera metallica in rilievo -->
+    <h1 class="istituto">Istituto Cardinale<br>Marcantonio Barbarigo</h1>
+    <p class="filetti">4a primaria · 2026-27</p>
 
     <!-- v10.16: Scarica l'app (come l'app mensa): Android un tocco, iPhone guida in 4 passi con il video -->
     <div class="scarica" id="bloccoScarica" hidden>
@@ -1015,24 +1175,11 @@
       <p class="errore-msg" id="accFermoTesto"></p>
     </div>
 
-    <!-- Accesso con email oppure (v10.15) con il numero di cellulare -->
+    <!-- v10.27: si entra solo con l'email (il cellulare serve solo ai messaggi della rappresentante) -->
     <form id="fLogin" class="modulo nascosto" autocomplete="on" novalidate>
       <p class="esito nascosto" id="logInfo"></p>
-      <div class="modo-acc" role="group" aria-label="Come vuoi entrare">
-        <button type="button" id="modoEmail" aria-pressed="false">✉️ Email</button>
-        <button type="button" id="modoTel" aria-pressed="true">📱 Cellulare</button>
-      </div>
-      <div id="zonaEmail" class="nascosto">
-        <label for="logEmail">Email</label>
-        <input id="logEmail" name="email" class="campo-testo" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="la tua email">
-      </div>
-      <div id="zonaTel">
-        <label for="logTel">Numero di cellulare</label>
-        <div class="tel-riga">
-          <select id="logPref" class="campo-testo" aria-label="Prefisso"></select>
-          <input id="logTel" name="telefono" class="campo-testo" type="tel" inputmode="tel" autocomplete="username" placeholder="333 123 4567">
-        </div>
-      </div>
+      <label for="logEmail">Email</label>
+      <input id="logEmail" name="email" class="campo-testo" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="l’email che hai dato alla rappresentante">
       <label for="logPass">Password</label>
       <div class="pass-riga">
         <input id="logPass" name="password" class="campo-testo" type="password" autocomplete="current-password" placeholder="la tua password">
@@ -1050,22 +1197,12 @@
       <p class="stato">Scegli come riaverla.</p>
       <button type="button" class="scelta-acc" id="sceltaRifai" aria-expanded="false">
         <span class="ic">🔁</span>
-        <span class="tx"><strong>Rifalla da solo</strong><small>Ti mandiamo un codice di 6 cifre all’email che hai dato alla rappresentante e scegli una password nuova.</small></span>
+        <span class="tx"><strong>Rifalla da solo</strong><small>Ti mandiamo un codice di 6 cifre all’email con cui entri e scegli una password nuova.</small></span>
       </button>
       <div id="zonaRifai" class="zona-rifai nascosto">
-        <div id="codZonaEmail">
-          <label for="codEmail">La tua email</label>
-          <input id="codEmail" class="campo-testo" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="la tua email">
-        </div>
-        <div id="codZonaTel" class="nascosto">
-          <label for="codTel">Il tuo numero di cellulare</label>
-          <div class="tel-riga">
-            <select id="codPref" class="campo-testo" aria-label="Prefisso"></select>
-            <input id="codTel" class="campo-testo" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="333 123 4567">
-          </div>
-        </div>
+        <label for="codEmail">La tua email</label>
+        <input id="codEmail" class="campo-testo" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="l’email che hai dato alla rappresentante">
         <p class="errore-msg nascosto" id="cod1Errore"></p>
-        <a class="btn btn-wa nascosto" id="cod1Chiedi" target="_blank" rel="noopener">💬 Chiedi alla rappresentante</a>
         <button class="btn btn-primario" type="submit" id="btnManda">Mandami il codice</button>
       </div>
       <a class="scelta-acc wa" id="sceltaChiedi" target="_blank" rel="noopener">
@@ -1097,10 +1234,9 @@
     <details class="aiuto" id="aiutoAccesso">
       <summary>Come si accede?</summary>
       <ul>
-        <li><b>La prima volta</b> usa la password che ti ha mandato la rappresentante su WhatsApp o per email. Entri con il tuo <b>numero di cellulare</b> oppure con la tua <b>email</b>: scegli in alto.</li>
-        <li><b>Numero di cellulare:</b> scegli il prefisso (🇮🇹 +39 per l’Italia) e scrivi il numero, anche con gli spazi.</li>
+        <li><b>La prima volta</b> usa la password che ti ha mandato la rappresentante su WhatsApp o per email. Entri con la tua <b>email</b>: è scritta nel messaggio con la password (“Entra con l’email”).</li>
         <li><b>Salva la password</b> quando il telefono te lo chiede: ti serve per entrare da un altro telefono o dal computer. La vedi sempre in ☰ → Il mio profilo, dove puoi anche cambiarla.</li>
-        <li><b>Password dimenticata?</b> Se hai dato l’email, “Rifalla da solo”: ti arriva un codice (controlla anche lo spam). Altrimenti “Chiedi alla rappresentante”.</li>
+        <li><b>Password dimenticata?</b> “Rifalla da solo”: ti arriva un codice all’email (controlla anche lo spam). Oppure “Chiedi alla rappresentante”.</li>
         <li><b>Sul telefono</b> tocca “Scarica l’app” in alto: su Android basta un tocco, su iPhone ci sono 4 passaggi e un video. L’icona finisce tra le tue app e resti collegato per un anno.</li>
         <li><b>Non riesci a entrare?</b> Scrivi alla rappresentante: “Problemi ad entrare?” apre WhatsApp con il messaggio pronto, scegli tu a chi mandarlo.</li>
       </ul>
@@ -1129,7 +1265,7 @@
 <div id="app" class="nascosto">
   <div id="bandaAnteprima" class="avviso-anteprima nascosto">ANTEPRIMA con dati di esempio — nell'app vera i dati arrivano solo dopo il login</div>
   <header class="barra">
-    <button class="btn-icona" id="apriMenu" aria-label="Apri il menu">☰</button>
+    <button class="btn-menu" id="apriMenu" aria-label="Apri il menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Menu</button>
     <button class="logo-btn" id="vaiHome" aria-label="Torna alla Home"><img class="stemma" data-img="stemma" alt="Stemma della 4a"></button>
     <h1 class="spazio"><button class="titolo-btn" id="vaiHome2"><span id="titoloApp"></span><small id="sottotitoloApp"></small></button></h1>
     <span class="chip-utente" id="chipUtente"></span>
@@ -1209,63 +1345,24 @@
   function errore(id, testo) { var e = $(id); if (testo) { e.textContent = testo; e.classList.remove('nascosto'); } else e.classList.add('nascosto'); }
   function occupato(btn, si, testo) { btn.disabled = si; if (testo) btn.textContent = testo; }
 
-  // v10.15: si entra con l'email o con il numero di cellulare (prefisso + numero). Il telefono ricorda l'ultima scelta.
-  var CHIAVE_MODO = 'app4a_modo', CHIAVE_PREF = 'app4a_prefisso', CHIAVE_TEL = 'app4a_tel';
-  var PREFISSI = [['🇮🇹', '+39', 'Italia'], ['🇬🇧', '+44', 'Regno Unito'], ['🇫🇷', '+33', 'Francia'], ['🇪🇸', '+34', 'Spagna'], ['🇩🇪', '+49', 'Germania'],
-    ['🇨🇭', '+41', 'Svizzera'], ['🇺🇸', '+1', 'Stati Uniti'], null,
-    ['🇦🇱', '+355', 'Albania'], ['🇦🇹', '+43', 'Austria'], ['🇧🇪', '+32', 'Belgio'], ['🇧🇷', '+55', 'Brasile'], ['🇨🇳', '+86', 'Cina'], ['🇵🇭', '+63', 'Filippine'],
-    ['🇬🇷', '+30', 'Grecia'], ['🇮🇳', '+91', 'India'], ['🇲🇦', '+212', 'Marocco'], ['🇳🇱', '+31', 'Paesi Bassi'], ['🇵🇱', '+48', 'Polonia'], ['🇵🇹', '+351', 'Portogallo'],
-    ['🇷🇴', '+40', 'Romania'], ['🇺🇦', '+380', 'Ucraina']];
-  var PREF_IN_CAMPO = /^\s*(\+|00)/;
-  function riempiPrefissi(sel, scelto) {
-    sel.innerHTML = '';
-    PREFISSI.forEach(function (p) {
-      if (!p) { sel.appendChild(el('option', { disabled: 'disabled', testo: '──────' })); return; }
-      var o = el('option', { value: p[1], title: p[2], testo: p[0] + ' ' + p[1] });
-      if (p[1] === scelto) o.selected = true;
-      sel.appendChild(o);
-    });
+  // v10.27: si entra solo con l'email. Se qualcuno scrive il numero di telefono, l'app gli dice che serve l'email.
+  function credenziale(campoEmail) {
+    var e = campoEmail.value.trim();
+    if (!e) return { errore: 'Scrivi la tua email.' };
+    if (/^[\d\s+().\/-]+$/.test(e)) return { errore: 'Qui serve l’email, non il numero di telefono. La trovi nel messaggio con la password.' };
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return { errore: 'Scrivi un indirizzo email valido.' };
+    return { email: e };
   }
-  riempiPrefissi($('logPref'), leggi(CHIAVE_PREF) || '+39');
-  riempiPrefissi($('codPref'), leggi(CHIAVE_PREF) || '+39');
-  var MODO = leggi(CHIAVE_MODO) || (leggi(CHIAVE_EMAIL) ? 'email' : 'tel');
-  function modoAccesso(m) {
-    MODO = m === 'email' ? 'email' : 'tel';
-    $('modoEmail').setAttribute('aria-pressed', MODO === 'email' ? 'true' : 'false');
-    $('modoTel').setAttribute('aria-pressed', MODO === 'tel' ? 'true' : 'false');
-    nascondi_($('zonaEmail'), MODO !== 'email'); nascondi_($('zonaTel'), MODO !== 'tel');
-    errore('logErrore', '');
-  }
-  $('modoEmail').addEventListener('click', function () { modoAccesso('email'); $('logEmail').focus(); });
-  $('modoTel').addEventListener('click', function () { modoAccesso('tel'); $('logTel').focus(); });
-  // Email o numero dai campi: { email } | { telefono: "+39 3471112233" } | { errore }
-  function credenziale(modo, campoEmail, campoPref, campoTel) {
-    if (modo === 'email') {
-      var e = campoEmail.value.trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return { errore: e ? 'Scrivi un indirizzo email valido.' : 'Scrivi la tua email.' };
-      return { email: e };
-    }
-    var n = campoTel.value.trim();
-    var cifre = n.replace(/\D/g, '');
-    if (cifre.length < 6) return { errore: cifre ? 'Il numero sembra troppo corto: controllalo.' : 'Scrivi il tuo numero di cellulare.' };
-    return { telefono: PREF_IN_CAMPO.test(n) ? n : campoPref.value + ' ' + n };      // chi scrive già +39… o 0039… nel campo va bene lo stesso
-  }
-  function ricordaCredenziale(c) {
-    scrivi(CHIAVE_MODO, c.email ? 'email' : 'tel');
-    if (c.email) scrivi(CHIAVE_EMAIL, c.email.toLowerCase());
-    else { scrivi(CHIAVE_TEL, $('logTel').value.trim()); scrivi(CHIAVE_PREF, $('logPref').value); }
-  }
-  function testoCredenziale(c) { return c.email || c.telefono || ''; }
+  function ricordaCredenziale(c) { if (c.email) scrivi(CHIAVE_EMAIL, c.email.toLowerCase()); }
+  // pulisce le scelte della v10.15 (email / cellulare) rimaste sul telefono
+  ['app4a_modo', 'app4a_prefisso', 'app4a_tel'].forEach(function (k) { scrivi(k, ''); });
 
   function mostraLogin(info) {
     nascondi('app'); mostra('schermoAccesso'); solo('fLogin');
     errore('logErrore', '');
     var i = $('logInfo'); if (info) { i.textContent = info; i.classList.remove('nascosto'); } else i.classList.add('nascosto');
     if (!$('logEmail').value) $('logEmail').value = leggi(CHIAVE_EMAIL);
-    if (!$('logTel').value) $('logTel').value = leggi(CHIAVE_TEL);
-    modoAccesso(MODO);
-    var campo = MODO === 'email' ? $('logEmail') : $('logTel');
-    setTimeout(function () { (campo.value ? $('logPass') : campo).focus(); }, 50);
+    setTimeout(function () { ($('logEmail').value ? $('logPass') : $('logEmail')).focus(); }, 50);
   }
   function fermo(testo) { mostra('schermoAccesso'); nascondi('app'); solo('accFermo'); $('accFermoTesto').textContent = testo; nascondi('aiutoAccesso'); }
 
@@ -1285,29 +1382,26 @@
     b.addEventListener('click', function () { mostraLogin(); });
   });
   // v10.15: "Password dimenticata?" → Rifalla da solo (codice via email) oppure Chiedi alla rappresentante (WhatsApp)
-  var CODICE_PER = null;          // { email } o { telefono } della richiesta del codice
+  var CODICE_PER = null;          // { email } della richiesta del codice
   function linkChiedi(c) {
-    var chi = c && !c.errore ? testoCredenziale(c) : '';
+    var chi = c && c.email ? c.email : '';
     return 'https://wa.me/?text=' + encodeURIComponent('Ciao Rossana, ho dimenticato la password dell’app della 4a. Me ne mandi una nuova?' + (chi ? ' (entro con ' + chi + ')' : ''));
   }
   $('vaiCodice').addEventListener('click', function () {
-    solo('fCodice1'); errore('cod1Errore', ''); nascondi('cod1Chiedi');
+    solo('fCodice1'); errore('cod1Errore', '');
     nascondi('zonaRifai'); $('sceltaRifai').setAttribute('aria-expanded', 'false');
-    nascondi_($('codZonaEmail'), MODO !== 'email'); nascondi_($('codZonaTel'), MODO !== 'tel');
     $('codEmail').value = $('logEmail').value.trim() || leggi(CHIAVE_EMAIL);
-    $('codTel').value = $('logTel').value.trim() || leggi(CHIAVE_TEL);
-    $('codPref').value = $('logPref').value;
-    $('sceltaChiedi').href = linkChiedi(credenziale(MODO, $('logEmail'), $('logPref'), $('logTel')));
+    $('sceltaChiedi').href = linkChiedi(credenziale($('logEmail')));
   });
   $('sceltaRifai').addEventListener('click', function () {
     var aperta = $('zonaRifai').classList.contains('nascosto');
     nascondi_($('zonaRifai'), !aperta); this.setAttribute('aria-expanded', aperta ? 'true' : 'false');
-    if (aperta) setTimeout(function () { (MODO === 'email' ? $('codEmail') : $('codTel')).focus(); }, 50);
+    if (aperta) setTimeout(function () { $('codEmail').focus(); }, 50);
   });
 
   $('fLogin').addEventListener('submit', function (ev) {
     ev.preventDefault();
-    var c = credenziale(MODO, $('logEmail'), $('logPref'), $('logTel')), pass = $('logPass').value;
+    var c = credenziale($('logEmail')), pass = $('logPass').value;
     if (c.errore) { errore('logErrore', c.errore); return; }
     if (!pass) { errore('logErrore', 'Scrivi la password.'); return; }
     errore('logErrore', ''); occupato($('btnEntra'), true, 'Entro…');
@@ -1321,12 +1415,12 @@
 
   function mandaCodice(c, btn) {
     occupato(btn, true, 'Invio…');
-    var dati = c.email ? { email: c.email } : { telefono: c.telefono };
+    var dati = { email: c.email };
     return chiama('codice', dati).then(function (r) {
       CODICE_PER = dati;
-      if (c.email) scrivi(CHIAVE_EMAIL, c.email.toLowerCase());
-      $('cod2Email').value = testoCredenziale(c);
-      $('cod2Info').textContent = '📧 ' + (r.messaggio || 'Ti abbiamo mandato un codice.') + (c.email ? ' (' + c.email + ')' : '');
+      scrivi(CHIAVE_EMAIL, c.email.toLowerCase());
+      $('cod2Email').value = c.email;
+      $('cod2Info').textContent = '📧 ' + (r.messaggio || 'Ti abbiamo mandato un codice.') + ' (' + c.email + ')';
       solo('fCodice2'); errore('cod2Errore', '');
       setTimeout(function () { $('cod2Codice').focus(); }, 50);
     });
@@ -1334,14 +1428,11 @@
   $('fCodice1').addEventListener('submit', function (ev) {
     ev.preventDefault();
     var b = $('btnManda');
-    var c = credenziale(MODO, $('codEmail'), $('codPref'), $('codTel'));
-    nascondi('cod1Chiedi');
+    var c = credenziale($('codEmail'));
     if (c.errore) { errore('cod1Errore', c.errore); return; }
     errore('cod1Errore', '');
-    mandaCodice(c, b).catch(function (e) {
-      errore('cod1Errore', e.message);
-      if (e.codice === 'NOEMAIL') { $('cod1Chiedi').href = linkChiedi(c); mostra('cod1Chiedi'); }      // solo numero: niente email per il codice
-    }).then(function () { occupato(b, false, 'Mandami il codice'); });
+    mandaCodice(c, b).catch(function (e) { errore('cod1Errore', e.message); })
+      .then(function () { occupato(b, false, 'Mandami il codice'); });
   });
   $('btnRimanda').addEventListener('click', function () {
     var b = this;
@@ -1358,12 +1449,9 @@
     if (p1 !== p2) { errore('cod2Errore', 'Le due password non sono uguali.'); return; }
     if (!CODICE_PER) { errore('cod2Errore', 'Chiedi prima il codice.'); return; }
     errore('cod2Errore', ''); occupato($('btnSalva'), true, 'Salvo…');
-    var dati = { codice: codice, password: p1 };
-    for (var k in CODICE_PER) dati[k] = CODICE_PER[k];
-    chiama('imposta', dati).then(function (r) {
+    chiama('imposta', { codice: codice, password: p1, email: CODICE_PER.email }).then(function (r) {
       $('logPass').value = p1;                                       // così il telefono può ricordarla
-      if (CODICE_PER.email) $('logEmail').value = CODICE_PER.email;
-      else { $('logTel').value = $('codTel').value.trim(); $('logPref').value = $('codPref').value; }
+      $('logEmail').value = CODICE_PER.email;
       ricordaCredenziale(CODICE_PER);
       toast('Password salvata ✓');
       entrato(r);
@@ -1479,7 +1567,7 @@
     STATO.dati = r.contenuti;
     STATO.sessione = { email: r.utente.email, amministratore: !!r.utente.admin, alunni: r.utente.alunni || [],
       chiave: r.utente.chiave || r.utente.email, mail: r.utente.mail === undefined ? r.utente.email : r.utente.mail, telefono: r.utente.telefono || '',
-      primoIngresso: !!r.utente.primoIngresso };                       // v10.15: password appena ricevuta dalla rappresentante → si apre il profilo
+      primoIngresso: !!r.utente.primoIngresso, nome: r.utente.nome || '' };   // v10.28: nome = primo nome del genitore (saluto del profilo docente); v10.15: password appena ricevuta dalla rappresentante → si apre il profilo
     STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null;
     var d = caricaDati(false);
     STATO.documenti = d.documenti; STATO.miei = d.miei; STATO.inArrivo = d.inArrivo;
@@ -1540,8 +1628,9 @@
   function avviaApp() {
     nascondi('schermoAccesso'); mostra('app');
     if (window.__ANTEPRIMA__) mostra('bandaAnteprima');
-    $('titoloApp').textContent = STATO.dati.titolo;
-    $('sottotitoloApp').textContent = STATO.dati.sottotitolo || '';
+    var tt = titoliTesta();                                            // v10.28: "4a primaria" + "Barbarigo · 2026-27"
+    $('titoloApp').textContent = tt.titolo;
+    $('sottotitoloApp').textContent = tt.sotto;
     $('chipUtente').textContent = STATO.sessione.email;
     $('chipUtente').className = 'chip-utente link';
     $('chipUtente').title = 'Il mio profilo';
@@ -1563,6 +1652,8 @@
     if (!d) return;
     try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
     if (d === 'coordinate') { apriScheda('contabilita', SCHEDA_PAGAMENTI); return; }
+    var dc = d.match(/^doc-([\w-]{10,100})$/);                         // v10.27: .../#doc-<id> apre un file (Condividi della casella ⋯)
+    if (dc) { apriDocDaLink(dc[1]); return; }
     var m = d.match(/^avviso-(av_[\w-]+)$/);
     if (m) STATO.avvisoDaMostrare = m[1];
     // v10.14: .../#libro-mat-42 apre il libro su quella pagina
@@ -1583,28 +1674,40 @@
     return n;
   }
 
+  // v10.28: menu con le illustrazioni, i nomi lunghi, i bollini e (sul telefono) la X per chiudere
+  var SVG_PROFILO = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20c1.2-3.6 4-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg>';
+  var SVG_SCARICA = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>';
+  var SVG_CHIAVE = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/></svg>';
+  var SVG_OCCHIO = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+  var SVG_ESTERNO = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>';
+  function voceTonda(svg, colore) { var s = el('span', { classe: 'ic tondo' + (colore ? ' ' + colore : ''), 'aria-hidden': 'true' }); s.innerHTML = svg; return s; }
   function disegnaMenu() {
     var nav = $('menu'); nav.innerHTML = '';
+    var tt = titoliTesta();
+    var chiudi = el('button', { type: 'button', classe: 'menu-chiudi', 'aria-label': 'Chiudi il menu', onclick: chiudiMenu });
+    chiudi.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    nav.appendChild(el('div', { classe: 'menu-testa' }, [el('img', { classe: 'stemma', src: IMMAGINI.stemma, alt: '' }),
+      el('span', { classe: 'tx' }, [el('b', { testo: tt.titolo }), el('small', { testo: tt.sotto })]), chiudi]));
     STATO.dati.pagine.forEach(function (p) {
       nav.appendChild(el('button', { classe: 'voce', 'data-id': p.id, onclick: function () { vaiA(p.id); chiudiMenu(); } }, [
-        iconaPagina(p), el('span', { testo: p.titolo })
+        iconaPagina(p), el('span', { classe: 'tx', testo: p.titolo }), p.url ? svgSpan('esterno', SVG_ESTERNO) : null
       ]));
     });
     nav.appendChild(el('div', { classe: 'voce-admin' }, [
       el('button', { classe: 'voce', 'data-id': 'profilo', onclick: function () { vaiA('profilo'); chiudiMenu(); } }, [
-        el('span', { classe: 'ic', testo: '👤' }), el('span', { testo: 'Il mio profilo' })
+        voceTonda(SVG_PROFILO), el('span', { classe: 'tx', testo: 'Il mio profilo' })
       ]),
       IN_APP || INSTALLA.fatta ? null : el('button', { classe: 'voce', onclick: function () { chiudiMenu(); scaricaApp(); } }, [      // v10.16
-        el('span', { classe: 'ic', testo: '📲' }), el('span', { testo: 'Scarica l’app' })
+        voceTonda(SVG_SCARICA, 'oro'), el('span', { classe: 'tx', testo: 'Scarica l’app' })
       ])
     ]));
     if (STATO.sessione.amministratore) {
       nav.appendChild(el('div', { classe: 'voce-admin' }, [
         el('button', { classe: 'voce', 'data-id': 'gestione', onclick: function () { vaiA('gestione'); chiudiMenu(); } }, [
-          el('span', { classe: 'ic', testo: '🔑' }), el('span', { testo: 'Gestione accessi' })
+          voceTonda(SVG_CHIAVE), el('span', { classe: 'tx', testo: 'Gestione accessi' })
         ]),
         el('button', { classe: 'voce voce-vista', onclick: function () { chiudiMenu(); apriSceltaVista(); } }, [       // v10.24
-          el('span', { classe: 'ic', testo: '👁' }), el('span', { testo: 'Visualizza come' })
+          voceTonda(SVG_OCCHIO, 'viola'), el('span', { classe: 'tx', testo: 'Visualizza come' })
         ])
       ]));
     }
@@ -1647,7 +1750,8 @@
     }
     if (id === 'calendario' && !ridisegno) calendarioVisto();          // prima di disegnare: gli appuntamenti nuovi restano segnati NUOVO in questa visita
     if (id === 'divise' && !ridisegno) diviseViste();                  // lo stesso per le date delle divise
-    disegnaBlocchi(p.blocchi, main, id);
+    if (id === 'home') { var colonna = el('div', { classe: 'home-n4' }); main.appendChild(colonna); disegnaBlocchi(p.blocchi, colonna, id); }   // v10.28
+    else disegnaBlocchi(p.blocchi, main, id);
     applicaContatori();
     if (!ridisegno && id !== 'home' && !PAGINE_FISSE[id]) chiama('pagina', { pagina: id }).catch(function () {});   // la pagina aperta (azzera i bollini di Calendario e Divise)
     if (ridisegno) Promise.all([STATO.documenti, STATO.miei]).then(function () { setTimeout(function () { window.scrollTo(0, scorri); }, 0); });
@@ -1893,18 +1997,26 @@
     var spiega = STATO.visti
       ? { comunicazioni: 'Documenti non ancora aperti', contabilita: 'Ricevute non ancora aperte o fondo cassa da versare', calendario: 'Appuntamenti aggiunti dall’ultima visita', divise: 'Date delle divise aggiunte dall’ultima visita' }
       : { comunicazioni: 'Documenti nuovi', contabilita: 'Novità o rata da pagare', calendario: 'Appuntamenti nei prossimi 7 giorni' };
-    Array.prototype.forEach.call(document.querySelectorAll('.voce[data-id], .tile[data-id]'), function (b) {
-      var n = c[b.getAttribute('data-id')] || 0;
+    Array.prototype.forEach.call(document.querySelectorAll('.voce[data-id], .tile[data-id], [data-porta]'), function (b) {
+      var n = c[b.getAttribute('data-porta') || b.getAttribute('data-id')] || 0;
       var badge = b.querySelector('.conta');
       if (!n) { if (badge) badge.remove(); return; }
-      if (!badge) { badge = el('span', { classe: 'conta' }); b.appendChild(badge); }
+      if (!badge) {
+        badge = el('span', { classe: 'conta' });
+        var fr = b.querySelector(':scope > .freccia-tonda, :scope > .esterno, :scope > .btn-paga');   // v10.28: il bollino va prima della freccetta (o di PAGA)
+        if (fr && fr.parentNode === b) b.insertBefore(badge, fr); else b.appendChild(badge);
+      }
       badge.title = spiega[b.getAttribute('data-id')] || 'Novità';
       badge.textContent = n > 9 ? '9+' : n;
     });
+    // v10.28: riga di "Avvisi e comunicazioni" senza avvisi
+    Array.prototype.forEach.call(document.querySelectorAll('[data-riga-com]'), function (x) { x.textContent = rigaComunicazioni(c.comunicazioni || 0); });
   }
+  function rigaComunicazioni(n) { return !n ? 'Nessun avviso nuovo' : n === 1 ? '1 documento nuovo' : n + ' documenti nuovi'; }
 
   // ---------- Documenti: i file restano privati, lo script li passa all'app ----------
-  function rigaDocumento(f, etichetta) {
+  // v10.27: con la casella ⋯ a destra (sezione = cartella del file)
+  function rigaDocumento(f, etichetta, sezione) {
     var p = f.data ? f.data.split('-') : null;
     var dataBox = p
       ? el('span', { classe: 'data' }, [el('b', { testo: String(+p[2]) }), el('span', { testo: MESI[+p[1] - 1].slice(0, 3) })])
@@ -1915,11 +2027,13 @@
     var titolo = el('strong', { testo: f.titolo });
     if (eNuovo(f)) titolo.appendChild(el('span', { classe: 'badge', testo: 'NUOVO' }));
     var figli = [dataBox, el('span', { classe: 'tx' }, [titolo, el('small', null, sotto)]), el('span', { classe: 'freccia', testo: f.url ? '↗' : '›' })];
-    if (f.url) return el('a', { classe: 'doc', 'data-doc': f.id, href: f.url, target: '_blank', rel: 'noopener', title: f.nome, onclick: function () { segnaVisto(f); } }, figli);
-    return el('button', { classe: 'doc', 'data-doc': f.id, title: f.nome, onclick: function () { segnaVisto(f); apriFile(f); } }, figli);
+    var riga = f.url ? el('a', { classe: 'doc', 'data-doc': f.id, href: f.url, target: '_blank', rel: 'noopener', title: f.nome, onclick: function () { segnaVisto(f); } }, figli)
+      : el('button', { classe: 'doc', 'data-doc': f.id, title: f.nome, onclick: function () { segnaVisto(f); apriFile(f); } }, figli);
+    return conPiu(riga, f, { sezione: sezione });
   }
 
-  function apriFile(f) {
+  function apriFile(f, opz) {
+    var scarica = !!(opz && opz.scarica);                              // v10.27: "Scarica sul telefono" dalla casella ⋯
     var velo = el('div', { classe: 'velo-doc' });
     var pannello = el('div', { classe: 'pannello', role: 'dialog', 'aria-label': 'Documento' }, [
       el('h3', { testo: f.titolo }), el('p', { testo: 'Preparo il documento…' }), el('div', { classe: 'spinner' })
@@ -1935,8 +2049,10 @@
       pannello.innerHTML = '';
       pannello.appendChild(el('h3', { testo: f.titolo }));
       pannello.appendChild(el('p', { testo: r.nome }));
-      pannello.appendChild(el('a', { classe: 'btn btn-primario', href: STATO.urlFile, target: '_blank', rel: 'noopener', testo: 'Apri il documento' }));
-      pannello.appendChild(el('a', { classe: 'btn btn-sec', href: STATO.urlFile, download: r.nome, testo: 'Scarica sul telefono' }));
+      var bApri = el('a', { classe: 'btn ' + (scarica ? 'btn-sec' : 'btn-primario'), href: STATO.urlFile, target: '_blank', rel: 'noopener', testo: 'Apri il documento' });
+      var bScarica = el('a', { classe: 'btn ' + (scarica ? 'btn-primario' : 'btn-sec'), href: STATO.urlFile, download: r.nome, testo: 'Scarica sul telefono' });
+      if (scarica) { pannello.appendChild(bScarica); pannello.appendChild(bApri); }
+      else { pannello.appendChild(bApri); pannello.appendChild(bScarica); }
       pannello.appendChild(el('button', { classe: 'link-piccolo', testo: 'Chiudi', onclick: chiudi }));
     }).catch(function (e) {
       pannello.innerHTML = '';
@@ -1946,11 +2062,266 @@
     });
   }
 
+  // ---------- v10.27: casella a discesa ⋯ accanto ai file (n. 33) ----------
+  // Per tutti: Apri, Scarica sul telefono, Condividi su WhatsApp (link #doc-<id> che apre il file nell'app, dopo l'accesso).
+  // Solo Rossana: Copia il link, Rinomina, Sposta in…, Scrivi un avviso con questo file, Apri in Google Drive, Cancella (cestino di Drive).
+  // Vale per Comunicazioni & Moduli (anche Ultime notizie), Ricevute e File in arrivo. In "Visualizza come" solo le voci dei genitori.
+  var MENU_FILE = null;
+  var ICO_FILE = {
+    apri: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+    scarica: '<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>',
+    link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+    rinomina: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/>',
+    sposta: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M10 13h6M13.5 10.5 16 13l-2.5 2.5"/>',
+    avviso: '<path d="M4 10v4h3l6 4V6L7 10z"/><path d="M17 9a4 4 0 0 1 0 6"/>',
+    drive: '<path d="M8 4h8l5 9-4 7H7l-4-7z"/><path d="M8 4l5 9h8M3 13h10l-4 7"/>',
+    cestino: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>'
+  };
+  var SVG_PIU = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
+  function icoFile(nome) {
+    var s = el('span', { classe: 'ic', 'aria-hidden': 'true' });
+    if (nome === 'wa') { s.appendChild(iconaWa(20)); return s; }
+    s.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICO_FILE[nome] + '</svg>';
+    return s;
+  }
+  function ammFile() { return !!(STATO.sessione && STATO.sessione.amministratore && !STATO.sessione.vista); }
+  function nomeSezioneFile(s) { var c = CARTELLE_APP.filter(function (x) { return x[0] === s; })[0]; return c ? c[1] : ''; }
+  function linkDoc(f) { return URL_APP + '#doc-' + f.id; }
+  function msgVecchioScript(e) { return e.codice === 'AZIONE' ? 'Lo script non sa ancora farlo: incolla Codice.gs 10.19 e fai Nuova versione.' : e.message; }
+
+  /** La riga del file con il pulsante ⋯ a destra. opz: { sezione, arrivo, seleziona(), dopo(risposta) } */
+  function conPiu(riga, f, opz) {
+    var wrap = el('div', { classe: 'doc-wrap' });
+    var piu = el('button', { type: 'button', classe: 'piu', 'aria-label': 'Altre azioni per ' + (f.titolo || f.nome), 'aria-haspopup': 'menu', 'aria-expanded': 'false' });
+    piu.innerHTML = SVG_PIU;
+    piu.addEventListener('click', function (ev) {
+      ev.preventDefault(); ev.stopPropagation();
+      if (MENU_FILE && MENU_FILE.btn === piu) chiudiMenuFile(); else apriMenuFile(f, wrap, piu, opz || {});
+    });
+    wrap.appendChild(riga); wrap.appendChild(piu);
+    return wrap;
+  }
+  function chiudiMenuFile() {
+    if (!MENU_FILE) return null;
+    var m = MENU_FILE; MENU_FILE = null;
+    m.menu.remove(); m.wrap.classList.remove('aperto'); m.btn.setAttribute('aria-expanded', 'false');
+    return m.btn;
+  }
+  document.addEventListener('click', function (e) { if (MENU_FILE && !MENU_FILE.menu.contains(e.target)) chiudiMenuFile(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && MENU_FILE) { var b = chiudiMenuFile(); if (b) b.focus(); } });
+
+  function apriMenuFile(f, wrap, btn, opz) {
+    chiudiMenuFile();
+    var adm = ammFile(), arrivo = !!opz.arrivo, titolo = f.titolo || f.nome;
+    var m = el('div', { classe: 'menu-file', role: 'menu', 'aria-label': 'Azioni sul file' });
+    function voce(ico, testo, sotto, fai, classe) {
+      return el('button', { type: 'button', role: 'menuitem', classe: 'mf-voce' + (classe ? ' ' + classe : ''), onclick: function (ev) { ev.stopPropagation(); chiudiMenuFile(); fai(); } },
+        [icoFile(ico), el('span', null, [testo, sotto ? el('small', { testo: sotto }) : null])]);
+    }
+    var dove = arrivo ? 'In arrivo · solo per te' : nomeSezioneFile(opz.sezione);
+    m.appendChild(el('div', { classe: 'mf-testa' }, [el('b', { testo: titolo }), dove ? el('small', { testo: dove }) : null]));
+    m.appendChild(voce('apri', 'Apri', null, function () { apriDoc(f, arrivo); }));
+    if (!f.url) m.appendChild(voce('scarica', 'Scarica sul telefono', null, function () { if (!arrivo) segnaVisto(f); apriFile(f, { scarica: true }); }));
+    if (!arrivo) m.appendChild(voce('wa', 'Condividi su WhatsApp', 'Link che apre il file nell’app', function () { condividiDoc(f); }, 'wa'));
+    if (adm && !arrivo) m.appendChild(voce('link', 'Copia il link', null, function () { copia(linkDoc(f), 'Link copiato: apre il file nell’app'); }));
+    if (adm) {
+      m.appendChild(el('div', { classe: 'mf-sep' }));
+      m.appendChild(el('div', { classe: 'mf-sez', testo: 'Solo per te' }));
+      m.appendChild(voce('rinomina', 'Rinomina', 'Titolo e data', function () { rinominaDoc(f, opz); }));
+      if (arrivo) m.appendChild(voce('sposta', 'Sposta in…', 'Scegli la cartella qui sotto', function () { if (opz.seleziona) opz.seleziona(); }));
+      else m.appendChild(voce('sposta', 'Sposta in…', 'Un’altra cartella', function () { spostaDoc(f, opz); }));
+      if (!arrivo) {
+        var vAv = voce('avviso', 'Scrivi un avviso con questo file', 'In cima alla Home', function () {
+          apriPannello('avviso', { titolo: f.titolo, allegato: { id: f.id, titolo: f.titolo } });
+        });
+        m.appendChild(vAv);
+        avvisiCon(f).then(function (l) { if (l.length) { var s = vAv.querySelector('small'); if (s) s.textContent = 'C’è già un avviso collegato'; } });
+      }
+      m.appendChild(voce('drive', 'Apri in Google Drive', null, function () {
+        window.open(f.url || 'https://drive.google.com/file/d/' + encodeURIComponent(f.id) + '/view', '_blank', 'noopener');
+      }));
+      m.appendChild(el('div', { classe: 'mf-sep' }));
+      m.appendChild(voce('cestino', 'Cancella', 'Va nel cestino di Drive', function () { cancellaDoc(f, opz); }, 'del'));
+    }
+    wrap.appendChild(m);
+    var r = m.getBoundingClientRect();
+    if (r.bottom > window.innerHeight - 8 && wrap.getBoundingClientRect().top > r.height + 16) m.classList.add('su');
+    wrap.classList.add('aperto'); btn.setAttribute('aria-expanded', 'true');
+    MENU_FILE = { menu: m, wrap: wrap, btn: btn };
+    var prima = m.querySelector('.mf-voce'); if (prima) { try { prima.focus({ preventScroll: true }); } catch (e) { prima.focus(); } }
+    m.addEventListener('keydown', function (e) {
+      var v = Array.prototype.slice.call(m.querySelectorAll('.mf-voce')), i = v.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown') { e.preventDefault(); v[(i + 1) % v.length].focus(); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); v[(i - 1 + v.length) % v.length].focus(); }
+      if (e.key === 'Tab') chiudiMenuFile();
+    });
+  }
+
+  // avvisi che allegano questo file (anche tolti o scaduti)
+  function avvisiCon(f) {
+    return Promise.resolve(STATO.documenti).then(function (d) {
+      return (avvisiDi(d) || []).filter(function (a) { return a.allegato && a.allegato.id === f.id; });
+    }, function () { return []; });
+  }
+  function apriDoc(f, arrivo) {
+    if (!arrivo) segnaVisto(f);
+    if (f.url) { window.open(f.url, '_blank', 'noopener'); return; }
+    apriFile(f);
+  }
+  function foglioFile(nodi) {
+    var velo = el('div', { classe: 'velo-doc' });
+    var pannello = el('div', { classe: 'pannello ev-foglio', role: 'dialog' }, nodi);
+    velo.appendChild(pannello);
+    var chiudi = function () { velo.remove(); };
+    velo.addEventListener('click', function (e) { if (e.target === velo) chiudi(); });
+    velo.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.stopPropagation(); chiudi(); } });
+    document.body.appendChild(velo);
+    return { chiudi: chiudi, pannello: pannello };
+  }
+  function dopoAzioneFile(r, opz, messaggio) {
+    if (STATO.visti && r.file && r.file.id) STATO.visti.documenti[r.file.id] = STATO.visti.documenti[r.file.id] || 1;
+    stessiDati(r);
+    if (opz && opz.dopo) opz.dopo(r);
+    toast(messaggio);
+  }
+  function condividiDoc(f) {
+    var testo = '📄 *' + f.titolo + '*\n\nLo trovi nell’app della 4a: ' + linkDoc(f);
+    var x = foglioFile([
+      el('h3', { testo: 'Condividi su WhatsApp' }),
+      el('p', { testo: 'Si apre WhatsApp con questo messaggio: scegli tu la chat o il gruppo. Il link apre il file solo dopo l’accesso all’app.' }),
+      el('div', { classe: 'bolla-wa' }, [el('div', { testo: testo })]),
+      el('div', { classe: 'ev-azioni' }, [
+        el('button', { type: 'button', testo: 'Annulla', onclick: function () { x.chiudi(); } }),
+        el('a', { classe: 'mf-apri-wa', href: linkWhatsapp(testo), target: '_blank', rel: 'noopener', onclick: function () { setTimeout(x.chiudi, 300); } }, [iconaWa(18), 'Apri WhatsApp'])
+      ])
+    ]);
+  }
+  function rinominaDoc(f, opz) {
+    var letto = f.titolo ? { titolo: f.titolo, data: f.data } : leggiNomeFile(f.nome);
+    var fT = el('input', { id: 'mfTitolo', type: 'text', maxlength: '150', autocomplete: 'off' }), fD = el('input', { id: 'mfData', type: 'date' });
+    fT.value = letto.titolo || ''; fD.value = letto.data || oggiISO();
+    var nome = el('div', { classe: 'fi-nome' });
+    var errore = el('p', { classe: 'ev-errore nascosto', role: 'alert' });
+    function agg() {
+      var t = fT.value.replace(/[\\\/:*?"<>|#%]+/g, ' ').replace(/\s+/g, ' ').trim();
+      nome.innerHTML = '';
+      nome.appendChild(el('span', { testo: 'Nome su Drive' }));
+      nome.appendChild(document.createTextNode((fD.value || '…') + ' - ' + (t || '…') + estensione(f.nome)));
+    }
+    fT.addEventListener('input', agg); fD.addEventListener('input', agg); agg();
+    var salva = el('button', { type: 'submit', classe: 'salva', testo: 'Salva' });
+    var modulo = el('form', { novalidate: 'novalidate' }, [
+      el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Titolo' }), fT]),
+      el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Data' }), fD]),
+      nome, errore,
+      el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Annulla', onclick: function () { x.chiudi(); } }), salva])
+    ]);
+    var x = foglioFile([
+      el('h3', { testo: 'Rinomina' }),
+      el('p', { testo: opz.arrivo ? 'Cambia il nome del file nella cartella IN ARRIVO.' : 'Cambiano il titolo e la data che vedono le famiglie. Il file resta lo stesso: chi l’ha già aperto non lo vede di nuovo come NUOVO.' }),
+      modulo
+    ]);
+    modulo.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var t = fT.value.replace(/\s+/g, ' ').trim();
+      var msg = !t ? 'Scrivi il titolo.' : !fD.value ? 'Scegli la data.' : '';
+      if (msg) { errore.textContent = msg; errore.classList.remove('nascosto'); return; }
+      errore.classList.add('nascosto'); occupato(salva, true, 'Salvo…');
+      chiama('fileRinomina', { id: f.id, titolo: t, data: fD.value }).then(function (r) {
+        x.chiudi(); dopoAzioneFile(r, opz, 'Rinominato ✓');
+      }).catch(function (e) {
+        if (e.codice === 'SESSIONE') return;
+        errore.textContent = msgVecchioScript(e); errore.classList.remove('nascosto'); occupato(salva, false, 'Salva');
+      });
+    });
+    setTimeout(function () { fT.focus(); }, 30);
+  }
+  function spostaDoc(f, opz) {
+    var scelta = null;
+    var ok = el('button', { type: 'submit', classe: 'salva', testo: 'Sposta', disabled: 'disabled' });
+    var chips = el('div', { classe: 'fi-chips', role: 'group', 'aria-label': 'Cartella' });
+    CARTELLE_APP.forEach(function (c) {
+      var qui = c[0] === opz.sezione;
+      var b = el('button', { type: 'button', 'aria-pressed': 'false', testo: c[1] + (qui ? ' (qui)' : ''), disabled: qui ? 'disabled' : null, onclick: function () {
+        scelta = c[0];
+        Array.prototype.forEach.call(chips.children, function (y) { y.setAttribute('aria-pressed', y === b ? 'true' : 'false'); });
+        ok.disabled = false; ok.textContent = 'Sposta in ' + c[1];
+      } });
+      chips.appendChild(b);
+    });
+    var errore = el('p', { classe: 'ev-errore nascosto', role: 'alert' });
+    var modulo = el('form', { novalidate: 'novalidate' }, [
+      el('div', { classe: 'ev-campo' }, [el('span', { testo: 'Cartella' }), chips]),
+      errore,
+      el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Annulla', onclick: function () { x.chiudi(); } }), ok])
+    ]);
+    var x = foglioFile([
+      el('h3', { testo: 'Sposta “' + f.titolo + '”' }),
+      el('p', { testo: 'Scegli la cartella. Il file sparisce da qui e compare nell’altra scheda; non torna NUOVO per chi l’ha già aperto.' }),
+      modulo
+    ]);
+    modulo.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      if (!scelta) return;
+      errore.classList.add('nascosto'); occupato(ok, true, 'Sposto…');
+      chiama('fileSposta', { id: f.id, sezione: scelta }).then(function (r) {
+        x.chiudi(); dopoAzioneFile(r, opz, 'Spostato in ' + nomeSezioneFile(scelta));
+      }).catch(function (e) {
+        if (e.codice === 'SESSIONE') return;
+        errore.textContent = msgVecchioScript(e); errore.classList.remove('nascosto'); occupato(ok, false, 'Sposta in ' + nomeSezioneFile(scelta));
+      });
+    });
+  }
+  function cancellaDoc(f, opz) {
+    var titolo = f.titolo || f.nome;
+    var errore = el('p', { classe: 'ev-errore nascosto', role: 'alert' });
+    var conAvviso = el('div');
+    var bCancella = el('button', { type: 'button', classe: 'elimina', testo: 'Cancella' });
+    var x = foglioFile([
+      el('h3', { testo: 'Cancellare “' + titolo + '”?' }),
+      el('p', { testo: opz.arrivo ? 'Esce dalla cartella IN ARRIVO e va nel cestino del tuo Google Drive.' : 'Sparisce dall’app per tutte le famiglie e va nel cestino del tuo Google Drive.' }),
+      conAvviso,
+      el('div', { classe: 'mf-info' }, ['↩︎ Ci ripensi? Lo recuperi dal cestino di Google Drive entro 30 giorni.']),
+      errore,
+      el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Annulla', onclick: function () { x.chiudi(); } }), bCancella])
+    ]);
+    if (!opz.arrivo) avvisiCon(f).then(function (l) {
+      if (l.length) conAvviso.appendChild(el('div', { classe: 'mf-info giallo', testo: '📢 ' + (l.length === 1 ? 'C’è un avviso che allega questo file: l’avviso resta, ma senza allegato.' : 'Ci sono ' + l.length + ' avvisi che allegano questo file: restano, ma senza allegato.') }));
+    });
+    bCancella.addEventListener('click', function () {
+      errore.classList.add('nascosto'); occupato(bCancella, true, 'Cancello…');
+      chiama('fileCestino', { id: f.id }).then(function (r) {
+        x.chiudi(); dopoAzioneFile(r, opz, 'Nel cestino di Drive: si recupera da lì entro 30 giorni');
+      }).catch(function (e) {
+        if (e.codice === 'SESSIONE') return;
+        errore.textContent = msgVecchioScript(e); errore.classList.remove('nascosto'); occupato(bCancella, false, 'Cancella');
+      });
+    });
+  }
+  // .../#doc-<id> (Condividi o Copia il link): apre il file dopo l'accesso
+  function apriDocDaLink(id) {
+    Promise.resolve(STATO.documenti).then(function (dati) {
+      var f = null;
+      Object.keys((dati && dati.sezioni) || {}).forEach(function (k) {
+        (elencoSezione(dati, k) || []).forEach(function (x) { if (!f && x.id === id) f = x; });
+      });
+      if (!f) { toast('Documento non trovato: forse è stato spostato o cancellato.'); return; }
+      segnaVisto(f);
+      if (f.url) {
+        var x = foglioFile([el('h3', { testo: f.titolo }), el('p', { testo: 'È un modulo da compilare online.' }),
+          el('a', { classe: 'btn btn-primario', href: f.url, target: '_blank', rel: 'noopener', testo: 'Apri il modulo', onclick: function () { setTimeout(x.chiudi, 300); } }),
+          el('button', { classe: 'link-piccolo', testo: 'Chiudi', onclick: function () { x.chiudi(); } })]);
+        return;
+      }
+      apriFile(f);
+    }).catch(function () { toast('Documento non disponibile al momento.'); });
+  }
+
   function attesa(testo) {
     return el('div', { classe: 'vuoto' }, [el('div', { classe: 'spinner' }), el('div', { testo: testo })]);
   }
 
-  function disegnaElenco(box, elenco) {
+  function disegnaElenco(box, elenco, sezione) {
     box.innerHTML = '';
     if (!elenco.length) { box.appendChild(el('div', { classe: 'vuoto', testo: 'Nessun documento presente.' })); return; }
     var lista = el('div');
@@ -1963,7 +2334,7 @@
         var p = f.data ? f.data.split('-') : null;
         var mese = p ? MESI[+p[1] - 1] + ' ' + p[0] : 'Senza data';
         if (mese !== meseCorrente) { lista.appendChild(el('div', { classe: 'mese', testo: mese })); meseCorrente = mese; }
-        lista.appendChild(rigaDocumento(f));
+        lista.appendChild(rigaDocumento(f, null, sezione));
         trovati++;
       });
       if (!trovati) lista.appendChild(el('div', { classe: 'vuoto', testo: 'Nessun documento trovato per "' + filtro + '".' }));
@@ -1978,21 +2349,52 @@
   }
 
   // Icona di una sezione: immagine incorporata se la pagina ha "img" (es. Mensa), altrimenti l'emoji
+  // v10.28 (n. 4): un'illustrazione per sezione (file .webp accanto a index.html su GitHub). Contenuti.gs può sceglierla con "ill".
+  var ILLUSTRAZIONI = { calendario: 'calendario', libri: 'libri', contabilita: 'cassa', comunicazioni: 'megafono', orario: 'orario',
+    ricevimento: 'colloqui', afterschool: 'afterschool', divise: 'divise', teatro: 'teatro' };
+  function nomeIll(p) { return p && (p.ill || ILLUSTRAZIONI[p.id]) || ''; }
+  function imgIll(nome, classe) {
+    var i = el('img', { classe: 'ill' + (classe ? ' ' + classe : ''), src: nome + '.webp', alt: '', 'aria-hidden': 'true', decoding: 'async' });
+    i.addEventListener('error', function () { i.style.visibility = 'hidden'; });
+    return i;
+  }
+  function illPagina(id) { var p = (STATO.dati.pagine || []).filter(function (x) { return x.id === id; })[0]; return imgIll(nomeIll(p) || ILLUSTRAZIONI[id] || id); }
+  var SVG_CASA = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>';
+  var SVG_FRECCIA = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+  function frecciaTonda() { var s = el('span', { classe: 'freccia-tonda', 'aria-hidden': 'true' }); s.innerHTML = SVG_FRECCIA; return s; }
+  function svgSpan(classe, html) { var s = el('span', { classe: classe, 'aria-hidden': 'true' }); s.innerHTML = html; return s; }
   function iconaPagina(p) {
-    if (p.img && IMMAGINI[p.img]) return el('span', { classe: 'ic' }, [el('img', { src: IMMAGINI[p.img], alt: '' })]);
+    if (p.id === 'home') return svgSpan('ic', SVG_CASA);
+    if (p.img && IMMAGINI[p.img]) return el('span', { classe: 'ic' }, [el('img', { src: IMMAGINI[p.img], alt: '', classe: 'app' })]);
+    if (nomeIll(p)) return el('span', { classe: 'ic' }, [imgIll(nomeIll(p))]);
     return el('span', { classe: 'ic', testo: p.icona || '•' });
   }
-
+  // Calendario, Contabilità e Comunicazioni hanno i loro riquadri in Home: nella griglia non ci vanno (anche con Contenuti.gs 10.16)
+  var PORTE_HOME = { calendario: 1, contabilita: 1, comunicazioni: 1 };
   function griglaHome() {
     var g = el('div', { classe: 'griglia-home' });
     STATO.dati.pagine.forEach(function (p) {
-      if (p.id === 'home' || p.inHome === false) return;
-      g.appendChild(el('button', { classe: 'tile', 'data-id': p.id, onclick: function () { vaiA(p.id); } }, [
+      if (p.id === 'home' || p.inHome === false || PORTE_HOME[p.id]) return;
+      g.appendChild(el('button', { classe: 'tile' + (nomeIll(p) ? ' con-ill' : ''), 'data-id': p.id, onclick: function () { vaiA(p.id); } }, [
         iconaPagina(p), el('span', { classe: 'lbl', testo: p.breve || p.titolo })
       ]));
     });
     return g;
   }
+  function titoliTesta() {
+    var t = String(STATO.dati.titolo || ''), m = t.match(/^(.*?)\s+(\d{4}-\d{2})$/);
+    var sotto = String(STATO.dati.sottotitolo || '').split(' · ')[0];
+    return m ? { titolo: m[1], sotto: (sotto ? sotto + ' · ' : '') + m[2] } : { titolo: t, sotto: STATO.dati.sottotitolo || '' };
+  }
+  // Saluto della Home: "Ciao, famiglia di Giulia!" (più figli: "di Giulia e Marco"); profilo docente "Ciao, Marianna!"
+  function testoSaluto() {
+    var s = STATO.sessione || {}, visti = {};
+    var nomi = (s.alunni || []).filter(function (a) { return !senzaAlunno(a); }).map(function (a) { return String(a).trim().split(/\s+/)[0]; })
+      .filter(function (n) { if (!n || visti[n]) return false; visti[n] = 1; return true; });
+    if (nomi.length) return 'Ciao, famiglia di ' + (nomi.length === 1 ? nomi[0] : nomi.slice(0, -1).join(', ') + ' e ' + nomi[nomi.length - 1]) + '!';
+    return s.nome ? 'Ciao, ' + s.nome + '!' : 'Ciao!';
+  }
+  function oggiLungo() { var d = new Date(), g = GIORNI_LUNGHI[d.getDay()]; return g.charAt(0).toUpperCase() + g.slice(1) + ' ' + d.getDate() + ' ' + MESI[d.getMonth()]; }
 
   function disegnaBlocchi(blocchi, dove, chiave) {
     blocchi.forEach(function (b, i) {
@@ -3076,18 +3478,33 @@
       scegliSorgente({ tipo: 'file', nome: f.name, file: f });
       etichettaScegli.textContent = '📎 ' + f.name + ' · ' + misuraFile(f.size);
     });
-    (STATO.inArrivo || Promise.resolve(null)).then(function (arrivo) {
+    // v10.27: accanto a ogni file in arrivo la casella ⋯ (Apri, Scarica, Sposta in…, Rinomina, Apri in Google Drive, Cancella)
+    function disegnaArrivo(arrivo) {
       lista.innerHTML = '';
       arrivo = arrivo || [];
-      if (!arrivo.length) { lista.appendChild(el('div', { classe: 'stato', testo: 'La cartella IN ARRIVO è vuota. Da un documento sul telefono: Condividi → Drive → IN ARRIVO.' })); return; }
+      if (sorgente && sorgente.tipo === 'arrivo') {                    // il file scelto è stato rinominato o cancellato
+        var ancora = arrivo.filter(function (x) { return x.id === sorgente.id; })[0];
+        if (!ancora) sorgente = null; else sorgente.nome = ancora.nome;
+      }
+      if (!arrivo.length) {
+        lista.appendChild(el('div', { classe: 'stato', testo: 'La cartella IN ARRIVO è vuota. Da un documento sul telefono: Condividi → Drive → IN ARRIVO.' }));
+        if (!sorgente) aggiornaNome();
+        return;
+      }
       arrivo.forEach(function (f, i) {
         var r = el('input', { type: 'radio', name: 'fiArrivo' });
-        r.addEventListener('change', function () { if (r.checked) scegliSorgente({ tipo: 'arrivo', id: f.id, nome: f.nome }); });
-        lista.appendChild(el('label', { classe: 'fi-voce', 'data-id': f.id }, [r, el('span', { classe: 'tx' }, [el('strong', { testo: f.nome }),
-          el('small', { testo: [quandoBreve(f.quando), misuraFile(f.dimensione)].filter(Boolean).join(' · ') })])]));
-        if (i === 0 && !sorgente) { r.checked = true; scegliSorgente({ tipo: 'arrivo', id: f.id, nome: f.nome }); }
+        var scegliQuesto = function () { if (r.checked) scegliSorgente({ tipo: 'arrivo', id: f.id, nome: f.nome }); };
+        r.addEventListener('change', scegliQuesto);
+        var voce = el('label', { classe: 'fi-voce', 'data-id': f.id }, [r, el('span', { classe: 'tx' }, [el('strong', { testo: f.nome }),
+          el('small', { testo: [quandoBreve(f.quando), misuraFile(f.dimensione)].filter(Boolean).join(' · ') })])]);
+        lista.appendChild(conPiu(voce, { id: f.id, nome: f.nome, tipo: f.tipo }, { arrivo: true, sezione: '',
+          seleziona: function () { r.checked = true; scegliQuesto(); try { chips.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (e) {} var c = chips.querySelector('button'); if (c) c.focus({ preventScroll: true }); },
+          dopo: function (ris) { if (Array.isArray(ris.inArrivo)) disegnaArrivo(ris.inArrivo); } }));
+        if (sorgente && sorgente.tipo === 'arrivo' && sorgente.id === f.id) { r.checked = true; scegliSorgente(sorgente); }
+        else if (i === 0 && !sorgente) { r.checked = true; scegliQuesto(); }
       });
-    });
+    }
+    (STATO.inArrivo || Promise.resolve(null)).then(disegnaArrivo);
     disegnaChips(); aggiornaNome();
     var modulo = el('form', { novalidate: 'novalidate' }, [
       el('div', { classe: 'ev-campo' }, [el('span', { testo: 'Da IN ARRIVO' }), lista]),
@@ -3142,7 +3559,9 @@
     return modulo;
   }
 
-  // ---------- Gestione accessi: fondo cassa da versare con promemoria su WhatsApp ----------
+  // ---------- Gestione accessi: fondo cassa da versare con promemoria su WhatsApp o per email ----------
+  // v10.27: il testo arriva già pronto dallo script per ogni genitore (saluto, link per pagare con carta, Coordinate);
+  // frasePromemoria resta solo per uno script vecchio che non lo manda.
   function frasePromemoria(g, a) {
     var p = g.promemoria || {}, passata = !a.scadenza || a.scadenza < oggiISO();
     var t = (passata ? p.dopo : p.prima) || p.prima || p.dopo || '';
@@ -3190,23 +3609,46 @@
             a.scadenza ? el('span', { classe: 'dv-scad' + (passata ? ' passata' : ''), testo: (passata ? 'scaduta il ' : 'entro il ') + dataCorta(a.scadenza) }) : null]),
           el('span', { classe: 'dv-imp', testo: euro(a.importo || 0) })])]);
         if (!a.genitori.length) blocco.appendChild(el('div', { classe: 'dv-gen' }, [el('span', { classe: 'em' }, ['Nessuna email nel foglio accessi'])]));
-        var frase = frasePromemoria(g, a);
+        var vecchia = frasePromemoria(g, a);
         a.genitori.forEach(function (p) {
+          var frase = p.testo || vecchia;
           var nota = el('small', { classe: p.ricordato ? 'ok' : '', testo: p.ricordato ? '✓ Ricordato il ' + dataCorta(isoDi(new Date(p.ricordato))) : 'non ancora ricordato' });
+          function segnato(quando) {
+            p.ricordato = quando || new Date().toISOString();
+            nota.className = 'ok'; nota.textContent = '✓ Ricordato il ' + dataCorta(isoDi(new Date(p.ricordato)));
+          }
+          var bottone = null;
+          if (frase && p.numero) {
+            // chi ha il numero: WhatsApp sulla sua chat
+            bottone = el('a', { classe: 'wa', href: linkWhatsapp(frase, p.numero), target: '_blank', rel: 'noopener', onclick: function () {
+              chiama('ricordato', { alunno: a.alunno, email: p.email, scadenza: a.scadenza }).then(function (r) { segnato(r.ricordato); }).catch(function () {});
+            } }, [iconaWa(), 'Ricorda su WhatsApp']);
+          } else if (frase && p.mail && p.testo) {
+            // v10.27: chi non ha il numero: lo stesso testo per email, dal Gmail di Rossana
+            bottone = el('button', { type: 'button', classe: 'em-dv', onclick: function () {
+              var b = this;
+              b.disabled = true; b.textContent = 'Mando…';
+              chiama('ricordaEmail', { alunno: a.alunno, chiave: p.email }).then(function (r) {
+                segnato(r.ricordato); toast('Promemoria mandato a ' + p.mail);
+                b.textContent = '✉️ Mandata';
+              }).catch(function (e) {
+                b.disabled = false; b.textContent = '✉️ Ricorda per email';
+                if (e.codice === 'SESSIONE') return;
+                toast(e.codice === 'AZIONE' ? 'Lo script non sa ancora mandare il promemoria per email: incolla Codice.gs 10.19 e fai Nuova versione.' : e.message);
+              });
+            } }, ['✉️ Ricorda per email']);
+          } else if (frase) {
+            bottone = el('a', { classe: 'wa', href: linkWhatsapp(frase, ''), target: '_blank', rel: 'noopener' }, [iconaWa(), 'Ricorda su WhatsApp']);
+          }
           blocco.appendChild(el('div', { classe: 'dv-gen' }, [
-            el('span', { classe: 'em' }, [p.mail || p.telefono || p.email, nota]),
-            frase ? el('a', { classe: 'wa', href: linkWhatsapp(frase, p.numero), target: '_blank', rel: 'noopener', onclick: function () {
-              chiama('ricordato', { alunno: a.alunno, email: p.email, scadenza: a.scadenza }).then(function (r) {
-                p.ricordato = r.ricordato || new Date().toISOString();
-                nota.className = 'ok'; nota.textContent = '✓ Ricordato il ' + dataCorta(isoDi(new Date(p.ricordato)));
-              }).catch(function () {});
-            } }, [iconaWa(), 'Ricorda su WhatsApp']) : null
+            el('span', { classe: 'em' }, [(p.nome ? p.nome + ' · ' : '') + (p.mail || p.email), nota]),
+            bottone
           ]));
         });
         righe.appendChild(blocco);
       });
       card.appendChild(righe);
-      card.appendChild(el('p', { classe: 'classe-nota', testo: 'WhatsApp si apre con il messaggio pronto e il link alle Coordinate: sulla chat del genitore se nel foglio c’è il suo numero, altrimenti scegli tu il contatto. Importi e scadenze arrivano dal master.' }));
+      card.appendChild(el('p', { classe: 'classe-nota', testo: 'Stesso messaggio su WhatsApp e per email: il saluto con il nome, prima il link per pagare con carta (importo e causale già pronti, come il pulsante Paga) e poi le Coordinate per il bonifico. WhatsApp si apre sulla chat del genitore; chi non ha il numero lo riceve per email dal tuo Gmail. Importi e scadenze arrivano dal master.' }));
     }
     disegna();
     return card;
@@ -3954,22 +4396,39 @@
     },
     // ---------- Home compatta ----------
     // v10.12: riquadro Avvisi in cima alla Home (i genitori lo vedono solo se ci sono avvisi; la rappresentante sempre)
+    // v10.28 (n. 4): saluto con il nome dei figli e la data di oggi
+    saluto: function () {
+      return el('div', { classe: 'saluto' }, [el('h2', { testo: testoSaluto() }), el('small', { testo: oggiLungo() })]);
+    },
+    // v10.12 → v10.28: "Avvisi e comunicazioni", sempre visibile: porta di Comunicazioni con il bollino dei documenti non aperti.
+    // Con avvisi (o per la rappresentante) il riquadro dorato con gli avvisi; senza, una riga sola.
     avvisi: function (b) {
       var admin = STATO.sessione.amministratore;
-      var card = el('div', { classe: 'hcard avvisi-card nascosto' });
+      var titolo = b.titolo && b.titolo !== 'Avvisi' ? b.titolo : 'Avvisi e comunicazioni';
+      var box = el('div');
+      var vaiCom = function () { apriScheda('comunicazioni', 0); };
+      function riga(testo) {
+        var sotto = el('small', { testo: testo });
+        if (!testo) { sotto.setAttribute('data-riga-com', '1'); sotto.textContent = rigaComunicazioni((STATO.contatori || {}).comunicazioni || 0); }
+        return el('button', { type: 'button', classe: 'porta', 'data-porta': 'comunicazioni', onclick: vaiCom }, [illPagina('comunicazioni'),
+          el('span', { classe: 'tx' }, [el('b', { testo: titolo }), sotto]), frecciaTonda()]);
+      }
+      box.appendChild(riga('Carico…'));
       Promise.all([STATO.documenti, STATO.inArrivo || Promise.resolve(null)]).then(function (r) {
         var tutti = avvisiDi(r[0]), arrivo = r[1];
         var cerca = STATO.avvisoDaMostrare; STATO.avvisoDaMostrare = null;
         var festa = compleanniDiOggi(r[0]);                                    // v10.24: avviso festoso del giorno, dal calendario
-        if (!tutti && !festa.length) return;                                   // script non ancora aggiornato
         tutti = tutti || [];
         var attivi = tutti.filter(avvisoAttivo);
         var cercato = cerca ? tutti.filter(function (a) { return a.id === cerca; })[0] : null;
         if (cercato && !avvisoAttivo(cercato)) apriAvviso(cercato);            // link a un avviso che non è più in Home
-        if (!attivi.length && !admin && !festa.length) return;
-        card.classList.remove('nascosto');
-        card.appendChild(el('div', { classe: 'hcard-testa' }, [el('span', { testo: '📢 ' + (b.titolo || 'Avvisi') }),
-          admin ? el('button', { type: 'button', classe: 'av-piu', testo: '+ Avviso / File', onclick: function () { apriPannello('avviso'); } }) : null]));
+        box.innerHTML = '';
+        if (!attivi.length && !admin && !festa.length) { box.appendChild(riga('')); applicaContatori(); return; }
+        var card = el('section', { classe: 'riquadro oro' }, [
+          el('button', { type: 'button', classe: 'testa-porta', 'data-porta': 'comunicazioni', onclick: vaiCom }, [illPagina('comunicazioni'),
+            el('h3', { testo: titolo }), frecciaTonda()])
+        ]);
+        if (admin) card.appendChild(el('div', { classe: 'admin-riga' }, [el('button', { type: 'button', classe: 'av-piu', testo: '+ Avviso / File', onclick: function () { apriPannello('avviso'); } })]));
         if (admin && arrivo && arrivo.length) {
           card.appendChild(el('button', { type: 'button', classe: 'av-arrivo', onclick: function () { apriPannello('file'); } }, [
             el('span', { classe: 'n', testo: String(arrivo.length) }),
@@ -3979,89 +4438,101 @@
         }
         if (festa.length) card.appendChild(avvisoFesta(festa));
         attivi.forEach(function (a) { card.appendChild(rigaAvviso(a, admin, cercato === a)); });
-        if (!attivi.length && !festa.length) card.appendChild(el('p', { classe: 'av-vuoto', testo: 'Nessun avviso in Home: le famiglie non vedono questo riquadro.' }));
-        if (tutti.length) card.appendChild(el('button', { type: 'button', classe: 'av-tutti', testo: 'Tutti gli avvisi →', onclick: function () { apriScheda('comunicazioni', 0); } }));
+        if (!attivi.length && !festa.length) card.appendChild(el('p', { classe: 'av-vuoto', testo: 'Nessun avviso in Home: le famiglie vedono solo la riga “Nessun avviso nuovo”.' }));
+        box.appendChild(card);
+        applicaContatori();
         segnaAvvisiVisti(attivi);
         if (cercato && avvisoAttivo(cercato)) setTimeout(function () { var n = $('avviso-' + cercato.id); if (n) n.scrollIntoView({ block: 'center' }); }, 50);
       });
-      return card;
+      return box;
     },
+    // v10.28: Prossimi 7 giorni, sempre visibile: porta del Calendario; senza appuntamenti una riga sola
     prossimi: function (b) {
-      var giorni = b.giorni || 7;
-      var card = el('div', { classe: 'hcard' }, [
-        el('div', { classe: 'hcard-testa' }, [el('span', { testo: '📅 Prossimi ' + giorni + ' giorni' }),
-          el('button', { testo: 'Calendario →', onclick: function () { vaiA('calendario'); } })])
-      ]);
-      var corpo = el('div', null, [el('div', { classe: 'hriga muto', testo: 'Carico…' })]);
-      card.appendChild(corpo);
+      var giorni = b.giorni || 7, titolo = 'Prossimi ' + giorni + ' giorni';
+      var box = el('div');
+      var vaiCal = function () { vaiA('calendario'); };
+      function riga(testo) {
+        return el('button', { type: 'button', classe: 'porta', 'data-porta': 'calendario', onclick: vaiCal }, [illPagina('calendario'),
+          el('span', { classe: 'tx' }, [el('b', { testo: titolo }), el('small', { testo: testo })]), frecciaTonda()]);
+      }
+      box.appendChild(riga('Carico…'));
       STATO.documenti.then(function (dati) {
-        corpo.innerHTML = '';
-        if (!dati || !Array.isArray(dati.eventi)) { card.remove(); return; }
-        var ev = eventiEntro(dati, giorni).slice(0, b.limite || 3);
-        if (!ev.length) { corpo.appendChild(el('div', { classe: 'hriga muto', testo: 'Nessuna scadenza in questi giorni 🎉' })); return; }
+        box.innerHTML = '';
+        var ev = dati && Array.isArray(dati.eventi) ? eventiEntro(dati, giorni).slice(0, b.limite || 3) : [];
+        if (!ev.length) { box.appendChild(riga('Nessun appuntamento questa settimana')); applicaContatori(); return; }
+        var righe = el('div', { classe: 'prox-righe' });
         ev.forEach(function (e) {
           var g = -giorniDa(e.giorno), p = e.giorno.split('-');
-          var quando = GIORNI_SETT[new Date(+p[0], +p[1] - 1, +p[2]).getDay()] + ' ' + (+p[2]) + ' ' + MESI[+p[1] - 1].slice(0, 3);   // v10.24: con il mese (oggi e domani restano in rosso)
-          corpo.appendChild(el('div', { classe: 'hriga' + (g <= 1 ? ' urgente' : '') }, [
-            el('span', { classe: 'quando', testo: quando }), pallino(e.colore),
+          var quando = GIORNI_SETT[new Date(+p[0], +p[1] - 1, +p[2]).getDay()].toLowerCase() + ' ' + (+p[2]) + ' ' + MESI[+p[1] - 1].slice(0, 3);
+          righe.appendChild(el('div', { classe: 'prox-riga' + (g <= 1 ? ' urgente' : '') }, [
+            el('span', { classe: 'quando', testo: quando }),
             eCompleanno(e) ? el('span', { classe: 'cosa' }, [titoloEvento(e) + ' ', el('em', { testo: g === 0 ? '· oggi è il suo compleanno' : '· sarà il suo compleanno' })])
               : el('span', { classe: 'cosa', testo: e.titolo }), e.ora ? el('span', { classe: 'ora', testo: e.ora }) : null
           ]));
         });
+        box.appendChild(el('section', { classe: 'riquadro' }, [
+          el('button', { type: 'button', classe: 'testa-porta', 'data-porta': 'calendario', onclick: vaiCal }, [illPagina('calendario'), el('h3', { testo: titolo }), frecciaTonda()]),
+          righe]));
+        applicaContatori();
       });
-      return card;
+      return box;
     },
+    // v10.28: fondo cassa = porta della Contabilità (maialino, nome, stato, bollino, freccetta); da versare: rosa con PAGA
     cassa: function () {
-      var box = el('div');
-      box.appendChild(el('div', { classe: 'hcard cassa neutro' }, [el('span', { classe: 'cassa-ic', testo: '💶' }),
-        el('span', { classe: 'cassa-tx' }, [el('strong', { testo: 'Fondo cassa' }), el('small', { testo: 'Controllo il tuo saldo…' })])]));
+      var box = el('div', { classe: 'pila' });
+      var vaiConta = function (scheda) { return function () { apriScheda('contabilita', scheda); }; };
+      function porta(classe, nome, stato, sotto, onclick, conBollino) {
+        return el('button', { type: 'button', classe: 'cassa2 ' + classe, 'data-porta': conBollino ? 'contabilita' : null, onclick: onclick }, [
+          illPagina('contabilita'),
+          el('span', { classe: 'tx' }, [nome ? el('span', { classe: 'nome', testo: nome }) : null, el('span', { classe: 'stato2', testo: stato }),
+            sotto ? el('span', { classe: 'sotto2', testo: sotto }) : null]),
+          frecciaTonda()]);
+      }
+      box.appendChild(porta('neutro', '', 'Fondo cassa', 'Controllo il tuo saldo…', vaiConta(SCHEDA_RENDICONTO)));
       STATO.miei.then(function (dati) {
         box.innerHTML = '';
-        var alunni = alunniCassa(dati);
-        // 10.13: profilo docente = riquadro "Profilo docente"; un riquadro rosso per ogni nome che non c'è nel master
+        var alunni = alunniCassa(dati), primo = true;
+        var bollino = function () { var x = primo; primo = false; return x; };       // il bollino di Contabilità sul primo riquadro
+        // 10.13: profilo docente; un riquadro rosso per ogni nome che non c'è nel master
         var mancanti = dati && dati.cassa && Array.isArray(dati.cassa.alunni) ? dati.cassa.alunni.filter(function (a) { return a.errore && !senzaAlunno(a.alunno); }) : [];
         if (!STATO.sessione.amministratore) mancanti.forEach(function (a) {
-          box.appendChild(el('a', { classe: 'hcard cassa dapagare', href: linkSegnala(a.alunno), target: '_blank', rel: 'noopener' }, [
-            el('span', { classe: 'cassa-ic', testo: '⚠️' }),
-            el('span', { classe: 'cassa-tx' }, [el('span', { classe: 'cassa-nome', testo: a.alunno }), el('strong', { testo: 'Alunno non trovato' }),
-              el('small', { testo: 'Segnalalo alla rappresentante' })]),
-            el('span', { classe: 'cassa-az', style: 'background:#1f8f52', testo: '💬' })]));
+          var t = el('span', { classe: 'tondo-wa', 'aria-hidden': 'true' }); t.appendChild(iconaWa(16));
+          box.appendChild(el('a', { classe: 'cassa2 rosa', href: linkSegnala(a.alunno), target: '_blank', rel: 'noopener' }, [illPagina('contabilita'),
+            el('span', { classe: 'tx' }, [el('span', { classe: 'nome', testo: a.alunno }), el('span', { classe: 'stato2', testo: 'Alunno non trovato' }),
+              el('span', { classe: 'sotto2', testo: 'Segnalalo alla rappresentante' })]), t]));
         });
         if (soloSenzaAlunno()) {
-          box.appendChild(el('button', { classe: 'hcard cassa neutro', onclick: function () { apriScheda('contabilita', SCHEDA_RENDICONTO); } }, [
-            el('span', { classe: 'cassa-ic', testo: '👩‍🏫' }),
-            el('span', { classe: 'cassa-tx' }, [el('span', { classe: 'cassa-nome', testo: 'Profilo docente' }),
-              el('strong', { testo: 'Nessun alunno assegnato' }), el('small', { testo: 'Rendiconto di classe e ricevute' })]),
-            el('span', { classe: 'cassa-az', testo: '›' })]));
-          return;
+          box.appendChild(porta('neutro', 'Profilo docente', 'Nessun alunno assegnato', 'Rendiconto di classe e ricevute', vaiConta(SCHEDA_RENDICONTO), bollino()));
+          applicaContatori(); return;
         }
-        if (!alunni.length && mancanti.length) return;
-        if (!alunni.length) { if (STATO.sessione.amministratore) return; alunni = [null]; }
+        if (!alunni.length && mancanti.length) { applicaContatori(); return; }
+        if (!alunni.length) {
+          if (STATO.sessione.amministratore) { box.appendChild(porta('neutro', '', 'Fondo cassa', 'Contabilità e ricevute', vaiConta(SCHEDA_RENDICONTO), bollino())); applicaContatori(); return; }
+          alunni = [null];
+        }
         alunni.forEach(function (a) {
-          var stato, titolo, sotto, az, scheda, link = linkRevolut(a);
-          var nome = '';
-          if (!a) { stato = 'neutro'; titolo = 'Fondo cassa'; sotto = 'Apri il tuo rendiconto'; az = '›'; scheda = SCHEDA_RENDICONTO; }
-          else if (a.pendenze) {
-            stato = 'dapagare'; scheda = SCHEDA_PAGAMENTI; az = 'Paga';
-            titolo = nome + 'Fondo cassa da versare: ' + euro(a.pendenze.importo);
-            sotto = (a.pendenze.scadenza ? 'Entro il ' + dataMedia(a.pendenze.scadenza) + ' · ' : '') + (link ? 'paga subito con Revolut' : 'vedi come pagare');
-          } else if (a.saldo !== null && a.saldo < 0) {
-            stato = 'dapagare'; scheda = SCHEDA_PAGAMENTI; az = 'Paga';
-            titolo = nome + 'Passivo: ' + euro(a.saldo); sotto = 'Il saldo è negativo';
-          } else {
-            stato = 'attivo'; scheda = SCHEDA_RENDICONTO; az = '✓';
-            titolo = nome + 'Sei in attivo' + (a.saldo !== null ? ': ' + euro(a.saldo) : ''); sotto = 'Nessun fondo cassa da versare';
+          if (!a) { box.appendChild(porta('neutro', '', 'Fondo cassa', 'Apri il tuo rendiconto', vaiConta(SCHEDA_RENDICONTO), bollino())); return; }
+          var daPagare = a.pendenze || (a.saldo !== null && a.saldo < 0);
+          if (!daPagare) {
+            box.appendChild(porta('attivo', a.alunno, 'Sei in attivo' + (a.saldo !== null ? ' · ' + (a.saldo > 0 ? '+' : '') + euroSegno(a.saldo) : ''),
+              'Contabilità e ricevute', vaiConta(SCHEDA_RENDICONTO), bollino()));
+            return;
           }
-          var figli = [
-            el('span', { classe: 'cassa-ic', testo: '💶' }),
-            el('span', { classe: 'cassa-tx' }, [a && a.alunno ? el('span', { classe: 'cassa-nome', testo: a.alunno }) : null,
-              el('strong', { testo: titolo }), el('small', { testo: sotto })]),
-            el('span', { classe: 'cassa-az', testo: az })
-          ];
-          box.appendChild(link
-            ? el('a', { classe: 'hcard cassa ' + stato, href: link, target: '_blank', rel: 'noopener' }, figli)
-            : el('button', { classe: 'hcard cassa ' + stato, onclick: function () { apriScheda('contabilita', scheda); } }, figli));
+          var link = a.pendenze ? linkRevolut(a) : null;
+          var stato = a.pendenze ? 'Fondo cassa da versare' : 'Passivo';
+          var importo = a.pendenze ? euro(a.pendenze.importo) + (a.pendenze.scadenza ? (a.pendenze.scadenza < oggiISO() ? ' · scaduto il ' : ' entro il ') + dataMedia(a.pendenze.scadenza) : '')
+            : euroSegno(a.saldo) + ' · il saldo è negativo';
+          var vai = el('button', { type: 'button', classe: 'vai-conta', onclick: vaiConta(SCHEDA_RENDICONTO) }, ['Contabilità e ricevute']);
+          vai.appendChild(svgSpan('', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>'));
+          var paga = link ? el('a', { classe: 'btn-paga', href: link, target: '_blank', rel: 'noopener', 'aria-label': 'Paga ' + euro(a.pendenze.importo) + ' per ' + a.alunno, testo: 'PAGA' })
+            : el('button', { type: 'button', classe: 'btn-paga', onclick: vaiConta(SCHEDA_PAGAMENTI), testo: 'PAGA' });
+          var nomeRiga = el('span', { classe: 'nome-riga', 'data-porta': bollino() ? 'contabilita' : null }, [el('span', { classe: 'nome', testo: a.alunno })]);   // bollino accanto al nome
+          var tx = el('span', { classe: 'tx' }, [nomeRiga, el('span', { classe: 'stato2', testo: stato }),
+            el('span', { classe: 'importo2', testo: importo }), vai]);
+          var sez = el('section', { classe: 'cassa2 rosa' }, [illPagina('contabilita'), tx, paga]);
+          box.appendChild(sez);
         });
+        applicaContatori();
       });
       return box;
     },
@@ -4351,7 +4822,7 @@
       var box = el('div', { classe: 'gestione' });
       var filtro = '', vista = 'tutti';
       box.appendChild(attesa('Carico gli accessi…'));
-      function chiPersona(p) { return p.mail || p.telefono || p.email; }
+      function chiPersona(p) { return p.mail || p.email; }
       function disegna(g) {
         box.innerHTML = '';
         var tutte = [];
@@ -4379,11 +4850,11 @@
             nonEntrate.length ? el('button', { classe: 'btn btn-sec', testo: '📋 Copia le email di chi non è ancora entrato (' + nonEntrate.length + ')', onclick: function () { copia(nonEntrate.join(', '), nonEntrate.length + ' email copiate: incollale nei destinatari'); } }) : null,
             el('a', { classe: 'btn btn-sec', href: g.urlFoglio, target: '_blank', rel: 'noopener', testo: '✏️ Aggiungi o togli: apri il foglio accessi' })
           ]),
-          el('small', { style: 'display:block;color:var(--muted);margin-top:10px', testo: 'Nel foglio “APP CLASSE accessi riservati”: colonna A alunno, B email, colonna “Telefono” (D) il cellulare: per gli italiani basta il numero, per gli altri il prefisso davanti (+44 …). Ogni riga ha l’email o il telefono. Le modifiche valgono entro un minuto.' })
+          el('small', { style: 'display:block;color:var(--muted);margin-top:10px', testo: 'Nel foglio “APP CLASSE accessi riservati”: colonna A alunno, B email (serve per entrare: ogni riga deve averla), colonna “Nome” il nome del genitore (la prima parola serve al saluto “Ciao Marta!”), colonna “TELEFONO” il cellulare, usato solo per i tuoi messaggi WhatsApp: per gli italiani basta il numero, per gli altri il prefisso davanti (+44 …). Le modifiche valgono entro un minuto.' })
         ]));
 
         // Manda le password: WhatsApp una chat alla volta, email tutte insieme
-        var perWa = da.filter(function (p) { return p.numero && !p.doppio; });
+        var perWa = da.filter(function (p) { return p.numero; });          // v10.27: un numero doppio non blocca più WhatsApp
         var perEmail = da.filter(function (p) { return p.mail; });
         box.appendChild(el('div', { classe: 'card pw-invio' }, [
           el('h3', { testo: '📨 Manda le password' }),
@@ -4396,7 +4867,8 @@
           ])
         ]));
         (g.doppi || []).forEach(function (d) {
-          box.appendChild(el('div', { classe: 'avviso', testo: '⚠️ Stesso numero ' + d.telefono + ' per ' + d.persone.join(' e ') + ': con quel numero non si entra e WhatsApp resta spento finché non lo correggi nel foglio (con l’email si entra).' }));
+          box.appendChild(el('div', { classe: 'info-acc' }, ['ℹ️ ', el('b', { testo: 'Stesso numero su due email: ' }),
+            d.telefono + ' (' + d.persone.join(' e ') + '). Non blocca niente: ognuno entra con la sua email e ogni messaggio dice con quale email entrare.']));
         });
 
         // v10.12: fondo cassa da versare, con il promemoria su WhatsApp per ogni genitore
@@ -4439,17 +4911,20 @@
           var io = p.chiave === STATO.sessione.chiave;
           if (p.stato !== 'dentro' && !io) {
             var di = p.stato === 'inviata' ? 'Rimanda ' : '';
-            azioni.push(el('button', { type: 'button', classe: 'wa', disabled: p.numero && !p.doppio ? null : 'disabled',
-              title: !p.numero ? 'Nel foglio non c’è il numero' : p.doppio ? 'Numero scritto per due persone' : null,
+            azioni.push(el('button', { type: 'button', classe: 'wa', disabled: p.numero ? null : 'disabled',
+              title: !p.numero ? 'Nel foglio non c’è il numero' : null,
               onclick: function () { invioWa([p], false); } }, ['💬 ' + (di ? di + 'su ' : '') + 'WhatsApp']));
             azioni.push(el('button', { type: 'button', classe: 'em', disabled: p.mail ? null : 'disabled', title: p.mail ? null : 'Nel foglio non c’è l’email',
               onclick: function () { mandaEmail(p, false); } }, ['✉️ ' + (di ? di + 'per ' : '') + 'Email']));
           }
           if (p.attiva && !io) azioni.push(el('button', { type: 'button', classe: 'reimp', testo: '↻ Reimposta', onclick: function () { reimposta(p, nome); } }));
+          // v10.27: saluto (colonna Nome), email per entrare, numero solo per WhatsApp
           return el('div', { classe: 'persona' }, [
+            el('span', { classe: 'saluto-r', testo: p.nome ? 'Saluto: “' + (p.saluto || 'Ciao ' + p.nome + '!') + '”' : 'Saluto: “Ciao!” · nessun nome nel foglio' }),
             el('div', { classe: 'chi' }, [
-              p.mail ? el('b', { testo: p.mail }) : el('b', { classe: 'manca', testo: 'nessuna email' }),
-              p.telefono ? el('span', { classe: 'tel-r', testo: '📱 ' + p.telefono + (p.doppio ? '  ⚠️ su due persone' : '') }) : el('span', { classe: 'tel-r manca', testo: '📱 nessun numero' })
+              el('span', { classe: 'riga-acc' }, [el('span', { classe: 'pill-acc entra', testo: 'ENTRA CON' }), p.mail ? el('b', { testo: p.mail }) : el('b', { classe: 'manca', testo: 'nessuna email' })]),
+              p.telefono ? el('span', { classe: 'tel-r' }, [el('span', { classe: 'pill-acc wa', testo: 'WHATSAPP' }), ' ' + p.telefono + (p.doppio ? ' · anche su un’altra email' : '')])
+                : el('span', { classe: 'tel-r manca', testo: 'Nessun numero: solo email' })
             ]),
             stato,
             p.password ? el('div', { classe: 'pw-prima' }, [p.stato === 'dentro' ? 'Password che gli hai mandato, ancora in uso:' : 'Password:', el('span', { classe: 'mono', testo: p.password })]) : null,
@@ -4502,10 +4977,10 @@
           el('h3', { testo: 'Nuova password per ' + chiPersona(p) + '?' }),
           el('p', { testo: (nome ? nome + ' · ' : '') + 'La password di adesso smette di funzionare ed esce da tutti i telefoni. L’app ne crea una nuova: come gliela mandi?' }),
           el('div', { classe: 'pw-due' }, [
-            el('button', { type: 'button', classe: 'btn btn-wa', disabled: p.numero && !p.doppio ? null : 'disabled', onclick: function () { f.chiudi(); invioWa([p], true); } }, ['💬 WhatsApp']),
+            el('button', { type: 'button', classe: 'btn btn-wa', disabled: p.numero ? null : 'disabled', onclick: function () { f.chiudi(); invioWa([p], true); } }, ['💬 WhatsApp']),
             el('button', { type: 'button', classe: 'btn btn-primario', disabled: p.mail ? null : 'disabled', onclick: function () { f.chiudi(); mandaEmail(p, true); } }, ['✉️ Email'])
           ]),
-          !p.numero ? el('p', { classe: 'prof-nota', testo: 'WhatsApp è spento: nel foglio non c’è il numero.' }) : p.doppio ? el('p', { classe: 'prof-nota', testo: 'WhatsApp è spento: il numero è scritto per due persone.' })
+          !p.numero ? el('p', { classe: 'prof-nota', testo: 'WhatsApp è spento: nel foglio non c’è il numero.' })
             : !p.mail ? el('p', { classe: 'prof-nota', testo: 'Email spenta: nel foglio non c’è l’email.' }) : null,
           el('button', { type: 'button', classe: 'link-piccolo', testo: 'Annulla', onclick: function () { f.chiudi(); } })
         ]);
@@ -4527,7 +5002,7 @@
           corpo.appendChild(el('h3', { testo: (nuova ? 'Nuova password' : 'Invio') + ' su WhatsApp' + (lista.length > 1 ? ' · ' + (i + 1) + ' di ' + lista.length : '') }));
           if (lista.length > 1) corpo.appendChild(el('div', { classe: 'pw-prog' }, [el('i', { style: 'width:' + Math.round(i / lista.length * 100) + '%' })]));
           corpo.appendChild(el('div', { classe: 'pw-dest' }, [el('span', { classe: 'av', testo: '💬' }),
-            el('span', null, [el('b', { testo: p.telefono }), el('small', { testo: p.mail || 'nessuna email' })])]));
+            el('span', null, [el('b', { testo: (p.nome ? p.nome + ' · ' : '') + p.telefono }), el('small', { testo: 'entra con ' + (p.mail || '—') })])]));
           var bolla = el('div', { testo: 'Preparo il messaggio…' });
           corpo.appendChild(el('div', { classe: 'bolla-wa' }, [bolla]));
           var apri = el('a', { classe: 'btn btn-wa', target: '_blank', rel: 'noopener', 'aria-disabled': 'true', style: 'pointer-events:none;opacity:.6', testo: 'Apri WhatsApp' });
@@ -4553,7 +5028,7 @@
       // Email: tutte insieme, partono dal Gmail della rappresentante
       function invioEmail(da) {
         var tutti = da.filter(function (p) { return p.mail; });
-        var senzaWa = tutti.filter(function (p) { return !p.numero || p.doppio; });
+        var senzaWa = tutti.filter(function (p) { return !p.numero; });
         var scelta = senzaWa.length && senzaWa.length < tutti.length ? 'senza' : 'tutti';
         var r1 = el('input', { type: 'radio', name: 'pwChi' }), r2 = el('input', { type: 'radio', name: 'pwChi' });
         r1.checked = scelta === 'tutti'; r2.checked = scelta === 'senza';
@@ -4573,7 +5048,7 @@
           el('h3', { testo: 'Manda le password per email' }),
           el('p', { testo: 'Partono subito dal tuo Gmail, ognuna con la sua password.' }),
           el('label', { classe: 'pw-radio' }, [r1, el('span', null, [el('b', { testo: 'Tutti quelli da mandare (' + tutti.length + ')' }), el('small', { testo: 'Anche chi riceverà WhatsApp: così ha la password in due posti (è la stessa).' })])]),
-          el('label', { classe: 'pw-radio' }, [r2, el('span', null, [el('b', { testo: 'Solo chi non ha WhatsApp (' + senzaWa.length + ')' }), el('small', { testo: 'Senza numero nel foglio, o con il numero scritto per due persone.' })])]),
+          el('label', { classe: 'pw-radio' }, [r2, el('span', null, [el('b', { testo: 'Solo chi non ha WhatsApp (' + senzaWa.length + ')' }), el('small', { testo: 'Senza numero nel foglio.' })])]),
           bInvia,
           el('button', { type: 'button', classe: 'link-piccolo', testo: 'Annulla', onclick: function () { f.chiudi(); } })
         ]);
@@ -4585,16 +5060,14 @@
       return box;
     },
     sezioni: function () { return griglaHome(); },
-    // Il mio profilo: email e numero (sola lettura), password attuale con Visualizza, cambio password con doppio inserimento.
+    // Il mio profilo: email (sola lettura; fino alla v10.26 anche il numero), password attuale con Visualizza, cambio password con doppio inserimento.
     // v10.15: al primo ingresso con la password mandata dalla rappresentante l'app si apre qui: "Tengo questa" oppure una nuova, e "Salvala".
     profilo: function () {
       if (STATO.sessione.vista) return el('div', { classe: 'card' }, [el('p', { style: 'margin:0', testo: '👁 In “Visualizza come” il profilo non si mostra: email e password sono personali di ogni genitore. Tocca il pulsante blu per tornare amministratrice.' })]);
       var testi = (STATO.dati && STATO.dati.profilo) || {};
-      var ses = STATO.sessione, primo = !!ses.primoIngresso, soloNumero = !ses.mail;
+      var ses = STATO.sessione, primo = !!ses.primoIngresso;
       var box = el('div', { classe: 'profilo' });
-      var promemoria = soloNumero
-        ? '⚠️ Salvala: quando il telefono ti chiede di salvare la password, rispondi Sì (oppure scrivila in Note). Non hai dato l’email: se la perdi non puoi rifarla da solo, devi chiederla alla rappresentante.'
-        : '⚠️ Salvala: quando il telefono ti chiede di salvare la password, rispondi Sì (oppure scrivila in Note). Se la perdi, “Password dimenticata?” → “Rifalla da solo”.';
+      var promemoria = '⚠️ Salvala: quando il telefono ti chiede di salvare la password, rispondi Sì (oppure scrivila in Note). Se la perdi, “Password dimenticata?” → “Rifalla da solo”.';
       var bHome = function () {
         return el('button', { type: 'button', classe: 'btn btn-primario vai-home', testo: '🏠 Vai alla Home', onclick: vaiAllaHome });
       };
@@ -4607,7 +5080,7 @@
         primoBox.appendChild(el('div', { classe: 'card primo-card' }, [
           el('h3', { classe: 'sez', testo: come === 'tengo' ? '✓ Tieni la password della rappresentante' : '✓ Password nuova salvata' }),
           el('p', { testo: come === 'tengo' ? 'Non devi fare altro.' : 'Da adesso entri con quella nuova. La conosci solo tu.' }),
-          el('p', { classe: 'promemoria' + (soloNumero ? ' forte' : ''), testo: promemoria }),
+          el('p', { classe: 'promemoria', testo: promemoria }),
           bHome()
         ]));
         nascondi_(altro, true);
@@ -4623,7 +5096,7 @@
           el('h3', { classe: 'sez', testo: '🔑 La tua password' }),
           el('p', { testo: 'È quella che ti ha mandato la rappresentante. Puoi tenerla o sceglierne una nuova qui sotto.' }),
           el('div', { classe: 'pass-grande' }, [pw, copiaB]),
-          el('p', { classe: 'promemoria' + (soloNumero ? ' forte' : ''), testo: promemoria }),
+          el('p', { classe: 'promemoria', testo: promemoria }),
           el('button', { type: 'button', classe: 'btn btn-primario', testo: '✓ Tengo questa', onclick: function () { fatto('tengo'); } })
         ]));
       }
@@ -4631,16 +5104,12 @@
       var altro = el('div');
       box.appendChild(altro);
 
-      // 1) Email e numero: solo da vedere
-      var righeAcc = [];
-      if (ses.mail) righeAcc.push(el('div', { classe: 'prof-valore', testo: '✉️ ' + ses.mail }));
-      if (ses.telefono) righeAcc.push(el('div', { classe: 'prof-valore', style: ses.mail ? 'margin-top:8px' : null, testo: '📱 ' + ses.telefono }));
-      if (!righeAcc.length) righeAcc.push(el('div', { classe: 'prof-valore', testo: ses.email }));
+      // 1) Email: solo da vedere (v10.27: si entra solo con l'email)
       altro.appendChild(el('div', { classe: 'card' }, [
-        el('h3', { classe: 'sez', testo: ses.mail && ses.telefono ? 'Entri con l’email o con il numero' : ses.mail ? '✉️ Email di accesso' : '📱 Numero di accesso' }),
-      ].concat(righeAcc, [
-        el('p', { classe: 'prof-nota', testo: testi.notaEmail || 'Email e numero non si cambiano dall’app: per modificarli chiama la rappresentante.' })
-      ])));
+        el('h3', { classe: 'sez', testo: '✉️ Email di accesso' }),
+        el('div', { classe: 'prof-valore', testo: ses.mail || ses.email }),
+        el('p', { classe: 'prof-nota', testo: testi.notaEmail || 'L’email non si cambia dall’app: per modificarla chiama la rappresentante.' })
+      ]));
 
       // 2) Password attuale: nascosta, si vede con Visualizza (al primo ingresso è già in cima)
       var attuale = null, visibile = false;
@@ -4728,7 +5197,7 @@
       box.appendChild(attesa('Carico i documenti…'));
       STATO.documenti.then(function (dati) {
         var elenco = elencoSezione(dati, b.sezione);
-        if (elenco) { disegnaElenco(box, elenco); return; }
+        if (elenco) { disegnaElenco(box, elenco, b.sezione); return; }
         box.innerHTML = '';
         if (b.riserva) box.appendChild(RENDER.embed({ titolo: 'Elenco documenti', url: b.riserva, altezza: 560 }));
         else box.appendChild(el('div', { classe: 'vuoto', testo: 'Elenco non disponibile al momento.' }));
@@ -4747,7 +5216,7 @@
         corpo.innerHTML = '';
         var tutti = [];
         Object.keys(SEZIONI_NOVITA).forEach(function (k) {
-          (elencoSezione(dati, k) || []).forEach(function (f) { if (f.data) tutti.push({ f: f, et: SEZIONI_NOVITA[k], data: f.data }); });
+          (elencoSezione(dati, k) || []).forEach(function (f) { if (f.data) tutti.push({ f: f, et: SEZIONI_NOVITA[k], data: f.data, k: k }); });
         });
         // v10.12: lo storico degli avvisi (anche scaduti o tolti dalla Home), mescolato ai documenti per data
         (avvisiDi(dati) || []).forEach(function (a) { tutti.push({ a: a, data: a.creato || '' }); });
@@ -4756,7 +5225,7 @@
         var limite = b.limite || 5;
         function disegna(quanti) {
           corpo.innerHTML = '';
-          tutti.slice(0, quanti).forEach(function (x) { corpo.appendChild(x.a ? rigaAvvisoStorico(x.a) : rigaDocumento(x.f, x.et)); });
+          tutti.slice(0, quanti).forEach(function (x) { corpo.appendChild(x.a ? rigaAvvisoStorico(x.a) : rigaDocumento(x.f, x.et, x.k)); });
           if (tutti.length > quanti) corpo.appendChild(el('button', { type: 'button', classe: 'mov-tutti', testo: 'Mostra tutto (' + tutti.length + ')', onclick: function () { disegna(tutti.length); } }));
         }
         disegna(limite);
