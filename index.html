@@ -14,7 +14,13 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.4, 18 ottobre 2026: CALENDARIO, VISTA MESE con i giorni in evidenza
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.5, 19 ottobre 2026: RICEVIMENTO CON LA MAIL PRONTA (n. 43) —
+  sotto ogni insegnante le prossime 3 date; toccandone una si apre il foglio con la mail già scritta (alunno, data, orario, firma
+  "Nome Cognome - madre/padre di … - classe 4a primaria" dal foglio accessi), A scuola / Online (link della videochiamata Jitsi
+  già pronto, meet.ffmuc.net, senza app né password), "Apri la mail già scritta" (app di posta del genitore) e "Copia il testo";
+  "Scrivi senza scegliere la data". Testi in Contenuti.gs (ricevimento → mail). Serve lo script 11.3 per nome e madre/padre.
+  Profilo docente: in Home "Buongiorno, Marianna!" invece di "Ciao".
+  Versione 11.4, 18 ottobre 2026: CALENDARIO, VISTA MESE con i giorni in evidenza
   (n. 42, proposta A approvata): solo i giorni con appuntamento sono riquadri bianchi con l'ombra e una barretta colorata per appuntamento
   (fino a 3, poi "+N"); gli altri giorni restano un numero grigio; giorni passati sbiaditi; giorni senza lezione (NO LEZIONI) lilla;
   legenda dei colori dei calendari sotto la griglia. Contiene tutta la 11.3 (non ancora caricata). Script e contenuti non cambiano (11.2).
@@ -704,6 +710,30 @@
   .ric-mail span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .ric-email { display: block; margin-top: 4px; font-size: 12px; color: var(--muted); word-break: break-all; }
   .ric-vacanza { margin-top: 4px; font-size: 12.5px; color: var(--muted); }
+  /* v11.5 (n. 43): giorni da scegliere e foglio con la mail del colloquio */
+  .ric-scegli { margin-top: 10px; font-size: 13px; font-weight: 800; color: var(--brand); }
+  .ric-date { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .ric-dt { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; min-height: 44px; padding: 6px 11px; border: 1.5px solid var(--brand);
+    border-radius: 12px; background: var(--brand-soft); color: var(--brand); font: inherit; line-height: 1.2; cursor: pointer; }
+  .ric-dt b { font-size: 13.5px; white-space: nowrap; }
+  .ric-dt small { font-size: 11.5px; font-weight: 700; opacity: .85; font-variant-numeric: tabular-nums; }
+  .ric-dt.oggi { border-color: var(--accent); }
+  .ric-dt:hover, .ric-dt:focus-visible { background: var(--brand); color: #fff; outline: none; }
+  .ric-senza { display: block; margin-top: 8px; padding: 0; border: 0; background: none; color: var(--muted); font: inherit; font-size: 13px;
+    text-decoration: underline; cursor: pointer; text-align: left; }
+  .ric-riass { display: grid; gap: 2px; padding: 10px 12px; border-radius: 12px; background: var(--brand-soft); margin: 0 0 12px; font-size: 14px; }
+  .ric-riass b { font-size: 15.5px; }
+  .ric-lbl { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+  .ric-modo { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .ric-modo button { padding: 10px; border: 1.5px solid var(--line); border-radius: 12px; background: var(--card); color: var(--ink); font: inherit; font-weight: 800; }
+  .ric-modo button.on { border-color: var(--accent); background: #fbf3dc; color: #8a6212; }
+  .ric-anteprima { padding: 12px; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 12px; font-size: 13.5px; }
+  .pannello .ric-anteprima p { margin: 0 0 4px; color: var(--ink); font-size: 13.5px; word-break: break-word; }
+  .pannello .ric-anteprima p.ric-corpo { white-space: pre-line; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+  .pannello .ric-anteprima p.ric-link { margin: 8px 0 0; font-size: 12.5px; color: var(--muted); }
+  .ric-anteprima a { color: var(--brand); font-weight: 700; }
+  .pannello .btn.ric-vai { display: flex; align-items: center; justify-content: center; text-decoration: none; margin: 0; min-height: 50px; font-size: 16px; }
+  .pannello p.ric-sotto { margin: 6px 0 12px; font-size: 12.5px; text-align: center; }
 
   /* ---------- v10.24: Visualizza come ---------- */
   .voce.voce-vista { color: #0d3fc2; font-weight: 800; }
@@ -1933,7 +1963,7 @@
     STATO.dati = r.contenuti;
     STATO.sessione = { email: r.utente.email, amministratore: !!r.utente.admin, alunni: r.utente.alunni || [],
       chiave: r.utente.chiave || r.utente.email, mail: r.utente.mail === undefined ? r.utente.email : r.utente.mail, telefono: r.utente.telefono || '',
-      primoIngresso: !!r.utente.primoIngresso, nome: r.utente.nome || '' };   // v10.28: nome = primo nome del genitore (saluto del profilo docente); v10.15: password appena ricevuta dalla rappresentante → si apre il profilo
+      primoIngresso: !!r.utente.primoIngresso, nome: r.utente.nome || '', nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '' };   // v11.5: firma della mail del colloquio   // v10.28: nome = primo nome del genitore (saluto del profilo docente); v10.15: password appena ricevuta dalla rappresentante → si apre il profilo
     STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null;
     var d = caricaDati(false);
     STATO.documenti = d.documenti; STATO.miei = d.miei; STATO.inArrivo = d.inArrivo;
@@ -2159,7 +2189,7 @@
       var dove = STATO.pagina === 'profilo' ? 'home' : STATO.pagina;
       STATO.dati = r.contenuti;
       STATO.sessione = { email: r.utente.email, amministratore: false, alunni: r.utente.alunni || [], chiave: r.utente.chiave, mail: '', telefono: '',
-        primoIngresso: false, vista: r.utente.vista || scelta.tipo };
+        primoIngresso: false, vista: r.utente.vista || scelta.tipo, nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '' };
       STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null; STATO.casse = {};
       var d = caricaDati(false);
       STATO.documenti = d.documenti; STATO.miei = d.miei; STATO.inArrivo = d.inArrivo;
@@ -2798,13 +2828,13 @@
     var sotto = String(STATO.dati.sottotitolo || '').split(' · ')[0];
     return m ? { titolo: m[1], sotto: (sotto ? sotto + ' · ' : '') + m[2] } : { titolo: t, sotto: STATO.dati.sottotitolo || '' };
   }
-  // Saluto della Home: "Ciao, famiglia di Giulia!" (più figli: "di Giulia e Marco"); profilo docente "Ciao, Marianna!"
+  // Saluto della Home: "Ciao, famiglia di Giulia!" (più figli: "di Giulia e Marco"); profilo docente "Buongiorno, Marianna!" (v11.5)
   function testoSaluto() {
     var s = STATO.sessione || {}, visti = {};
     var nomi = (s.alunni || []).filter(function (a) { return !senzaAlunno(a); }).map(function (a) { return String(a).trim().split(/\s+/)[0]; })
       .filter(function (n) { if (!n || visti[n]) return false; visti[n] = 1; return true; });
     if (nomi.length) return 'Ciao, famiglia di ' + (nomi.length === 1 ? nomi[0] : nomi.slice(0, -1).join(', ') + ' e ' + nomi[nomi.length - 1]) + '!';
-    return s.nome ? 'Ciao, ' + s.nome + '!' : 'Ciao!';
+    return s.nome ? 'Buongiorno, ' + s.nome + '!' : 'Buongiorno!';   // v11.5: profilo docente con "Buongiorno"
   }
   function oggiLungo() { var d = new Date(), g = GIORNI_LUNGHI[d.getDay()]; return g.charAt(0).toUpperCase() + g.slice(1) + ' ' + d.getDate() + ' ' + MESI[d.getMonth()]; }
 
@@ -3536,6 +3566,75 @@
     }
     out.saltati = saltati;
     return out;
+  }
+
+  // v11.5 (n. 43): mail del colloquio già scritta. Testi in Contenuti.gs (blocco ricevimento → mail), qui i valori di riserva.
+  var MAIL_COLLOQUIO = {
+    oggetto: 'Richiesta colloquio {data} - {alunno} (4a primaria)',
+    oggettoSenzaData: 'Richiesta colloquio - {alunno} (4a primaria)',
+    saluto: 'Gentile {docente},',
+    testo: '{saluto}\n\nvorrei chiederle un colloquio per {alunno}{quando}.{online}\n\nResto in attesa di una sua conferma.\nGrazie, cordiali saluti\n\n{firma}',
+    quando: ' nel suo orario di ricevimento di {data}, dalle {dalle} alle {alle}',
+    online: '\nSe possibile, preferirei fare il colloquio online. Se le va bene, possiamo collegarci a questo link (si apre dal browser, senza app e senza password): {link}',
+    firma: '{genitore} - {ruolo} di {alunno} - classe 4a primaria'
+  };
+  function riempi(t, v) { return String(t || '').replace(/\{(\w+)\}/g, function (x, k) { return v[k] !== undefined ? v[k] : x; }); }
+  function elencoNomi(a) { return a.length > 1 ? a.slice(0, -1).join(', ') + ' e ' + a[a.length - 1] : (a[0] || ''); }
+  function stanzaVideo(base, alunno, iso) {
+    var pulito = function (x) { return String(x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Za-z0-9]+/g, ''); };
+    var g = iso ? dataDa(iso) : null, caso = '', ab = 'abcdefghjkmnpqrstuvwxyz23456789';
+    for (var i = 0; i < 6; i++) caso += ab.charAt(Math.floor(Math.random() * ab.length));
+    return String(base || 'https://meet.ffmuc.net/').replace(/\/?$/, '/') + '4a-Barbarigo-' + (pulito(String(alunno).split(' ')[0]) || 'colloquio') +
+      (g ? '-' + g.getDate() + MESI[g.getMonth()].slice(0, 3) : '') + '-' + caso;
+  }
+  function testiColloquio(b, d, iso, online, link) {
+    var t = Object.assign({}, MAIL_COLLOQUIO, b.mail || {});
+    var alunni = (STATO.sessione.alunni || []).filter(function (n) { return !senzaAlunno(n); });
+    var alunno = elencoNomi(alunni), data = iso ? dataLunga(iso) : '';
+    var v = { alunno: alunno, docente: d.nome, data: data, dalle: d.dalle || '', alle: d.alle || '', link: link,
+      genitore: STATO.sessione.nomeIntero || '', ruolo: STATO.sessione.ruolo || 'genitore' };
+    var firma = riempi(t.firma, v);
+    if (!v.genitore) firma = firma.replace(/^\s*-\s*/, '').replace(/^./, function (c) { return c.toUpperCase(); });
+    v.firma = firma;
+    v.saluto = d.saluto || riempi(t.saluto, v);
+    v.quando = iso && d.dalle ? riempi(t.quando, v) : (iso ? ' il ' + data : '');
+    v.online = online ? riempi(t.online, v) : '';
+    return { oggetto: riempi(iso ? t.oggetto : t.oggettoSenzaData, v), corpo: riempi(t.testo, v), firma: firma };
+  }
+  function foglioColloquio(b, d, iso) {
+    var online = false, link = stanzaVideo(b.online, (STATO.sessione.alunni || []).filter(function (n) { return !senzaAlunno(n); })[0], iso);
+    var riass = el('div', { classe: 'ric-riass' }), modo = el('div', { classe: 'ric-modo' }), anteprima = el('div', { classe: 'ric-anteprima' });
+    var vai = el('a', { classe: 'btn ric-vai', href: '#', onclick: function () { setTimeout(x.chiudi, 400); } }, ['✉️ Apri la mail già scritta']);
+    var bA = el('button', { type: 'button', testo: '🏫 A scuola', onclick: function () { online = false; aggiorna(); } });
+    var bO = el('button', { type: 'button', testo: '💻 Online', onclick: function () { online = true; aggiorna(); } });
+    modo.appendChild(bA); modo.appendChild(bO);
+    var x = foglioFile([
+      el('h3', { testo: 'Richiesta di colloquio' }),
+      riass,
+      el('span', { classe: 'ric-lbl', testo: 'Come?' }), modo,
+      el('span', { classe: 'ric-lbl', testo: 'La mail che si apre' }), anteprima,
+      vai,
+      el('p', { classe: 'ric-sotto', testo: 'Si apre la tua app di posta: puoi cambiare il testo prima di premere Invia. La risposta dell’insegnante arriva alla tua email.' }),
+      el('div', { classe: 'ev-azioni' }, [
+        el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } }),
+        el('button', { type: 'button', testo: 'Copia il testo', onclick: function () { var t = testiColloquio(b, d, iso, online, link); copia(d.email + '\n' + t.oggetto + '\n\n' + t.corpo, 'Testo copiato'); } })
+      ])
+    ]);
+    aggiorna();
+    function aggiorna() {
+      var t = testiColloquio(b, d, iso, online, link);
+      bA.className = online ? '' : 'on'; bO.className = online ? 'on' : '';
+      riass.innerHTML = '';
+      riass.appendChild(el('b', { testo: d.nome }));
+      riass.appendChild(el('span', { testo: iso ? dataLunga(iso) + (d.dalle ? ' · dalle ' + d.dalle + ' alle ' + d.alle : '') : 'Senza data: la concordi con l’insegnante' }));
+      anteprima.innerHTML = '';
+      anteprima.appendChild(el('p', {}, [el('b', { testo: 'A: ' }), d.email]));
+      anteprima.appendChild(el('p', {}, [el('b', { testo: 'Oggetto: ' }), t.oggetto]));
+      var pezzi = t.corpo.split(t.firma);
+      anteprima.appendChild(el('p', { classe: 'ric-corpo' }, [pezzi[0], el('b', { testo: t.firma }), pezzi.slice(1).join(t.firma)]));
+      if (online) anteprima.appendChild(el('p', { classe: 'ric-link' }, ['Link della videochiamata: ', el('a', { href: link, target: '_blank', rel: 'noopener', testo: 'prova ad aprirlo' })]));
+      vai.href = 'mailto:' + d.email + '?subject=' + encodeURIComponent(t.oggetto) + '&body=' + encodeURIComponent(t.corpo);
+    }
   }
 
   // ====================================================================
@@ -5484,7 +5583,9 @@
       });
       return box;
     },
-    // Ricevimento docenti: giorno, orario, prossime date calcolate e pulsante per scrivere all'insegnante
+    // Ricevimento docenti: giorno, orario, prossime date calcolate e pulsante per scrivere all'insegnante.
+    // v11.5 (n. 43): il genitore sceglie il giorno e si apre il foglio con la mail già scritta (alunno, data, orario, firma
+    // "Nome Cognome - madre/padre di … - classe 4a primaria"), A scuola / Online (link della videochiamata già pronto).
     ricevimento: function (b) {
       var box = el('div');
       // v10.12: si disegna subito, poi di nuovo quando arrivano i giorni senza lezione dal calendario
@@ -5494,39 +5595,48 @@
       function disegna(vac) {
       box.innerHTML = '';
       if (b.nota) box.appendChild(el('div', { classe: 'ric-nota' }, [el('span', { testo: '✉️' }), el('span', { testo: b.nota })]));
-      var alunni = (STATO.sessione.alunni || []).join(', ');
       var oggiIso = oggiISO();
+      var alunni = (STATO.sessione.alunni || []).filter(function (n) { return !senzaAlunno(n); });
+      var conMail = alunni.length > 0 && !!b.mail;            // profilo docente: solo la mail vuota, come prima
       (b.docenti || []).forEach(function (d) {
-        var date = prossimiRicevimenti(d, 2, vac);
+        var date = prossimiRicevimenti(d, b.quanteDate || 3, vac);
         var oggi = date[0] === oggiIso;
         // con le settimane (primo, ultimo…) si dice quale ricevimento salta per la vacanza
-        var saltato = d.settimane && date.saltati.length && (!date[1] || date.saltati[0].iso < date[1]) ? date.saltati[0] : null;
-        var pross = null;
-        if (date.length && d.settimane) {
-          pross = el('div', { classe: 'ric-pross' }, [
-            oggi ? el('span', { classe: 'ric-oggi', testo: 'OGGI' }) : null,
-            oggi ? '' : 'Prossimo: ',
-            el('b', { testo: oggi ? 'oggi' : dataLunga(date[0]) }),
-            date[1] ? ', poi ' + dataLunga(date[1]) : ''
-          ]);
-        } else if (oggi) {
-          pross = el('div', { classe: 'ric-pross' }, [el('span', { classe: 'ric-oggi', testo: 'OGGI' }), d.alle ? 'fino alle ' + d.alle : '']);
+        var saltato = d.settimane && date.saltati.length && date.saltati[0].iso < date[date.length - 1] ? date.saltati[0] : null;
+        var sotto = [];
+        if (conMail && d.email) {
+          if (date.length) {
+            sotto.push(el('div', { classe: 'ric-scegli', testo: 'Scegli il giorno del colloquio:' }));
+            sotto.push(el('div', { classe: 'ric-date' }, date.map(function (iso) {
+              var g = dataDa(iso);
+              return el('button', { type: 'button', classe: 'ric-dt' + (iso === oggiIso ? ' oggi' : ''), onclick: function () { foglioColloquio(b, d, iso); } }, [
+                el('b', { testo: iso === oggiIso ? 'Oggi' : GIORNI_LUNGHI[g.getDay()].slice(0, 3) + ' ' + g.getDate() + ' ' + MESI[g.getMonth()].slice(0, 3) }),
+                d.dalle ? el('small', { testo: d.dalle + '–' + d.alle }) : null]);
+            })));
+          }
+          sotto.push(el('button', { type: 'button', classe: 'ric-senza', testo: date.length ? 'Scrivi senza scegliere la data' : '✉️ Scrivi per il colloquio',
+            onclick: function () { foglioColloquio(b, d, ''); } }));
+        } else {
+          if (date.length && d.settimane) {
+            sotto.push(el('div', { classe: 'ric-pross' }, [
+              oggi ? el('span', { classe: 'ric-oggi', testo: 'OGGI' }) : null,
+              oggi ? '' : 'Prossimo: ',
+              el('b', { testo: oggi ? 'oggi' : dataLunga(date[0]) }),
+              date[1] ? ', poi ' + dataLunga(date[1]) : ''
+            ]));
+          }
+          var oggetto = 'Richiesta colloquio' + (alunni.length ? ' - ' + alunni.join(', ') : '') + ' (4a primaria)';
+          if (d.email) sotto.push(el('a', { classe: 'ric-mail', href: 'mailto:' + d.email + '?subject=' + encodeURIComponent(oggetto) }, [
+            el('span', { testo: '✉️ Scrivi per il colloquio' })]));
         }
-        alunni = (STATO.sessione.alunni || []).filter(function (n) { return !senzaAlunno(n); }).join(', ');
-        var oggetto = 'Richiesta colloquio' + (alunni ? ' - ' + alunni : '') + ' (4a primaria)';
-        var mail = d.email ? el('a', { classe: 'ric-mail', href: 'mailto:' + d.email + '?subject=' + encodeURIComponent(oggetto) }, [
-          el('span', { testo: '✉️ Scrivi per il colloquio' })]) : null;
         box.appendChild(el('div', { classe: 'card ric-card' + (oggi ? ' oggi' : '') }, [
           el('span', { classe: 'ric-ic', testo: d.icona || '👩‍🏫' }),
           el('div', { classe: 'ric-tx' }, [
             d.materia ? el('span', { classe: 'ric-mat', testo: d.materia }) : null,
             el('span', { classe: 'ric-nome', testo: d.nome }),
             el('div', { classe: 'ric-quando' }, [d.quando || '', d.dalle ? ' · ' : '', d.dalle ? el('b', { testo: d.dalle + '–' + d.alle }) : null]),
-            pross,
-            saltato ? el('div', { classe: 'ric-vacanza', testo: '🏖️ Il ' + dataLunga(saltato.iso) + ' non c’è: ' + saltato.titolo }) : null,
-            mail,
-            d.email ? el('small', { classe: 'ric-email', testo: d.email }) : null
-          ])
+            saltato ? el('div', { classe: 'ric-vacanza', testo: '🏖️ Il ' + dataLunga(saltato.iso) + ' non c’è: ' + saltato.titolo }) : null
+          ].concat(sotto, [d.email ? el('small', { classe: 'ric-email', testo: d.email }) : null]))
         ]));
       });
       if (b.piede) box.appendChild(el('p', { classe: 'or-nota', testo: b.piede }));
