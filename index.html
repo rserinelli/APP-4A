@@ -14,7 +14,15 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.0, VERSIONE DEFINITIVA, 17 ottobre 2026: LIBRI — scaffale a due
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.2, 18 ottobre 2026: CONTABILITÀ RIORDINATA (n. 34) — schede
+  Il tuo fondo cassa · Classe e ricevute · Coordinate, spese sempre con il "−", fondo cassa da versare con Paga con carta e Paga con
+  bonifico, movimenti sempre tutti a due colonne con le note e i totali, "N alunni devono ancora versare", Coordinate con "Cosa devi
+  pagare?", "Modifica il foglio" solo per Rossana; GESTIONE ACCESSI in tre linguette Accessi · Fondo cassa · Statistiche (n. 35, 36, 37):
+  bambini senza genitori entrati, riga per genitore apribile, chi ha visto avvisi e documenti, famiglie ferme, classifica per famiglia;
+  ORARIO con i colori e le icone di ORARI_classe.xlsx (n. 5, icone in img/mat-*.png); casetta illustrata per la voce Home del menu
+  (n. 38, home.webp); AFTERSCHOOL con Inglese, Sport e Musica (n. 39); la scelta delle pagine da stampare si svuota aprendo un altro
+  libro (n. 40). Serve Codice.gs 11.2 e Contenuti.gs 11.2 (con quelli vecchi la pagina funziona, senza le parti nuove).
+  Versione 11.0, VERSIONE DEFINITIVA, 17 ottobre 2026: LIBRI — scaffale a due
   colonne: ogni libro è un riquadro con la copertina vera rimpicciolita (img/cop-<id>.webp, 22 file da 4–11 KB) e accanto il nome intero
   e le pagine, bordo del colore della copertina (COLORI_COPERTINA nel codice); Religione e i libri senza foto restano con la copertina disegnata;
   Kit docente con la copertina della guida; ricerca con la X per cancellare parola e risultati (anche con Esc).
@@ -586,6 +594,26 @@
   .or-conta .or-mat .em { font-size: 18px; }
   .or-conta .ore { flex: none; font-weight: 800; font-variant-numeric: tabular-nums; }
   .or-nota { color: var(--muted); font-size: 13px; margin: 10px 0 0; }
+  /* ---------- v11.2 (n. 5): orario con i colori e le icone di ORARI_classe.xlsx ---------- */
+  .or-mat.file { align-items: stretch; gap: 0; padding: 0; overflow: hidden; border: 1px solid rgba(21,36,59,.14); border-left-width: 1px; background: var(--sf); color: var(--tx); }
+  .or-mat.file .ic { flex: none; width: 52px; display: grid; place-items: center; padding: 5px; background: #fff; border-right: 1px solid rgba(21,36,59,.10); font-size: 22px; line-height: 1; }
+  .or-mat.file .ic img { display: block; width: 38px; height: 38px; object-fit: contain; }
+  .or-mat.file .nm { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; padding: 10px 12px; }
+  .or-mat.file .nm .t { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .or-mat.file .num { color: inherit; opacity: .75; }
+  .or-lista.file .or-riga.adesso .or-mat { box-shadow: 0 0 0 3px #FF0000; }
+  .or-lista.file .or-riga.adesso .or-ora b { color: #FF0000; }
+  .or-lista.file .or-adesso { background: #FF0000; }
+  .or-conta .or-mat.file .ic { width: 40px; font-size: 18px; }
+  .or-conta .or-mat.file .ic img { width: 28px; height: 28px; }
+  .or-conta .or-mat.file .nm { padding: 8px 10px; }
+  .or-sett.file th.oggi { color: var(--ink); background: #FFFF00; border-radius: 8px; box-shadow: inset 0 0 0 1.5px #FF0000; }
+  .or-cella.file { padding: 4px 2px 6px; border: 1px solid rgba(21,36,59,.14); border-top-width: 1px; background: var(--sf); color: var(--tx); font-weight: 800; }
+  .or-cella.file .ic { display: grid; place-items: center; width: 30px; height: 30px; margin: 0 auto 3px; background: #fff; border-radius: 7px; font-size: 17px; line-height: 1; }
+  .or-cella.file .ic img { display: block; width: 25px; height: 25px; object-fit: contain; }
+  .or-sett.file td.oggi-col .or-cella { box-shadow: 0 0 0 2px #FF0000; }
+  .or-sett.file td.oggi { box-shadow: none; }
+  @media (max-width: 360px) { .or-cella.file .ic { width: 26px; height: 26px; } .or-cella.file .ic img { width: 22px; height: 22px; } .or-cella.file { font-size: 11px; } }
 
   /* ---------- Scelta dell'alunno (amministratrice) ---------- */
   select.campo-testo { appearance: auto; font-weight: 700; }
@@ -731,6 +759,281 @@
   .mov2 .rm.saldo .n { color: var(--ink); }
   .mov2-legenda { margin: 4px 14px 14px; font-size: 12.5px; color: var(--muted); }
   @media (max-width: 360px) { .mov2-tab { padding: 2px 10px 6px; } .mov2 .rm { grid-template-columns: 32px minmax(0, 1fr) 62px 68px; gap: 5px; font-size: 13px; } .mov2 .n { font-size: 12px; } .mov2 .d { font-size: 11.5px; } .mov2 .rm.testa { font-size: 10.5px; letter-spacing: .02em; } }
+  /* ---------- v11.2 (n. 34): Contabilità riordinata ---------- */
+  .tab.con-boll { position: relative; }
+  .tab.con-boll .conta { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: var(--rosso); color: #fff; font-size: 11.5px; font-weight: 800; display: grid; place-items: center; }
+  .schede-tab:not(.principali) { flex-wrap: wrap; overflow: visible; padding-top: 6px; }
+  .ct-agg { margin: -8px 0 16px; font-size: 12.5px; color: var(--muted); font-weight: 700; }
+  .ct-saldo { text-align: center; padding: 16px; margin-bottom: 0; }
+  .ct-saldo b { font-size: 12px; letter-spacing: .05em; }
+  .ct-saldo .imp { font-size: 30px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.2; }
+  .ct-saldo small { display: block; color: var(--muted); font-size: 13px; }
+  .ct-saldo.verde { background: #eef8f1; border-color: #c4e6d0; } .ct-saldo.verde b, .ct-saldo.verde .imp { color: #1e6b3d; }
+  .ct-saldo.rosso { background: #fdf0ef; border-color: #f2c9c4; } .ct-saldo.rosso b, .ct-saldo.rosso .imp { color: var(--rosso); }
+  .ct-versa { margin: 10px 0 0; padding: 14px; }
+  .ct-versa .tit { display: block; font-size: 16px; }
+  .ct-versa .ok { display: block; font-size: 15px; font-weight: 800; color: var(--ok); }
+  .ct-versa small { display: block; margin-top: 4px; font-size: 13px; color: var(--muted); }
+  .ct-versa.rosa { background: #fdf0ef; border-color: #f2c9c4; }
+  .ct-versa.rosa .tit, .ct-versa.rosa .imp { color: var(--danger); }
+  .ct-versa .imp { display: block; font-size: 15px; font-weight: 800; margin-bottom: 12px; }
+  .ct-due { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .ct-due.uno { grid-template-columns: 1fr; }
+  .ct-paga { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 64px; padding: 8px; border-radius: 12px; text-align: center; text-decoration: none; font: inherit; cursor: pointer; }
+  .ct-paga b { font-size: 15px; font-weight: 800; line-height: 1.2; }
+  .ct-paga small { font-size: 11.5px; font-weight: 700; margin: 0; color: inherit; opacity: .95; }
+  .ct-paga.carta { background: var(--rosso); color: #fff; border: 0; }
+  .ct-paga.bonifico { background: var(--card); color: var(--brand); border: 2px solid var(--brand); }
+  .ct-testa { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin: 22px 0 10px; }
+  .ct-testa.primo { margin-top: 4px; }
+  .ct-testa h3.sez { margin: 0; }
+  .ct-admin { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border-radius: 10px; background: var(--accent-soft); border: 1px solid var(--accent); color: #8a6212; font: inherit; font-size: 13px; font-weight: 800; text-decoration: none; white-space: nowrap; cursor: pointer; }
+  .ct-solo { margin: -4px 0 10px; font-size: 12px; color: #8a6212; font-weight: 700; text-align: right; }
+  .ct-mov { padding: 0; }
+  .ct-mov .mov2-filtro { border-top: 0; padding-top: 12px; }
+  .mov2 .rm { grid-template-columns: 40px minmax(0, 1fr) 58px 70px; }
+  .mov2 .rm.testa .n { overflow: visible; }
+  .ct-quanti { padding: 14px; }
+  .ct-quanti .riga { display: flex; align-items: baseline; gap: 10px; }
+  .ct-quanti .riga b { font-size: 30px; font-weight: 800; color: var(--accent); line-height: 1; font-variant-numeric: tabular-nums; }
+  .ct-quanti .riga span { font-size: 15px; font-weight: 700; line-height: 1.3; }
+  .ct-quanti small { display: block; margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+  .ct-quanti .ct-admin { margin-top: 10px; }
+  .ct-tutti { display: flex; align-items: center; gap: 12px; padding: 14px; background: #eef8f1; border-color: #c4e6d0; }
+  .ct-tutti .ok { flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--ok); color: #fff; display: grid; place-items: center; }
+  .ct-tutti .tx { flex: 1; min-width: 0; }
+  .ct-tutti b { display: block; font-size: 16px; color: #1e6b3d; }
+  .ct-tutti small { font-size: 13.5px; color: var(--muted); }
+  .classe-num b.piu { color: var(--ok); }
+  .ct-classe .classe-num { margin-bottom: 18px; }
+  h3.sez.ct-sotto { margin: 0 0 10px; font-size: 15px; }
+  .ct-scelte { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 14px; }
+  .ct-scelta { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 10px 12px; border: 2px solid var(--line); border-radius: 12px; background: var(--card); color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+  .ct-scelta b { font-size: 15px; font-weight: 800; }
+  .ct-scelta small { font-size: 12px; color: var(--muted); font-weight: 700; }
+  .ct-scelta.on-fc { border-color: var(--accent); background: var(--accent-soft); }
+  .ct-scelta.on-sc { border-color: var(--brand); background: var(--brand-soft); }
+  .ct-conto.fc { border: 2px solid var(--accent); }
+  .ct-conto.sc { border: 2px solid var(--brand); }
+  .ct-modo { display: flex; align-items: center; gap: 8px; margin: 4px 0 8px; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #8a6212; }
+  .ct-modo::after { content: ''; flex: 1; height: 1px; background: #ecd9a6; }
+  .ct-carta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 4px 0; }
+  .ct-carta + .ct-carta { border-top: 1px solid var(--line); padding-top: 10px; margin-top: 6px; }
+  .ct-carta .tx { flex: 1 1 160px; min-width: 0; }
+  .ct-carta .lbl { display: block; font-size: 11.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .ct-carta b { display: block; font-size: 17px; font-variant-numeric: tabular-nums; }
+  .ct-carta small { display: block; font-size: 12.5px; color: var(--muted); }
+  .ct-paga-mini { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 14px; border-radius: 12px; background: var(--rosso); color: #fff; font-size: 14px; font-weight: 800; text-decoration: none; }
+  .ct-non-qui { margin: 10px 2px 0; font-size: 13px; color: var(--muted); }
+  /* ---------- v11.2 (n. 35, 36, 37): Gestione accessi in tre linguette ---------- */
+  .gestione .schede-tab { margin-bottom: 16px; }
+  h3.sez.ga-h3, .ga-h3 { margin: 22px 0 10px; font-size: 17px; font-weight: 800; }
+  .ga-stat .ga-h3 { margin: 0; }
+  .ga-sub { margin: 2px 0 8px; font-size: 13px; color: var(--muted); }
+  .ga-nota { display: block; margin-top: 8px; font-size: 12px; color: var(--muted); }
+  .barra-prog.oro i { background: var(--accent); }
+  .ga-punto .riepilogo .grande { color: var(--accent); }
+  .ga-numeri { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .ga-numbtn { padding: 8px 4px; border-radius: 10px; border: 2px solid transparent; background: #f3f8fc; font: inherit; text-align: center; cursor: pointer; color: var(--ink); }
+  .ga-numbtn b { display: block; font-size: 20px; line-height: 1.15; font-variant-numeric: tabular-nums; }
+  .ga-numbtn small { display: block; font-size: 11.5px; font-weight: 700; color: var(--muted); line-height: 1.2; }
+  .ga-numbtn.da b { color: var(--danger); } .ga-numbtn.inviata b { color: var(--brand); } .ga-numbtn.dentro b { color: #1e6b3d; }
+  .ga-numbtn.on { border-color: var(--brand); background: var(--brand-soft); }
+  .ga-fare { padding: 4px 16px; }
+  .ga-voce-fare { padding: 12px 0; }
+  .ga-voce-fare + .ga-voce-fare { border-top: 1px solid var(--line); }
+  .ga-fare-testa { display: flex; align-items: center; gap: 10px; }
+  .ga-fare-testa .tx { flex: 1; min-width: 0; }
+  .ga-fare-testa b { display: block; font-size: 15px; }
+  .ga-fare-testa small { display: block; font-size: 12.5px; color: var(--muted); }
+  .ga-cerchio { flex: none; width: 34px; height: 34px; border-radius: 50%; background: #fdf0ef; color: var(--danger); display: grid; place-items: center; font-weight: 900; }
+  .ga-niente { margin: 12px 0; font-weight: 800; color: #1e6b3d; }
+  .ga-due { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+  .ga-wa, .ga-em { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 36px; padding: 0 11px; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; white-space: nowrap; text-decoration: none; }
+  .ga-wa { border: 0; background: #1f8a4c; color: #fff; }
+  .ga-wa.off, .ga-wa:disabled { background: #e3e8ee; color: #7a8798; cursor: default; }
+  .ga-em { border: 1px solid var(--brand); background: var(--card); color: var(--brand); }
+  .ga-em:disabled { border-color: #e3e8ee; color: #9aa6b4; cursor: default; }
+  .ga-em.grigio { border-color: #9aa8b8; color: var(--muted); }
+  .ga-wa.grande, .ga-em.grande { min-height: 48px; flex-direction: column; gap: 0; font-size: 14px; white-space: normal; }
+  .ga-wa.grande small, .ga-em.grande small { font-size: 11.5px; font-weight: 700; }
+  .ga-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .ga-chip { display: inline-flex; align-items: center; gap: 4px; min-height: 34px; padding: 0 12px; border-radius: 999px; border: 1px solid #f2c9c4; background: #fdf0ef; color: var(--danger); font: inherit; font-size: 13.5px; font-weight: 800; cursor: pointer; }
+  .ga-elenco { padding: 14px 16px 8px; }
+  .ga-elenco .cerca { margin-bottom: 10px; }
+  .ga-filtro { border: 1px solid var(--line); background: var(--card); color: var(--brand); border-radius: 999px; min-height: 34px; padding: 0 12px; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
+  .ga-filtro.on { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .ga-gruppo { display: flex; align-items: baseline; gap: 8px; margin-top: 14px; padding-bottom: 4px; border-bottom: 2px solid #ecd9a6; }
+  .ga-gruppo b { flex: 1; min-width: 0; font-size: 15px; font-weight: 800; color: #8a6212; }
+  .ga-gruppo small { font-size: 12px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+  .ga-persona { border-bottom: 1px solid #e6eef5; }
+  .ga-pers { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 44px; padding: 10px 0; border: 0; background: none; font: inherit; color: var(--ink); text-align: left; cursor: pointer; }
+  .ga-pers .tx { flex: 1; min-width: 0; }
+  .ga-pers .nome-r { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .ga-pers .nome-r b { font-size: 15px; font-weight: 800; }
+  .ga-pers small { display: block; margin-top: 2px; font-size: 12.5px; color: var(--muted); overflow-wrap: anywhere; }
+  .ga-pers .giu { flex: none; color: var(--muted); transition: transform .15s; display: grid; }
+  .ga-persona.aperta .ga-pers .giu { transform: rotate(180deg); }
+  .ga-pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 800; white-space: nowrap; }
+  .ga-pill.dentro { background: #e3f3e9; color: #1e6b3d; }
+  .ga-pill.inviata { background: var(--brand-soft); color: var(--brand); }
+  .ga-pill.da { background: #fdf0ef; color: var(--danger); }
+  .ga-pill.io { background: var(--accent-soft); color: #8a6212; }
+  .ga-invio { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 0 10px; }
+  .ga-dett { display: grid; gap: 6px; margin: 0 0 10px; padding: 10px 12px; border-radius: 10px; background: #f3f8fc; font-size: 13.5px; overflow-wrap: anywhere; }
+  .ga-lbl { display: block; font-size: 11px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+  .ga-dett .manca { color: var(--danger); font-weight: 700; }
+  .ga-pw { font-size: 14px; font-weight: 800; background: var(--card); border: 1px solid var(--line); padding: 1px 6px; border-radius: 6px; }
+  .ga-colonna { display: grid; gap: 8px; }
+  .ga-colonna .btn { width: 100%; margin: 0; font-size: 14px; white-space: normal; }
+  .ga-foglio-testa { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .ga-foglio-testa b { flex: 1; min-width: 0; font-size: 18px; font-weight: 800; color: var(--accent); }
+  .ga-x { flex: none; width: 44px; height: 44px; border: 0; border-radius: 12px; background: var(--bg); color: var(--ink); display: grid; place-items: center; cursor: pointer; }
+  .ga-gen { padding: 10px 0; border-top: 1px solid #e6eef5; }
+  .ga-gen-testa { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .ga-gen-testa .tx { flex: 1; min-width: 0; }
+  .ga-gen-testa b { display: block; font-size: 14.5px; }
+  .ga-gen-testa small { display: block; font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+  .ga-gen .ga-invio { padding: 0; }
+  .ga-stat { padding: 14px 16px 6px; margin-top: 14px; }
+  .gestione > .ga-stat:first-of-type { margin-top: 0; }
+  .ga-voce { display: block; width: 100%; padding: 12px 0; border: 0; border-top: 1px solid var(--line); background: none; font: inherit; color: var(--ink); text-align: left; cursor: pointer; }
+  .ga-voce.prima { border-top: 0; }
+  .ga-voce-testa { display: flex; align-items: baseline; gap: 8px; }
+  .ga-voce-testa b { flex: 1; min-width: 0; font-size: 14.5px; font-weight: 800; }
+  .ga-num { font-weight: 900; font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 14px; }
+  .ga-num.ok { color: #1e6b3d; }
+  .ga-bar { display: block; height: 10px; border-radius: 5px; background: var(--brand-soft); overflow: hidden; margin: 5px 0 4px; }
+  .ga-bar i { display: block; height: 100%; border-radius: 5px; background: var(--brand); }
+  .ga-bar.ok i { background: var(--ok); }
+  .ga-voce small, .ga-riga small { display: block; font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+  .ga-mancano-box { margin: 0 0 10px; padding: 6px 10px; border-radius: 10px; background: #f3f8fc; }
+  .ga-mancano { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 0; border-top: 1px solid #e6eef5; }
+  .ga-mancano:first-child { border-top: 0; }
+  .ga-mancano .tx { flex: 1 1 150px; min-width: 0; }
+  .ga-mancano b { display: block; font-size: 13.5px; }
+  .ga-mancano small { display: block; font-size: 12px; color: var(--muted); }
+  .ga-bott { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ga-riga { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: start; width: 100%; padding: 11px 0; border: 0; border-top: 1px solid var(--line); background: none; font: inherit; color: var(--ink); text-align: left; cursor: pointer; }
+  .ga-riga.prima { border-top: 0; }
+  .ga-riga.zero .ga-voce-testa b, .ga-riga.zero .ga-num { color: #7a8798; }
+  .ga-pos { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--brand-soft); color: var(--brand); font-size: 13px; font-weight: 900; }
+  .ga-pos.oro { background: var(--accent); color: #fff; }
+  .ga-pos.zero { background: #eef1f5; color: #7a8798; }
+  .ga-fam-dett { display: block; margin-top: 8px; padding: 8px 10px; border-radius: 10px; background: #f3f8fc; }
+  .ga-fam-dett .riga { display: flex; align-items: baseline; gap: 8px; padding: 3px 0; font-size: 13.5px; }
+  .ga-fam-dett .riga > span:first-child { flex: 1; min-width: 0; }
+  .ga-fam-dett .riga.zero .ga-num { color: #9aa8b8; }
+  .ga-piede { padding: 8px 0 12px; border-top: 1px solid var(--line); display: flex; justify-content: center; }
+  .ga-piede .btn { width: auto; margin: 0; }
+  .barre-riga.oro .tr i { background: var(--accent); }
+  /* ---------- v11.2 (n. 39): Afterschool ---------- */
+  .pagina-testa-ill { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .pagina-testa-ill .ill { width: 58px; height: 58px; }
+  .pagina-testa-ill .tx { flex: 1; min-width: 0; }
+  .pagina-testa-ill .pagina-titolo { margin: 0; line-height: 1.15; }
+  .pagina-testa-ill .pagina-desc { margin: 2px 0 0; font-size: 14px; }
+  .as-h3, h3.sez.as-h3 { margin: 22px 0 10px; font-size: 17px; }
+  .as-scad { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid #f2c9c4; background: #fdf0ef; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+  .as-scad .n { flex: none; width: 48px; text-align: center; line-height: 1.05; color: var(--danger); }
+  .as-scad .n b { display: block; font-size: 24px; font-weight: 900; }
+  .as-scad .n small { font-size: 11px; font-weight: 800; text-transform: uppercase; }
+  .as-scad .tx { flex: 1; min-width: 0; }
+  .as-scad .tx b { display: block; font-size: 15px; color: var(--danger); }
+  .as-scad .tx small { font-size: 13px; color: var(--muted); font-weight: 700; }
+  .as-scad .fr { flex: none; color: var(--danger); display: grid; }
+  .as-lista { display: grid; gap: 10px; }
+  .as-att { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px; margin: 0; font: inherit; color: var(--ink); text-align: left; cursor: pointer; }
+  .as-att .ic { flex: none; width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: var(--brand-soft); color: var(--brand); }
+  .as-att.sport .ic { background: #eef8f1; color: #1e6b3d; }
+  .as-att.musica .ic { background: var(--accent-soft); color: #8a6212; }
+  .as-att .tx { flex: 1; min-width: 0; }
+  .as-att .tx b { display: block; font-size: 16px; font-weight: 800; line-height: 1.25; }
+  .as-att .tx small { display: block; font-size: 13px; color: var(--muted); font-weight: 700; line-height: 1.35; }
+  .as-att .as-pill { margin-top: 6px; }
+  .as-att .fr { flex: none; color: var(--brand); display: grid; }
+  .as-pill { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 800; white-space: nowrap; }
+  .as-pill.oro { background: var(--accent-soft); color: #8a6212; margin-left: 6px; vertical-align: 1px; }
+  .as-pill.blu { background: var(--brand-soft); color: var(--brand); }
+  .as-pill.grigio { background: #eef1f5; color: var(--muted); }
+  .as-pill.rosso { background: #fdf0ef; color: var(--danger); }
+  .as-sett { padding: 12px 14px; }
+  .as-sett-nota { margin: 0 0 10px; font-size: 13px; color: var(--muted); font-weight: 700; }
+  .as-giorno { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 10px; align-items: start; padding: 9px 0; border-top: 1px solid var(--line); }
+  .as-giorno > b { font-size: 14px; font-weight: 800; padding-top: 4px; }
+  .as-chips { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+  .as-chip { display: inline-flex; flex-direction: column; padding: 5px 9px; border-radius: 9px; font-size: 12.5px; line-height: 1.25; font-weight: 800; background: #eef8f1; color: #1e6b3d; }
+  .as-chip small { font-size: 11.5px; font-weight: 700; }
+  .as-chip.inglese { background: var(--brand-soft); color: var(--brand); }
+  .as-chip.musica { background: var(--accent-soft); color: #8a6212; }
+  .as-nessuna { font-size: 13px; color: #9aa8b8; font-weight: 700; padding-top: 4px; }
+  .as-stessa { flex-basis: 100%; font-size: 12px; color: var(--danger); font-weight: 800; }
+  .as-dopo { display: flex; align-items: center; gap: 8px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); font-weight: 700; }
+  .as-dopo .as-chip { flex: none; }
+  .as-intro { padding: 16px; }
+  .as-intro h3 { margin: 8px 0 2px; font-size: 21px; font-weight: 800; line-height: 1.2; }
+  .as-intro > p { margin: 0 0 10px; font-size: 13.5px; color: var(--muted); }
+  .as-riga { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); }
+  .as-riga .tx { flex: 1; min-width: 0; }
+  .as-riga .tx > b { display: block; overflow-wrap: anywhere; }
+  .as-riga .tx > b.mono { font-size: 14px; word-break: break-all; }
+  .as-riga .tx small { display: block; color: var(--muted); font-size: 13px; }
+  .as-riga .btn-mini { flex: none; }
+  .as-semplice .as-riga:first-child, .as-pagare .as-pag-testa + .as-riga { border-top: 0; }
+  .as-lbl { display: block; font-size: 11.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .as-dadef { display: inline-block; padding: 0 6px; border: 1px dashed var(--accent); border-radius: 6px; background: #fffaf0; color: #8a6212; font-weight: 800; }
+  .as-corso { display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin: 0; }
+  .as-corso .barretta { flex: none; width: 4px; align-self: stretch; border-radius: 2px; background: var(--ok); }
+  .as-corso .tx { flex: 1; min-width: 0; }
+  .as-corso b { display: block; font-size: 16px; font-weight: 800; }
+  .as-corso .quando { display: block; font-size: 14px; font-weight: 700; }
+  .as-corso small { display: block; font-size: 12.5px; color: var(--muted); }
+  .as-nota { margin: 8px 2px 0; font-size: 13px; color: var(--muted); }
+  .as-costi, .as-pagare, .as-iscr, .as-passi, .as-semplice, .as-altre { padding: 14px 16px; }
+  .as-costo { display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; }
+  .as-costo small { color: var(--muted); }
+  .as-costo b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .as-costo.totale { margin: 6px -8px 0; padding: 9px 8px; border-radius: 10px; background: var(--accent-soft); }
+  .as-costo.totale b { font-weight: 900; }
+  .as-costi-nota { margin: 10px 0 0; font-size: 14px; }
+  .as-pag-testa { padding-bottom: 10px; }
+  .as-pag-testa b { display: block; margin-bottom: 4px; }
+  .as-pag-testa small { display: block; font-size: 13px; color: var(--muted); }
+  .as-sotto small { margin-top: 3px; }
+  .as-iscr-testa { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .as-iscr-testa small { font-size: 13px; color: var(--muted); font-weight: 700; }
+  .as-dom { margin: 0 0 8px; font-size: 14px; font-weight: 800; }
+  .as-scelte { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; }
+  .as-scelta { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 10px 12px; border: 2px solid var(--line); border-radius: 12px; background: var(--card); color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+  .as-scelta b { font-size: 15px; font-weight: 800; }
+  .as-scelta small { font-size: 12px; color: var(--muted); font-weight: 700; }
+  .as-scelta.on { border-color: var(--brand); background: var(--brand-soft); }
+  .as-btn { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 16px; margin-top: 8px; border-radius: 12px; background: var(--brand); color: #fff; font-size: 15px; font-weight: 800; text-decoration: none; text-align: center; }
+  .as-mail-nota { display: block; margin-top: 6px; font-size: 12.5px; color: var(--muted); text-align: center; overflow-wrap: anywhere; }
+  .as-passo { display: flex; gap: 12px; padding: 8px 0; }
+  .as-passo .n { flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; font-weight: 900; font-size: 14px; }
+  .as-passo .tx { flex: 1; min-width: 0; }
+  .as-passo b { display: block; font-size: 15px; }
+  .as-passo small { font-size: 13px; color: var(--muted); }
+  .as-passi .doc-wrap { margin: 8px 0 0; }
+  .as-contatto { padding: 12px 14px; margin: 0; }
+  .as-contatto b { display: block; font-size: 15px; }
+  .as-contatto small { display: block; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  .as-bott { display: flex; flex-wrap: wrap; gap: 8px; }
+  .as-btn2 { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px; border-radius: 10px; background: var(--card); border: 1px solid #bcd6ec; color: var(--brand); font-size: 13.5px; font-weight: 800; text-decoration: none; }
+  .as-semplice p { margin: 8px 0 0; font-size: 14px; }
+  .as-altre { margin-top: 18px; }
+  .as-apri { display: flex; align-items: center; gap: 8px; width: 100%; padding: 2px; border: 0; background: none; color: var(--brand); font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; text-align: left; }
+  .as-apri span:first-child { flex: 1; }
+  .as-admin-nota { margin: 8px 0 0; font-size: 12.5px; color: #8a6212; font-weight: 700; }
+  @media (max-width: 360px) { .as-giorno { grid-template-columns: 34px minmax(0, 1fr); } }
+  @media (max-width: 360px) {
+    main { padding-left: 12px; padding-right: 12px; }
+    .mov2 .rm { grid-template-columns: 34px minmax(0, 1fr) 50px 64px; gap: 6px; font-size: 13px; }
+    .mov2 .n { font-size: 12.5px; }
+    .classe-num b { font-size: 13.5px; }
+    .ct-classe .barre-riga { grid-template-columns: 92px minmax(0, 1fr) 62px; }
+  }
 
   /* ---------- v10.12: Avvisi in Home ---------- */
   .avvisi-card { border-color: #ecd9a6; background: linear-gradient(180deg, #fffaf0, var(--card) 70px); }
@@ -1682,7 +1985,7 @@
     var d = DESTINAZIONE; DESTINAZIONE = '';
     if (!d) return;
     try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
-    if (d === 'coordinate') { apriScheda('contabilita', SCHEDA_PAGAMENTI); return; }
+    if (d === 'coordinate') { STATO.contoScelto = 'fc'; apriScheda('contabilita', SCHEDA_PAGAMENTI); return; }     // v11.2: con "Fondo cassa" già scelto
     var dc = d.match(/^doc-([\w-]{10,100})$/);                         // v10.27: .../#doc-<id> apre un file (Condividi della casella ⋯)
     if (dc) { apriDocDaLink(dc[1]); return; }
     var m = d.match(/^avviso-(av_[\w-]+)$/);
@@ -1774,11 +2077,15 @@
     });
     var p = PAGINE_FISSE[id] || STATO.dati.pagine.filter(function (x) { return x.id === id; })[0];
     var main = $('contenuto'); main.innerHTML = '';
-    if (id !== 'home') {
+    if (id !== 'home' && p.illTitolo && nomeIll(p)) {                   // v11.2: titolo con l'illustrazione accanto (Afterschool)
+      main.appendChild(el('div', { classe: 'pagina-testa-ill' }, [imgIll(nomeIll(p)), el('span', { classe: 'tx' }, [
+        el('h2', { classe: 'pagina-titolo', testo: p.titolo }), p.descrizione ? el('p', { classe: 'pagina-desc', testo: p.descrizione }) : null])]));
+    } else if (id !== 'home') {
       main.appendChild(el('h2', { classe: 'pagina-titolo', testo: p.titolo }));
       if (p.descrizione) main.appendChild(el('p', { classe: 'pagina-desc', testo: p.descrizione }));
       else main.appendChild(el('div', { style: 'height:16px' }));
     }
+    if (id === 'contabilita' && !ridisegno && soloSenzaAlunno() && STATO.schede['contabilita-0'] === undefined) STATO.schede['contabilita-0'] = SCHEDA_CLASSE;   // v11.2
     if (id === 'calendario' && !ridisegno) calendarioVisto();          // prima di disegnare: gli appuntamenti nuovi restano segnati NUOVO in questa visita
     if (id === 'divise' && !ridisegno) diviseViste();                  // lo stesso per le date delle divise
     if (id === 'home') { var colonna = el('div', { classe: 'home-n4' }); main.appendChild(colonna); disegnaBlocchi(p.blocchi, colonna, id); }   // v10.28
@@ -1935,7 +2242,7 @@
   function euroSegno(n) { return (n < 0 ? '−' : '') + euro(n); }
   function dataCorta(iso) { if (!iso) return ''; var p = iso.split('-'); return (+p[2]) + ' ' + MESI[+p[1] - 1].slice(0, 3); }
   function dataMedia(iso) { if (!iso) return ''; var p = iso.split('-'); return (+p[2]) + ' ' + MESI[+p[1] - 1]; }
-  var SCHEDA_PAGAMENTI = 2, SCHEDA_RENDICONTO = 0, SCHEDA_DETTAGLIO = 1;
+  var SCHEDA_PAGAMENTI = 2, SCHEDA_RENDICONTO = 0, SCHEDA_CLASSE = 1;        // v11.2: Il tuo fondo cassa · Classe e ricevute · Coordinate
   // Link Revolut con importo esatto (in centesimi) e causale "Nome Cognome - fondo cassa" (pagamento.causale in Contenuti.gs).
   function linkRevolut(a) {
     var p = STATO.dati && STATO.dati.pagamento;
@@ -2013,6 +2320,7 @@
       STATO.contatori = {
         comunicazioni: conta(['comunicazioni', 'moduli', 'verbali']),
         contabilita: conta(['ricevute']) + rata,
+        ricevute: conta(['ricevute']),                                      // v11.2: bollino sulla linguetta "Classe e ricevute"
         calendario: STATO.visti
           ? eventiFuturi(dati).filter(function (e) { return eventoNuovo(e, STATO.visti.calendario); }).length
           : eventiEntro(dati, 7).length,
@@ -2381,7 +2689,7 @@
 
   // Icona di una sezione: immagine incorporata se la pagina ha "img" (es. Mensa), altrimenti l'emoji
   // v10.28 (n. 4): un'illustrazione per sezione (file .webp accanto a index.html su GitHub). Contenuti.gs può sceglierla con "ill".
-  var ILLUSTRAZIONI = { calendario: 'calendario', libri: 'libri', contabilita: 'cassa', comunicazioni: 'megafono', orario: 'orario',
+  var ILLUSTRAZIONI = { home: 'home', calendario: 'calendario', libri: 'libri', contabilita: 'cassa', comunicazioni: 'megafono', orario: 'orario',
     ricevimento: 'colloqui', afterschool: 'afterschool', divise: 'divise', teatro: 'teatro' };
   function nomeIll(p) { return p && (p.ill || ILLUSTRAZIONI[p.id]) || ''; }
   function imgIll(nome, classe) {
@@ -2395,7 +2703,13 @@
   function frecciaTonda() { var s = el('span', { classe: 'freccia-tonda', 'aria-hidden': 'true' }); s.innerHTML = SVG_FRECCIA; return s; }
   function svgSpan(classe, html) { var s = el('span', { classe: classe, 'aria-hidden': 'true' }); s.innerHTML = html; return s; }
   function iconaPagina(p) {
-    if (p.id === 'home') return svgSpan('ic', SVG_CASA);
+    if (p.id === 'home') {                                             // v11.2 (n. 38): casetta disegnata da Rossana (home.webp); se manca, la casetta di prima
+      var c = el('span', { classe: 'ic' });
+      var ic = el('img', { classe: 'ill', src: (p.ill || ILLUSTRAZIONI.home) + '.webp', alt: '', 'aria-hidden': 'true', decoding: 'async' });
+      ic.addEventListener('error', function () { c.innerHTML = SVG_CASA; });
+      c.appendChild(ic);
+      return c;
+    }
     if (p.img && IMMAGINI[p.img]) return el('span', { classe: 'ic' }, [el('img', { src: IMMAGINI[p.img], alt: '', classe: 'app' })]);
     if (nomeIll(p)) return el('span', { classe: 'ic' }, [imgIll(nomeIll(p))]);
     return el('span', { classe: 'ic', testo: p.icona || '•' });
@@ -2483,9 +2797,27 @@
     ]);
   }
 
-  function schedaAlunno(a) {
+  // ---------- v11.2 (n. 34): Contabilità riordinata ----------
+  // Tutte le spese con il "−" (colori invariati: spese nere, versamenti verdi). Il master si apre solo dalla vista amministratrice.
+  var URL_MASTER = 'https://docs.google.com/spreadsheets/d/1W2zxjopMEaUXv69dRmnqYFCNxOuOXsu7FEMq3FGAqcI/edit';
+  var SVG_MATITA = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg>';
+  var SVG_CARTA = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6.5 15h4"/></svg>';
+  var SVG_BANCA = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg>';
+  function adminVero() { return !!(STATO.sessione && STATO.sessione.amministratore && !STATO.sessione.vista); }
+  function modificaFoglio() { var a = el('a', { classe: 'ct-admin', href: URL_MASTER, target: '_blank', rel: 'noopener' }); a.innerHTML = SVG_MATITA; a.appendChild(document.createTextNode('Modifica il foglio')); return a; }
+  // Titolo di sezione con (solo per Rossana) "Modifica il foglio" accanto
+  function testaSezione(titolo, conFoglio, primo) {
+    return el('div', { classe: 'ct-testa' + (primo ? ' primo' : '') }, [el('h3', { classe: 'sez', testo: titolo }), conFoglio && adminVero() ? modificaFoglio() : null]);
+  }
+  function cifra(n) { return Math.abs(n).toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function cifraSegno(n) { return Math.abs(n) < 0.005 ? '0,00' : (n > 0 ? '+' : '−') + cifra(n); }
+  function vaiBonifico() { STATO.contoScelto = 'fc'; apriScheda('contabilita', SCHEDA_PAGAMENTI); }
+
+  // Scheda "Il tuo fondo cassa": saldo, fondo cassa da versare (Paga con carta / Paga con bonifico), tutti i movimenti
+  function schedaFondo(a) {
     var sez = el('div', { classe: 'rend' });
-    sez.appendChild(el('div', { classe: 'rend-testa' }, [el('small', { testo: 'Stato fondocassa di' }), el('div', { classe: 'rend-nome', testo: a.alunno || '—' })]));
+    var primo = String(a.alunno || '').split(' ')[0] || 'tuo figlio';
+    sez.appendChild(el('div', { classe: 'rend-testa' }, [el('small', { testo: 'Fondo cassa di' }), el('div', { classe: 'rend-nome', testo: a.alunno || '—' })]));
     if (a.errore) {
       if (STATO.sessione.amministratore) { sez.appendChild(vuoto(a.errore + '.')); return sez; }
       sez.appendChild(el('div', { classe: 'card', style: 'text-align:center;border-color:#f1b6b0;background:#fff4f2' }, [
@@ -2495,72 +2827,56 @@
       ]));
       return sez;
     }
-    var negativo = a.saldo !== null && a.saldo < 0;
-    var saldoBox = a.saldo === null || a.saldo === undefined
-      ? el('div', { classe: 'rend-box spento' }, [el('span', { testo: '💶' }), el('b', { testo: 'SALDO' }), el('strong', { testo: '—' })])
-      : el('div', { classe: 'rend-box ' + (negativo ? 'rosso' : 'verde') }, [
-          el('span', { classe: 'freccia-saldo', testo: negativo ? '↘' : '↗' }),
-          el('b', { testo: negativo ? 'PASSIVO' : 'ATTIVO' }),
-          el('strong', { classe: 'importo-saldo', testo: (negativo ? '−' : '+') + euro(a.saldo) }),
-          el('small', { testo: negativo ? 'Sei in negativo' : 'Sei in positivo' })]);
-    var link = linkRevolut(a);
-    var versamenti = [
-      el('span', { testo: a.pendenze ? '⚠️' : '🧾' }), el('b', { testo: 'VERSAMENTI' }),
-      el('strong', { testo: a.pendenze ? euro(a.pendenze.importo) : 'Nessun fondo cassa da versare' }),
-      a.pendenze ? el('small', { testo: (a.pendenze.scadenza ? 'entro il ' + dataMedia(a.pendenze.scadenza) + ' · ' : '') + (link ? 'tocca per pagare' : 'tocca per le coordinate') }) : null];
-    sez.appendChild(el('div', { classe: 'rend-griglia' }, [
-      saldoBox,
-      link
-        ? el('a', { classe: 'rend-box giallo allerta', href: link, target: '_blank', rel: 'noopener' }, versamenti)
-        : el('button', { classe: 'rend-box giallo' + (a.pendenze ? ' allerta' : ''), onclick: function () { if (a.pendenze) apriScheda('contabilita', SCHEDA_PAGAMENTI); } }, versamenti)
-    ]));
-    if (a.versato !== null && a.versato !== undefined) {
-      sez.appendChild(el('div', { classe: 'rend-totali' }, [
-        el('span', null, ['Versato ', el('b', { testo: euro(a.versato) })]),
-        el('span', null, ['Speso ', el('b', { testo: euro(a.speso || 0) })])
+    // saldo
+    if (a.saldo === null || a.saldo === undefined) sez.appendChild(el('div', { classe: 'card ct-saldo' }, [el('b', { testo: 'SALDO' }), el('div', { classe: 'imp', testo: '—' })]));
+    else {
+      var neg = a.saldo < 0;
+      sez.appendChild(el('div', { classe: 'card ct-saldo ' + (neg ? 'rosso' : 'verde') }, [
+        el('b', { testo: neg ? 'PASSIVO' : 'ATTIVO' }), el('div', { classe: 'imp', testo: (neg ? '−' : '+') + euro(a.saldo) }),
+        el('small', { testo: 'Saldo del fondo cassa di ' + primo })]));
+    }
+    // fondo cassa da versare: rosa con i due pulsanti, oppure bianco "Nessuno: sei in regola"
+    if (a.pendenze) {
+      var passata = a.pendenze.scadenza && a.pendenze.scadenza < oggiISO();
+      var link = linkRevolut(a);
+      var bCarta = link ? el('a', { classe: 'ct-paga carta', href: link, target: '_blank', rel: 'noopener' }) : null;
+      if (bCarta) { bCarta.innerHTML = SVG_CARTA; bCarta.appendChild(el('b', { testo: 'Paga con carta' })); bCarta.appendChild(el('small', { testo: 'importo e causale già pronti' })); }
+      var bBon = el('button', { type: 'button', classe: 'ct-paga bonifico', onclick: vaiBonifico });
+      bBon.innerHTML = SVG_BANCA; bBon.appendChild(el('b', { testo: 'Paga con bonifico' })); bBon.appendChild(el('small', { testo: 'IBAN e causale da copiare' }));
+      sez.appendChild(el('div', { classe: 'card ct-versa rosa' }, [
+        el('b', { classe: 'tit', testo: 'Fondo cassa da versare' }),
+        el('span', { classe: 'imp', testo: euro(a.pendenze.importo) + (a.pendenze.scadenza ? (passata ? ' · scaduto il ' : ' entro il ') + dataMedia(a.pendenze.scadenza) : '') }),
+        el('div', { classe: 'ct-due' + (bCarta ? '' : ' uno') }, [bCarta, bBon])
+      ]));
+    } else {
+      sez.appendChild(el('div', { classe: 'card ct-versa' }, [
+        el('b', { classe: 'tit', testo: 'Fondo cassa da versare' }),
+        el('span', { classe: 'ok', testo: 'Nessuno: sei in regola' }),
+        el('small', { testo: 'Quando ci sarà una nuova quota la trovi qui, con i pulsanti per pagare.' })
       ]));
     }
-    var mov = a.movimenti || [];
-    if (mov.length) {
-      sez.appendChild(el('h3', { classe: 'sez', testo: 'Ultimi movimenti' }));
-      var lista = el('div', { classe: 'card movimenti' });
-      mov.slice(0, 5).forEach(function (m) { lista.appendChild(rigaMovimento(m, false)); });
-      if (mov.length > 5 || mov.some(function (m) { return m.nota; })) {
-        lista.appendChild(el('button', { classe: 'mov-tutti', testo: 'Rendiconto dettagliato (' + mov.length + ' movimenti) →', onclick: function () { apriScheda('contabilita', SCHEDA_DETTAGLIO); } }));
+    // movimenti: sempre tutti, a due colonne, con le note
+    sez.appendChild(testaSezione('Movimenti', true));
+    if (adminVero()) sez.appendChild(el('p', { classe: 'ct-solo', testo: 'Solo per te · apre il master del fondo cassa in Google Fogli' }));
+    var card = el('div', { classe: 'card ct-mov' });
+    if (Array.isArray(a.tutti)) card.appendChild(dueColonne(a));
+    else {                                                                   // script vecchio: i movimenti dell'alunno
+      var lista = el('div', { classe: 'movimenti' });
+      var mov = a.movimenti || [];
+      if (!mov.length) lista.appendChild(el('div', { classe: 'mov' }, [el('span', { classe: 'mov-rag', testo: 'Nessun movimento.' })]));
+      mov.forEach(function (m) { lista.appendChild(rigaMovimento(m, true)); });
+      if (a.versato !== null && a.versato !== undefined) {
+        lista.appendChild(el('div', { classe: 'mov' }, [el('span', { classe: 'mov-data' }), el('span', { classe: 'mov-rag', testo: 'Totale versato' }), el('span', { classe: 'mov-imp piu', testo: '+' + euro(a.versato) })]));
+        lista.appendChild(el('div', { classe: 'mov' }, [el('span', { classe: 'mov-data' }), el('span', { classe: 'mov-rag', testo: 'Totale speso' }), el('span', { classe: 'mov-imp meno', testo: '−' + euro(a.speso || 0) })]));
       }
-      sez.appendChild(lista);
+      card.appendChild(lista);
     }
-    var piede = [];
-    if (a.saldoClasse !== null && a.saldoClasse !== undefined) piede.push('Saldo cassa di classe: ' + euro(a.saldoClasse));
-    if (a.aggiornato) piede.push('aggiornato al ' + dataMedia(a.aggiornato));
-    if (piede.length) sez.appendChild(el('p', { classe: 'rend-piede', testo: piede.join(' · ') }));
+    sez.appendChild(card);
     return sez;
   }
 
-  // Rendiconto dettagliato: tutti i movimenti con le note
-  function dettaglioAlunno(a, aperto) {
-    var mov = a.movimenti || [];
-    var d = el('details', { classe: 'card dett' });
-    if (aperto) d.open = true;
-    d.appendChild(el('summary', null, [
-      el('span', { classe: 'ic', testo: '📊' }),
-      el('span', { classe: 'tx' }, [el('strong', { testo: 'Rendiconto dettagliato · ' + (a.alunno || '') }),
-        el('small', { testo: mov.length + (mov.length === 1 ? ' movimento' : ' movimenti') + ' · saldo ' + (a.saldo < 0 ? '−' : '+') + euro(a.saldo || 0) })]),
-      el('span', { classe: 'giu', testo: '▾' })
-    ]));
-    if (Array.isArray(a.tutti)) { d.appendChild(dueColonne(a)); return d; }      // v10.24 (script 10.16): allievo e classe
-    var lista = el('div', { classe: 'movimenti' });
-    if (!mov.length) lista.appendChild(el('div', { classe: 'mov' }, [el('span', { classe: 'mov-rag', testo: 'Nessun movimento.' })]));
-    mov.forEach(function (m) { lista.appendChild(rigaMovimento(m, true)); });
-    if (a.versato !== null && a.versato !== undefined) {
-      lista.appendChild(el('div', { classe: 'mov' }, [el('span', { classe: 'mov-data' }), el('span', { classe: 'mov-rag', testo: 'Totale versato' }), el('span', { classe: 'mov-imp piu', testo: '+' + euro(a.versato) })]));
-      lista.appendChild(el('div', { classe: 'mov' }, [el('span', { classe: 'mov-data' }), el('span', { classe: 'mov-rag', testo: 'Totale speso' }), el('span', { classe: 'mov-imp meno', testo: '−' + euro(a.speso || 0) })]));
-    }
-    d.appendChild(lista);
-    return d;
-  }
-
-  // v10.24: rendiconto dettagliato a due colonne: quota dell'allievo (0 se il movimento non lo riguarda) e importo per tutta la classe
+  // Tabella dei movimenti a due colonne: quota dell'allievo (0,00 se il movimento non lo riguarda) e importo per tutta la classe.
+  // v11.2: niente "€" nelle celle (sta nelle intestazioni), la nota sotto ogni movimento, in fondo totali e saldo.
   function dueColonne(a) {
     var nome = String(a.alunno || '').split(' ')[0] || 'Alunno', tutti = a.tutti, ct = a.classeTot || {}, solo = false;
     var box = el('div', { classe: 'mov2' });
@@ -2568,11 +2884,11 @@
     box.appendChild(el('div', { classe: 'mov2-filtro', role: 'group', 'aria-label': 'Movimenti da vedere' }, [bT, bS]));
     var tab = el('div', { classe: 'mov2-tab' });
     box.appendChild(tab);
-    box.appendChild(el('p', { classe: 'mov2-legenda', testo: '0,00 € = spesa della classe che non riguarda ' + nome + '. “Classe” = importo del movimento per tutta la classe.' }));
+    box.appendChild(el('p', { classe: 'mov2-legenda', testo: 'Importi in euro. 0,00 = spesa della classe che non riguarda ' + nome + '. “Classe” = importo per tutta la classe.' }));
     function imp(n, chi) {
       if (n === null || n === undefined) return el('span', { classe: 'n vuoto', testo: '—' });
-      if (Math.abs(n) < 0.005) return el('span', { classe: 'n zero', testo: euro(0) });
-      return el('span', { classe: 'n' + (chi === 'cl' ? ' cl' : n > 0 ? ' piu' : ''), testo: (n > 0 ? '+' : '−') + euro(n) });
+      if (Math.abs(n) < 0.005) return el('span', { classe: 'n zero', testo: '0,00' });
+      return el('span', { classe: 'n' + (chi === 'cl' ? ' cl' : n > 0 ? ' piu' : ''), testo: cifraSegno(n) });
     }
     function riga(cls, d, r, nota, x, y) {
       return el('div', { classe: 'rm' + (cls ? ' ' + cls : '') }, [el('span', { classe: 'd', testo: d }), el('span', { classe: 'r' }, [r, nota ? el('small', { testo: nota }) : null]), x, y]);
@@ -2582,13 +2898,16 @@
     var versato = a.versato !== null && a.versato !== undefined ? a.versato : piu, speso = a.speso !== null && a.speso !== undefined ? a.speso : -meno;
     function disegna() {
       tab.innerHTML = '';
-      tab.appendChild(riga('testa', 'Data', 'Movimento', null, el('span', { classe: 'n al', testo: nome }), el('span', { classe: 'n', testo: 'Classe' })));
-      tutti.filter(function (t) { return !solo || Math.abs(t.quota) >= 0.005; }).forEach(function (t) {
+      tab.appendChild(riga('testa', 'Data', 'Movimento', null, el('span', { classe: 'n al', testo: nome + ' €' }), el('span', { classe: 'n', testo: 'Classe €' })));
+      var visibili = tutti.filter(function (t) { return !solo || Math.abs(t.quota) >= 0.005; });
+      if (!visibili.length) tab.appendChild(el('p', { classe: 'stato', style: 'margin:10px 0', testo: 'Nessun movimento.' }));
+      visibili.forEach(function (t) {
         tab.appendChild(riga('', dataCorta(t.data) || '—', t.ragione || '—', t.nota, imp(t.quota, 'al'), imp(t.classe, 'cl')));
       });
-      tab.appendChild(riga('tot', '', 'Totale versato', null, imp(versato, 'al'), imp(ct.versato, 'cl')));
-      tab.appendChild(riga('tot', '', 'Totale speso', null, imp(-speso, 'al'), imp(ct.speso === undefined ? undefined : -ct.speso, 'cl')));
-      tab.appendChild(riga('tot saldo', '', 'Saldo', null, imp(a.saldo, 'al'), imp(ct.saldo, 'cl')));
+      tab.appendChild(riga('tot', '', 'Totale versato', null, imp(Math.abs(versato || 0), 'al'), imp(ct.versato === undefined ? undefined : Math.abs(ct.versato), 'cl')));
+      tab.appendChild(riga('tot', '', 'Totale speso', null, imp(-Math.abs(speso || 0), 'al'), imp(ct.speso === undefined ? undefined : -Math.abs(ct.speso), 'cl')));
+      var rs = riga('tot saldo', '', 'Saldo', null, imp(a.saldo, 'al'), imp(ct.saldo, 'cl'));
+      tab.appendChild(rs);
     }
     function scegli(s) { solo = s; bT.setAttribute('aria-pressed', s ? 'false' : 'true'); bS.setAttribute('aria-pressed', s ? 'true' : 'false'); disegna(); }
     bT.addEventListener('click', function () { scegli(false); });
@@ -2640,7 +2959,7 @@
       cassaDi(nome).then(function (r) {
         if (STATO.alunnoScelto !== nome) return;
         corpo.innerHTML = '';
-        corpo.appendChild(schedaAlunno(r.stato));
+        corpo.appendChild(schedaFondo(r.stato));
       });
     }
     return box;
@@ -3989,6 +4308,12 @@
       var l = libroDi(elenco, id);
       if (!libriPronti(l)) { toast('Libro non disponibile'); return; }
       if (daHome || STATO.pagina !== 'libri') chiama('pagina', { pagina: 'libri' }).catch(function () {});
+      // v11.2 (n. 40): aprendo un libro diverso da quello delle pagine scelte per la stampa, la scelta si svuota
+      if (LB.stampa.length && LB.stampa.some(function (x) { return x.libro !== l.id; })) {
+        var tolte = LB.stampa.length;
+        LB.stampa = [];
+        toast(tolte === 1 ? 'Tolta dalla stampa la pagina dell’altro libro' : 'Tolte dalla stampa le ' + tolte + ' pagine dell’altro libro');
+      }
       LB.scelto = l.id;
       linkLibro(l.id);                                               // v10.18: i link di tutte le pagine, in una volta
       mostraLettore(l, paginaVicina(l, n || l.pagine[0]));
@@ -4393,8 +4718,22 @@
       });
       barra.appendChild(el('button', { classe: 'tab', role: 'tab', testo: 'Settimana', onclick: function () { apri(5); } }));
 
+      // v11.2 (n. 5): con "sfondo" in Contenuti.gs i colori e l'icona del file ORARI_classe.xlsx (img/mat-<img>.png su un riquadro bianco);
+      // se l'immagine non si carica torna l'emoji. Senza "sfondo" (contenuti vecchi) tutto come prima.
+      var colFile = Object.keys(materie).some(function (k) { return materie[k] && materie[k].sfondo; });
+      function iconaMateria(m) {
+        var s = el('span', { classe: 'ic', 'aria-hidden': 'true' });
+        if (m.img) {
+          var i = el('img', { src: 'img/mat-' + m.img + '.png', alt: '', decoding: 'async' });
+          i.addEventListener('error', function () { s.innerHTML = ''; s.textContent = m.icona || '📘'; });
+          s.appendChild(i);
+        } else s.textContent = m.icona || '📘';
+        return s;
+      }
+      function coloriFile(n, m) { n.style.setProperty('--sf', m.sfondo || '#ffffff'); n.style.setProperty('--tx', m.testo || '#15243b'); return n; }
       function chip(nome, extra) {
         var m = info(nome);
+        if (m.sfondo) return coloriFile(el('div', { classe: 'or-mat file' }, [iconaMateria(m), el('span', { classe: 'nm' }, [el('span', { classe: 't', testo: nome })].concat(extra || []))]), m);
         return colora(el('div', { classe: 'or-mat' }, [el('span', { classe: 'em', testo: m.icona }), el('span', { classe: 'nm', testo: nome })].concat(extra || [])), m.colore);
       }
       function inCorso(r, g) { return g === oggi && ora >= minuti(r.dalle) && ora < minuti(r.alle); }
@@ -4409,7 +4748,7 @@
             el('div', null, [el('strong', { testo: (etichetta ? etichetta + ' niente lezione' : 'Niente lezione') }), el('small', { testo: vacanza })])]));
           return;
         }
-        var lista = el('div', { classe: 'or-lista' });
+        var lista = el('div', { classe: 'or-lista' + (colFile ? ' file' : '') });
         righe.forEach(function (r) {
           if (r.pausa) { lista.appendChild(el('div', { classe: 'or-pausa' + (inCorso(r, g) ? ' adesso' : ''), testo: r.pausa + ' ' + r.dalle + '–' + r.alle })); return; }
           var nome = r.materie[g];
@@ -4424,7 +4763,7 @@
       }
 
       function settimana() {
-        var t = el('table', { classe: 'or-sett' });
+        var t = el('table', { classe: 'or-sett' + (colFile ? ' file' : '') });
         t.appendChild(el('thead', null, [el('tr', null, [el('th')].concat(GIORNI.map(function (g, i) {
           var v = vac[isoDi(dataDi(i))];
           return el('th', { classe: (i === oggi ? 'oggi' : '') + (v ? ' vacanza' : ''), title: v || null, testo: (v ? '🏖️ ' : '') + g.slice(0, 3) });
@@ -4434,6 +4773,9 @@
           if (r.pausa) { tb.appendChild(el('tr', null, [el('td'), el('td', { classe: 'pausa', colspan: '5', testo: r.pausa + ' ' + r.dalle + '–' + r.alle })])); return; }
           tb.appendChild(el('tr', null, [el('td', { classe: 'h' }, [el('b', { testo: r.dalle }), el('span', { testo: r.alle })])].concat(r.materie.map(function (nome, i) {
             var m = info(nome);
+            if (m.sfondo) return el('td', { classe: (i === oggi ? 'oggi-col' : '') + (i === oggi && inCorso(r, i) ? ' oggi' : '') + (vac[isoDi(dataDi(i))] ? ' vacanza' : '') }, [coloriFile(el('div', { classe: 'or-cella file', title: nome }, [
+              iconaMateria(m), el('span', { classe: 'lungo', testo: nome }), el('span', { classe: 'corto', testo: m.breve || nome })
+            ]), m)]);
             return el('td', { classe: (i === oggi && inCorso(r, i) ? 'oggi' : '') + (vac[isoDi(dataDi(i))] ? ' vacanza' : '') }, [colora(el('div', { classe: 'or-cella', title: nome }, [
               el('span', { classe: 'em', testo: m.icona }), el('span', { classe: 'lungo', testo: nome }), el('span', { classe: 'corto', testo: m.breve || nome })
             ]), m.colore)]);
@@ -4571,7 +4913,7 @@
               el('span', { classe: 'sotto2', testo: 'Segnalalo alla rappresentante' })]), t]));
         });
         if (soloSenzaAlunno()) {
-          box.appendChild(porta('neutro', 'Profilo docente', 'Nessun alunno assegnato', 'Rendiconto di classe e ricevute', vaiConta(SCHEDA_RENDICONTO), bollino()));
+          box.appendChild(porta('neutro', 'Profilo docente', 'Nessun alunno assegnato', 'Rendiconto di classe e ricevute', vaiConta(SCHEDA_CLASSE), bollino()));
           applicaContatori(); return;
         }
         if (!alunni.length && mancanti.length) { applicaContatori(); return; }
@@ -4594,7 +4936,7 @@
           var vai = el('button', { type: 'button', classe: 'vai-conta', onclick: vaiConta(SCHEDA_RENDICONTO) }, ['Contabilità e ricevute']);
           vai.appendChild(svgSpan('', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>'));
           var paga = link ? el('a', { classe: 'btn-paga', href: link, target: '_blank', rel: 'noopener', 'aria-label': 'Paga ' + euro(a.pendenze.importo) + ' per ' + a.alunno, testo: 'PAGA' })
-            : el('button', { type: 'button', classe: 'btn-paga', onclick: vaiConta(SCHEDA_PAGAMENTI), testo: 'PAGA' });
+            : el('button', { type: 'button', classe: 'btn-paga', onclick: vaiBonifico, testo: 'PAGA' });
           var nomeRiga = el('span', { classe: 'nome-riga', 'data-porta': bollino() ? 'contabilita' : null }, [el('span', { classe: 'nome', testo: a.alunno })]);   // bollino accanto al nome
           var tx = el('span', { classe: 'tx' }, [nomeRiga, el('span', { classe: 'stato2', testo: stato }),
             el('span', { classe: 'importo2', testo: importo }), vai]);
@@ -4605,15 +4947,255 @@
       });
       return box;
     },
-    // Saldo: ogni famiglia vede i propri figli; l'amministratrice sceglie l'alunno dal menu a discesa
+    // ---------- v11.2 (n. 39): Afterschool — Tutte · Inglese · Sport · Musica (dati nel blocco afterschool di Contenuti.gs) ----------
+    afterschool: function (b) {
+      var att = b.attivita || [];
+      var box = el('div', { classe: 'as' });
+      var barra = el('div', { classe: 'schede-tab', role: 'tablist' });
+      var corpo = el('div');
+      var GIORNI_AS = ['', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven'], GIORNI_LUNGHI_AS = ['', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'];
+      var figli = (STATO.sessione.alunni || []).filter(function (n) { return !senzaAlunno(n); });
+      var pagamento = {};                                                     // scelta di pagamento per l'email d'iscrizione
+      var ICONE_AS = {
+        inglese: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H10l-4.5 3.5V16H4z"/><path d="M8.5 13l1.8-5 1.8 5M9.1 11.4h2.4M14.5 8v5h1.6a1.25 1.25 0 0 0 0-2.5h-1.6"/></svg>',
+        sport: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5l3.6 2.6-1.4 4.2H9.8l-1.4-4.2z"/><path d="M12 3.5v4M15.6 10.1l4.2-1.4M14.2 14.3l2.6 3.6M9.8 14.3l-2.6 3.6M8.4 10.1L4.2 8.7"/></svg>',
+        musica: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="11" rx="8" ry="3"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/><path d="M8 14.5v4M12 15v5M16 14.5v4"/><path d="M14 8l5-5M10 8L6 3"/></svg>'
+      };
+      var FRECCIA_AS = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+      function minuti(t) { var p = String(t || '').split(':'); return +p[0] * 60 + +(p[1] || 0); }
+      function mancano(iso) { return Math.round((dataDa(iso) - dataDa(oggiISO())) / 86400000); }
+      function giorniTesto(n) { return n === 0 ? 'oggi' : n === 1 ? '1 giorno' : n + ' giorni'; }
+      function soldi(n) { return euro(n || 0).replace(/\s*€$/, '') + ' €'; }
+      function stato(a) {
+        if (a.stato === 'scadenza' && a.scadenza) return mancano(a.scadenza) >= 0 ? ['rosso', 'Iscrizioni entro il ' + dataMedia(a.scadenza)] : ['grigio', 'Iscrizioni chiuse il ' + dataMedia(a.scadenza)];
+        if (a.stato === 'segreteria') return ['blu', 'Iscrizioni in segreteria'];
+        return ['grigio', 'Informazioni in arrivo'];
+      }
+      function pillAs(c) { return el('span', { classe: 'as-pill ' + c[0], testo: c[1] }); }
+      function sezione(t) { return el('h3', { classe: 'sez as-h3', testo: t }); }
+      function riga(etichetta, valore, nota) {
+        return el('div', { classe: 'as-riga' }, [el('span', { classe: 'tx' }, [el('span', { classe: 'as-lbl', testo: etichetta }),
+          valore ? el('b', { testo: valore }) : el('span', { classe: 'as-dadef', testo: 'da definire' }), nota ? el('small', { testo: nota }) : null])]);
+      }
+      function campoCopia(etichetta, valore, mono, sotto) {
+        return el('div', { classe: 'as-riga' }, [el('span', { classe: 'tx' }, [el('span', { classe: 'as-lbl', testo: etichetta }), el('b', { classe: mono ? 'mono' : null, testo: valore }), sotto || null]),
+          el('button', { type: 'button', classe: 'btn-mini', testo: 'Copia', onclick: function () { copia(valore, etichetta + ' copiato'); } })]);
+      }
+      function giorniDi(c) {
+        var g = (c.giorni || []).map(function (x) { return GIORNI_LUNGHI_AS[x]; }).filter(Boolean);
+        return g.length > 1 ? g.slice(0, -1).join(', ') + ' e ' + g[g.length - 1].toLowerCase() : g[0] || '';
+      }
+      function fileDi(f) {
+        var box2 = el('div');
+        Promise.resolve(STATO.documenti).then(function (dati) {
+          var elenco = elencoSezione(dati, f.sezione) || [];
+          var cerca = String(f.cerca || '').toLowerCase();
+          var trovato = elenco.filter(function (x) { return f.id ? x.id === f.id : cerca && (x.titolo + ' ' + x.nome).toLowerCase().indexOf(cerca) >= 0; })[0];
+          if (trovato) { box2.appendChild(rigaDocumento(trovato, null, f.sezione)); return; }
+          if (STATO.sessione.amministratore && !STATO.sessione.vista) box2.appendChild(el('p', { classe: 'as-admin-nota', testo: 'Solo per te: metti il file nella cartella “' + (nomeSezioneFile(f.sezione) || f.sezione) + '” con “' + (f.cerca || '') + '” nel nome; qui compare da solo.' }));
+        });
+        return box2;
+      }
+      var etichette = ['Tutte'].concat(att.map(function (a) { return a.nome; }));
+      etichette.forEach(function (t, i) { barra.appendChild(el('button', { type: 'button', classe: 'tab', role: 'tab', testo: t, onclick: function () { apri(i); } })); });
+
+      function tutte() {
+        // riquadro della scadenza più vicina (iscrizioni aperte)
+        var prossime = att.map(function (a, i) { return { a: a, i: i }; }).filter(function (x) { return x.a.stato === 'scadenza' && x.a.scadenza && mancano(x.a.scadenza) >= 0; })
+          .sort(function (x, y) { return x.a.scadenza < y.a.scadenza ? -1 : 1; });
+        if (prossime.length) {
+          var x = prossime[0], n = mancano(x.a.scadenza);
+          var bott = el('button', { type: 'button', classe: 'as-scad', onclick: function () { apri(x.i + 1); } }, [
+            el('span', { classe: 'n' }, n === 0 ? [el('b', { testo: 'oggi' })] : [el('b', { testo: String(n) }), el('small', { testo: n === 1 ? 'giorno' : 'giorni' })]),
+            el('span', { classe: 'tx' }, [el('b', { testo: x.a.nome + ': iscrizioni entro ' + dataLunga(x.a.scadenza) }), x.a.scadenzaNota ? el('small', { testo: x.a.scadenzaNota }) : null])]);
+          bott.appendChild(svgSpan('fr', FRECCIA_AS));
+          corpo.appendChild(bott);
+        }
+        corpo.appendChild(sezione('Le attività'));
+        var lista = el('div', { classe: 'as-lista' });
+        att.forEach(function (a, i) {
+          var b2 = el('button', { type: 'button', classe: 'card as-att ' + (a.tipo || ''), onclick: function () { apri(i + 1); } }, [
+            svgSpan('ic', ICONE_AS[a.tipo] || ICONE_AS.sport),
+            el('span', { classe: 'tx' }, [el('b', { testo: a.riga || (a.nome + ' · ' + a.titolo) }), a.sotto ? el('small', { testo: a.sotto }) : null, pillAs(stato(a))])]);
+          b2.appendChild(svgSpan('fr', FRECCIA_AS));
+          lista.appendChild(b2);
+        });
+        corpo.appendChild(lista);
+        // la settimana della 4a, con le attività alla stessa ora
+        corpo.appendChild(sezione('La settimana della 4a'));
+        var sett = el('div', { classe: 'card as-sett' }, [el('p', { classe: 'as-sett-nota', testo: (b.fine ? 'Le lezioni finiscono alle ' + b.fine + '. ' : '') + 'Orari per la 4a primaria.' })]);
+        var senzaGiorno = [];
+        for (var g = 1; g <= 5; g++) {
+          var voci = [];
+          att.forEach(function (a) { (a.corsi || []).forEach(function (c) {
+            if (!(c.giorni || []).length) { if (g === 1) senzaGiorno.push({ a: a, c: c }); return; }
+            if (c.giorni.indexOf(g) >= 0) voci.push({ a: a, c: c });
+          }); });
+          voci.sort(function (x, y) { return minuti(x.c.dalle) - minuti(y.c.dalle); });
+          var avvisi = [];
+          for (var i1 = 0; i1 < voci.length; i1++) for (var i2 = i1 + 1; i2 < voci.length; i2++) {
+            var p1 = voci[i1].c, p2 = voci[i2].c, s1 = minuti(p1.dalle), e1 = minuti(p1.alle), s2 = minuti(p2.dalle), e2 = minuti(p2.alle);
+            if (!(s1 < e2 && s2 < e1)) continue;
+            var dentro = (s1 >= s2 && e1 <= e2) || (s2 >= s1 && e2 <= e1);
+            avvisi.push(p1.nome + ' e ' + p2.nome + (dentro ? ' alla stessa ora: non si possono fare insieme' : ' in parte alla stessa ora'));
+          }
+          var chips = el('span', { classe: 'as-chips' });
+          voci.forEach(function (v) { chips.appendChild(el('span', { classe: 'as-chip ' + (v.a.tipo || '') }, [v.c.nome, el('small', { testo: v.c.dalle + '–' + v.c.alle })])); });
+          if (!voci.length) chips.appendChild(el('span', { classe: 'as-nessuna', testo: 'Nessuna attività' }));
+          avvisi.forEach(function (t) { chips.appendChild(el('span', { classe: 'as-stessa', testo: t })); });
+          sett.appendChild(el('div', { classe: 'as-giorno' }, [el('b', { testo: GIORNI_AS[g] }), chips]));
+        }
+        senzaGiorno.forEach(function (v) {
+          sett.appendChild(el('div', { classe: 'as-dopo' }, [el('span', { classe: 'as-chip ' + (v.a.tipo || '') }, [v.c.nome, el('small', { testo: 'giorno da definire' })]),
+            el('span', { testo: 'Si aggiunge appena arrivano giorno e orario.' })]));
+        });
+        corpo.appendChild(sett);
+      }
+
+      function dettaglio(a) {
+        var st = stato(a);
+        // presentazione
+        var intro = el('div', { classe: 'card as-intro' }, [
+          a.stato === 'arrivo' ? pillAs(st) : a.etichetta ? el('span', { classe: 'as-pill blu', testo: a.etichetta }) : null,
+          el('h3', { testo: a.titolo }), a.descrizione ? el('p', { testo: a.descrizione }) : null]);
+        (a.dettagli || []).forEach(function (d) { intro.appendChild(riga(d.etichetta, d.valore, d.nota)); });
+        corpo.appendChild(intro);
+        // corsi con il gruppo (sport)
+        var conGruppo = (a.corsi || []).filter(function (c) { return c.gruppo; });
+        if (conGruppo.length) {
+          corpo.appendChild(sezione('Giorni e orari per la 4a'));
+          var l = el('div', { classe: 'as-lista' });
+          conGruppo.forEach(function (c) {
+            l.appendChild(el('div', { classe: 'card as-corso' }, [el('span', { classe: 'barretta' }), el('span', { classe: 'tx' }, [
+              el('b', { testo: c.nome }), el('span', { classe: 'quando', testo: giorniDi(c) + (c.dalle ? ' · ' + c.dalle + '–' + c.alle : '') }), el('small', { testo: c.gruppo })])]));
+          });
+          corpo.appendChild(l);
+          if (a.notaCorsi) corpo.appendChild(el('p', { classe: 'as-nota', testo: a.notaCorsi }));
+        }
+        // costi
+        if (a.costi) {
+          corpo.appendChild(sezione('Quanto costa'));
+          var cc = el('div', { classe: 'card as-costi' });
+          (a.costi.voci || []).forEach(function (v) { cc.appendChild(el('div', { classe: 'as-costo' }, [el('span', null, [v.nome, v.nota ? el('small', { testo: ' (' + v.nota + ')' }) : null]), el('b', { testo: soldi(v.importo) })])); });
+          if (a.costi.totale) cc.appendChild(el('div', { classe: 'as-costo totale' }, [el('b', { testo: 'Totale' }), el('b', { testo: soldi(a.costi.totale) })]));
+          if (a.costi.nota) cc.appendChild(el('p', { classe: 'as-costi-nota', testo: a.costi.nota }));
+          corpo.appendChild(cc);
+        }
+        // come pagare
+        if (a.pagare) {
+          var pg = a.pagare;
+          corpo.appendChild(sezione('Come pagare'));
+          var cp = el('div', { classe: 'card as-pagare' }, [el('div', { classe: 'as-pag-testa' }, [el('b', null, [pg.titolo || 'Bonifico', pg.consigliato ? el('span', { classe: 'as-pill oro', testo: 'consigliato' }) : null]),
+            pg.sotto ? el('small', { testo: pg.sotto }) : null])]);
+          cp.appendChild(campoCopia('Intestatario', pg.intestatario, false, pg.banca ? el('small', { testo: pg.banca }) : null));
+          cp.appendChild(campoCopia('IBAN', pg.iban, true));
+          var nomi = figli.length ? figli : ['Nome Cognome'];
+          nomi.forEach(function (n) {
+            var causale = String(pg.causaleAlunno || '').replace(/\{alunno\}/g, n).replace(/\{nome\}/g, n.split(' ')[0]);
+            var sotto = el('span', { classe: 'as-sotto' }, [
+              pg.esempioAlunno ? el('small', { testo: 'es: ' + pg.esempioAlunno.replace(/\{alunno\}/g, n).replace(/\{nome\}/g, n.split(' ')[0]) }) : null,
+              pg.notaCausale ? el('small', { testo: pg.notaCausale }) : null,
+              pg.dopo ? el('small', { testo: pg.dopo }) : null]);
+            cp.appendChild(campoCopia(nomi.length > 1 ? 'Causale · ' + n.split(' ')[0] : 'Causale', causale, false, sotto));
+          });
+          (pg.altri || []).forEach(function (x) { cp.appendChild(el('div', { classe: 'as-riga' }, [el('span', { classe: 'tx' }, [el('b', { testo: x.titolo }), el('small', { testo: x.testo })])])); });
+          corpo.appendChild(cp);
+        }
+        // iscrizione via email (inglese)
+        if (a.iscrizione) {
+          var isc = a.iscrizione;
+          corpo.appendChild(sezione('Iscriviti'));
+          var ci = el('div', { classe: 'card as-iscr' });
+          if (a.scadenza) {
+            var nn = mancano(a.scadenza);
+            ci.appendChild(el('div', { classe: 'as-iscr-testa' }, nn >= 0 ? [el('span', { classe: 'as-pill rosso', testo: 'Entro ' + dataLunga(a.scadenza) }), el('small', { testo: nn === 0 ? 'scade oggi' : 'mancano ' + giorniTesto(nn) })]
+              : [el('span', { classe: 'as-pill grigio', testo: 'Scadenza passata il ' + dataMedia(a.scadenza) })]));
+          }
+          if (!figli.length) {
+            ci.appendChild(el('p', { classe: 'as-nota', testo: soloSenzaAlunno() ? 'Il profilo docente non ha alunni da iscrivere.' : 'Per iscrivere un alunno scrivi a ' + isc.email + '.' }));
+          } else {
+            var scelte = isc.scelte || [];
+            var sc = pagamento[a.id] || 0;
+            if (scelte.length) {
+              ci.appendChild(el('p', { classe: 'as-dom', testo: 'Come vuoi pagare?' }));
+              var gr = el('div', { classe: 'as-scelte' });
+              scelte.forEach(function (x, k) {
+                gr.appendChild(el('button', { type: 'button', classe: 'as-scelta' + (sc === k ? ' on' : ''), 'aria-pressed': sc === k ? 'true' : 'false',
+                  onclick: function () { pagamento[a.id] = k; apri(STATO.schedaAfter); } }, [el('b', { testo: x.titolo }), x.sotto ? el('small', { testo: x.sotto }) : null]));
+              });
+              ci.appendChild(gr);
+            }
+            figli.forEach(function (n) {
+              var primo = n.split(' ')[0];
+              var sost = function (t) { return String(t || '').replace(/\{alunno\}/g, n).replace(/\{nome\}/g, primo).replace(/\{pagamento\}/g, scelte[sc] ? scelte[sc].testo : ''); };
+              var href = 'mailto:' + isc.email + '?subject=' + encodeURIComponent(sost(isc.oggetto)) + '&body=' + encodeURIComponent(sost(isc.testo));
+              var bm = el('a', { classe: 'as-btn', href: href });
+              bm.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6l8.5 7 8.5-7"/></svg>';
+              bm.appendChild(document.createTextNode('Scrivi per iscrivere ' + primo));
+              ci.appendChild(bm);
+            });
+            ci.appendChild(el('small', { classe: 'as-mail-nota', testo: 'Si apre la tua email già scritta per ' + isc.email }));
+          }
+          corpo.appendChild(ci);
+        }
+        // come iscriversi a passi (sport) con il modulo
+        if (a.passi) {
+          corpo.appendChild(sezione('Come iscriversi'));
+          var cpas = el('div', { classe: 'card as-passi' });
+          a.passi.forEach(function (p, k) { cpas.appendChild(el('div', { classe: 'as-passo' }, [el('span', { classe: 'n', testo: String(k + 1) }), el('span', { classe: 'tx' }, [el('b', { testo: p.titolo }), p.testo ? el('small', { testo: p.testo }) : null])])); });
+          if (a.file) cpas.appendChild(fileDi(a.file));
+          corpo.appendChild(cpas);
+        }
+        if (a.portare) {
+          corpo.appendChild(sezione('Da portare'));
+          var cpo = el('div', { classe: 'card as-semplice' });
+          a.portare.forEach(function (x) { cpo.appendChild(el('div', { classe: 'as-riga' }, [el('span', { classe: 'tx' }, [el('b', { testo: x.titolo }), x.testo ? el('small', { testo: x.testo }) : null])])); });
+          corpo.appendChild(cpo);
+        }
+        if (a.contatti) {
+          corpo.appendChild(sezione('Contatti'));
+          var lc = el('div', { classe: 'as-lista' });
+          a.contatti.forEach(function (c) {
+            var num = String(c.tel || '').replace(/\D/g, ''), int = num.indexOf('39') === 0 && num.length > 10 ? num : '39' + num;
+            lc.appendChild(el('div', { classe: 'card as-contatto' }, [el('b', { testo: c.nome }), el('small', { testo: c.ruolo + ' · ' + c.tel }),
+              el('div', { classe: 'as-bott' }, [el('a', { classe: 'as-btn2', href: 'tel:+' + int, testo: '📞 Chiama' }), el('a', { classe: 'as-btn2', href: 'https://wa.me/' + int, target: '_blank', rel: 'noopener', testo: '💬 WhatsApp' })])]));
+          });
+          corpo.appendChild(lc);
+        }
+        (a.sezioni || []).forEach(function (x) {
+          corpo.appendChild(sezione(x.titolo));
+          corpo.appendChild(el('div', { classe: 'card as-semplice' }, [x.stato === 'arrivo' ? pillAs(['grigio', 'Informazioni in arrivo']) : null, el('p', { testo: x.testo })]));
+        });
+        if (a.file && !a.passi) { corpo.appendChild(sezione(a.file.titolo || 'Il file')); corpo.appendChild(fileDi(a.file)); }
+        if (a.altreClassi) {
+          var ac = a.altreClassi, aperto = !!STATO.asAltre;
+          var cac = el('div', { classe: 'card as-altre' });
+          cac.appendChild(el('button', { type: 'button', classe: 'as-apri', 'aria-expanded': aperto ? 'true' : 'false', onclick: function () { STATO.asAltre = !aperto; apri(STATO.schedaAfter); } }, [el('span', { testo: ac.titolo }), el('span', { testo: aperto ? '▴' : '▾' })]));
+          if (aperto) (ac.voci || []).forEach(function (v) { cac.appendChild(el('div', { classe: 'as-riga' }, [el('span', { classe: 'tx' }, [el('b', { testo: v.titolo }), el('small', { testo: v.testo })])])); });
+          corpo.appendChild(cac);
+        }
+        if (a.notaArrivo) corpo.appendChild(el('p', { classe: 'as-nota', testo: a.notaArrivo }));
+      }
+
+      function apri(i) {
+        STATO.schedaAfter = i;
+        Array.prototype.forEach.call(barra.children, function (t, j) { t.classList.toggle('attiva', i === j); t.setAttribute('aria-selected', i === j ? 'true' : 'false'); });
+        corpo.innerHTML = '';
+        if (i === 0) tutte(); else dettaglio(att[i - 1]);
+      }
+      box.appendChild(barra); box.appendChild(corpo);
+      apri(STATO.schedaAfter && STATO.schedaAfter <= att.length ? STATO.schedaAfter : 0);
+      return box;
+    },
+    // v11.2 (n. 34): "Il tuo fondo cassa". Ogni famiglia vede i propri figli; l'amministratrice sceglie l'alunno dal menu a discesa
     rendiconto: function () {
       if (STATO.sessione.amministratore) return selettoreAlunno();
       var box = el('div');
       if (soloSenzaAlunno()) {
         box.appendChild(el('div', { classe: 'rend' }, [
-          el('div', { classe: 'rend-testa' }, [el('small', { testo: 'Stato fondocassa di' }), el('div', { classe: 'rend-nome', testo: 'Profilo docente' })]),
+          el('div', { classe: 'rend-testa' }, [el('small', { testo: 'Fondo cassa di' }), el('div', { classe: 'rend-nome', testo: 'Profilo docente' })]),
           el('div', { classe: 'vuoto' }, [el('strong', { style: 'display:block;color:var(--ink);margin-bottom:4px', testo: 'Nessun bambino assegnato' }),
-            'Al profilo docente non è assegnato nessun fondo cassa personale. Il rendiconto di classe e le ricevute sono nella scheda accanto.'])
+            'Al profilo docente non è assegnato nessun fondo cassa personale. Il rendiconto di classe e le ricevute sono nella scheda “Classe e ricevute”.'])
         ]));
         return box;
       }
@@ -4623,68 +5205,144 @@
         if (dati.errore) { box.appendChild(vuoto('Fondo cassa non disponibile al momento. Riprova tra poco.')); return; }
         var alunni = dati.cassa && Array.isArray(dati.cassa.alunni) ? dati.cassa.alunni : [];
         if (!alunni.length) { box.appendChild(vuoto('Non c’è ancora un alunno abbinato alla tua email (' + STATO.sessione.email + '). Scrivi alla rappresentante.')); return; }
-        alunni.forEach(function (a) { box.appendChild(schedaAlunno(a)); });
+        alunni.forEach(function (a) { box.appendChild(schedaFondo(a)); });
       });
       return box;
     },
-    // Rendiconto dettagliato: per l'amministratrice quello dell'alunno scelto in Saldo
-    dettaglio: function () {
+    // v11.2: il rendiconto dettagliato sta nella prima scheda (sempre tutti i movimenti): questo blocco non mostra più nulla
+    dettaglio: function () { return el('div', { classe: 'nascosto' }); },
+    // v11.2: "N alunni devono ancora versare il fondo cassa" (senza nomi e senza il totale) oppure "Tutti in regola"
+    versamentiClasse: function (b) {
       var box = el('div');
-      if (STATO.sessione.amministratore) {
-        box.appendChild(attesa('Carico…'));
-        alunniAdmin().then(function (r) {
-          var nome = STATO.alunnoScelto || (r.miei && r.miei[0]) || (r.alunni || [])[0];
-          if (!nome) { box.innerHTML = ''; return; }
-          STATO.alunnoScelto = nome;
-          return cassaDi(nome).then(function (x) {
-            box.innerHTML = '';
-            if (x.stato && !x.stato.errore) box.appendChild(dettaglioAlunno(x.stato, false));
-          });
-        });
-        return box;
-      }
       STATO.miei.then(function (dati) {
-        var alunni = alunniCassa(dati);
-        alunni.forEach(function (a) { box.appendChild(dettaglioAlunno(a, alunni.length === 1)); });
+        var n = dati && typeof dati.classeDaVersare === 'number' ? dati.classeDaVersare : null;
+        if (n === null) return;                                              // script vecchio: il riquadro non compare
+        box.appendChild(testaSezione(b.titolo || 'Versamenti della classe', false, true));
+        if (!n) {
+          box.appendChild(el('div', { classe: 'card ct-tutti' }, [svgSpan('ok', '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'),
+            el('span', { classe: 'tx' }, [el('b', { testo: 'Tutti in regola' }), el('small', { testo: 'Nessun fondo cassa da versare per nessun alunno.' })])]));
+          return;
+        }
+        var card = el('div', { classe: 'card ct-quanti' }, [
+          el('div', { classe: 'riga' }, [el('b', { testo: String(n) }), el('span', { testo: (n === 1 ? 'alunno deve' : 'alunni devono') + ' ancora versare il fondo cassa' })]),
+          el('small', { testo: 'I nomi li vede solo la rappresentante.' })]);
+        if (adminVero()) {
+          var l = el('button', { type: 'button', classe: 'ct-admin', onclick: function () { STATO.schedaGestione = 1; vaiA('gestione'); } });
+          l.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 6h6M16 10h6M18 14h4"/></svg>';
+          l.appendChild(document.createTextNode('Solo per te: chi deve versare ›'));
+          card.appendChild(l);
+        }
+        box.appendChild(card);
       });
       return box;
     },
-    // Rendiconto di classe: saldo e spesa pro-capite media per tipologia (dal master)
-    classe: function () {
-      var box = el('div', { classe: 'card' });
-      box.appendChild(attesa('Carico il rendiconto di classe…'));
+    // Rendiconto di classe: entrate (+), uscite (−), saldo e spesa media per tipologia (in negativo), dal master
+    classe: function (b) {
+      var box = el('div', { classe: 'ct-classe' });
+      if (b && b.titolo) box.appendChild(testaSezione(b.titolo, true));
+      var corpo = el('div');
+      box.appendChild(corpo);
+      corpo.appendChild(attesa('Carico il rendiconto di classe…'));
       STATO.miei.then(function (dati) {
-        box.innerHTML = '';
+        corpo.innerHTML = '';
         var c = dati && dati.classe;
-        if (!c) { box.appendChild(vuoto('Rendiconto di classe non disponibile al momento.')); return; }
-        box.appendChild(el('div', { classe: 'classe-num' }, [
-          el('div', null, [el('small', { testo: 'Entrate' }), el('b', { testo: euro(c.entrate || 0) })]),
-          el('div', null, [el('small', { testo: 'Uscite' }), el('b', { testo: euro(c.uscite || 0) })]),
-          el('div', { classe: 'saldo' }, [el('small', { testo: 'Saldo' }), el('b', { testo: euroSegno(c.saldo || 0) })])
+        if (!c) { corpo.appendChild(vuoto('Rendiconto di classe non disponibile al momento.')); return; }
+        var uscite = -Math.abs(c.uscite || 0);
+        corpo.appendChild(el('div', { classe: 'classe-num' }, [
+          el('div', null, [el('small', { testo: 'Entrate' }), el('b', { classe: 'piu', testo: '+' + euro(c.entrate || 0) })]),
+          el('div', null, [el('small', { testo: 'Uscite' }), el('b', { testo: (uscite < 0 ? '−' : '') + euro(uscite) })]),
+          el('div', { classe: 'saldo' }, [el('small', { testo: 'Saldo' }), el('b', { testo: (c.saldo > 0 ? '+' : '') + euroSegno(c.saldo || 0) })])
         ]));
-        var voci = (c.spesa || []).filter(function (v) { return !/MEDIA\)/i.test(v.voce); });
-        var versati = (c.spesa || []).filter(function (v) { return /^VERSAMENTI/i.test(v.voce); })[0];
-        var attivo = (c.spesa || []).filter(function (v) { return /^ATTIVO/i.test(v.voce); })[0];
+        var spesa = c.spesa || [];
+        var voci = spesa.filter(function (v) { return !/MEDIA\)/i.test(v.voce) && !/^(VERSAMENTI|ATTIVO)/i.test(v.voce); });
+        var versati = spesa.filter(function (v) { return /^VERSAMENTI/i.test(v.voce); })[0];
         if (voci.length) {
-          box.appendChild(el('h3', { classe: 'sez', style: 'margin-top:4px', testo: 'Spesa media per alunno, per tipologia' }));
-          var max = Math.max.apply(null, voci.map(function (v) { return v.valore; }).concat([0.01]));
+          corpo.appendChild(el('h3', { classe: 'sez ct-sotto', testo: 'Spesa media per alunno, per tipologia' }));
+          var max = Math.max.apply(null, voci.map(function (v) { return Math.abs(v.valore); }).concat([0.01]));
           var righe = el('div', { classe: 'barre' });
-          voci.slice().sort(function (a, b) { return b.valore - a.valore; }).forEach(function (v) {
-            var pct = Math.max(0, Math.round(v.valore / max * 100));
-            righe.appendChild(el('div', { classe: 'barre-riga' + (v.valore > 0.004 ? '' : ' zero') }, [
+          voci.slice().sort(function (x, y) { return Math.abs(y.valore) - Math.abs(x.valore); }).forEach(function (v) {
+            var val = Math.abs(v.valore), pct = Math.round(val / max * 100);
+            righe.appendChild(el('div', { classe: 'barre-riga' + (val > 0.004 ? '' : ' zero') }, [
               el('span', { classe: 'nm', testo: v.voce }),
               el('span', { classe: 'tr' }, [el('i', { style: 'width:' + pct + '%' })]),
-              el('span', { classe: 'vl', testo: euro(v.valore) })
+              el('span', { classe: 'vl', testo: (val > 0.004 ? '−' : '') + euro(val) })
             ]));
           });
-          box.appendChild(righe);
+          corpo.appendChild(righe);
         }
-        var nota = [];
-        if (versati) nota.push('Versamento medio per alunno: ' + euro(versati.valore));
-        if (attivo) nota.push('attivo medio: ' + euro(attivo.valore));
-        if (c.aggiornato) nota.push('aggiornato al ' + dataMedia(c.aggiornato));
-        if (nota.length) box.appendChild(el('p', { classe: 'classe-nota', testo: nota.join(' · ') }));
+        if (versati) corpo.appendChild(el('p', { classe: 'classe-nota', testo: 'Versamento medio per alunno: +' + euro(versati.valore) }));
       });
+      return box;
+    },
+    // v11.2: Coordinate. "Cosa devi pagare?" Fondo cassa / Retta scolastica, un conto alla volta.
+    // Fondo cassa: sempre bonifico e carta (link con l'importo da versare, oppure senza importo).
+    coordinate: function (b) {
+      var docente = soloSenzaAlunno();
+      var box = el('div', { classe: 'ct-coord' });
+      var scelte = el('div', { classe: 'ct-scelte', role: 'group', 'aria-label': 'Cosa devi pagare?' });
+      var corpo = el('div');
+      var conto = STATO.contoScelto || (docente ? 'sc' : 'fc');
+      STATO.contoScelto = null;
+      var bFc = el('button', { type: 'button', classe: 'ct-scelta', onclick: function () { conto = 'fc'; disegna(); } }, [el('b', { testo: 'Fondo cassa' }), el('small', { testo: 'spese della classe' })]);
+      var bSc = el('button', { type: 'button', classe: 'ct-scelta', onclick: function () { conto = 'sc'; disegna(); } }, [el('b', { testo: 'Retta scolastica' }), el('small', { testo: 'pagamenti alla scuola' })]);
+      scelte.appendChild(bFc); scelte.appendChild(bSc);
+      box.appendChild(el('h3', { classe: 'sez', style: 'margin-top:4px', testo: 'Cosa devi pagare?' }));
+      box.appendChild(scelte); box.appendChild(corpo);
+      function modo(t) { return el('div', { classe: 'ct-modo', testo: t }); }
+      function disegna() {
+        bFc.className = 'ct-scelta' + (conto === 'fc' ? ' on-fc' : ''); bFc.setAttribute('aria-pressed', conto === 'fc' ? 'true' : 'false');
+        bSc.className = 'ct-scelta' + (conto === 'sc' ? ' on-sc' : ''); bSc.setAttribute('aria-pressed', conto === 'sc' ? 'true' : 'false');
+        corpo.innerHTML = '';
+        if (conto === 'fc') {
+          var f = b.fondo || {};
+          if (docente) {
+            corpo.appendChild(el('div', { classe: 'avviso' }, [el('strong', { style: 'display:block;margin-bottom:2px', testo: '👩‍🏫 Profilo docente' }),
+              'Il profilo docente non è abilitato al pagamento verso il fondo cassa di classe.']));
+          } else {
+            var carta = el('div', { classe: 'ct-carte' });
+            var card = el('div', { classe: 'card iban-card ct-conto fc' }, [
+              f.nota ? el('p', { classe: 'nota', testo: f.nota }) : null,
+              modo('Con bonifico'),
+              campo('Intestatario', f.intestatario, true), campo('IBAN', f.iban, true, true), campoCausale(f),
+              modo('Con carta'), carta
+            ]);
+            corpo.appendChild(card);
+            carta.appendChild(attesa('Preparo il link…'));
+            STATO.miei.then(function (dati) {
+              carta.innerHTML = '';
+              var alunni = alunniCassa(dati);
+              if (!alunni.length) alunni = [null];
+              alunni.forEach(function (a) { carta.appendChild(rigaCarta(a, alunni.length > 1)); });
+            });
+          }
+          corpo.appendChild(el('p', { classe: 'ct-non-qui', testo: 'La retta non si paga qui: scegli “Retta scolastica”.' }));
+        } else {
+          var sc = b.scuola || {};
+          corpo.appendChild(el('div', { classe: 'card iban-card ct-conto sc' }, [
+            sc.nota ? el('p', { classe: 'nota', testo: sc.nota }) : null,
+            campo('Intestatario', sc.intestatario, true), campo('IBAN', sc.iban, true, true), campoCausale(sc)
+          ]));
+          corpo.appendChild(el('p', { classe: 'ct-non-qui', testo: 'Il fondo cassa non si paga qui: scegli “Fondo cassa”.' }));
+        }
+      }
+      function rigaCarta(a, conNome) {
+        var p = STATO.dati.pagamento || {};
+        var pend = a && a.pendenze;
+        var url = pend ? linkRevolut(a) : null;
+        if (!url && p.revolut) {
+          var causale = a ? (p.causale || '{alunno} - fondo cassa').replace('{alunno}', a.alunno || '').replace(/^\s*-\s*/, '').trim() : '';
+          url = p.revolut + '?currency=EUR' + (causale ? '&note=' + encodeURIComponent(causale) : '');
+        }
+        var paga = url ? el('a', { classe: 'ct-paga-mini', href: url, target: '_blank', rel: 'noopener' }) : null;
+        if (paga) { paga.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19"/></svg>'; paga.appendChild(document.createTextNode('Paga con carta')); }
+        return el('div', { classe: 'ct-carta' }, [
+          el('span', { classe: 'tx' }, [
+            el('span', { classe: 'lbl', testo: 'Importo del link' + (conNome && a ? ' · ' + a.alunno : '') }),
+            el('b', { testo: pend ? euro(pend.importo) : '0,00 €' }),
+            el('small', { testo: pend ? 'Fondo cassa da versare' + (pend.scadenza ? ' entro il ' + dataMedia(pend.scadenza) : '') + ' · causale già pronta' : 'Nessun fondo cassa da versare: scrivi tu l’importo su Revolut' })
+          ]), paga]);
+      }
+      disegna();
       return box;
     },
     scorciatoie: function (b) {
@@ -4885,143 +5543,305 @@
       })));
       return el('div', { classe: 'tabella-box' }, [t]);
     },
-    // Gestione accessi: chi ha creato la password (le modifiche si fanno nel foglio)
+    // v11.2 (n. 35, 36, 37): Gestione accessi in tre linguette: Accessi · Fondo cassa · Statistiche.
+    // Accessi in quattro blocchi: A che punto siamo · Da fare · Tutti gli accessi · Foglio accessi. Nessuna funzione di prima si perde.
     gestione: function () {
-      // v10.15: le password le manda la rappresentante (WhatsApp o email); per ogni persona email, numero e stato
       var box = el('div', { classe: 'gestione' });
-      var filtro = '', vista = 'tutti';
+      var filtro = '', vista = 'tutti', aperta = '', apertoStat = {}, tutteFam = false;
       box.appendChild(attesa('Carico gli accessi…'));
       function chiPersona(p) { return p.mail || p.email; }
+      function nomePersona(p) { return p.nome || (p.mail || p.email || '').split('@')[0]; }
+      function pill(p, io) {
+        if (io) return el('span', { classe: 'ga-pill io', testo: 'Sei tu' });
+        return p.stato === 'dentro' ? el('span', { classe: 'ga-pill dentro', testo: 'Entrato' })
+          : p.stato === 'inviata' ? el('span', { classe: 'ga-pill inviata', testo: 'Mandata, non entrato' })
+          : el('span', { classe: 'ga-pill da', testo: p.pronta ? 'Pronta, non mandata' : 'Da mandare' });
+      }
+      function contatto(p) { return (p.mail || 'nessuna email') + ' · ' + (p.telefono || 'senza numero'); }
+      // pulsanti per mandare (o rimandare) la password a una persona
+      function pulsantiInvio(p) {
+        var di = p.stato === 'inviata';
+        var wa = el('button', { type: 'button', classe: 'ga-wa' + (p.numero ? '' : ' off'), disabled: p.numero ? null : 'disabled', title: p.numero ? null : 'Nel foglio non c’è il numero',
+          onclick: function () { invioWa([p], false); } }, [iconaWa(16), di ? 'Rimanda su WhatsApp' : 'Su WhatsApp']);
+        var em = el('button', { type: 'button', classe: 'ga-em', disabled: p.mail ? null : 'disabled', title: p.mail ? null : 'Nel foglio non c’è l’email',
+          onclick: function () { mandaEmail(p, false); } }, [di ? 'Rimanda per email' : 'Per email']);
+        return el('div', { classe: 'ga-invio' }, [wa, em]);
+      }
+      function testoPassword(p, io) {
+        if (io) return 'la tua';
+        if (p.stato === 'da') return p.pronta ? 'pronta per WhatsApp, non ancora mandata' : 'non ancora mandata';
+        if (p.stato === 'inviata') return (p.nuova ? 'nuova password ' : '') + 'mandata ' + (p.canale === 'email' ? 'per email' : 'su WhatsApp') + (p.inviata ? ' il ' + p.inviata : '') + (p.password ? ':' : '');
+        return p.password ? 'ancora quella che gli hai mandato:' : 'scelta da lui';
+      }
+
       function disegna(g) {
+        STATO.gestioneDati = g;
         box.innerHTML = '';
         var tutte = [];
         g.alunni.forEach(function (a) { a.persone.forEach(function (p) { if (!tutte.some(function (x) { return x.chiave === p.chiave; })) tutte.push(p); }); });
         var da = tutte.filter(function (p) { return p.stato === 'da'; });
         var inviate = tutte.filter(function (p) { return p.stato === 'inviata'; });
         var dentro = tutte.filter(function (p) { return p.stato === 'dentro'; });
-        var veri = g.alunni.filter(function (a) { return !a.docente && !senzaAlunno(a.alunno); });   // 10.13: senza il profilo docente
+        var veri = g.alunni.filter(function (a) { return !a.docente && !senzaAlunno(a.alunno); });
+        var nonTrovati = (g.nonNelMaster || []).filter(function (n) { return !senzaAlunno(n) && n !== 'Profilo docente'; });
         var famiglieOk = veri.filter(function (a) { return a.persone.some(function (p) { return p.stato === 'dentro'; }); }).length;
+        // n. 35: bambini senza nessun genitore entrato (esclusi profilo docente e nomi non trovati nel master; con gli alunni senza email)
+        var senzaGenitore = veri.filter(function (a) { return nonTrovati.indexOf(a.alunno) < 0 && !a.persone.some(function (p) { return p.stato === 'dentro'; }); })
+          .map(function (a) { return { alunno: a.alunno, persone: a.persone }; })
+          .concat((g.senzaEmail || []).map(function (n) { return { alunno: n, persone: [], senzaEmail: true }; }))
+          .sort(function (x, y) { return x.alunno.localeCompare(y.alunno, 'it'); });
         var nonEntrate = tutte.filter(function (p) { return p.stato !== 'dentro' && p.mail; }).map(function (p) { return p.mail; });
+        var dv = Array.isArray(g.daVersare) ? g.daVersare : [];
 
-        box.appendChild(el('div', { classe: 'card' }, [
+        // linguette
+        var tab = STATO.schedaGestione || 0;
+        var barra = el('div', { classe: 'schede-tab', role: 'tablist' });
+        [['Accessi', da.length], ['Fondo cassa', dv.length], ['Statistiche', 0]].forEach(function (t, i) {
+          barra.appendChild(el('button', { type: 'button', classe: 'tab con-boll' + (tab === i ? ' attiva' : ''), role: 'tab', 'aria-selected': tab === i ? 'true' : 'false',
+            onclick: function () { STATO.schedaGestione = i; disegna(g); } }, [t[0], t[1] ? el('span', { classe: 'conta', testo: t[1] > 9 ? '9+' : String(t[1]) }) : null]));
+        });
+        box.appendChild(barra);
+
+        if (tab === 1) {                                              // ---------- Fondo cassa ----------
+          box.appendChild(cardDaVersare(g));
+          return;
+        }
+        if (tab === 2) { disegnaStatistiche(g); return; }             // ---------- Statistiche ----------
+
+        // ---------- Accessi: 1. A che punto siamo ----------
+        var numeri = el('div', { classe: 'ga-numeri' });
+        [['da', da.length, 'da mandare'], ['inviata', inviate.length, 'mandate, non entrati'], ['dentro', dentro.length, 'entrati']].forEach(function (n) {
+          numeri.appendChild(el('button', { type: 'button', classe: 'ga-numbtn ' + n[0] + (vista === n[0] ? ' on' : ''), 'aria-pressed': vista === n[0] ? 'true' : 'false',
+            onclick: function () { vista = vista === n[0] ? 'tutti' : n[0]; disegna(g); var t = box.querySelector('.ga-tutti'); if (t) t.scrollIntoView({ block: 'start', behavior: 'smooth' }); } },
+            [el('b', { testo: String(n[1]) }), el('small', { testo: n[2] })]));
+        });
+        box.appendChild(el('div', { classe: 'card ga-punto' }, [
           el('div', { classe: 'riepilogo' }, [
             el('span', { classe: 'grande', testo: dentro.length + '/' + tutte.length }),
             el('div', { classe: 'tx' }, [el('strong', { testo: 'persone sono già entrate' }),
               el('small', { style: 'display:block;color:var(--muted)', testo: famiglieOk + ' alunni su ' + veri.length + ' hanno almeno un genitore entrato' })])
           ]),
-          el('div', { classe: 'barra-prog' }, [el('i', { style: 'width:' + (tutte.length ? Math.round(dentro.length / tutte.length * 100) : 0) + '%' })]),
-          el('div', { classe: 'pw-numeri' }, [
-            el('div', { classe: 'da' }, [el('b', { testo: String(da.length) }), el('small', { testo: 'password da mandare' })]),
-            el('div', null, [el('b', { testo: String(inviate.length) }), el('small', { testo: 'mandate, non ancora entrati' })]),
-            el('div', { classe: 'ok' }, [el('b', { testo: String(dentro.length) }), el('small', { testo: 'entrati' })])
-          ]),
-          el('div', { classe: 'azioni-riga' }, [
-            nonEntrate.length ? el('button', { classe: 'btn btn-sec', testo: '📋 Copia le email di chi non è ancora entrato (' + nonEntrate.length + ')', onclick: function () { copia(nonEntrate.join(', '), nonEntrate.length + ' email copiate: incollale nei destinatari'); } }) : null,
-            el('a', { classe: 'btn btn-sec', href: g.urlFoglio, target: '_blank', rel: 'noopener', testo: '✏️ Aggiungi o togli: apri il foglio accessi' })
-          ]),
-          el('small', { style: 'display:block;color:var(--muted);margin-top:10px', testo: 'Nel foglio “APP CLASSE accessi riservati”: colonna A alunno, B email (serve per entrare: ogni riga deve averla), colonna “Nome” il nome del genitore (la prima parola serve al saluto “Ciao Marta!”), colonna “TELEFONO” il cellulare, usato solo per i tuoi messaggi WhatsApp: per gli italiani basta il numero, per gli altri il prefisso davanti (+44 …). Le modifiche valgono entro un minuto.' })
+          el('div', { classe: 'barra-prog oro' }, [el('i', { style: 'width:' + (tutte.length ? Math.round(dentro.length / tutte.length * 100) : 0) + '%' })]),
+          numeri,
+          el('small', { classe: 'ga-nota', testo: 'Tocca un numero per vedere chi è, nell’elenco qui sotto.' })
         ]));
 
-        // Manda le password: WhatsApp una chat alla volta, email tutte insieme
-        var perWa = da.filter(function (p) { return p.numero; });          // v10.27: un numero doppio non blocca più WhatsApp
+        // ---------- 2. Da fare ----------
+        box.appendChild(el('h3', { classe: 'sez ga-h3', testo: 'Da fare' }));
+        var fare = el('div', { classe: 'card ga-fare' });
+        var perWa = da.filter(function (p) { return p.numero; });
         var perEmail = da.filter(function (p) { return p.mail; });
-        box.appendChild(el('div', { classe: 'card pw-invio' }, [
-          el('h3', { testo: '📨 Manda le password' }),
-          el('p', { testo: 'A chi non l’ha ancora ricevuta. WhatsApp apre una chat alla volta con il messaggio pronto: tu premi Invia e torni qui. Le email partono da sole dal tuo Gmail.' }),
-          el('div', { classe: 'pw-due' }, [
-            el('button', { type: 'button', classe: 'btn btn-wa', disabled: perWa.length ? null : 'disabled', onclick: function () { invioWa(perWa, false); } },
-              ['💬 Su WhatsApp', el('small', { testo: perWa.length + (perWa.length === 1 ? ' persona' : ' persone') })]),
-            el('button', { type: 'button', classe: 'btn btn-primario', disabled: perEmail.length ? null : 'disabled', onclick: function () { invioEmail(da); } },
-              ['✉️ Per email', el('small', { testo: perEmail.length + (perEmail.length === 1 ? ' persona' : ' persone') })])
-          ])
-        ]));
-        (g.doppi || []).forEach(function (d) {
-          box.appendChild(el('div', { classe: 'info-acc' }, ['ℹ️ ', el('b', { testo: 'Stesso numero su due email: ' }),
-            d.telefono + ' (' + d.persone.join(' e ') + '). Non blocca niente: ognuno entra con la sua email e ogni messaggio dice con quale email entrare.']));
-        });
-
-        // v10.12: fondo cassa da versare, con il promemoria su WhatsApp per ogni genitore
-        if (Array.isArray(g.daVersare)) box.appendChild(cardDaVersare(g));
-        // classifica mandata dallo script con i suoi testi (Contenuti.gs → TESTI_GESTIONE)
-        var cl = g.classifica, voci = cl && Array.isArray(cl.voci) ? cl.voci : [];
-        if (voci.some(function (x) { return x.valore > 0; })) {
-          var max = Math.max.apply(null, voci.map(function (x) { return x.valore; })), barre = el('div', { classe: 'barre' });
-          voci.forEach(function (x) {
-            barre.appendChild(el('div', { classe: 'barre-riga' + (x.valore ? '' : ' zero') }, [
-              el('span', { classe: 'nm', testo: x.nome }),
-              el('span', { classe: 'tr' }, [el('i', { style: 'width:' + Math.round(x.valore / max * 100) + '%' })]),
-              el('span', { classe: 'vl', testo: String(x.valore) })
-            ]));
-          });
-          box.appendChild(el('div', { classe: 'card' }, [
-            el('h3', { classe: 'sez', style: 'margin-top:0', testo: cl.titolo || '' }),
-            barre,
-            cl.nota ? el('p', { classe: 'classe-nota', testo: cl.nota }) : null
+        if (da.length) {
+          fare.appendChild(el('div', { classe: 'ga-voce-fare' }, [
+            el('div', { classe: 'ga-fare-testa' }, [el('span', { classe: 'ga-cerchio', testo: String(da.length) }),
+              el('span', { classe: 'tx' }, [el('b', { testo: da.length === 1 ? 'password da mandare' : 'password da mandare' }),
+                el('small', { testo: 'WhatsApp: una chat alla volta, tu premi Invia. Email: partono tutte insieme dal tuo Gmail.' })])]),
+            el('div', { classe: 'ga-due' }, [
+              el('button', { type: 'button', classe: 'ga-wa grande', disabled: perWa.length ? null : 'disabled', onclick: function () { invioWa(perWa, false); } },
+                ['Su WhatsApp', el('small', { testo: perWa.length + (perWa.length === 1 ? ' persona' : ' persone') })]),
+              el('button', { type: 'button', classe: 'ga-em grande', disabled: perEmail.length ? null : 'disabled', onclick: function () { invioEmail(da); } },
+                ['Per email', el('small', { testo: perEmail.length + (perEmail.length === 1 ? ' persona' : ' persone') })])
+            ])
           ]));
         }
-        if (g.senzaEmail && g.senzaEmail.length) box.appendChild(el('div', { classe: 'avviso', testo: '⚠️ Alunni del fondo cassa senza nessuna email nel foglio accessi: ' + g.senzaEmail.join(', ') }));
-        var nonTrovati = (g.nonNelMaster || []).filter(function (n) { return !senzaAlunno(n) && n !== 'Profilo docente'; });   // 10.13: i profili docente non sono un errore
-        if (nonTrovati.length) box.appendChild(el('div', { classe: 'avviso', testo: '⚠️ Nel foglio accessi ma non trovati nel fondo cassa (controlla come sono scritti): ' + nonTrovati.join(', ') }));
+        if (senzaGenitore.length) {
+          var chips = el('div', { classe: 'ga-chips' });
+          senzaGenitore.forEach(function (x) {
+            var c = el('button', { type: 'button', classe: 'ga-chip', onclick: function () { foglioBambino(x, g); } }, [x.alunno]);
+            c.appendChild(svgSpan('', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>'));
+            chips.appendChild(c);
+          });
+          fare.appendChild(el('div', { classe: 'ga-voce-fare' }, [
+            el('div', { classe: 'ga-fare-testa' }, [el('span', { classe: 'ga-cerchio', testo: String(senzaGenitore.length) }),
+              el('span', { classe: 'tx' }, [el('b', { testo: senzaGenitore.length === 1 ? 'bambino senza nessun genitore entrato' : 'bambini senza nessun genitore entrato' }),
+                el('small', { testo: 'Tocca un nome per rimandare la password ai suoi genitori.' })])]),
+            chips
+          ]));
+        }
+        if (!da.length && !senzaGenitore.length) fare.appendChild(el('p', { classe: 'ga-niente', testo: '✓ Niente da fare' }));
+        box.appendChild(fare);
 
-        var ca = el('div', { classe: 'card' });
+        // ---------- 3. Tutti gli accessi ----------
+        box.appendChild(el('h3', { classe: 'sez ga-h3 ga-tutti', testo: 'Tutti gli accessi' }));
+        var ca = el('div', { classe: 'card ga-elenco' });
         var cerca = el('input', { classe: 'cerca', type: 'search', placeholder: 'Cerca per alunno, email o numero…', 'aria-label': 'Cerca negli accessi', value: filtro });
         cerca.addEventListener('input', function () { filtro = cerca.value; disegnaElenco(); });
         ca.appendChild(cerca);
-        ca.appendChild(el('div', { classe: 'filtri' }, [['tutti', 'Tutti'], ['da', 'Da mandare (' + da.length + ')'], ['inviata', 'Non ancora entrati (' + inviate.length + ')']].map(function (f) {
-          return el('button', { classe: 'cal-chip' + (vista === f[0] ? ' attivo' : ''), testo: f[1], onclick: function () { vista = f[0]; disegna(g); } });
+        ca.appendChild(el('div', { classe: 'filtri' }, [['tutti', 'Tutti'], ['da', 'Da mandare (' + da.length + ')'], ['inviata', 'Non entrati (' + inviate.length + ')'], ['dentro', 'Entrati (' + dentro.length + ')']].map(function (f) {
+          return el('button', { type: 'button', classe: 'ga-filtro' + (vista === f[0] ? ' on' : ''), 'aria-pressed': vista === f[0] ? 'true' : 'false', testo: f[1], onclick: function () { vista = f[0]; disegna(g); } });
         })));
         var elenco = el('div');
         ca.appendChild(elenco);
         function rigaPersona(p, nome) {
-          var stato = p.stato === 'da' ? el('span', { classe: 'pw-stato da', testo: p.pronta ? 'Password pronta, non ancora mandata' : 'Password da mandare' })
-            : p.stato === 'inviata' ? el('span', { classe: 'pw-stato inviata', testo: (p.nuova ? 'Nuova password' : 'Password') + ' mandata ' + (p.canale === 'email' ? 'per email' : 'su WhatsApp') + (p.inviata ? ' il ' + p.inviata : '') + ' · non ancora entrato' })
-            : el('span', { classe: 'pw-stato dentro', testo: p.chiave === STATO.sessione.chiave ? '✓ Sei tu' : '✓ Entrato' + (p.cambiata ? ' · password scelta da lui' : ' · usa la password che gli hai mandato') });
-          var azioni = [];
-          var io = p.chiave === STATO.sessione.chiave;
-          if (p.stato !== 'dentro' && !io) {
-            var di = p.stato === 'inviata' ? 'Rimanda ' : '';
-            azioni.push(el('button', { type: 'button', classe: 'wa', disabled: p.numero ? null : 'disabled',
-              title: !p.numero ? 'Nel foglio non c’è il numero' : null,
-              onclick: function () { invioWa([p], false); } }, ['💬 ' + (di ? di + 'su ' : '') + 'WhatsApp']));
-            azioni.push(el('button', { type: 'button', classe: 'em', disabled: p.mail ? null : 'disabled', title: p.mail ? null : 'Nel foglio non c’è l’email',
-              onclick: function () { mandaEmail(p, false); } }, ['✉️ ' + (di ? di + 'per ' : '') + 'Email']));
+          var io = p.chiave === STATO.sessione.chiave, id = nome + '|' + p.chiave, aperto = aperta === id;
+          var riga = el('div', { classe: 'ga-persona' + (aperto ? ' aperta' : '') });
+          var freccia = svgSpan('giu', '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>');
+          riga.appendChild(el('button', { type: 'button', classe: 'ga-pers', 'aria-expanded': aperto ? 'true' : 'false', onclick: function () { aperta = aperto ? '' : id; disegnaElenco(); } }, [
+            el('span', { classe: 'tx' }, [el('span', { classe: 'nome-r' }, [el('b', { testo: nomePersona(p) }), pill(p, io)]), el('small', { testo: contatto(p) })]),
+            freccia]));
+          if (p.stato !== 'dentro' && !io) riga.appendChild(pulsantiInvio(p));
+          if (aperto) {
+            var d = el('div', { classe: 'ga-dett' });
+            d.appendChild(el('div', null, [el('span', { classe: 'ga-lbl', testo: 'Saluto nei messaggi' }), p.nome ? '“' + (p.saluto || 'Ciao ' + p.nome + '!') + '”' : '“Ciao!” · nessun nome nel foglio']));
+            d.appendChild(el('div', null, [el('span', { classe: 'ga-lbl', testo: 'Entra con' }), p.mail ? el('b', { classe: 'mail', testo: p.mail }) : el('b', { classe: 'manca', testo: 'nessuna email' })]));
+            d.appendChild(el('div', null, [el('span', { classe: 'ga-lbl', testo: 'WhatsApp' }), p.telefono ? p.telefono + (p.doppio ? ' · anche su un’altra email' : '') : el('span', { classe: 'manca', testo: 'nessun numero nel foglio: solo email' })]));
+            d.appendChild(el('div', null, [el('span', { classe: 'ga-lbl', testo: 'Password' }), testoPassword(p, io), p.password && !io ? ' ' : null, p.password && !io ? el('span', { classe: 'mono ga-pw', testo: p.password }) : null]));
+            if (p.info) d.appendChild(el('div', null, [el('span', { classe: 'ga-lbl', testo: 'Uso dell’app' }), p.info]));
+            if (p.attiva && !io) d.appendChild(el('div', null, [el('button', { type: 'button', classe: 'ga-em grigio', testo: '↻ Reimposta la password', onclick: function () { reimposta(p, nome); } })]));
+            riga.appendChild(d);
           }
-          if (p.attiva && !io) azioni.push(el('button', { type: 'button', classe: 'reimp', testo: '↻ Reimposta', onclick: function () { reimposta(p, nome); } }));
-          // v10.27: saluto (colonna Nome), email per entrare, numero solo per WhatsApp
-          return el('div', { classe: 'persona' }, [
-            el('span', { classe: 'saluto-r', testo: p.nome ? 'Saluto: “' + (p.saluto || 'Ciao ' + p.nome + '!') + '”' : 'Saluto: “Ciao!” · nessun nome nel foglio' }),
-            el('div', { classe: 'chi' }, [
-              el('span', { classe: 'riga-acc' }, [el('span', { classe: 'pill-acc entra', testo: 'ENTRA CON' }), p.mail ? el('b', { testo: p.mail }) : el('b', { classe: 'manca', testo: 'nessuna email' })]),
-              p.telefono ? el('span', { classe: 'tel-r' }, [el('span', { classe: 'pill-acc wa', testo: 'WHATSAPP' }), ' ' + p.telefono + (p.doppio ? ' · anche su un’altra email' : '')])
-                : el('span', { classe: 'tel-r manca', testo: 'Nessun numero: solo email' })
-            ]),
-            stato,
-            p.password ? el('div', { classe: 'pw-prima' }, [p.stato === 'dentro' ? 'Password che gli hai mandato, ancora in uso:' : 'Password:', el('span', { classe: 'mono', testo: p.password })]) : null,
-            p.info ? el('span', { classe: 'info', testo: p.info }) : null,
-            azioni.length ? el('div', { classe: 'pw-azioni' }, azioni) : null
-          ]);
+          return riga;
         }
         function disegnaElenco() {
           elenco.innerHTML = '';
           var q = filtro.toLowerCase().trim(), trovati = 0;
           g.alunni.forEach(function (a) {
             var sue = a.persone.filter(function (p) {
-              return (!q || (a.alunno + ' ' + (p.mail || '') + ' ' + (p.telefono || '').replace(/\s/g, '')).toLowerCase().indexOf(q.replace(/\s/g, '')) >= 0 || (a.alunno + ' ' + (p.mail || '')).toLowerCase().indexOf(q) >= 0)
+              return (!q || (a.alunno + ' ' + (p.mail || '') + ' ' + (p.telefono || '').replace(/\s/g, '') + ' ' + (p.nome || '')).toLowerCase().indexOf(q.replace(/\s/g, '')) >= 0 || (a.alunno + ' ' + (p.mail || '') + ' ' + (p.nome || '')).toLowerCase().indexOf(q) >= 0)
                 && (vista === 'tutti' || p.stato === vista);
             });
             if (!sue.length) return;
             trovati++;
-            elenco.appendChild(el('div', { classe: 'gruppo', testo: a.docente ? '👩‍🏫 Profilo docente · nessun alunno' : a.alunno }));
+            var entr = a.persone.filter(function (p) { return p.stato === 'dentro'; }).length;
+            elenco.appendChild(el('div', { classe: 'ga-gruppo' }, [el('b', { testo: a.docente ? 'Profilo docente · nessun alunno' : a.alunno }),
+              el('small', { testo: entr + ' su ' + a.persone.length + ' entrat' + (a.persone.length === 1 && entr === 1 ? 'o' : 'i') })]));
             sue.forEach(function (p) { elenco.appendChild(rigaPersona(p, a.alunno)); });
           });
           if (!q && vista === 'tutti' && g.amministratori.length) {
-            elenco.appendChild(el('div', { classe: 'gruppo', testo: 'Amministratrice' }));
+            elenco.appendChild(el('div', { classe: 'ga-gruppo' }, [el('b', { testo: 'Amministratrice' })]));
             g.amministratori.forEach(function (p) { elenco.appendChild(rigaPersona(p, '')); });
           }
           if (!trovati && (q || vista !== 'tutti')) elenco.appendChild(el('p', { classe: 'stato', testo: !q ? 'Nessuno in questo elenco 🎉' : 'Nessun risultato per "' + filtro + '".' }));
         }
         disegnaElenco();
         box.appendChild(ca);
+
+        // ---------- 4. Foglio accessi ----------
+        box.appendChild(el('h3', { classe: 'sez ga-h3', testo: 'Foglio accessi' }));
+        var fa = el('div', { classe: 'card' }, [
+          el('div', { classe: 'ga-colonna' }, [
+            el('a', { classe: 'btn btn-sec', href: g.urlFoglio, target: '_blank', rel: 'noopener', testo: '✏️ Aggiungi o togli persone: apri il foglio' }),
+            nonEntrate.length ? el('button', { type: 'button', classe: 'btn btn-sec', testo: '📋 Copia le email di chi non è ancora entrato (' + nonEntrate.length + ')', onclick: function () { copia(nonEntrate.join(', '), nonEntrate.length + ' email copiate: incollale nei destinatari'); } }) : null
+          ]),
+          el('small', { classe: 'ga-nota', testo: 'Nel foglio “APP CLASSE accessi riservati”: colonna A alunno, B email (serve per entrare: ogni riga deve averla), colonna “Nome” il nome del genitore (la prima parola serve al saluto “Ciao Marta!”), colonna “TELEFONO” il cellulare, usato solo per i tuoi messaggi WhatsApp: per gli italiani basta il numero, per gli altri il prefisso davanti (+44 …). Le modifiche valgono entro un minuto.' })
+        ]);
+        (g.doppi || []).forEach(function (d) {
+          fa.appendChild(el('div', { classe: 'info-acc', style: 'margin:12px 0 0' }, ['ℹ️ ', el('b', { testo: 'Stesso numero su due email: ' }),
+            d.telefono + ' (' + d.persone.join(' e ') + '). Non blocca niente: ognuno entra con la sua email e ogni messaggio dice con quale email entrare.']));
+        });
+        if (g.senzaEmail && g.senzaEmail.length) fa.appendChild(el('div', { classe: 'avviso', style: 'margin:12px 0 0', testo: '⚠️ Alunni del fondo cassa senza nessuna email nel foglio accessi: ' + g.senzaEmail.join(', ') }));
+        if (nonTrovati.length) fa.appendChild(el('div', { classe: 'avviso', style: 'margin:12px 0 0', testo: '⚠️ Nel foglio accessi ma non trovati nel fondo cassa (controlla come sono scritti): ' + nonTrovati.join(', ') }));
+        box.appendChild(fa);
+      }
+
+      // n. 35: foglio con i genitori di un bambino senza nessun genitore entrato
+      function foglioBambino(x, g) {
+        var chiudi = el('button', { type: 'button', classe: 'ga-x', 'aria-label': 'Chiudi' });
+        chiudi.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+        var nodi = [el('div', { classe: 'ga-foglio-testa' }, [el('b', { testo: x.alunno }), chiudi])];
+        if (x.senzaEmail) nodi.push(el('p', { testo: 'Nel foglio accessi non c’è nessuna email per questo alunno: aggiungi una riga con l’email di un genitore, poi mandagli la password.' }),
+          el('a', { classe: 'btn btn-sec', href: g.urlFoglio, target: '_blank', rel: 'noopener', testo: '✏️ Apri il foglio accessi' }));
+        else {
+          nodi.push(el('p', { testo: 'Nessun genitore è ancora entrato. Rimanda la password:' }));
+          x.persone.forEach(function (p) {
+            nodi.push(el('div', { classe: 'ga-gen' }, [
+              el('div', { classe: 'ga-gen-testa' }, [el('span', { classe: 'tx' }, [el('b', { testo: nomePersona(p) }), el('small', { testo: contatto(p) })]), pill(p, false)]),
+              pulsantiInvio(p)]));
+          });
+        }
+        var f = foglio(nodi);
+        chiudi.addEventListener('click', function () { f.chiudi(); });
+        Array.prototype.forEach.call(f.pannello.querySelectorAll('.ga-invio button'), function (b) { b.addEventListener('click', function () { f.chiudi(); }); });
+      }
+
+      // ---------- Statistiche (n. 36, 37): testi dallo script (Contenuti.gs → TESTI_GESTIONE.statistiche) ----------
+      function disegnaStatistiche(g) {
+        var t = g.testiStat || {};
+        function bottoneWa(testo, numero, etichetta) {
+          return el('a', { classe: 'ga-wa', href: linkWhatsapp(testo, numero || ''), target: '_blank', rel: 'noopener' }, [iconaWa(15), etichetta]);
+        }
+        function blocchiLettura(lista, titolo, sotto, tipo) {
+          if (!Array.isArray(lista)) return;
+          var card = el('div', { classe: 'card ga-stat' }, [el('h3', { classe: 'ga-h3', testo: titolo }), sotto ? el('p', { classe: 'ga-sub', testo: sotto }) : null]);
+          if (!lista.length) card.appendChild(el('p', { classe: 'stato', style: 'margin:4px 0 10px', testo: tipo === 'avviso' ? 'Nessun avviso pubblicato.' : 'Nessun documento con la data nel nome.' }));
+          lista.forEach(function (x, i) {
+            var tutte = x.totale > 0 && x.viste >= x.totale, k = tipo + x.id, aperto = !!apertoStat[k] && !tutte;
+            var pct = x.totale ? Math.round(x.viste / x.totale * 100) : 0;
+            var manc = x.totale - x.viste;
+            var info = (tipo === 'avviso' ? 'pubblicato il ' + x.data + (x.stato ? ' · ' + x.stato : '') : x.sezione + ' · ' + x.data) + ' · ' +
+              (!x.totale ? 'nessuna famiglia da contare' : tutte ? 'tutte le famiglie' : 'mancano ' + manc + (manc === 1 ? ' famiglia' : ' famiglie'));
+            card.appendChild(el('button', { type: 'button', classe: 'ga-voce' + (i === 0 ? ' prima' : ''), 'aria-expanded': aperto ? 'true' : 'false',
+              onclick: function () { if (tutte) return; apertoStat[k] = !apertoStat[k]; disegna(g); } }, [
+              el('span', { classe: 'ga-voce-testa' }, [el('b', { testo: x.titolo }), el('span', { classe: 'ga-num' + (tutte ? ' ok' : ''), testo: x.viste + '/' + x.totale })]),
+              el('span', { classe: 'ga-bar' + (tutte ? ' ok' : '') }, [el('i', { style: 'width:' + pct + '%' })]),
+              el('small', { testo: info })]));
+            if (aperto) {
+              var m = el('div', { classe: 'ga-mancano-box' });
+              x.mancano.forEach(function (f) {
+                var gen = f.genitori.map(function (p) { return p.nome + (p.mai ? ' · mai entrato' : p.ultimo ? ' · ultimo accesso ' + p.ultimo : ''); }).join(', ');
+                var bott = el('span', { classe: 'ga-bott' });
+                f.genitori.forEach(function (p) { bott.appendChild(bottoneWa(p.testo, p.numero, f.genitori.length > 1 ? 'Ricorda a ' + p.nome : 'Ricorda')); });
+                m.appendChild(el('div', { classe: 'ga-mancano' }, [el('span', { classe: 'tx' }, [el('b', { testo: 'Famiglia di ' + f.alunno }), el('small', { testo: gen })]), bott]));
+              });
+              card.appendChild(m);
+            }
+          });
+          box.appendChild(card);
+        }
+        if (g.letture) {
+          blocchiLettura(g.letture.avvisi, t.avvisi || 'Chi ha visto gli avvisi', t.avvisiSotto, 'avviso');
+          blocchiLettura(g.letture.documenti, t.documenti || 'Chi ha aperto i documenti', t.documentiSotto, 'doc');
+        }
+        if (Array.isArray(g.ferme)) {
+          var fc = el('div', { classe: 'card ga-stat' }, [el('h3', { classe: 'ga-h3', testo: t.ferme || 'Non aprono l’app da più di 2 settimane' }), t.fermeSotto ? el('p', { classe: 'ga-sub', testo: t.fermeSotto }) : null]);
+          if (!g.ferme.length) fc.appendChild(el('p', { classe: 'ga-niente', testo: '✓ ' + (t.fermeNessuna || 'Tutte le famiglie hanno aperto l’app nelle ultime 2 settimane.') }));
+          g.ferme.forEach(function (f) {
+            var bott = el('span', { classe: 'ga-bott' });
+            f.genitori.forEach(function (p) { bott.appendChild(bottoneWa(p.testo, p.numero, f.genitori.length > 1 ? 'Scrivi a ' + p.nome : 'Scrivi')); });
+            fc.appendChild(el('div', { classe: 'ga-mancano' }, [el('span', { classe: 'tx' }, [el('b', { testo: 'Famiglia di ' + f.alunno }), el('small', { testo: f.chi + ' · ultimo accesso ' + f.ultimo })]), bott]));
+          });
+          box.appendChild(fc);
+        }
+        // sezioni più aperte (come prima)
+        var cl = g.classifica, voci = cl && Array.isArray(cl.voci) ? cl.voci : [];
+        if (voci.some(function (x) { return x.valore > 0; })) {
+          var max = Math.max.apply(null, voci.map(function (x) { return x.valore; })), barre = el('div', { classe: 'barre' });
+          voci.forEach(function (x) {
+            barre.appendChild(el('div', { classe: 'barre-riga oro' + (x.valore ? '' : ' zero') }, [
+              el('span', { classe: 'nm', testo: x.nome }),
+              el('span', { classe: 'tr' }, [el('i', { style: 'width:' + Math.round(x.valore / max * 100) + '%' })]),
+              el('span', { classe: 'vl', testo: String(x.valore) })
+            ]));
+          });
+          box.appendChild(el('div', { classe: 'card ga-stat' }, [el('h3', { classe: 'ga-h3', testo: cl.titolo || '' }), barre, cl.nota ? el('p', { classe: 'classe-nota', testo: cl.nota }) : null]));
+        }
+        // n. 36: chi usa di più l'app, per famiglia
+        if (Array.isArray(g.classificaFamiglie)) {
+          var fam = g.classificaFamiglie, maxA = Math.max.apply(null, fam.map(function (f) { return f.accessi; }).concat([1]));
+          var card = el('div', { classe: 'card ga-stat' }, [el('h3', { classe: 'ga-h3', testo: t.famiglie || 'Chi usa di più l’app' }), t.famiglieSotto ? el('p', { classe: 'ga-sub', testo: t.famiglieSotto }) : null]);
+          var pos = 0;
+          (tutteFam ? fam : fam.slice(0, 10)).forEach(function (f, i) {
+            var zero = !f.accessi, k = 'fam' + f.alunno, aperto = !!apertoStat[k];
+            if (!zero) pos = i + 1;
+            var sotto = zero ? 'Nessun genitore è ancora entrato' :
+              (f.totale === 1 ? '1 genitore' : f.entrati + ' genitori su ' + f.totale) + (f.ultimo ? ' · ultimo ' + f.ultimo : '') + (f.preferita ? ' · apre di più: ' + f.preferita : '');
+            var corpo = el('span', { classe: 'tx' }, [
+              el('span', { classe: 'ga-voce-testa' }, [el('b', { testo: 'Famiglia di ' + f.alunno }), el('span', { classe: 'ga-num', testo: String(f.accessi) })]),
+              el('span', { classe: 'ga-bar' }, [el('i', { style: 'width:' + Math.round(f.accessi / maxA * 100) + '%' })]),
+              el('small', { testo: sotto })]);
+            if (aperto) corpo.appendChild(el('span', { classe: 'ga-fam-dett' }, f.genitori.map(function (p) {
+              return el('span', { classe: 'riga' + (p.accessi ? '' : ' zero') }, [el('span', null, [el('b', { testo: p.nome }), el('small', { testo: p.ultimo ? 'ultimo accesso ' + p.ultimo : 'non è ancora entrato' })]),
+                el('span', { classe: 'ga-num', testo: p.accessi + (p.accessi === 1 ? ' accesso' : ' accessi') })]);
+            })));
+            card.appendChild(el('button', { type: 'button', classe: 'ga-riga' + (zero ? ' zero' : '') + (i === 0 ? ' prima' : ''), 'aria-expanded': aperto ? 'true' : 'false',
+              onclick: function () { apertoStat[k] = !apertoStat[k]; disegna(g); } }, [el('span', { classe: 'ga-pos' + (zero ? ' zero' : i < 3 ? ' oro' : ''), testo: zero ? '–' : String(i + 1) }), corpo]));
+          });
+          if (fam.length > 10) card.appendChild(el('div', { classe: 'ga-piede' }, [el('button', { type: 'button', classe: 'btn btn-sec', testo: tutteFam ? 'Mostra solo le prime 10' : 'Mostra tutte le famiglie (' + fam.length + ')', onclick: function () { tutteFam = !tutteFam; disegna(g); } })]));
+          if (!fam.length) card.appendChild(el('p', { classe: 'stato', testo: 'Nessuna famiglia da mostrare.' }));
+          box.appendChild(card);
+        }
+        if (t.nota) box.appendChild(el('p', { classe: 'ga-nota', style: 'margin:10px 2px 0', testo: t.nota }));
+        if (!g.letture && !g.classificaFamiglie) box.appendChild(el('div', { classe: 'avviso', style: 'margin-top:12px', testo: 'Per le statistiche per famiglia serve Codice.gs 11.2: incollalo e fai Nuova versione.' }));
       }
 
       // Foglio dal basso (stile dei pannelli dell'app)
@@ -5385,9 +6205,16 @@
       b.schede.forEach(function (s, i) {
         barra.appendChild(principali
           ? el('button', { classe: 'tab', role: 'tab', onclick: function () { apri(i); } }, [icona(iconaScheda(s), 18), el('span', { testo: s.titolo })])
-          : el('button', { classe: 'tab', role: 'tab', testo: s.titolo, onclick: function () { apri(i); } }));
+          : el('button', { classe: 'tab' + (s.bollino ? ' con-boll' : ''), role: 'tab', 'data-porta': s.bollino || null, testo: s.titolo, onclick: function () { apri(i); } }));   // v11.2: bollino = "ricevute"
       });
-      box.appendChild(barra); box.appendChild(corpo);
+      box.appendChild(barra);
+      // v11.2: "Dati aggiornati al …" una volta sola, sotto le linguette (data del master)
+      if (b.aggiornato) {
+        var agg = el('p', { classe: 'ct-agg' });
+        box.appendChild(agg);
+        Promise.resolve(STATO.miei).then(function (d) { var x = d && d.classe && d.classe.aggiornato; if (x) agg.textContent = 'Dati aggiornati al ' + dataMedia(x); });
+      }
+      box.appendChild(corpo);
       apri(attiva);
       return box;
     }
