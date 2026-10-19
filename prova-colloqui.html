@@ -181,6 +181,28 @@ var MM=["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto
 var OGGI=new Date(2026,9,26);
 var FINE_MESE=new Date(OGGI);FINE_MESE.setMonth(FINE_MESE.getMonth()+1); // si prenota al massimo un mese avanti
 var chi="madre", foglio=null, esiti=[], avvisata=0, seq=0;
+/* Avvisi nell'app: conferma, rifiuto, annullamento (con motivo facoltativo) */
+var AVVISI=[];
+function avvisa(per,da,r,tipo,motivo){AVVISI.push({per:per,da:da,r:r,tipo:tipo,motivo:(motivo||"").trim(),letti:{}});}
+function chiSono(){return chi==="mae"?"mae":chi;}
+function mieiAvvisi(){var w=chiSono();return AVVISI.filter(function(a){if(a.letti[w]||a.da===w)return false;return a.per==="mae"?w==="mae":(w==="madre"||w==="padre")&&vede(a.r);});}
+function quando(r){return lunga(r.d)+", "+r.da+"–"+r.a;}
+function testoAvviso(a){var r=a.r,chiP=a.da==="mae"?"La maestra":GEN[a.da]+" ("+a.da+" di "+r.alunno.split(" ")[0]+")";
+  if(a.tipo==="ok")return["ok","✓ La maestra ha confermato il colloquio di "+quando(r)+"."];
+  if(a.tipo==="no")return["no","La maestra ha declinato la richiesta di "+quando(r)+". Si può sceglierne un'altra."];
+  if(a.tipo==="ritirata")return["no",chiP+" ha ritirato la richiesta di "+quando(r)+"."];
+  return["no",chiP+" ha annullato il colloquio di "+quando(r)+(a.da==="mae"?". Si può prenotarne un altro.":".")];}
+function boxAvvisi(P){var av=mieiAvvisi(),w=chiSono();if(!av.length)return;
+  var b=el("div",{classe:"box"},[el("h2",{},["🔔 Avvisi",el("span",{classe:"bollino",testo:String(av.length)})])]);
+  av.forEach(function(a){var t=testoAvviso(a);b.appendChild(el("div",{classe:"stato "+t[0]},[el("b",{testo:t[1]}),
+    a.motivo?el("div",{style:"font-style:italic;margin-top:4px",testo:"Motivo: «"+a.motivo+"»"}):null,
+    el("div",{classe:"azioni"},[btn("","Ok, visto",function(){a.letti[w]=true;disegna();})])]));});
+  P.appendChild(b);}
+function chiediMotivo(C,titolo,si,fai){var o=foglio;
+  var ta=el("textarea",{classe:"nota-in",id:"motivo",rows:"2",placeholder:"Es. è subentrato un impegno urgente"});ta.value=o.motivo||"";ta.oninput=function(){o.motivo=ta.value;};
+  C.appendChild(el("div",{classe:"stato no",style:"display:flex;flex-direction:column;gap:8px"},[el("b",{testo:titolo}),
+    el("label",{"for":"motivo",classe:"lbl",testo:"Perché? (facoltativo, si legge nell'avviso)"}),ta,
+    el("div",{classe:"azioni"},[btn("no",si,function(){fai(o.motivo);}),btn("","No, lascia così",function(){o.chiedi=null;aggiorna();})])]));}
 function lunga(d){return GG[d.getDay()]+" "+d.getDate()+" "+MM[d.getMonth()];}
 function corta(d){return GG[d.getDay()].slice(0,3)+" "+d.getDate()+" "+MM[d.getMonth()].slice(0,3);}
 function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
@@ -233,6 +255,7 @@ function btn(cls,testo,fn){var b=el("button",{classe:"btn "+cls,type:"button",te
 function linkVideo(url,testo,cls){return el("a",{classe:cls||"vai",href:url,target:"_blank",rel:"noopener",testo:testo||"📹 Entra nella videochiamata"});}
 /* ---------- VISTA GENITORE ---------- */
 function vistaGenitore(P){
+  boxAvvisi(P);
   document.getElementById("titolo").textContent="Ricevimento Docenti";
   // Home: Prossimi 7 giorni (solo i miei confermati)
   var lim=new Date(OGGI);lim.setDate(lim.getDate()+7);
@@ -248,7 +271,7 @@ function vistaGenitore(P){
 
   P.appendChild(el("div",{classe:"nota"},[el("span",{testo:"🕒"}),el("span",{testo:"Con la maestra Marianna prenoti qui: fasce da 15 minuti, anche più di una se sono attaccate. Lei conferma nell'app. Con gli altri insegnanti scegli la mezz'ora e l'app prepara la mail."})]));
   var io=mie();
-  var ev=esiti.filter(function(e){return vede(e.r);});
+  var ev=[];
   if(io.length||ev.length){
     var b=el("div",{classe:"box"},[el("h2",{},["Il tuo colloquio con la maestra",ev.length?el("span",{classe:"bollino",testo:String(ev.length)}):null])]);
     ev.forEach(function(e){b.appendChild(el("div",{classe:"stato no"},[el("b",{testo:"La maestra ha declinato: "+e.tx}),"Puoi sceglierne un'altra qui sotto."]));});
@@ -311,6 +334,7 @@ function vistaRossana(P){
 /* ---------- VISTA MAESTRA ---------- */
 function vistaMaestra(P){
   document.getElementById("titolo").textContent="I miei colloqui";
+  boxAvvisi(P);
   // Home della maestra: richieste da confermare + colloqui dei prossimi 7 giorni
   var lim=new Date(OGGI);lim.setDate(lim.getDate()+7);
   var na=inAttesa().length,h=el("div",{classe:"home"},[el("div",{classe:"lbl"},[el("span",{testo:"🏠 Nella sua Home · Prossimi 7 giorni"}),el("span",{testo:"lun 26 ott"})])]);
@@ -331,7 +355,7 @@ function vistaMaestra(P){
   att.forEach(function(r){
     b.appendChild(el("div",{classe:"riga"},[el("div",{},[el("b",{testo:r.alunno}),el("br"),lunga(r.d)+" · "+r.da+"–"+r.a+" · "+modoTx(r.modo),el("br"),
       el("span",{classe:"vuoto",testo:r.genitore+" ("+r.ruolo+")"}),
-      el("div",{classe:"azioni"},[btn("si","✓ Conferma",function(){conferma(r);}),btn("no","Declina",function(){declina(r);})])])]));
+      el("div",{classe:"azioni"},[btn("si","✓ Conferma",function(){conferma(r);}),btn("no","Declina",function(){apri({tipo:"mae",r:r,chiedi:"declina"});})])])]));
   });
   P.appendChild(b);
   var c=el("div",{classe:"box"},[el("h2",{testo:"Confermati"})]);
@@ -354,8 +378,9 @@ function vistaMaestra(P){
     cal.appendChild(el("div",{classe:"giorno"},[el("div",{classe:"gd",testo:corta(d)+(chiuso?" · non disponibile: i genitori non lo vedono":"")}),r]));});
   P.appendChild(cal);
 }
-function conferma(r){r.stato="ok";if(r.modo==="online"&&!r.link)r.link=stanza(r.alunno,r.d);if(foglio)chiudi();disegna();}
-function declina(r){if(r.fam)esiti.push({r:r,tx:lunga(r.d)+", "+r.da+"–"+r.a});RICH.splice(RICH.indexOf(r),1);if(foglio)chiudi();disegna();}
+function conferma(r){r.stato="ok";if(r.modo==="online"&&!r.link)r.link=stanza(r.alunno,r.d);if(r.fam)avvisa("fam","mae",r,"ok");if(foglio)chiudi();disegna();}
+function declina(r,motivo){if(r.fam)avvisa("fam","mae",r,r.stato==="ok"?"annullato":"no",motivo);RICH.splice(RICH.indexOf(r),1);if(foglio)chiudi();disegna();}
+function annullaGenitore(r,motivo){var t=r.stato==="ok"?"annullato":"ritirata";avvisa("mae",IO.ruolo,r,t,motivo);if(r.condiviso)avvisa("fam",IO.ruolo,r,t,motivo);RICH.splice(RICH.indexOf(r),1);chiudi();disegna();}
 
 /* ---------- FOGLIO ---------- */
 function testiMail(o){
@@ -405,7 +430,8 @@ function aggiorna(){
     C.appendChild(el("div",{classe:"riass"},[el("b",{testo:r.alunno}),lunga(r.d)+" · dalle "+r.da+" alle "+r.a]));
     C.appendChild(el("div",{classe:"stato "+(r.stato==="ok"?"ok":"attesa")},[el("b",{testo:r.stato==="ok"?"✓ Confermato":"⏳ Da confermare"}),r.genitore+" ("+r.ruolo+") · "+modoTx(r.modo)]));
     if(r.stato==="ok"&&r.modo==="online"){C.appendChild(linkVideo(r.link));C.appendChild(el("div",{classe:"link",testo:r.link}));}
-    C.appendChild(el("div",{classe:"azioni"},r.stato==="attesa"?[btn("si","✓ Conferma",function(){conferma(r);}),btn("no","Declina",function(){declina(r);})]:[btn("no","Annulla il colloquio",function(){declina(r);})]));
+    if(o.chiedi)chiediMotivo(C,r.stato==="ok"?"Annullare il colloquio? La famiglia riceve un avviso.":"Declinare la richiesta? La famiglia riceve un avviso.",r.stato==="ok"?"Sì, annulla":"Sì, declina",function(m){declina(r,m);});
+    else C.appendChild(el("div",{classe:"azioni"},r.stato==="attesa"?[btn("si","✓ Conferma",function(){conferma(r);}),btn("no","Declina",function(){o.chiedi="declina";aggiorna();})]:[btn("no","Annulla il colloquio",function(){o.chiedi="annulla";aggiorna();})]));
     return;
   }
   // genitore con la maestra
@@ -416,10 +442,12 @@ function aggiorna(){
     T.textContent=ok.length===rr.length?"Colloquio confermato":"Il tuo colloquio";
     rr.forEach(function(r){C.appendChild(el("div",{classe:"stato "+(r.stato==="ok"?"ok":"attesa")},[
       el("b",{testo:(r.stato==="ok"?"✓ Confermato: ":"⏳ In attesa della maestra: ")+r.da+"–"+r.a}),modoTx(r.modo),
-      mia(r)?el("div",{classe:"azioni"},[btn("no",r.stato==="ok"?"Annulla":"Ritira la richiesta",function(){RICH.splice(RICH.indexOf(r),1);chiudi();disegna();}),
+      mia(r)?el("div",{classe:"azioni"},[btn("no",r.stato==="ok"?"Annulla":"Ritira la richiesta",function(){foglio.chiedi=r.id;foglio.motivo="";aggiorna();}),
         btn("",r.condiviso?"Smetti di condividere":"👥 Condividi con "+GEN[altro()].split(" ")[0],function(){r.condiviso=!r.condiviso;aggiorna();disegna();})]):null,
       mia(r)?el("div",{classe:"vuoto",style:"margin-top:6px",testo:r.condiviso?"👥 Condiviso con "+GEN[altro()]+": lo vede nella sua app, ma non può annullarlo.":"Non condiviso: "+GEN[altro()]+" non lo vede."}):
         el("div",{classe:"vuoto",style:"margin-top:6px",testo:"👥 Prenotato da "+GEN[r.di]+" ("+r.di+"). Può annullarlo solo lei o la maestra."})]));});
+    var daAnn=rr.filter(function(r){return r.id===o.chiedi;})[0];
+    if(daAnn)chiediMotivo(C,daAnn.stato==="ok"?"Annullare il colloquio delle "+daAnn.da+"? La maestra riceve un avviso"+(daAnn.condiviso?", e anche "+GEN[altro()]+".":"."):"Ritirare la richiesta delle "+daAnn.da+"?",daAnn.stato==="ok"?"Sì, annulla":"Sì, ritira",function(m){annullaGenitore(daAnn,m);});
     if(ok.length&&ok[0].modo==="online"){C.appendChild(linkVideo(ok[0].link));C.appendChild(el("div",{classe:"link",testo:ok[0].link}));}
     if(rr.some(function(r){return r.stato==="attesa";}))C.appendChild(el("p",{classe:"sotto",testo:"Quando la maestra decide, lo vedi qui con il bollino."}));
     return;
