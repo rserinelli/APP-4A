@@ -14,7 +14,23 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.5, 19 ottobre 2026: RICEVIMENTO CON LA MAIL PRONTA (n. 43) —
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.7, 19 ottobre 2026: RILETTURA VELOCE (n. 47) — con l'app
+  aperta sullo schermo la pagina chiede allo script ogni 10 secondi solo il "numero delle novità" (azione novita) e rilegge i dati
+  appena cambia: colloqui, avvisi, fondo cassa, calendari, divise e foglio accessi arrivano in 10–15 secondi, i file delle cartelle
+  Drive in circa un minuto. Tornando all'app controlla subito (prima aspettava 30 secondi). Se in quel momento è aperto un foglio
+  o si sta scrivendo, la pagina si ridisegna appena si chiude. Colloqui: richiesta, conferma, declino e annullamento si vedono
+  subito sul telefono di chi tocca (la fascia si colora), senza aspettare i 3–5 secondi dello script; se lo script dice di no,
+  torna com'era con il messaggio. Serve Codice.gs 11.5 (con lo script 11.4 la pagina rilegge ogni 5 minuti come prima).
+  Versione 11.6, 19 ottobre 2026: COLLOQUI PRENOTATI DALL'APP (n. 46) —
+  con la maestra Marianna (insegnanti con app: true in Contenuti.gs) le famiglie prenotano nell'app tutti i giovedì del prossimo
+  mese, fasce da 15 minuti anche più di una se attaccate (arancione = in attesa, verde = confermata, grigio = occupata), con Online
+  già scelto (link sempre pronto) e "Condividi con l'altro genitore" (lo vede ma non lo annulla); chi ha prenotato ritira o annulla
+  con un motivo facoltativo. La maestra (al Lei) conferma o declina, toglie le fasce in cui non c'è (anche "Già data per email" con
+  una nota sua) e vede in Home le richieste e in Prossimi 7 giorni i suoi colloqui. Avvisi dei colloqui in Home e in Ricevimento
+  con "Ok, visto". Rossana: campanella in Home con il solo numero delle richieste e "Avvisa la maestra" su WhatsApp. Gli altri
+  insegnanti: ogni data divisa in fasce da mezz'ora, mail già scritta con l'orario della fascia, Online già scelto. Bollino su
+  Ricevimento. Serve Codice.gs 11.4 e Contenuti.gs 11.4 (con lo script 11.3 resta tutto come la 11.5, a mezz'ore).
+  Versione 11.5, 19 ottobre 2026: RICEVIMENTO CON LA MAIL PRONTA (n. 43) —
   sotto ogni insegnante le prossime 3 date; toccandone una si apre il foglio con la mail già scritta (alunno, data, orario, firma
   "Nome Cognome - madre/padre di … - classe 4a primaria" dal foglio accessi), A scuola / Online (link della videochiamata Jitsi
   già pronto, meet.ffmuc.net, senza app né password), "Apri la mail già scritta" (app di posta del genitore) e "Copia il testo";
@@ -734,6 +750,67 @@
   .ric-anteprima a { color: var(--brand); font-weight: 700; }
   .pannello .btn.ric-vai { display: flex; align-items: center; justify-content: center; text-decoration: none; margin: 0; min-height: 50px; font-size: 16px; }
   .pannello p.ric-sotto { margin: 6px 0 12px; font-size: 12.5px; text-align: center; }
+
+  /* ---------- v11.6 (n. 46): colloqui prenotati dall'app ---------- */
+  .ric-card.ric-app { border-color: var(--oro); box-shadow: 0 0 0 1px var(--oro), var(--shadow); }
+  .col-giorno { margin-top: 8px; }
+  .col-gd { font-size: 12.5px; font-weight: 800; color: var(--ink); }
+  .col-fasce { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .col-fa { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; min-width: 76px; min-height: 44px; padding: 5px 9px;
+    border: 1.5px solid var(--brand); border-radius: 10px; background: var(--brand-soft); color: var(--brand); font: inherit; line-height: 1.15; cursor: pointer; text-align: left; }
+  .col-fa b { font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  .col-fa small { font-size: 11px; font-weight: 700; }
+  .col-fa.mezza { min-width: 98px; }
+  .col-fa.attesa { border-style: dashed; border-color: #b45f06; background: #fff1dc; color: #9a4f04; }
+  .col-fa.ok { border-color: var(--ok); background: #e5f4e7; color: var(--ok); }
+  .col-fa.preso { border-color: var(--line); background: #eef1f4; color: var(--muted); cursor: default; }
+  .col-fa.tolta { border-style: dashed; border-color: var(--muted); color: var(--muted); background: repeating-linear-gradient(135deg, #eef1f4 0 6px, #fff 6px 12px); }
+  .col-fa.tolta b { text-decoration: line-through; }
+  .col-fa.fuori { border-style: dashed; background: var(--card); }
+  .col-fa:disabled { cursor: default; }
+  .col-fa:focus-visible, .col-btn:focus-visible { outline: 2px solid var(--oro); outline-offset: 2px; }
+  .col-legenda { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; font-size: 11.5px; color: var(--muted); }
+  .col-legenda .l::before { content: ''; display: inline-block; width: 11px; height: 11px; margin-right: 4px; border-radius: 3px; border: 1.5px solid; vertical-align: -1px; }
+  .col-legenda .lib::before { border-color: var(--brand); background: var(--brand-soft); }
+  .col-legenda .att::before { border-color: #b45f06; border-style: dashed; background: #fff1dc; }
+  .col-legenda .ok::before { border-color: var(--ok); background: #e5f4e7; }
+  .col-legenda .pre::before { border-color: var(--line); background: #eef1f4; }
+  .col-miei { margin-top: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+  .col-tit { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: var(--brand); margin-bottom: 4px; }
+  .col-tit .conta, .col-avvisi .conta, .col-cb .conta { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
+    background: var(--rosso); color: #fff; font-size: 11.5px; font-weight: 800; }
+  .col-riga { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); }
+  .col-tit + .col-riga, .col-tit + .ric-pross { border-top: 0; }
+  .col-riga-tx { display: grid; gap: 1px; min-width: 0; font-size: 13.5px; }
+  .col-riga-tx small { color: var(--muted); font-size: 12px; }
+  .col-btn { flex: none; padding: 7px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--brand); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; }
+  .col-btn.col-video { display: inline-block; margin-top: 6px; border-color: var(--brand); }
+  .col-azioni { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .col-azioni .btn-ok, .col-azioni .btn-no { padding: 7px 12px; font-size: 13px; }
+  .col-stato { display: grid; gap: 4px; padding: 10px 12px; border-radius: 12px; margin: 0 0 10px; font-size: 13.5px; }
+  .col-stato.att { background: #fff1dc; border: 1.5px dashed #b45f06; }
+  .col-stato.ok { background: #e5f4e7; border: 1px solid var(--ok); }
+  .col-stato.no { background: #fdf0ef; border: 1px solid #f2c9c4; }
+  .col-stato small { color: var(--muted); font-size: 12px; }
+  .col-perche { font-style: italic; }
+  .col-motivo { width: 100%; box-sizing: border-box; padding: 9px 10px; border: 1px solid var(--line); border-radius: 10px; font: inherit; font-size: 14px; background: var(--card); color: var(--ink); }
+  .col-dur { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .col-dur button { padding: 8px 12px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--card); color: var(--ink); font: inherit; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .col-dur button.on { border-color: var(--brand); background: var(--brand); color: #fff; }
+  .col-cond { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; margin: 0 0 12px; border-radius: 12px; background: #e5f4e7; border: 1px solid var(--ok); font-size: 13px; cursor: pointer; }
+  .col-cond input { margin-top: 3px; width: 18px; height: 18px; flex: none; }
+  .col-cond span { display: grid; gap: 2px; }
+  .pannello .btn.col-vai { display: flex; align-items: center; justify-content: center; text-decoration: none; margin: 0 0 6px; min-height: 48px; }
+  .pannello p.col-link { text-align: left; word-break: break-all; }
+  .pannello p.col-sx { text-align: left; }
+  .col-avvisi h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font-size: 15px; }
+  .col-avvisi .col-stato:last-child { margin-bottom: 0; }
+  .col-porta b { color: #9a4f04; }
+  .col-campanella { display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: start; }
+  .col-cb { position: relative; font-size: 28px; line-height: 1; }
+  .col-cb .conta { position: absolute; top: -6px; right: -2px; }
+  .col-campanella p { margin: 4px 0 8px; font-size: 13px; }
+  .prox-riga .cosa.col-prox { font-weight: 700; }
 
   /* ---------- v10.24: Visualizza come ---------- */
   .voce.voce-vista { color: #0d3fc2; font-weight: 800; }
@@ -1691,7 +1768,7 @@
   var CHIAVE_TOKEN = 'app4a_sessione', CHIAVE_EMAIL = 'app4a_email';
   // v10.24: Visualizza come. attiva = la pagina mostra la vista scelta; admin / persona = dati messi da parte per passare dall'una all'altra
   var VISTA = { attiva: false, scelta: null, admin: null, persona: null };
-  var VISTA_SALTA = { visto: 1, pagina: 1, visita: 1, passwordConfermata: 1 };
+  var VISTA_SALTA = { visto: 1, pagina: 1, visita: 1, passwordConfermata: 1, colloquioVisto: 1 };   // v11.6
   var STATO = { dati: null, pagina: 'home', schede: {}, sessione: null, tokenMem: '' };
   var $ = function (id) { return document.getElementById(id); };
   // Immagini incorporate (stemma della classe e loghi dei collegamenti)
@@ -1984,8 +2061,10 @@
       STATO.visti = { documenti: d, calendario: v.calendario || '', divise: v.divise || '' };
     }).catch(function () { if (!ricarica) STATO.visti = null; });
     return {
-      documenti: Promise.all([chiama('documenti'), visti]).then(function (r) { return r[0]; })
-        .catch(function () { return { errore: 'non disponibile' }; }),
+      documenti: Promise.all([chiama('documenti'), visti]).then(function (r) {
+        if (r[0] && r[0].novita !== undefined) STATO.novita = r[0].novita;   // v11.7: numero delle novità di questi dati
+        return r[0];
+      }).catch(function () { return { errore: 'non disponibile' }; }),
       miei: chiama('cassa').catch(function () { return { errore: 'non disponibile' }; }),
       // v10.12: file nella cartella IN ARRIVO (solo la rappresentante); null = funzione non disponibile
       inArrivo: STATO.sessione && STATO.sessione.amministratore
@@ -1995,9 +2074,11 @@
   }
 
   // Tornando all'app (o ogni 5 minuti se resta aperta) rilegge i dati; la pagina si ridisegna solo se qualcosa è cambiato.
-  var SECONDI_RITORNO = 30, MINUTI_APERTA = 5;
+  // v11.7 (n. 47): con l'app aperta, ogni 10 secondi chiede allo script solo il "numero delle novità" e rilegge appena cambia;
+  // tornando all'app controlla subito. Con lo script vecchio (senza l'azione novita) resta tutto come prima.
+  var SECONDI_RITORNO = 30, MINUTI_APERTA = 5, SECONDI_NOVITA = 10;
   function ricarica() {
-    if (!STATO.sessione || STATO.ricaricando) return;
+    if (!STATO.sessione || STATO.ricaricando || STATO.colloquiInVolo) return;   // v11.7: non durante un'azione sui colloqui
     STATO.ricaricando = true;
     var primaDoc = STATO.documenti, primaMiei = STATO.miei, primaArrivo = STATO.inArrivo || Promise.resolve(null);
     var primaVisti = STATO.visti ? Object.keys(STATO.visti.documenti).length : -1;
@@ -2010,15 +2091,43 @@
         || primaVisti !== (STATO.visti ? Object.keys(STATO.visti.documenti).length : -1);
       STATO.documenti = nuovi.documenti; STATO.miei = nuovi.miei; STATO.inArrivo = nuovi.inArrivo; STATO.casse = {};
       aggiornaContatori();
-      if (cambiato && !PAGINE_FISSE[STATO.pagina] && !document.querySelector('.velo-doc')) vaiA(STATO.pagina, true);
+      if (cambiato && !PAGINE_FISSE[STATO.pagina]) { if (occupatoLoSchermo()) STATO.ridisegna = true; else vaiA(STATO.pagina, true); }
     }, function () { STATO.ricaricando = false; });
   }
+  // v11.7: un foglio aperto o un campo in cui si sta scrivendo: la pagina si ridisegna dopo, per non perdere niente
+  function occupatoLoSchermo() {
+    if (document.querySelector('.velo-doc, .menu-file, .lb-lettore')) return true;
+    var a = document.activeElement;
+    return !!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && $('contenuto').contains(a));
+  }
+  function ridisegnaSeServe() {
+    if (STATO.ridisegna && STATO.sessione && !occupatoLoSchermo() && !PAGINE_FISSE[STATO.pagina]) { STATO.ridisegna = false; vaiA(STATO.pagina, true); }
+  }
+  // v11.7: la domanda leggera allo script; se il numero è cambiato rilegge tutto
+  function controllaNovita() {
+    if (!STATO.sessione || STATO.novitaNo || STATO.novitaInCorso || STATO.ricaricando || STATO.colloquiInVolo || STATO.novita === undefined) return;
+    if (document.visibilityState !== 'visible') return;
+    STATO.novitaInCorso = true;
+    var prima = STATO.novita;
+    chiama('novita').then(function (r) {
+      STATO.novitaInCorso = false;
+      if (r && r.n !== undefined && String(r.n) !== String(prima) && String(STATO.novita) === String(prima)) ricarica();
+    }, function (e) {
+      STATO.novitaInCorso = false;
+      if (e && (e.codice === 'AZIONE' || e.codice === 'NEGATO')) STATO.novitaNo = true;    // script vecchio: si torna ai 5 minuti
+    });
+  }
   document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'visible' && STATO.caricato && Date.now() - STATO.caricato > SECONDI_RITORNO * 1000) ricarica();
+    if (document.visibilityState !== 'visible' || !STATO.caricato) return;
+    if (STATO.novitaNo || STATO.novita === undefined || Date.now() - STATO.caricato > MINUTI_APERTA * 60000) { if (Date.now() - STATO.caricato > SECONDI_RITORNO * 1000) ricarica(); }
+    else controllaNovita();
   });
   setInterval(function () {
     if (document.visibilityState === 'visible' && STATO.caricato && Date.now() - STATO.caricato > MINUTI_APERTA * 60000) ricarica();
   }, 60000);
+  setInterval(function () { ridisegnaSeServe(); controllaNovita(); }, SECONDI_NOVITA * 1000);
+  document.addEventListener('click', function () { setTimeout(ridisegnaSeServe, 400); });     // dopo aver chiuso un foglio
+  document.addEventListener('focusout', function () { setTimeout(ridisegnaSeServe, 400); });
 
   // ---------- App ----------
   function avviaApp() {
@@ -2164,7 +2273,7 @@
   var VISTE = { genitore: { e: '👪', n: 'Genitore' }, docente: { e: '👩‍🏫', n: 'Docente' }, errore: { e: '⚠️', n: 'Errore' } };
   function fotografia() {
     return { sessione: STATO.sessione, dati: STATO.dati, visti: STATO.visti, calPrima: STATO.calPrima, divPrima: STATO.divPrima,
-      documenti: STATO.documenti, miei: STATO.miei, inArrivo: STATO.inArrivo, casse: STATO.casse, pagina: STATO.pagina, caricato: STATO.caricato };
+      documenti: STATO.documenti, miei: STATO.miei, inArrivo: STATO.inArrivo, casse: STATO.casse, pagina: STATO.pagina, caricato: STATO.caricato, novita: STATO.novita };
   }
   function ripristina(f) { for (var k in f) STATO[k] = f[k]; }
   function etichettaVista() {
@@ -2388,7 +2497,11 @@
           : eventiEntro(dati, 7).length,
         divise: STATO.visti
           ? futuri(elencoDivise(dati) || []).filter(function (e) { return eventoNuovo(e, STATO.visti.divise); }).length
-          : 0
+          : 0,
+        ricevimento: (function (col) {                                    // v11.6: avvisi dei colloqui + richieste da confermare (maestra)
+          if (!col) return 0;
+          return (col.avvisi || []).length + (col.maestra ? (col.maestra.colloqui || []).filter(function (c) { return c.stato === 'attesa'; }).length : 0);
+        })(colloquiDi(dati))
       };
       applicaContatori();
     });
@@ -3587,11 +3700,11 @@
     return String(base || 'https://meet.ffmuc.net/').replace(/\/?$/, '/') + '4a-Barbarigo-' + (pulito(String(alunno).split(' ')[0]) || 'colloquio') +
       (g ? '-' + g.getDate() + MESI[g.getMonth()].slice(0, 3) : '') + '-' + caso;
   }
-  function testiColloquio(b, d, iso, online, link) {
+  function testiColloquio(b, d, iso, online, link, f) {         // v11.6: f = fascia scelta { da, a }
     var t = Object.assign({}, MAIL_COLLOQUIO, b.mail || {});
     var alunni = (STATO.sessione.alunni || []).filter(function (n) { return !senzaAlunno(n); });
     var alunno = elencoNomi(alunni), data = iso ? dataLunga(iso) : '';
-    var v = { alunno: alunno, docente: d.nome, data: data, dalle: d.dalle || '', alle: d.alle || '', link: link,
+    var v = { alunno: alunno, docente: d.nome, data: data, dalle: f ? f.da : d.dalle || '', alle: f ? f.a : d.alle || '', link: link,
       genitore: STATO.sessione.nomeIntero || '', ruolo: STATO.sessione.ruolo || 'genitore' };
     var firma = riempi(t.firma, v);
     if (!v.genitore) firma = firma.replace(/^\s*-\s*/, '').replace(/^./, function (c) { return c.toUpperCase(); });
@@ -3599,10 +3712,11 @@
     v.saluto = d.saluto || riempi(t.saluto, v);
     v.quando = iso && d.dalle ? riempi(t.quando, v) : (iso ? ' il ' + data : '');
     v.online = online ? riempi(t.online, v) : '';
-    return { oggetto: riempi(iso ? t.oggetto : t.oggettoSenzaData, v), corpo: riempi(t.testo, v), firma: firma };
+    return { oggetto: riempi(iso ? t.oggetto : t.oggettoSenzaData, Object.assign({}, v, { data: data + (f ? ' ore ' + f.da : '') })), corpo: riempi(t.testo, v), firma: firma };
   }
-  function foglioColloquio(b, d, iso) {
-    var online = false, link = stanzaVideo(b.online, (STATO.sessione.alunni || []).filter(function (n) { return !senzaAlunno(n); })[0], iso);
+  function foglioColloquio(b, d, iso, f) {
+    var online = true,      // v11.6: Online già scelto (il link c'è sempre)
+    link = stanzaVideo(b.online, (STATO.sessione.alunni || []).filter(function (n) { return !senzaAlunno(n); })[0], iso);
     var riass = el('div', { classe: 'ric-riass' }), modo = el('div', { classe: 'ric-modo' }), anteprima = el('div', { classe: 'ric-anteprima' });
     var vai = el('a', { classe: 'btn ric-vai', href: '#', onclick: function () { setTimeout(x.chiudi, 400); } }, ['✉️ Apri la mail già scritta']);
     var bA = el('button', { type: 'button', testo: '🏫 A scuola', onclick: function () { online = false; aggiorna(); } });
@@ -3617,16 +3731,16 @@
       el('p', { classe: 'ric-sotto', testo: 'Si apre la tua app di posta: puoi cambiare il testo prima di premere Invia. La risposta dell’insegnante arriva alla tua email.' }),
       el('div', { classe: 'ev-azioni' }, [
         el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } }),
-        el('button', { type: 'button', testo: 'Copia il testo', onclick: function () { var t = testiColloquio(b, d, iso, online, link); copia(d.email + '\n' + t.oggetto + '\n\n' + t.corpo, 'Testo copiato'); } })
+        el('button', { type: 'button', testo: 'Copia il testo', onclick: function () { var t = testiColloquio(b, d, iso, online, link, f); copia(d.email + '\n' + t.oggetto + '\n\n' + t.corpo, 'Testo copiato'); } })
       ])
     ]);
     aggiorna();
     function aggiorna() {
-      var t = testiColloquio(b, d, iso, online, link);
+      var t = testiColloquio(b, d, iso, online, link, f);
       bA.className = online ? '' : 'on'; bO.className = online ? 'on' : '';
       riass.innerHTML = '';
       riass.appendChild(el('b', { testo: d.nome }));
-      riass.appendChild(el('span', { testo: iso ? dataLunga(iso) + (d.dalle ? ' · dalle ' + d.dalle + ' alle ' + d.alle : '') : 'Senza data: la concordi con l’insegnante' }));
+      riass.appendChild(el('span', { testo: iso ? dataLunga(iso) + (f ? ' · dalle ' + f.da + ' alle ' + f.a : d.dalle ? ' · dalle ' + d.dalle + ' alle ' + d.alle : '') : 'Senza data: la concordi con l’insegnante' }));
       anteprima.innerHTML = '';
       anteprima.appendChild(el('p', {}, [el('b', { testo: 'A: ' }), d.email]));
       anteprima.appendChild(el('p', {}, [el('b', { testo: 'Oggetto: ' }), t.oggetto]));
@@ -3635,6 +3749,391 @@
       if (online) anteprima.appendChild(el('p', { classe: 'ric-link' }, ['Link della videochiamata: ', el('a', { href: link, target: '_blank', rel: 'noopener', testo: 'prova ad aprirlo' })]));
       vai.href = 'mailto:' + d.email + '?subject=' + encodeURIComponent(t.oggetto) + '&body=' + encodeURIComponent(t.corpo);
     }
+  }
+
+  // ====================================================================
+  // v11.6 (n. 46): COLLOQUI PRENOTATI DALL'APP — con gli insegnanti che hanno app: true (la maestra Marianna).
+  // I dati arrivano con "documenti" (campo colloqui, script 11.4): fasce occupate senza nomi, i colloqui della famiglia,
+  // gli avvisi, per la maestra tutti i suoi colloqui e le fasce tolte, per Rossana solo il numero delle richieste (campanella).
+  // ====================================================================
+  function minDi(h) { var p = String(h || '').split(':'); return +p[0] * 60 + +(p[1] || 0); }
+  function hhmmDi(m) { return ('0' + Math.floor(m / 60)).slice(-2) + ':' + ('0' + (m % 60)).slice(-2); }
+  function fasceDi(d, durata) {
+    var du = durata || d.durata || 15, out = [];
+    for (var m = minDi(d.dalle); m + du <= minDi(d.alle); m += du) out.push({ da: hhmmDi(m), a: hhmmDi(m + du) });
+    return out;
+  }
+  function sovrappone(x, da, a) { return minDi(x.dalle) < minDi(a) && minDi(da) < minDi(x.alle); }
+  function dataCorta(iso) { var g = dataDa(iso); return GIORNI_LUNGHI[g.getDay()].slice(0, 3) + ' ' + g.getDate() + ' ' + MESI[g.getMonth()].slice(0, 3); }
+  // tutti i giorni di ricevimento da oggi a "mesi" (1) mese avanti, senza i giorni senza lezione
+  function giorniApp(d, vac) {
+    var out = [], data = new Date(), fine = new Date(), adesso = data.getHours() * 60 + data.getMinutes();
+    fine.setMonth(fine.getMonth() + (d.mesi || 1));
+    var fIso = isoDi(fine);
+    data.setHours(12, 0, 0, 0);
+    for (var i = 0; i < 70; i++, data.setDate(data.getDate() + 1)) {
+      var iso = isoDi(data);
+      if (iso > fIso) break;
+      if (i === 0 && adesso >= minDi(d.alle)) continue;
+      if (!giornoDiRicevimento({ giorno: d.giorno }, data) || (vac || {})[iso]) continue;
+      out.push(iso);
+    }
+    return out;
+  }
+  function colloquiDi(dati) { return dati && dati.colloqui ? dati.colloqui : null; }
+  function docenteRic(id) {
+    var out = null;
+    (STATO.dati.pagine || []).forEach(function (p) { (p.blocchi || []).forEach(function (b) { if (b.tipo === 'ricevimento') (b.docenti || []).forEach(function (d) { if (d.id === id) out = d; }); }); });
+    return out || { id: id, nome: 'la maestra', durata: 15 };
+  }
+  function eMaestra(col, d) { return !!(col && col.maestra && (col.maestra.docenti || []).indexOf(d.id) >= 0); }
+  // stato di una fascia per la famiglia: tolta (non si mostra), mio, richiesta (di altri, in attesa), occupata, libera
+  function infoFascia(col, d, iso, f) {
+    var q = function (x) { return x.docente === d.id && x.data === iso && sovrappone(x, f.da, f.a); };
+    if ((col.tolte || []).some(q)) return { tipo: 'tolta' };
+    var mio = (col.miei || []).filter(q)[0];
+    if (mio) return { tipo: 'mio', c: mio };
+    var occ = (col.occupate || []).filter(q)[0];
+    if (occ) return { tipo: occ.stato === 'attesa' ? 'richiesta' : 'occupata' };
+    return { tipo: 'libera' };
+  }
+  function modoTesto(m) { return m === 'scuola' ? '🏫 a scuola' : '💻 online'; }
+  function quandoCol(c) { return dataLunga(c.data) + ', ' + c.dalle + '–' + c.alle; }
+  function perData(a, b) { return (a.data + a.dalle) < (b.data + b.dalle) ? -1 : 1; }
+  function dalleAlle(lista) { return { dalle: lista[0].dalle, alle: lista[lista.length - 1].alle }; }
+
+  // dopo ogni azione: i colloqui nuovi arrivano con la risposta, la pagina si ridisegna
+  function dopoColloquio(r, msg) {
+    if (r && r.colloqui !== undefined) {
+      var nuovi = r.colloqui;
+      STATO.documenti = STATO.documenti.then(function (d) { return Object.assign({}, d, { colloqui: nuovi }); });
+    }
+    aggiornaContatori();
+    if (msg) toast(msg);
+    vaiA(STATO.pagina, true);
+  }
+  function azioneColloquio(azione, dati, msg, x, bottone, subito) {
+    // v11.7 (n. 47): con "subito" la pagina mostra il risultato senza aspettare lo script; se lo script dice di no, torna com'era
+    if (subito) {
+      var prima = STATO.documenti, testoBt = bottone ? bottone.textContent : '';
+      if (bottone) { bottone.disabled = true; bottone.textContent = 'Un attimo…'; }
+      STATO.colloquiInVolo = (STATO.colloquiInVolo || 0) + 1;
+      STATO.documenti = prima.then(function (d) {
+        if (!d || !d.colloqui) return d;
+        var c = JSON.parse(JSON.stringify(d.colloqui));
+        try { subito(c); } catch (e) {}
+        return Object.assign({}, d, { colloqui: c });
+      });
+      if (x) x.chiudi();
+      aggiornaContatori(); if (msg) toast(msg); vaiA(STATO.pagina, true);
+      return chiama(azione, dati).then(function (r) {
+        STATO.colloquiInVolo--;
+        dopoColloquio(r, '');
+      }, function (e) {
+        STATO.colloquiInVolo--;
+        STATO.documenti = prima;
+        aggiornaContatori(); vaiA(STATO.pagina, true);
+        toast(e && e.message || 'Non riuscito: riprova.');
+        if (e && e.codice === 'DATI') ricarica();
+      });
+    }
+    if (bottone) { bottone.disabled = true; bottone.textContent = 'Un attimo…'; }
+    return chiama(azione, dati).then(function (r) { if (x) x.chiudi(); dopoColloquio(r, msg); }, function (e) {
+      if (bottone) { bottone.disabled = false; bottone.textContent = 'Riprova'; }
+      toast(e && e.message || 'Non riuscito: riprova.');
+      if (x && e && e.codice === 'DATI') { x.chiudi(); ricarica(); }
+    });
+  }
+  // v11.7: come cambiano i colloqui sul telefono di chi tocca, prima che risponda lo script
+  function stessaFascia(a, b) { return a.docente === b.docente && a.data === b.data && a.dalle === b.dalle && a.alle === b.alle; }
+  function togliColloquio(col, c) {
+    var via = function (l) { return (l || []).filter(function (x) { return !(x.id === c.id || stessaFascia(x, c)); }); };
+    col.occupate = via(col.occupate); col.famiglia = via(col.famiglia); col.miei = via(col.miei);
+    if (col.maestra) col.maestra.colloqui = via(col.maestra.colloqui);
+  }
+  function confermaColloquio(col, c) {
+    (col.occupate || []).forEach(function (x) { if (stessaFascia(x, c)) x.stato = 'confermato'; });
+    if (col.maestra) (col.maestra.colloqui || []).forEach(function (x) { if (x.id === c.id) x.stato = 'confermato'; });
+  }
+  // riquadro "Perché?" (facoltativo) prima di annullare, ritirare o declinare
+  function chiediMotivo(dove, titolo, siTesto, fai, lei) {
+    dove.innerHTML = '';
+    var ta = el('textarea', { classe: 'col-motivo', rows: '2', maxlength: '300', placeholder: 'Es. è subentrato un impegno urgente', 'aria-label': 'Motivo (facoltativo)' });
+    var si = el('button', { type: 'button', classe: 'btn-no', testo: siTesto, onclick: function () { fai(ta.value, si); } });
+    dove.appendChild(el('div', { classe: 'col-stato no' }, [el('b', { testo: titolo }),
+      el('span', { classe: 'ric-lbl', testo: 'Perché? (facoltativo, si legge nell’avviso)' }), ta,
+      el('div', { classe: 'col-azioni' }, [si, el('button', { type: 'button', classe: 'col-btn', testo: 'No, lascia così', onclick: function () { dove.innerHTML = ''; } })])]));
+    ta.focus();
+  }
+  function linkVideoCol(link, piccolo) {
+    return el('a', { classe: piccolo ? 'col-btn col-video' : 'btn btn-primario col-vai', href: link, target: '_blank', rel: 'noopener', testo: '📹 Entra nella videochiamata' });
+  }
+
+  // ---------- Famiglia ----------
+  function sottoFamiglia(b, d, col, vac) {
+    var sotto = [], miei = (col.miei || []).filter(function (c) { return c.docente === d.id; }).sort(perData);
+    if (miei.length) {
+      var box = el('div', { classe: 'col-miei' }, [el('div', { classe: 'col-tit', testo: 'Il tuo colloquio' })]);
+      miei.forEach(function (c) {
+        box.appendChild(el('div', { classe: 'col-riga' }, [
+          el('div', { classe: 'col-riga-tx' }, [el('b', { testo: quandoCol(c) }),
+            el('span', { testo: (c.stato === 'confermato' ? '✓ Confermato' : '⏳ In attesa della maestra') + ' · ' + modoTesto(c.modo) }),
+            c.mio ? null : el('small', { testo: '👥 prenotato da ' + (c.di || 'l’altro genitore') + (c.diRuolo ? ' (' + c.diRuolo + ')' : '') })]),
+          el('button', { type: 'button', classe: 'col-btn', testo: 'Apri', onclick: function () { foglioMio(d, col, c.data); } })]));
+      });
+      var ok = miei.filter(function (c) { return c.stato === 'confermato' && c.modo === 'online'; })[0];
+      if (ok) box.appendChild(linkVideoCol(ok.link, true));
+      sotto.push(box);
+    }
+    var giorni = giorniApp(d, vac), fasce = fasceDi(d);
+    sotto.push(el('div', { classe: 'ric-scegli', testo: 'Tutti i ' + (GIORNI_LUNGHI[d.giorno] || 'giorni') + ' del prossimo mese. Scegli la fascia (' + (d.durata || 15) + ' minuti):' }));
+    var mostrati = 0;
+    giorni.forEach(function (iso) {
+      var chips = [];
+      fasce.forEach(function (f) {
+        var s = infoFascia(col, d, iso, f);
+        if (s.tipo === 'tolta') return;
+        var cls = 'col-fa', sotto2 = 'Libera';
+        if (s.tipo === 'mio') { cls += s.c.stato === 'confermato' ? ' ok' : ' attesa'; sotto2 = s.c.stato === 'confermato' ? '✓ tua' : '⏳ tua'; }
+        else if (s.tipo === 'richiesta') { cls += ' attesa'; sotto2 = 'Richiesta'; }
+        else if (s.tipo === 'occupata') { cls += ' preso'; sotto2 = 'Occupata'; }
+        var bt = el('button', { type: 'button', classe: cls }, [el('b', { testo: f.da }), el('small', { testo: sotto2 })]);
+        if (s.tipo === 'richiesta' || s.tipo === 'occupata') bt.disabled = true;
+        else bt.addEventListener('click', function () { if (s.tipo === 'mio') foglioMio(d, col, iso); else foglioPrenota(d, col, iso, f); });
+        chips.push(bt);
+      });
+      if (!chips.length) return;
+      mostrati++;
+      sotto.push(el('div', { classe: 'col-giorno' }, [el('div', { classe: 'col-gd', testo: dataCorta(iso) }), el('div', { classe: 'col-fasce' }, chips)]));
+    });
+    if (!mostrati) sotto.push(el('p', { classe: 'ric-pross', testo: 'Nessuna data disponibile nel prossimo mese.' }));
+    sotto.push(el('div', { classe: 'col-legenda' }, [el('span', { classe: 'l lib', testo: 'Libera' }), el('span', { classe: 'l att', testo: 'In attesa' }),
+      el('span', { classe: 'l ok', testo: 'Confermata' }), el('span', { classe: 'l pre', testo: 'Occupata' })]));
+    return sotto;
+  }
+
+  function foglioPrenota(d, col, iso, f) {
+    var fam = (col.famiglia || []).filter(function (c) { return c.docente === d.id; });
+    var altro = fam.filter(function (c) { return c.data !== iso; })[0];
+    var corpo = el('div'), x = foglioFile([el('h3', { testo: 'Prenota il colloquio' }),
+      el('div', { classe: 'ric-riass' }, [el('b', { testo: d.nome }), el('span', { testo: dataLunga(iso) + ' · ricevimento ' + d.dalle + '–' + d.alle })]), corpo]);
+    if (altro) {
+      corpo.appendChild(el('div', { classe: 'col-stato no' }, [el('b', { testo: 'Avete già un colloquio con ' + d.nome + ' ' + dataLunga(altro.data) }),
+        'Si possono aggiungere solo fasce attaccate a quello, nello stesso giorno.']));
+      corpo.appendChild(el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } })]));
+      return;
+    }
+    var fasce = fasceDi(d), i = fasce.map(function (z) { return z.da; }).indexOf(f.da), fini = [];
+    for (var j = i; j >= 0 && j < fasce.length && infoFascia(col, d, iso, fasce[j]).tipo === 'libera'; j++) fini.push(fasce[j].a);
+    var stesso = fam.filter(function (c) { return c.data === iso; }).sort(perData), mio = (col.miei || []).filter(function (c) { return c.docente === d.id && c.data === iso; })[0];
+    if (stesso.length) {
+      var bl = dalleAlle(stesso);
+      fini = fini.filter(function (a) { return f.da === bl.alle || a === bl.dalle; });
+      if (!fini.length) {
+        corpo.appendChild(el('div', { classe: 'col-stato no' }, [el('b', { testo: 'Le fasce devono essere attaccate al vostro colloquio delle ' + bl.dalle + '–' + bl.alle + '.' })]));
+        corpo.appendChild(el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } })]));
+        return;
+      }
+    }
+    var scelta = { fine: fini[0], modo: mio ? mio.modo : 'online', condiviso: mio ? !!mio.condiviso : true };
+    var durata = el('div', { classe: 'col-dur' }), titoloDur = el('span', { classe: 'ric-lbl' });
+    var aggiorna = function () {
+      titoloDur.textContent = 'Quanto tempo? Dalle ' + f.da + ' alle ' + scelta.fine;
+      Array.prototype.forEach.call(durata.children, function (bt) { bt.className = bt.getAttribute('data-fine') === scelta.fine ? 'on' : ''; });
+      bA.className = scelta.modo === 'scuola' ? 'on' : ''; bO.className = scelta.modo === 'online' ? 'on' : '';
+    };
+    fini.forEach(function (a) { durata.appendChild(el('button', { type: 'button', 'data-fine': a, testo: (minDi(a) - minDi(f.da)) + ' min', onclick: function () { scelta.fine = a; aggiorna(); } })); });
+    var bA = el('button', { type: 'button', testo: '🏫 A scuola', onclick: function () { scelta.modo = 'scuola'; aggiorna(); } });
+    var bO = el('button', { type: 'button', testo: '💻 Online', onclick: function () { scelta.modo = 'online'; aggiorna(); } });
+    corpo.appendChild(titoloDur); corpo.appendChild(durata);
+    if (stesso.length) corpo.appendChild(el('p', { classe: 'ric-sotto col-sx', testo: 'Si aggiunge al vostro colloquio delle ' + dalleAlle(stesso).dalle + '–' + dalleAlle(stesso).alle + ', ' + modoTesto(scelta.modo) + ', con lo stesso link.' }));
+    else {
+      corpo.appendChild(el('span', { classe: 'ric-lbl', testo: 'Come?' }));
+      corpo.appendChild(el('div', { classe: 'ric-modo' }, [bA, bO]));
+      corpo.appendChild(el('p', { classe: 'ric-sotto col-sx', testo: 'Online è già scelto: il link della videochiamata c’è sempre, anche se poi venite a scuola.' }));
+      if ((col.altri || []).length) {
+        var cb = el('input', { type: 'checkbox', id: 'colCondividi' });
+        cb.checked = true; cb.addEventListener('change', function () { scelta.condiviso = cb.checked; });
+        corpo.appendChild(el('label', { classe: 'col-cond', 'for': 'colCondividi' }, [cb, el('span', {}, [el('b', { testo: '👥 Condividi con ' + elencoNomi(col.altri) }),
+          'Lo vede nella sua app con data, stato e link della videochiamata. Può annullarlo solo chi prenota o la maestra.'])]));
+      }
+    }
+    var invia = el('button', { type: 'button', classe: 'btn btn-primario ric-vai', testo: 'Invia la richiesta alla maestra', onclick: function () {
+      azioneColloquio('colloquioPrenota', { docente: d.id, data: iso, dalle: f.da, alle: scelta.fine, modo: scelta.modo, condiviso: scelta.condiviso },
+        'Richiesta inviata: la maestra la trova nell’app', x, invia, function (col) {          // v11.7: la fascia diventa subito arancione
+          var fa = { docente: d.id, data: iso, dalle: f.da, alle: scelta.fine };
+          col.occupate = (col.occupate || []).concat([Object.assign({ stato: 'attesa' }, fa)]);
+          col.famiglia = (col.famiglia || []).concat([fa]);
+          var gia = (col.miei || []).filter(function (m) { return m.mio && m.docente === d.id && m.data === iso; })[0];
+          col.miei = (col.miei || []).concat([Object.assign({ id: 'nuovo', stato: 'attesa', modo: gia ? gia.modo : scelta.modo, link: gia ? gia.link : '', mio: true,
+            condiviso: scelta.condiviso !== false, di: '', diRuolo: '', alunno: gia ? gia.alunno : '' }, fa)]);
+        }).catch(function () {});
+    } });
+    corpo.appendChild(invia);
+    corpo.appendChild(el('p', { classe: 'ric-sotto', testo: 'Niente mail da scrivere. La fascia resta bloccata per voi finché la maestra decide.' }));
+    corpo.appendChild(el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } })]));
+    aggiorna();
+  }
+
+  function foglioMio(d, col, iso) {
+    var righe = (col.miei || []).filter(function (c) { return c.docente === d.id && c.data === iso; }).sort(perData);
+    if (!righe.length) return;
+    var corpo = el('div'), conferma = el('div');
+    var tutti = righe.every(function (c) { return c.stato === 'confermato'; });
+    var x = foglioFile([el('h3', { testo: tutti ? 'Colloquio confermato' : 'Il tuo colloquio' }),
+      el('div', { classe: 'ric-riass' }, [el('b', { testo: d.nome }), el('span', { testo: dataLunga(iso) + ' · ' + modoTesto(righe[0].modo) })]), corpo, conferma]);
+    righe.forEach(function (c) {
+      var az = c.mio ? el('div', { classe: 'col-azioni' }, [
+        el('button', { type: 'button', classe: 'btn-no', testo: c.stato === 'confermato' ? 'Annulla' : 'Ritira la richiesta', onclick: function () {
+          chiediMotivo(conferma, c.stato === 'confermato' ? 'Annullare il colloquio delle ' + c.dalle + '? La maestra riceve un avviso' + (c.condiviso && (col.altri || []).length ? ', e anche ' + elencoNomi(col.altri) + '.' : '.') : 'Ritirare la richiesta delle ' + c.dalle + '?',
+            c.stato === 'confermato' ? 'Sì, annulla' : 'Sì, ritira', function (motivo, bt) {
+              azioneColloquio('colloquioAnnulla', { id: c.id, motivo: motivo }, c.stato === 'confermato' ? 'Colloquio annullato' : 'Richiesta ritirata', x, bt, function (col) { togliColloquio(col, c); }).catch(function () {});
+            });
+        } }),
+        (col.altri || []).length ? el('button', { type: 'button', classe: 'col-btn', testo: c.condiviso ? 'Smetti di condividere' : '👥 Condividi con ' + elencoNomi(col.altri), onclick: function (ev) {
+          azioneColloquio('colloquioCondividi', { id: c.id, condiviso: !c.condiviso }, c.condiviso ? 'Non più condiviso' : 'Condiviso', x, ev.currentTarget).catch(function () {});
+        } }) : null]) : null;
+      corpo.appendChild(el('div', { classe: 'col-stato ' + (c.stato === 'confermato' ? 'ok' : 'att') }, [
+        el('b', { testo: (c.stato === 'confermato' ? '✓ Confermato: ' : '⏳ In attesa della maestra: ') + c.dalle + '–' + c.alle }),
+        c.mio ? ((col.altri || []).length ? el('small', { testo: c.condiviso ? '👥 Condiviso con ' + elencoNomi(col.altri) + ': lo vede nella sua app, ma non può annullarlo.' : 'Non condiviso: ' + elencoNomi(col.altri) + ' non lo vede.' }) : null)
+          : el('small', { testo: '👥 Prenotato da ' + (c.di || 'l’altro genitore') + (c.diRuolo ? ' (' + c.diRuolo + ')' : '') + '. Può annullarlo solo chi l’ha prenotato o la maestra.' }),
+        az]));
+    });
+    var ok = righe.filter(function (c) { return c.stato === 'confermato'; })[0];
+    if (ok && ok.modo === 'online') { corpo.appendChild(linkVideoCol(ok.link)); corpo.appendChild(el('p', { classe: 'ric-sotto col-link', testo: ok.link })); }
+    else if (ok) corpo.appendChild(el('p', { classe: 'ric-sotto', testo: 'Il colloquio è a scuola, all’orario indicato.' }));
+    if (!tutti) corpo.appendChild(el('p', { classe: 'ric-sotto', testo: 'Quando la maestra decide, lo vedi qui e in Home con un avviso.' }));
+    corpo.appendChild(el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } })]));
+  }
+
+  // ---------- Maestra (si dà del Lei) ----------
+  function sottoMaestra(b, d, col, vac) {
+    var m = col.maestra, sotto = [];
+    var miei = (m.colloqui || []).filter(function (c) { return c.docente === d.id; }).sort(perData);
+    var att = miei.filter(function (c) { return c.stato === 'attesa'; }), conf = miei.filter(function (c) { return c.stato === 'confermato'; });
+    var riga = function (c, conAzioni) {
+      return el('div', { classe: 'col-riga' }, [
+        el('div', { classe: 'col-riga-tx' }, [el('b', { testo: c.alunno }), el('span', { testo: quandoCol(c) + ' · ' + modoTesto(c.modo) }),
+          el('small', { testo: (c.genitore || '') + (c.ruolo ? ' (' + c.ruolo + ')' : '') }),
+          conAzioni ? el('div', { classe: 'col-azioni' }, [
+            el('button', { type: 'button', classe: 'btn-ok', testo: '✓ Conferma', onclick: function (ev) { azioneColloquio('colloquioConferma', { id: c.id }, 'Colloquio confermato: la famiglia riceve un avviso', null, ev.currentTarget, function (col) { confermaColloquio(col, c); }).catch(function () {}); } }),
+            el('button', { type: 'button', classe: 'btn-no', testo: 'Declina', onclick: function () { foglioMaestra(d, c, true); } })]) : null]),
+        conAzioni ? null : el('button', { type: 'button', classe: 'col-btn', testo: 'Apri', onclick: function () { foglioMaestra(d, c); } })]);
+    };
+    var r1 = el('div', { classe: 'col-miei' }, [el('div', { classe: 'col-tit' }, ['Richieste da confermare', att.length ? el('span', { classe: 'conta', testo: String(att.length) }) : null])]);
+    if (!att.length) r1.appendChild(el('p', { classe: 'ric-pross', testo: 'Nessuna richiesta in attesa.' }));
+    att.forEach(function (c) { r1.appendChild(riga(c, true)); });
+    sotto.push(r1);
+    var r2 = el('div', { classe: 'col-miei' }, [el('div', { classe: 'col-tit', testo: 'Confermati' })]);
+    if (!conf.length) r2.appendChild(el('p', { classe: 'ric-pross', testo: 'Nessun colloquio confermato.' }));
+    conf.forEach(function (c) { r2.appendChild(riga(c, false)); if (c.modo === 'online') r2.appendChild(linkVideoCol(c.link, true)); });
+    sotto.push(r2);
+    sotto.push(el('div', { classe: 'ric-scegli', testo: 'La mia agenda' }));
+    sotto.push(el('p', { classe: 'ric-pross', testo: 'Tutti i ' + (GIORNI_LUNGHI[d.giorno] || 'giorni') + ' del prossimo mese. Tocchi una fascia libera per toglierla: perché non è disponibile o perché l’ha già data a un genitore per email. Ai genitori le fasce tolte non compaiono.' }));
+    giorniApp(d, vac).forEach(function (iso) {
+      var chips = [], tolteGiorno = 0, fasce = fasceDi(d);
+      fasce.forEach(function (f) {
+        var q = function (x) { return x.docente === d.id && x.data === iso && sovrappone(x, f.da, f.a); };
+        var c = miei.filter(q)[0], t = (m.tolte || []).filter(q)[0], cls = 'col-fa', s2 = 'Libera', fai;
+        if (c) { cls += c.stato === 'confermato' ? ' ok' : ' attesa'; s2 = (c.stato === 'confermato' ? '✓ ' : '⏳ ') + String(c.alunno).split(' ')[0] + (c.stato === 'confermato' && c.modo === 'online' ? ' 📹' : ''); fai = function () { foglioMaestra(d, c); }; }
+        else if (t) { tolteGiorno++; cls += t.nota ? ' fuori' : ' tolta'; s2 = t.nota ? '✉️ ' + t.nota.split(/[ ,]/)[0] : 'Tolta'; fai = function () { foglioTogli(d, iso, f, t); }; }
+        else fai = function () { foglioTogli(d, iso, f, null); };
+        chips.push(el('button', { type: 'button', classe: cls, onclick: fai }, [el('b', { testo: f.da }), el('small', { testo: s2 })]));
+      });
+      sotto.push(el('div', { classe: 'col-giorno' }, [el('div', { classe: 'col-gd', testo: dataCorta(iso) + (tolteGiorno === fasce.length ? ' · non disponibile: i genitori non lo vedono' : '') }), el('div', { classe: 'col-fasce' }, chips)]));
+    });
+    return sotto;
+  }
+  function foglioMaestra(d, c, declina) {
+    var conferma = el('div');
+    var att = c.stato === 'attesa';
+    var x = foglioFile([el('h3', { testo: att ? 'Richiesta di colloquio' : 'Colloquio' }),
+      el('div', { classe: 'ric-riass' }, [el('b', { testo: c.alunno }), el('span', { testo: quandoCol(c) })]),
+      el('div', { classe: 'col-stato ' + (att ? 'att' : 'ok') }, [el('b', { testo: att ? '⏳ Da confermare' : '✓ Confermato' }),
+        (c.genitore || '') + (c.ruolo ? ' (' + c.ruolo + ')' : '') + ' · ' + modoTesto(c.modo)]),
+      !att && c.modo === 'online' ? linkVideoCol(c.link) : null,
+      !att && c.modo === 'online' ? el('p', { classe: 'ric-sotto col-link', testo: c.link }) : null,
+      el('div', { classe: 'col-azioni' }, att ? [
+        el('button', { type: 'button', classe: 'btn-ok', testo: '✓ Conferma', onclick: function (ev) { azioneColloquio('colloquioConferma', { id: c.id }, 'Colloquio confermato: la famiglia riceve un avviso', x, ev.currentTarget, function (col) { confermaColloquio(col, c); }).catch(function () {}); } }),
+        el('button', { type: 'button', classe: 'btn-no', testo: 'Declina', onclick: chiedi })] : [el('button', { type: 'button', classe: 'btn-no', testo: 'Annulla il colloquio', onclick: chiedi })]),
+      conferma,
+      el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } })])]);
+    function chiedi() {
+      chiediMotivo(conferma, att ? 'Declinare la richiesta? La famiglia riceve un avviso.' : 'Annullare il colloquio? La famiglia riceve un avviso.', att ? 'Sì, declina' : 'Sì, annulla',
+        function (motivo, bt) { azioneColloquio('colloquioDeclina', { id: c.id, motivo: motivo }, att ? 'Richiesta declinata' : 'Colloquio annullato', x, bt, function (col) { togliColloquio(col, c); }).catch(function () {}); });
+    }
+    if (declina) chiedi();
+  }
+  function foglioTogli(d, iso, f, t) {
+    var corpo = el('div');
+    var x = foglioFile([el('h3', { testo: t ? 'Fascia tolta' : 'Togli la fascia' }),
+      el('div', { classe: 'ric-riass' }, [el('b', { testo: dataLunga(iso) }), el('span', { testo: 'dalle ' + f.da + ' alle ' + f.a })]), corpo]);
+    if (t) {
+      corpo.appendChild(el('div', { classe: 'col-stato ' + (t.nota ? 'ok' : 'no') }, [el('b', { testo: t.nota ? '✉️ Colloquio fuori dall’app' : 'Non disponibile' }), t.nota || 'I genitori non la vedono.']));
+      var rim = el('button', { type: 'button', classe: 'btn btn-primario ric-vai', testo: 'Rimetti disponibile', onclick: function () { azioneColloquio('fasciaRimetti', { id: t.id }, 'Fascia di nuovo disponibile', x, rim).catch(function () {}); } });
+      corpo.appendChild(rim);
+    } else {
+      var perche = 'no', nota = el('input', { classe: 'col-motivo', type: 'text', maxlength: '120', placeholder: 'Es. Sofia Verdi, a scuola', 'aria-label': 'Per chi? (lo vede solo Lei)' });
+      var campo = el('div', { classe: 'nascosto' }, [el('span', { classe: 'ric-lbl', testo: 'Per chi? (lo vede solo Lei)' }), nota]);
+      var b1 = el('button', { type: 'button', classe: 'on', testo: '🚫 Non sono disponibile', onclick: function () { perche = 'no'; b1.className = 'on'; b2.className = ''; campo.classList.add('nascosto'); } });
+      var b2 = el('button', { type: 'button', testo: '✉️ Già data per email', onclick: function () { perche = 'mail'; b2.className = 'on'; b1.className = ''; campo.classList.remove('nascosto'); nota.focus(); } });
+      corpo.appendChild(el('span', { classe: 'ric-lbl', testo: 'Perché?' }));
+      corpo.appendChild(el('div', { classe: 'ric-modo' }, [b1, b2]));
+      corpo.appendChild(campo);
+      var vai = el('button', { type: 'button', classe: 'btn btn-primario ric-vai', testo: 'Togli la fascia', onclick: function () {
+        azioneColloquio('fasciaTogli', { docente: d.id, data: iso, dalle: f.da, nota: perche === 'mail' ? (nota.value.trim() || 'Colloquio per email') : '' }, 'Fascia tolta: i genitori non la vedono', x, vai).catch(function () {});
+      } });
+      corpo.appendChild(vai);
+      corpo.appendChild(el('p', { classe: 'ric-sotto', testo: 'Ai genitori la fascia non compare più. Si può rimettere quando vuole.' }));
+    }
+    corpo.appendChild(el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } })]));
+  }
+
+  // ---------- Avvisi dei colloqui (Home e Ricevimento) ----------
+  function testoAvvisoCol(a) {
+    var d = docenteRic(a.docente), q = dataLunga(a.data) + ', ' + a.dalle + '–' + a.alle;
+    var chi = a.daMaestra ? d.nome : (a.da || 'Il genitore') + (a.daRuolo ? ' (' + a.daRuolo + ' di ' + String(a.alunno || '').split(' ')[0] + ')' : (a.perMaestra && a.alunno ? ' (famiglia di ' + String(a.alunno).split(' ')[0] + ')' : ''));
+    if (a.tipo === 'confermato') return ['ok', '✓ ' + d.nome + ' ha confermato il colloquio di ' + q + '.'];
+    if (a.tipo === 'declinato') return ['no', d.nome + ' ha declinato la richiesta di ' + q + '. Si può scegliere un’altra fascia.'];
+    if (a.tipo === 'ritirato') return ['no', chi + ' ha ritirato la richiesta di ' + q + '.'];
+    return ['no', chi + ' ha annullato il colloquio di ' + q + (a.daMaestra ? '. Si può prenotarne un altro.' : '.')];
+  }
+  function boxAvvisiCol(col) {
+    var av = (col && col.avvisi) || [];
+    if (!av.length) return null;
+    var sez = el('section', { classe: 'riquadro col-avvisi' }, [el('h3', {}, ['🔔 Avvisi dei colloqui ', el('span', { classe: 'conta', testo: String(av.length) })])]);
+    av.forEach(function (a) {
+      var t = testoAvvisoCol(a);
+      var visto = el('button', { type: 'button', classe: 'col-btn', testo: 'Ok, visto', onclick: function () {
+        if (VISTA.attiva) { toast('In “Visualizza come” si può solo guardare.'); return; }
+        azioneColloquio('colloquioVisto', { ids: [a.id] }, '', null, visto).catch(function () {});
+      } });
+      sez.appendChild(el('div', { classe: 'col-stato ' + t[0] }, [el('b', { testo: t[1] }),
+        a.motivo ? el('span', { classe: 'col-perche', testo: 'Motivo: «' + a.motivo + '»' }) : null, el('div', { classe: 'col-azioni' }, [visto])]));
+    });
+    return sez;
+  }
+  // Prossimi 7 giorni: i colloqui confermati (solo la famiglia che l'ha prenotato; la maestra i suoi, anche quelli presi per email)
+  function colloquiProssimi(dati, giorni) {
+    var col = colloquiDi(dati), out = [];
+    if (!col) return out;
+    var oggi = oggiISO(), lim = new Date(); lim.setDate(lim.getDate() + giorni);
+    var fine = isoDi(lim), dentro = function (c) { return c.data >= oggi && c.data <= fine; }, perGiorno = {};
+    if (col.maestra) {
+      (col.maestra.colloqui || []).filter(function (c) { return c.stato === 'confermato' && dentro(c); }).forEach(function (c) { (perGiorno[c.data] = perGiorno[c.data] || []).push({ ora: c.dalle, t: c.dalle + ' ' + String(c.alunno).split(' ')[0] + (c.modo === 'online' ? ' 📹' : '') }); });
+      (col.maestra.tolte || []).filter(function (t) { return t.nota && dentro(t); }).forEach(function (t) { (perGiorno[t.data] = perGiorno[t.data] || []).push({ ora: t.dalle, t: t.dalle + ' ✉️ ' + t.nota.split(',')[0] }); });
+      Object.keys(perGiorno).forEach(function (g) {
+        var l = perGiorno[g].sort(function (a, b) { return a.ora < b.ora ? -1 : 1; });
+        out.push({ giorno: g, data: g, titolo: (l.length === 1 ? '1 colloquio: ' : l.length + ' colloqui: ') + l.map(function (x) { return x.t; }).join(' · '), ora: l[0].ora, colloquio: true });
+      });
+      return out;
+    }
+    (col.miei || []).filter(function (c) { return c.stato === 'confermato' && dentro(c); }).forEach(function (c) { (perGiorno[c.docente + '|' + c.data] = perGiorno[c.docente + '|' + c.data] || []).push(c); });
+    Object.keys(perGiorno).forEach(function (k) {
+      var l = perGiorno[k].sort(perData), d = docenteRic(l[0].docente);
+      out.push({ giorno: l[0].data, data: l[0].data, titolo: 'Colloquio con ' + d.nome + (l[0].modo === 'online' ? ' · 📹 online' : ' · a scuola'), ora: l[0].dalle, colloquio: true });
+    });
+    return out;
   }
 
   // ====================================================================
@@ -4977,6 +5476,28 @@
     saluto: function () {
       return el('div', { classe: 'saluto' }, [el('h2', { testo: testoSaluto() }), el('small', { testo: oggiLungo() })]);
     },
+    // v11.6 (n. 46): in Home gli avvisi dei colloqui, per la maestra le richieste da confermare, per Rossana la campanella (solo il numero)
+    colloqui: function () {
+      var box = el('div', { classe: 'pila' });
+      STATO.documenti.then(function (dati) {
+        var col = colloquiDi(dati);
+        if (!col) return;
+        var av = boxAvvisiCol(col);
+        if (av) box.appendChild(av);
+        var att = col.maestra ? (col.maestra.colloqui || []).filter(function (c) { return c.stato === 'attesa'; }).length : 0;
+        if (att) box.appendChild(el('button', { type: 'button', classe: 'porta col-porta', 'data-porta': 'ricevimento', onclick: function () { vaiA('ricevimento'); } }, [illPagina('ricevimento'),
+          el('span', { classe: 'tx' }, [el('b', { testo: '⏳ ' + (att === 1 ? '1 richiesta di colloquio da confermare' : att + ' richieste di colloquio da confermare') }),
+            el('small', { testo: 'La tocchi per aprire Ricevimento e confermare o declinare.' })]), frecciaTonda()]));
+        var cam = col.campanella;
+        if (cam && cam.n) box.appendChild(el('section', { classe: 'riquadro oro col-campanella' }, [
+          el('div', { classe: 'col-cb' }, [el('span', { 'aria-hidden': 'true', testo: '🔔' }), el('span', { classe: 'conta', testo: String(cam.n) })]),
+          el('div', {}, [el('b', { testo: cam.n === 1 ? '1 richiesta di colloquio in attesa' : cam.n + ' richieste di colloquio in attesa' }),
+            el('p', { testo: 'Avvisa la maestra di aprire l’app e confermarle o declinarle. Tu vedi solo il numero: chi e quando lo sanno la maestra e la famiglia.' }),
+            el('a', { classe: 'mf-apri-wa', href: linkWhatsapp(cam.testo), target: '_blank', rel: 'noopener' }, [iconaWa(18), 'Avvisa la maestra'])])]));
+        applicaContatori();
+      });
+      return box;
+    },
     // v10.12 → v10.28: "Avvisi e comunicazioni", sempre visibile: porta di Comunicazioni con il bollino dei documenti non aperti.
     // Con avvisi (o per la rappresentante) il riquadro dorato con gli avvisi; senza, una riga sola.
     avvisi: function (b) {
@@ -5035,7 +5556,9 @@
       box.appendChild(riga('Carico…'));
       STATO.documenti.then(function (dati) {
         box.innerHTML = '';
-        var ev = dati && Array.isArray(dati.eventi) ? eventiEntro(dati, giorni).slice(0, b.limite || 3) : [];
+        var colP = colloquiProssimi(dati, giorni);                     // v11.6: colloqui confermati (sempre in elenco)
+        var ev = (dati && Array.isArray(dati.eventi) ? eventiEntro(dati, giorni) : []).concat(colP)
+          .sort(function (x, y) { return (x.giorno + (x.ora || '')) < (y.giorno + (y.ora || '')) ? -1 : 1; }).slice(0, (b.limite || 3) + colP.length);
         if (!ev.length) { box.appendChild(riga('Nessun appuntamento questa settimana')); applicaContatori(); return; }
         var righe = el('div', { classe: 'prox-righe' });
         ev.forEach(function (e) {
@@ -5043,7 +5566,7 @@
           var quando = GIORNI_SETT[new Date(+p[0], +p[1] - 1, +p[2]).getDay()].toLowerCase() + ' ' + (+p[2]) + ' ' + MESI[+p[1] - 1].slice(0, 3);
           righe.appendChild(el('div', { classe: 'prox-riga' + (g <= 1 ? ' urgente' : '') }, [
             el('span', { classe: 'quando', testo: quando }),
-            eCompleanno(e) ? el('span', { classe: 'cosa' }, [titoloEvento(e) + ' ', el('em', { testo: g === 0 ? '· oggi è il suo compleanno' : '· sarà il suo compleanno' })])
+            e.colloquio ? el('span', { classe: 'cosa col-prox', testo: e.titolo }) : eCompleanno(e) ? el('span', { classe: 'cosa' }, [titoloEvento(e) + ' ', el('em', { testo: g === 0 ? '· oggi è il suo compleanno' : '· sarà il suo compleanno' })])
               : el('span', { classe: 'cosa', testo: e.titolo }), e.ora ? el('span', { classe: 'ora', testo: e.ora }) : null
           ]));
         });
@@ -5589,25 +6112,40 @@
     ricevimento: function (b) {
       var box = el('div');
       // v10.12: si disegna subito, poi di nuovo quando arrivano i giorni senza lezione dal calendario
-      STATO.documenti.then(function (dati) { var v = giorniSenzaLezione(dati); if (Object.keys(v).length) disegna(v); });
-      disegna({});
+      // v11.6: con i colloqui dell'app (script 11.4) la prenotazione della maestra; col = undefined mentre carica, null senza
+      STATO.documenti.then(function (dati) { disegna(giorniSenzaLezione(dati), colloquiDi(dati)); });
+      disegna({}, undefined);
       return box;
-      function disegna(vac) {
+      function disegna(vac, col) {
       box.innerHTML = '';
-      if (b.nota) box.appendChild(el('div', { classe: 'ric-nota' }, [el('span', { testo: '✉️' }), el('span', { testo: b.nota })]));
+      var av = col ? boxAvvisiCol(col) : null;
+      if (av) box.appendChild(av);
+      var nota = col && b.notaApp ? b.notaApp : b.nota;            // v11.6: con i colloqui dell'app la nota nuova (la pagina 11.5 legge solo nota)
+      if (nota) box.appendChild(el('div', { classe: 'ric-nota' }, [el('span', { testo: '✉️' }), el('span', { testo: nota })]));
       var oggiIso = oggiISO();
       var alunni = (STATO.sessione.alunni || []).filter(function (n) { return !senzaAlunno(n); });
       var conMail = alunni.length > 0 && !!b.mail;            // profilo docente: solo la mail vuota, come prima
       (b.docenti || []).forEach(function (d) {
-        var date = prossimiRicevimenti(d, b.quanteDate || 3, vac);
+        var app = d.app && d.id && col !== null;                      // v11.6: prenotazione nell'app (null = script 11.3: come prima)
+        var date = prossimiRicevimenti(app ? { giorno: d.giorno, dalle: d.dalle, alle: d.alle } : d, b.quanteDate || 3, vac);
         var oggi = date[0] === oggiIso;
         // con le settimane (primo, ultimo…) si dice quale ricevimento salta per la vacanza
         var saltato = d.settimane && date.saltati.length && date.saltati[0].iso < date[date.length - 1] ? date.saltati[0] : null;
         var sotto = [];
-        if (conMail && d.email) {
+        if (app && col === undefined) sotto.push(el('p', { classe: 'ric-pross', testo: 'Carico le fasce…' }));
+        else if (app && eMaestra(col, d)) sotto = sottoMaestra(b, d, col, vac);
+        else if (app && alunni.length) sotto = sottoFamiglia(b, d, col, vac);
+        else if (conMail && d.email) {
           if (date.length) {
-            sotto.push(el('div', { classe: 'ric-scegli', testo: 'Scegli il giorno del colloquio:' }));
-            sotto.push(el('div', { classe: 'ric-date' }, date.map(function (iso) {
+            var durata = d.durata || b.durata;                          // v11.6: ogni data divisa in fasce (mezz'ora), mail con l'orario della fascia
+            sotto.push(el('div', { classe: 'ric-scegli', testo: durata ? 'Scegli giorno e orario del colloquio:' : 'Scegli il giorno del colloquio:' }));
+            if (durata && d.dalle) date.forEach(function (iso) {
+              sotto.push(el('div', { classe: 'col-giorno' }, [el('div', { classe: 'col-gd', testo: iso === oggiIso ? 'Oggi' : dataCorta(iso) }),
+                el('div', { classe: 'col-fasce' }, fasceDi(d, durata).map(function (f) {
+                  return el('button', { type: 'button', classe: 'col-fa mezza', onclick: function () { foglioColloquio(b, d, iso, f); } }, [el('b', { testo: f.da + '–' + f.a })]);
+                }))]));
+            });
+            else sotto.push(el('div', { classe: 'ric-date' }, date.map(function (iso) {
               var g = dataDa(iso);
               return el('button', { type: 'button', classe: 'ric-dt' + (iso === oggiIso ? ' oggi' : ''), onclick: function () { foglioColloquio(b, d, iso); } }, [
                 el('b', { testo: iso === oggiIso ? 'Oggi' : GIORNI_LUNGHI[g.getDay()].slice(0, 3) + ' ' + g.getDate() + ' ' + MESI[g.getMonth()].slice(0, 3) }),
@@ -5629,14 +6167,14 @@
           if (d.email) sotto.push(el('a', { classe: 'ric-mail', href: 'mailto:' + d.email + '?subject=' + encodeURIComponent(oggetto) }, [
             el('span', { testo: '✉️ Scrivi per il colloquio' })]));
         }
-        box.appendChild(el('div', { classe: 'card ric-card' + (oggi ? ' oggi' : '') }, [
+        box.appendChild(el('div', { classe: 'card ric-card' + (oggi && !app ? ' oggi' : '') + (app ? ' ric-app' : '') }, [
           el('span', { classe: 'ric-ic', testo: d.icona || '👩‍🏫' }),
           el('div', { classe: 'ric-tx' }, [
             d.materia ? el('span', { classe: 'ric-mat', testo: d.materia }) : null,
             el('span', { classe: 'ric-nome', testo: d.nome }),
             el('div', { classe: 'ric-quando' }, [d.quando || '', d.dalle ? ' · ' : '', d.dalle ? el('b', { testo: d.dalle + '–' + d.alle }) : null]),
             saltato ? el('div', { classe: 'ric-vacanza', testo: '🏖️ Il ' + dataLunga(saltato.iso) + ' non c’è: ' + saltato.titolo }) : null
-          ].concat(sotto, [d.email ? el('small', { classe: 'ric-email', testo: d.email }) : null]))
+          ].concat(sotto, [d.email && !(app && col && (eMaestra(col, d) || alunni.length)) ? el('small', { classe: 'ric-email', testo: d.email }) : null]))
         ]));
       });
       if (b.piede) box.appendChild(el('p', { classe: 'or-nota', testo: b.piede }));
