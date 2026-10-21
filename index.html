@@ -14,7 +14,13 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.9, 21 ottobre 2026: FASCE DEI COLLOQUI 4 PER RIGA — nel Ricevimento le fasce
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.10, 21 ottobre 2026: DOCUMENTI NUOVI PIÙ EVIDENTI E "SEGNA COME LETTO" —
+  in Comunicazioni & Moduli (anche Ultime notizie e storico degli avvisi) e nelle Ricevute di Contabilità i documenti NUOVI hanno il
+  titolo dorato in grassetto, il bordo e lo sfondo dorati e l'etichetta NUOVO dorata; nella casella ⋯ di un documento non ancora letto
+  la prima voce è "SEGNA COME LETTO" su fondo dorato: toglie NUOVO e il bollino senza aprire il file (lo script lo ricorda come visto,
+  anche nelle Statistiche). VISUALIZZA COME LA MAESTRA: quarta vista "🍎 Maestra" (la maestra Marianna, con le sue richieste da
+  confermare, i suoi colloqui, il bollino su Ricevimento e il saluto "Buongiorno, Marianna!"); serve lo script 11.8.
+  Versione 11.9, 21 ottobre 2026: FASCE DEI COLLOQUI 4 PER RIGA — nel Ricevimento le fasce
   della maestra Marianna (famiglie e agenda della maestra) e le mezz'ore del Coordinatore didattico stanno 4 per riga, con i giorni
   larghi quanto tutta la scheda; nelle mezz'ore l'ora di fine sta piccola sotto quella d'inizio.
   Versione 11.8, 21 ottobre 2026: COMPLEANNI PIÙ FESTOSI (n. 48) — l'avviso
@@ -1262,6 +1268,16 @@
   .mf-voce small { display: block; font-weight: 600; font-size: 12px; color: var(--muted); line-height: 1.3; }
   .mf-voce.wa .ic { color: #1f8f52; }
   .mf-voce.del, .mf-voce.del .ic { color: #b23b3b; }
+  /* v11.10: documenti NUOVI dorati e "SEGNA COME LETTO" */
+  .doc.nuovo, .doc-wrap.nuovo > .doc { background: #fbf1d4; border-color: #c9962a; box-shadow: inset 4px 0 0 #c9962a; }
+  .doc-wrap.nuovo > .piu { background: #fbf1d4; border-color: #c9962a; color: #8a5d06; }
+  .doc.nuovo .tx strong { color: #8a5d06; font-weight: 800; }
+  .doc.nuovo .badge { background: #a8740d; }
+  .doc-wrap.nuovo.aperto > .doc, .doc-wrap.nuovo.aperto > .piu { border-color: #a8740d; }
+  .mf-voce.letto { background: linear-gradient(180deg, #f3d77c, var(--oro)); color: #2a1f05; letter-spacing: .03em; margin-bottom: 4px;
+    box-shadow: inset 0 -2px 0 rgba(120,85,10,.25); }
+  .mf-voce.letto:hover, .mf-voce.letto:focus-visible { background: linear-gradient(180deg, #f6df90, #e2bf55); }
+  .mf-voce.letto .ic, .mf-voce.letto small { color: #4a3708; }
   .mf-voce.del:hover, .mf-voce.del:focus-visible { background: #fdf0ef; }
   .mf-sep { height: 1px; background: var(--line); margin: 4px 6px; }
   .mf-sez { padding: 6px 10px 2px; font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
@@ -2296,7 +2312,7 @@
   // ---------- v10.24: Visualizza come (solo Rossana) ----------
   // Si sceglie Genitore (di quale alunno), Docente o Errore. Lo script risponde come se fosse entrata quella persona, in sola lettura.
   // Il pulsante blu fa da interruttore: amministratrice ⇄ vista. Riaprendo l'app si riparte sempre amministratrice.
-  var VISTE = { genitore: { e: '👪', n: 'Genitore' }, docente: { e: '👩‍🏫', n: 'Docente' }, errore: { e: '⚠️', n: 'Errore' } };
+  var VISTE = { genitore: { e: '👪', n: 'Genitore' }, docente: { e: '👩‍🏫', n: 'Docente' }, maestra: { e: '🍎', n: 'Maestra' }, errore: { e: '⚠️', n: 'Errore' } };   // v11.10: Maestra
   function fotografia() {
     return { sessione: STATO.sessione, dati: STATO.dati, visti: STATO.visti, calPrima: STATO.calPrima, divPrima: STATO.divPrima,
       documenti: STATO.documenti, miei: STATO.miei, inArrivo: STATO.inArrivo, casse: STATO.casse, pagina: STATO.pagina, caricato: STATO.caricato, novita: STATO.novita };
@@ -2305,7 +2321,7 @@
   function etichettaVista() {
     var v = VISTA.scelta, x = v && VISTE[v.tipo];
     if (!x) return '';
-    return x.e + ' ' + x.n + (v.tipo === 'genitore' && v.alunno ? ' · ' + v.alunno.split(' ')[0] : '');
+    return x.e + ' ' + x.n + (v.tipo === 'genitore' && v.alunno ? ' · ' + v.alunno.split(' ')[0] : '') + (v.tipo === 'maestra' && v.nome ? ' ' + v.nome : '');
   }
   function ridisegnaTutto(pagina) {
     aggiornaContatori(); disegnaMenu();
@@ -2324,7 +2340,8 @@
       var dove = STATO.pagina === 'profilo' ? 'home' : STATO.pagina;
       STATO.dati = r.contenuti;
       STATO.sessione = { email: r.utente.email, amministratore: false, alunni: r.utente.alunni || [], chiave: r.utente.chiave, mail: '', telefono: '',
-        primoIngresso: false, vista: r.utente.vista || scelta.tipo, nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '' };
+        primoIngresso: false, vista: r.utente.vista || scelta.tipo, nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '', nome: r.utente.nome || '' };   // v11.10: nome del saluto
+      if (r.utente.manca) toast('Email della maestra non trovata nel foglio accessi: controlla “accessi” in Contenuti.gs');
       STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null; STATO.casse = {};
       var d = caricaDati(false);
       STATO.documenti = d.documenti; STATO.miei = d.miei; STATO.inArrivo = d.inArrivo;
@@ -2333,7 +2350,7 @@
     }).catch(function (e) {
       VISTA.attiva = false; if (VISTA.admin) ripristina(VISTA.admin); VISTA.scelta = null;
       ridisegnaTutto(STATO.pagina);
-      if (e.codice !== 'SESSIONE') toast(e.codice === 'AZIONE' || e.codice === 'NEGATO' ? 'Per “Visualizza come” serve lo script 10.16' : e.message);
+      if (e.codice !== 'SESSIONE') toast(e.codice === 'AZIONE' || e.codice === 'NEGATO' ? (scelta.tipo === 'maestra' ? 'Per la vista “Maestra” serve lo script 11.8' : 'Per “Visualizza come” serve lo script 10.16') : e.message);
     });
   }
   function tornaAdmin() {
@@ -2372,13 +2389,14 @@
     f.innerHTML = '';
     f.appendChild(el('div', { classe: 'maniglia' }));
     f.appendChild(el('h3', { id: 'vistaTit', testo: '👁 Visualizza come' }));
-    f.appendChild(el('p', { testo: 'L’app si mostra come la vede una famiglia. Puoi solo guardare: nulla viene segnato come visto né contato nelle statistiche.' }));
+    f.appendChild(el('p', { testo: 'L’app si mostra come la vede una famiglia o una docente. Puoi solo guardare: nulla viene segnato come visto né contato nelle statistiche.' }));
     var sel = el('select', { id: 'vistaAlunno', 'aria-label': 'Alunno' }, [el('option', { value: '', testo: 'Carico gli alunni…' })]);
     var nomeErr = el('span', { classe: 'nome-err', testo: '…' }), notaErr = el('small', { testo: '' });
     var opz = [
       ['genitore', 'Genitore', 'App normale: avvisi, fondo cassa, Coordinate con la causale, bollini della famiglia.',
         el('div', { classe: 'sotto' }, [el('label', { 'for': 'vistaAlunno', testo: 'Come il genitore di' }), sel])],
-      ['docente', 'Docente', 'Profilo “Nessun bambino/a”: riquadro PROFILO DOCENTE, Contabilità senza fondo cassa personale.', null],
+      ['docente', 'Docente', 'Profilo “Nessun bambino/a” generico (non la maestra Marianna): riquadro PROFILO DOCENTE, Contabilità senza fondo cassa personale.', null],
+      ['maestra', 'Maestra Marianna', 'Come la vede lei: richieste da confermare, i suoi colloqui, bollino su Ricevimento.', null],   // v11.10
       ['errore', 'Errore', 'Nome del foglio accessi che non c’è nel master: riquadro rosso e “Segnalalo su WhatsApp”.',
         el('div', { classe: 'sotto' }, [el('label', { testo: 'Nome usato' }), nomeErr, ' ', notaErr])]
     ];
@@ -2397,6 +2415,7 @@
       if (scelta.tipo === 'genitore' && !sel.value) { toast('Scegli l’alunno'); return; }
       var s = { tipo: scelta.tipo };
       if (s.tipo === 'genitore') s.alunno = sel.value;
+      if (s.tipo === 'maestra') s.nome = String((VISTA.maestre && VISTA.maestre[0] && VISTA.maestre[0].nome) || 'Marianna').split(' ')[0];   // v11.10: nome nel pulsante blu
       nascondi('vistaFoglio'); nascondi('vistaVelo');
       entraVista(s);
     } });
@@ -2412,6 +2431,7 @@
         sel.appendChild(el('option', { value: n, testo: n + (miei.indexOf(n) >= 0 ? ' (tuo figlio/a)' : '') }));
       });
       if (scelta.alunno) sel.value = scelta.alunno;
+      VISTA.maestre = r.maestre || null;                                // v11.10: script 11.8
       var errati = r.errori || [];
       nomeErr.textContent = errati[0] || 'Nome Esempio';
       notaErr.textContent = errati.length ? (errati.length > 1 ? '(il primo di ' + errati.length + ' nomi sbagliati nel foglio)' : '(dal foglio accessi)') : 'esempio: oggi nel foglio non ci sono nomi sbagliati';
@@ -2475,6 +2495,7 @@
     Array.prototype.forEach.call(document.querySelectorAll('.doc[data-doc]'), function (d) {
       if (d.getAttribute('data-doc') !== f.id) return;
       var b = d.querySelector('.badge'); if (b) b.remove();
+      d.classList.remove('nuovo'); if (d.parentNode && d.parentNode.classList) d.parentNode.classList.remove('nuovo');   // v11.10
     });
     aggiornaContatori();
     chiama('visto', { id: f.id }).catch(function () {});
@@ -2564,12 +2585,14 @@
     var sotto = [];
     if (etichetta) sotto.push(el('span', { classe: 'etichetta', testo: etichetta }));
     sotto.push(document.createTextNode((ICONE_TIPO[f.tipo] || '📄') + ' ' + (NOMI_TIPO[f.tipo] || 'File') + (p ? ' · ' + MESI[+p[1] - 1] + ' ' + p[0] : '')));
-    var titolo = el('strong', { testo: f.titolo });
-    if (eNuovo(f)) titolo.appendChild(el('span', { classe: 'badge', testo: 'NUOVO' }));
+    var titolo = el('strong', { testo: f.titolo }), nuovo = eNuovo(f);
+    if (nuovo) titolo.appendChild(el('span', { classe: 'badge', testo: 'NUOVO' }));
     var figli = [dataBox, el('span', { classe: 'tx' }, [titolo, el('small', null, sotto)]), el('span', { classe: 'freccia', testo: f.url ? '↗' : '›' })];
-    var riga = f.url ? el('a', { classe: 'doc', 'data-doc': f.id, href: f.url, target: '_blank', rel: 'noopener', title: f.nome, onclick: function () { segnaVisto(f); } }, figli)
-      : el('button', { classe: 'doc', 'data-doc': f.id, title: f.nome, onclick: function () { segnaVisto(f); apriFile(f); } }, figli);
-    return conPiu(riga, f, { sezione: sezione });
+    var riga = f.url ? el('a', { classe: 'doc' + (nuovo ? ' nuovo' : ''), 'data-doc': f.id, href: f.url, target: '_blank', rel: 'noopener', title: f.nome, onclick: function () { segnaVisto(f); } }, figli)
+      : el('button', { classe: 'doc' + (nuovo ? ' nuovo' : ''), 'data-doc': f.id, title: f.nome, onclick: function () { segnaVisto(f); apriFile(f); } }, figli);
+    var w = conPiu(riga, f, { sezione: sezione });
+    if (nuovo) w.classList.add('nuovo');                               // v11.10: documento NUOVO dorato
+    return w;
   }
 
   function apriFile(f, opz) {
@@ -2616,7 +2639,8 @@
     avviso: '<path d="M4 10v4h3l6 4V6L7 10z"/><path d="M17 9a4 4 0 0 1 0 6"/>',
     drive: '<path d="M8 4h8l5 9-4 7H7l-4-7z"/><path d="M8 4l5 9h8M3 13h10l-4 7"/>',
     cestino: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
-    condividi: '<path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/>'
+    condividi: '<path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/>',
+    letto: '<path d="M4 12.5l5 5L20 6.5"/>'                       // v11.10: Segna come letto
   };
   var SVG_PIU = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
   function icoFile(nome) {
@@ -2661,6 +2685,8 @@
     }
     var dove = arrivo ? 'In arrivo · solo per te' : nomeSezioneFile(opz.sezione);
     m.appendChild(el('div', { classe: 'mf-testa' }, [el('b', { testo: titolo }), dove ? el('small', { testo: dove }) : null]));
+    // v11.10: prima voce, su fondo dorato, solo per i documenti non ancora letti
+    if (!arrivo && STATO.visti && eNuovo(f)) m.appendChild(voce('letto', 'SEGNA COME LETTO', 'Toglie NUOVO senza aprirlo', function () { segnaVisto(f); toast('Segnato come letto'); }, 'letto'));
     m.appendChild(voce('apri', 'Apri', null, function () { apriDoc(f, arrivo); }));
     if (!f.url) m.appendChild(voce('scarica', 'Scarica sul telefono', null, function () { if (!arrivo) segnaVisto(f); apriFile(f, { scarica: true }); }));
     if (!arrivo && !f.url && puoCondividereFile()) m.appendChild(voce('condividi', 'Condividi il file', 'Il PDF, su WhatsApp o dove vuoi', function () { condividiFile(f); }));   // v11.3 (n. 41)
@@ -4753,7 +4779,7 @@
     var stato = avvisoAttivo(a) ? 'in Home' : a.tolto ? 'tolto dalla Home' : 'scaduto';
     var titolo = el('strong', { testo: a.titolo });
     if (avvisoNuovo(a)) titolo.appendChild(el('span', { classe: 'badge', testo: 'NUOVO' }));
-    return el('button', { type: 'button', classe: 'doc', onclick: function () { apriAvviso(a); } }, [
+    return el('button', { type: 'button', classe: 'doc' + (avvisoNuovo(a) ? ' nuovo' : ''), onclick: function () { apriAvviso(a); } }, [
       p ? el('span', { classe: 'data' }, [el('b', { testo: String(+p[2]) }), el('span', { testo: MESI[+p[1] - 1].slice(0, 3) })]) : el('span', { classe: 'data' }, [el('b', { testo: '📢' })]),
       el('span', { classe: 'tx' }, [titolo, el('small', null, [el('span', { classe: 'etichetta', testo: 'Avviso' }), '📢 ' + stato + (a.allegato ? ' · 📎 documento' : '')])]),
       el('span', { classe: 'freccia', testo: '›' })
