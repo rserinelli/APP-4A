@@ -14,7 +14,16 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.7, 19 ottobre 2026: RILETTURA VELOCE (n. 47) — con l'app
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.9, 21 ottobre 2026: FASCE DEI COLLOQUI 4 PER RIGA — nel Ricevimento le fasce
+  della maestra Marianna (famiglie e agenda della maestra) e le mezz'ore del Coordinatore didattico stanno 4 per riga, con i giorni
+  larghi quanto tutta la scheda; nelle mezz'ore l'ora di fine sta piccola sotto quella d'inizio.
+  Versione 11.8, 21 ottobre 2026: COMPLEANNI PIÙ FESTOSI (n. 48) — l'avviso
+  del compleanno in Home ha una torta a tre piani con la glassa che cola, la frutta e le cifre dell'età a forma di candela (più
+  grandi e leggibili, con le fiammelle che tremolano), colori vivaci: per le femmine fucsia, viola e rosa con ciliegie, fragole e
+  cuoricini; per i maschi, per maschi e femmine insieme e se il sesso non è scritto oro, azzurro e fucsia con mirtilli e ciliegie,
+  stelline e cuoricini (nome dei maschi in blu, delle femmine in fucsia); un 🎉 in basso a destra lancia i coriandoli quando si apre la Home (al massimo ogni 30 minuti) e a
+  ogni tocco. Il sesso arriva dallo script 11.6 (Foglio2 del foglio accessi, colonna con M/F); con lo script 11.5 tema oro per tutti.
+  Versione 11.7, 19 ottobre 2026: RILETTURA VELOCE (n. 47) — con l'app
   aperta sullo schermo la pagina chiede allo script ogni 10 secondi solo il "numero delle novità" (azione novita) e rilegge i dati
   appena cambia: colloqui, avvisi, fondo cassa, calendari, divise e foglio accessi arrivano in 10–15 secondi, i file delle cartelle
   Drive in circa un minuto. Tornando all'app controlla subito (prima aspettava 30 secondi). Se in quel momento è aperto un foglio
@@ -769,6 +778,12 @@
   .col-fa.fuori { border-style: dashed; background: var(--card); }
   .col-fa:disabled { cursor: default; }
   .col-fa:focus-visible, .col-btn:focus-visible { outline: 2px solid var(--oro); outline-offset: 2px; }
+  /* v11.9: fasce dei colloqui 4 per riga (maestra Marianna, Coordinatore didattico, agenda della maestra); i giorni usano tutta la larghezza della scheda */
+  .col-fasce { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; }
+  .col-fa, .col-fa.mezza { min-width: 0; padding: 5px 4px; align-items: center; text-align: center; }
+  .col-fa small { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .ric-tx > .col-giorno { margin-top: 10px; margin-left: -54px; }
+  @media (max-width: 360px) { .ric-card.ric-app, .ric-card:has(.col-giorno) { padding-left: 12px; padding-right: 12px; } }
   .col-legenda { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; font-size: 11.5px; color: var(--muted); }
   .col-legenda .l::before { content: ''; display: inline-block; width: 11px; height: 11px; margin-right: 4px; border-radius: 3px; border: 1.5px solid; vertical-align: -1px; }
   .col-legenda .lib::before { border-color: var(--brand); background: var(--brand-soft); }
@@ -852,24 +867,35 @@
   .vista-az .blu { background: #1a5cff; color: #fff; }
   .vista-az .spegni { grid-column: 1 / -1; background: transparent; border: 1px dashed var(--line); color: var(--muted); font-size: 14px; padding: 9px; }
 
-  /* ---------- v10.24: compleanni ---------- */
-  .festa { position: relative; margin-top: 8px; border-radius: 14px; overflow: hidden; border: 1px solid #f1cfa3;
-    background: radial-gradient(120% 90% at 50% 0%, #fff2f5 0, #fff8e8 55%, #fffdf6 100%); }
+  /* ---------- v10.24: compleanni (v11.8, n. 48: torta a tre piani, colori per maschi / femmine / insieme, coriandoli dal 🎉) ---------- */
+  .festa { position: relative; margin-top: 8px; border-radius: 14px; overflow: hidden; border: 1.5px solid var(--f-bordo, #f1cfa3);
+    background: var(--f-sfondo, #fff8e8); }
   .festa svg.deco { display: block; width: 100%; height: auto; }
-  .festa-corpo { position: relative; display: flex; align-items: center; gap: 12px; padding: 0 14px 10px; margin-top: -26px; }
-  .festa-corpo svg.torta { flex: none; }
+  .festa canvas.cor { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
+  .festa-corpo { position: relative; z-index: 2; display: flex; align-items: center; gap: 12px; padding: 0 14px 10px; margin-top: -30px; }
+  .festa-corpo svg.torta { flex: none; overflow: visible; max-width: 38%; height: auto; }
   .festa-tx { flex: 1; min-width: 0; }
-  .festa-nome { display: block; font-size: 21px; font-weight: 800; line-height: 1.15; color: #a2337a; overflow-wrap: anywhere; }
-  .festa-frase { display: block; font-size: 15px; font-weight: 800; color: var(--ink); }
+  .festa-nome { display: block; font-size: 22px; font-weight: 900; line-height: 1.12; color: var(--f-nome, #a2337a); overflow-wrap: anywhere; }
+  .festa-nome .m { color: #0b74d1; } .festa-nome .f { color: #e0177a; } .festa-nome .e { color: var(--ink); font-weight: 800; }
+  .festa-frase { display: block; font-size: 15.5px; font-weight: 800; color: var(--ink); }
+  .festa-frase em { font-style: normal; display: inline-block; padding: 0 7px; border-radius: 8px; background: var(--f-eta-bg, #ff7a00); color: #fff; }
   .festa-eta { display: block; font-size: 14px; font-weight: 700; color: var(--ink); }   /* v10.25: età diverse */
   .festa-auguri { display: block; font-size: 13px; color: var(--muted); font-weight: 700; margin-top: 2px; }
-  .festa-piede { display: flex; gap: 8px; align-items: center; padding: 0 14px 12px; font-size: 12px; color: var(--muted); font-weight: 700; }
+  .festa-piede { position: relative; z-index: 2; display: flex; gap: 8px; align-items: center; padding: 0 64px 12px 14px; font-size: 12px; color: var(--muted); font-weight: 700; }
+  .festa .botto { position: absolute; z-index: 4; bottom: 6px; right: 8px; width: 50px; height: 50px; border: 0; padding: 0; background: transparent; border-radius: 12px; }
+  .festa .botto svg { display: block; width: 50px; height: 50px; }
+  .festa .botto:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .festa .botto.scoppia svg { animation: scoppia .45s ease-out; }
+  @keyframes scoppia { 0% { transform: scale(1) rotate(0); } 30% { transform: scale(1.25) rotate(-12deg); } 100% { transform: scale(1) rotate(0); } }
   .palloncino { transform-box: fill-box; transform-origin: 50% 100%; animation: ondeggia 4.5s ease-in-out infinite; }
   .palloncino.b { animation-delay: -1.6s; } .palloncino.c { animation-delay: -3s; }
-  .stellina { transform-box: fill-box; transform-origin: center; animation: brilla 2.6s ease-in-out infinite; }
+  .galleggia { transform-box: fill-box; transform-origin: center; animation: galleggia 3s ease-in-out infinite; }
+  .fiamma { transform-box: fill-box; transform-origin: 50% 100%; animation: tremola 1.1s ease-in-out infinite; }
   @keyframes ondeggia { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-5px) rotate(2deg); } }
-  @keyframes brilla { 0%,100% { opacity: .35; transform: scale(.75); } 50% { opacity: 1; transform: scale(1); } }
-  @media (prefers-reduced-motion: reduce) { .palloncino, .stellina { animation: none; } }
+  @keyframes galleggia { 0%,100% { transform: translateY(0); opacity: .75; } 50% { transform: translateY(-4px); opacity: 1; } }
+  @keyframes tremola { 0%,100% { transform: scale(1, 1) rotate(-3deg); } 50% { transform: scale(.88, 1.12) rotate(3deg); } }
+  @media (prefers-reduced-motion: reduce) { .palloncino, .galleggia, .fiamma, .festa .botto.scoppia svg { animation: none; } }
+  @media (max-width: 360px) { .festa-nome { font-size: 19px; } .festa-corpo { gap: 8px; padding: 0 10px 10px; } .festa .botto, .festa .botto svg { width: 44px; height: 44px; } }
   .ag-frase { display: block; font-size: 13.5px; font-weight: 700; color: var(--muted); line-height: 1.35; margin-top: 1px; }
   .ag-ev.compleanno-oggi { background: linear-gradient(90deg, #fff4f7, var(--card) 80%); border-color: #f1cfa3; }
   .ag-ev.compleanno-oggi .ag-frase { color: #a2337a; }
@@ -4196,81 +4222,196 @@
       var n = nomeCompleanno(e);
       if (nomi.indexOf(n) >= 0) return;
       nomi.push(n);
-      bimbi.push({ nome: n, anni: e.anni > 0 ? Number(e.anni) : null });
+      bimbi.push({ nome: n, anni: e.anni > 0 ? Number(e.anni) : null, sesso: e.sesso || '' });   // v11.8: m / f dallo script 11.6
     });
     return bimbi;
   }
-  var SVG_NS = 'http://www.w3.org/2000/svg', COL_FESTA = ['#f3a6b8', '#d9b44a', '#7cc0ea', '#8fd19e', '#c3a6ee'];
-  function sv(tag, attr) { var e = document.createElementNS(SVG_NS, tag); for (var k in attr) e.setAttribute(k, attr[k]); return e; }
-  function decorazioneFesta() {
-    var W = 360, sag = 16, svg = sv('svg', { 'class': 'deco', viewBox: '0 0 360 92', 'aria-hidden': 'true' });
-    svg.appendChild(sv('path', { d: 'M0 6 Q 180 ' + (6 + sag * 2) + ' 360 6', fill: 'none', stroke: '#b07d1a', 'stroke-width': '1.2', opacity: '.7' }));
-    for (var i = 0; i < 13; i++) {
-      var t = (i + 0.5) / 13, x = t * W, y = 6 + 4 * sag * t * (1 - t);
-      svg.appendChild(sv('polygon', { points: (x - 8) + ',' + y + ' ' + (x + 8) + ',' + y + ' ' + x + ',' + (y + 15), fill: COL_FESTA[i % 5] }));
-    }
-    [[26, 44, '#f3a6b8', ''], [46, 52, '#7cc0ea', ' b'], [334, 46, '#c3a6ee', ' c'], [314, 54, '#d9b44a', '']].forEach(function (b) {
-      var cx = b[0], cy = b[1], g = sv('g', { 'class': 'palloncino' + b[3] });
+  // v11.8 (n. 48): avviso del compleanno con la torta a tre piani, colori per maschi, femmine e insieme, coriandoli dal 🎉.
+  // Il sesso arriva dallo script (Foglio2 del foglio accessi, colonna con M/F): solo femmine = tema f (rosa, fucsia, viola);
+  // maschi, maschi e femmine insieme o sesso non scritto = x (oro, azzurro, fucsia; ogni nome nel suo colore). Deciso il 21/10.
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+  var TEMI_FESTA = {
+    f: { sfondo: 'linear-gradient(160deg, #ffd3ea 0, #fff0f7 45%, #fff3c4 100%)', bordo: '#ff7fbf', nome: '#e0177a', etaBg: '#9b3dff',
+         col: ['#ff3d8f', '#ffd000', '#a64dff', '#24c8ff', '#ff8a00'], pan: '#ffd84d', strato: '#ff3d8f', g: ['#ff3d8f', '#a64dff', '#ff9fd0'],
+         piatto: '#4fd8ff', frutta: 'ciliegie', simbolo: 'cuore', cera: ['#ff1f73', '#8a2be2'], pall: ['#ff3d8f', '#a64dff', '#ffd000', '#24c8ff'] },
+    x: { sfondo: 'linear-gradient(160deg, #ffe58a 0, #fff6d8 45%, #d9f3ff 100%)', bordo: '#ffc400', nome: '#15243b', etaBg: '#ff7a00',
+         col: ['#1eb2ff', '#ff3d8f', '#ffd000', '#4cd964', '#a64dff'], pan: '#ffd84d', strato: '#4cd964', g: ['#1eb2ff', '#ff3d8f', '#ffc400'],
+         piatto: '#a64dff', frutta: 'misto', simbolo: 'misto', cera: ['#0b74d1', '#ff1f73'], pall: ['#1eb2ff', '#ff3d8f', '#ffd000', '#4cd964'] }
+  };
+  var LINEA_FESTA = '#7a4a3a', ID_FESTA = 0;
+  function sv(tag, attr, testo) { var e = document.createElementNS(SVG_NS, tag); for (var k in attr) e.setAttribute(k, attr[k]); if (testo != null) e.textContent = testo; return e; }
+  function decorazioneFesta(T) {
+    var W = 360, sag = 16, s = sv('svg', { 'class': 'deco', viewBox: '0 0 360 92', 'aria-hidden': 'true' });
+    s.appendChild(sv('path', { d: 'M0 6 Q 180 ' + (6 + sag * 2) + ' 360 6', fill: 'none', stroke: '#b07d1a', 'stroke-width': '1.2', opacity: '.7' }));
+    for (var i = 0; i < 13; i++) { var t = (i + 0.5) / 13, x = t * W, y = 6 + 4 * sag * t * (1 - t);
+      s.appendChild(sv('polygon', { points: (x - 8) + ',' + y + ' ' + (x + 8) + ',' + y + ' ' + x + ',' + (y + 15), fill: T.col[i % 5] })); }
+    [[26, 46, 0, ''], [48, 54, 1, ' b'], [290, 52, 2, ' c'], [268, 60, 3, '']].forEach(function (b) {
+      var cx = b[0], cy = b[1], c = T.pall[b[2]], g = sv('g', { 'class': 'palloncino' + b[3] });
       g.appendChild(sv('path', { d: 'M' + cx + ' ' + (cy + 15) + ' C ' + (cx - 4) + ' ' + (cy + 28) + ', ' + (cx + 5) + ' ' + (cy + 36) + ', ' + cx + ' ' + (cy + 50), fill: 'none', stroke: '#9aa8b8', 'stroke-width': '1' }));
-      g.appendChild(sv('ellipse', { cx: cx, cy: cy, rx: 11, ry: 14, fill: b[2] }));
-      g.appendChild(sv('polygon', { points: (cx - 3) + ',' + (cy + 16) + ' ' + (cx + 3) + ',' + (cy + 16) + ' ' + cx + ',' + (cy + 12), fill: b[2] }));
+      g.appendChild(sv('ellipse', { cx: cx, cy: cy, rx: 11, ry: 14, fill: c }));
+      g.appendChild(sv('polygon', { points: (cx - 3) + ',' + (cy + 16) + ' ' + (cx + 3) + ',' + (cy + 16) + ' ' + cx + ',' + (cy + 12), fill: c }));
       g.appendChild(sv('ellipse', { cx: cx - 4, cy: cy - 5, rx: 3, ry: 4.5, fill: '#fff', opacity: '.55' }));
-      svg.appendChild(g);
+      s.appendChild(g);
     });
-    [[88, 40, 5], [130, 58, 3.5], [250, 40, 4.5], [282, 62, 3], [205, 56, 3.5], [165, 38, 3]].forEach(function (st, j) {
-      var x = st[0], y = st[1], r = st[2], q = r * 0.32;
-      var e = sv('path', { d: 'M' + x + ' ' + (y - r) + ' L' + (x + q) + ' ' + (y - q) + ' L' + (x + r) + ' ' + y + ' L' + (x + q) + ' ' + (y + q) + ' L' + x + ' ' + (y + r) +
-        ' L' + (x - q) + ' ' + (y + q) + ' L' + (x - r) + ' ' + y + ' L' + (x - q) + ' ' + (y - q) + ' Z', fill: j % 2 ? '#d9b44a' : '#f3a6b8', 'class': 'stellina' });
-      e.style.animationDelay = (-j * 0.45) + 's';
-      svg.appendChild(e);
+    [[92, 46, 6], [140, 66, 4.5], [214, 44, 5.5], [246, 70, 4], [186, 72, 4]].forEach(function (p, i) {   // cuoricini, stelline o tutti e due
+      var tipo = T.simbolo === 'misto' ? (i % 2 ? 'stella' : 'cuore') : T.simbolo, x = p[0], y = p[1], r = p[2], e;
+      if (tipo === 'cuore') e = sv('path', { d: 'M' + x + ' ' + (y + r) + ' C ' + (x - 2 * r) + ' ' + y + ', ' + (x - r) + ' ' + (y - 1.3 * r) + ', ' + x + ' ' + (y - 0.4 * r) + ' C ' + (x + r) + ' ' + (y - 1.3 * r) + ', ' + (x + 2 * r) + ' ' + y + ', ' + x + ' ' + (y + r) + ' Z', fill: '#ff8fb1' });
+      else { var d = ''; for (var k = 0; k < 10; k++) { var a = -Math.PI / 2 + k * Math.PI / 5, rr = k % 2 ? r * 0.45 : r; d += (k ? 'L' : 'M') + (x + Math.cos(a) * rr).toFixed(1) + ' ' + (y + Math.sin(a) * rr).toFixed(1) + ' '; }
+        e = sv('path', { d: d + 'Z', fill: '#ffc93c' }); }
+      e.setAttribute('class', 'galleggia'); e.style.animationDelay = (-i * 0.8) + 's'; s.appendChild(e);
     });
-    [[70, 70, '#8fd19e'], [110, 30, '#7cc0ea'], [228, 72, '#c3a6ee'], [270, 30, '#8fd19e'], [150, 74, '#d9b44a']].forEach(function (c) {
-      svg.appendChild(sv('rect', { x: c[0], y: c[1], width: 6, height: 3, rx: 1.5, fill: c[2], transform: 'rotate(' + (c[0] % 50 - 25) + ' ' + c[0] + ' ' + c[1] + ')' }));
-    });
-    return svg;
+    return s;
   }
-  function fiammaFesta(svg, x, y) {
-    svg.appendChild(sv('ellipse', { cx: x, cy: y, rx: 2.6, ry: 4, fill: '#ffb547' }));
-    svg.appendChild(sv('ellipse', { cx: x, cy: y + 1, rx: 1.1, ry: 2, fill: '#fff3c4' }));
+  function fiammaFesta(s, x, y, r) {
+    var g = sv('g', { 'class': 'fiamma' });
+    g.appendChild(sv('path', { d: 'M' + x + ' ' + (y - 9 * r) + ' C ' + (x + 5 * r) + ' ' + (y - 3 * r) + ', ' + (x + 4 * r) + ' ' + (y + 2 * r) + ', ' + x + ' ' + (y + 2 * r) + ' C ' + (x - 4 * r) + ' ' + (y + 2 * r) + ', ' + (x - 5 * r) + ' ' + (y - 3 * r) + ', ' + x + ' ' + (y - 9 * r) + ' Z', fill: '#ffb547' }));
+    g.appendChild(sv('ellipse', { cx: x, cy: y - r, rx: 1.6 * r, ry: 2.6 * r, fill: '#fff3c4' }));
+    s.appendChild(g);
   }
-  // v10.25: anni = numero scritto sulla torta con le fiammelle; senza anni le 3 candeline
-  function tortaFesta(anni) {
-    var svg = sv('svg', { 'class': 'torta', width: 54, height: 58, viewBox: '0 0 54 58', 'aria-hidden': 'true' });
-    svg.appendChild(sv('ellipse', { cx: 27, cy: 53, rx: 25, ry: 4, fill: '#e8dcc0' }));
-    svg.appendChild(sv('rect', { x: 5, y: 34, width: 44, height: 18, rx: 4, fill: '#f3a6b8' }));
-    svg.appendChild(sv('path', { d: 'M5 38 q5.5 5 11 0 t11 0 t11 0 t11 0 V34 H5 Z', fill: '#fff' }));
-    svg.appendChild(sv('rect', { x: 10, y: 21, width: 34, height: 14, rx: 4, fill: '#fff4d6' }));
-    svg.appendChild(sv('path', { d: 'M10 25 q4.25 4 8.5 0 t8.5 0 t8.5 0 t8.5 0 V21 H10 Z', fill: '#d9b44a' }));
-    if (anni) {
-      var cifre = String(anni).split(''), passo = 13, x0 = 27 - (cifre.length - 1) * passo / 2;
-      cifre.forEach(function (c, i) {
-        var x = x0 + i * passo, t = sv('text', { x: x, y: 23, 'text-anchor': 'middle', 'font-family': 'Nunito, system-ui, sans-serif', 'font-weight': '800',
-          'font-size': '19', fill: COL_FESTA[(i * 2 + 2) % 5], stroke: '#fff', 'stroke-width': '1.4', 'paint-order': 'stroke' });
-        t.textContent = c; svg.appendChild(t);
-        svg.appendChild(sv('rect', { x: x - 0.5, y: 6.5, width: 1, height: 3, fill: '#5a6b80' }));
-        fiammaFesta(svg, x, 3.5);
+  // cifre dell'età a forma di candela (cera a righe, contorno, stoppino e fiammella); senza età 3 candeline a righe
+  function candeleFesta(s, T, anni, cx, base, size) {
+    var id = 'cf' + (++ID_FESTA) + '_', defs = sv('defs');
+    [0, 1].forEach(function (i) {
+      var p = sv('pattern', { id: id + i, width: 6, height: 6, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(35)' });
+      p.appendChild(sv('rect', { width: 6, height: 6, fill: T.cera[i] }));
+      p.appendChild(sv('rect', { width: 2.2, height: 6, fill: '#ffffff', opacity: '.55' }));
+      defs.appendChild(p);
+    });
+    s.appendChild(defs);
+    if (!anni) {
+      [cx - 12, cx, cx + 12].forEach(function (x, i) {
+        s.appendChild(sv('rect', { x: x - 3, y: base - 20, width: 6, height: 20, rx: 2, fill: 'url(#' + id + (i % 2) + ')', stroke: '#4a2c4f', 'stroke-width': '1.4' }));
+        s.appendChild(sv('rect', { x: x - 0.8, y: base - 25, width: 1.6, height: 5, fill: '#5a6b80' }));
+        fiammaFesta(s, x, base - 26, 0.9);
       });
-      return svg;
+      return;
     }
-    [17, 27, 37].forEach(function (x, i) {
-      svg.appendChild(sv('rect', { x: x - 1.6, y: 11, width: 3.2, height: 11, rx: 1, fill: COL_FESTA[(i + 2) % 5] }));
-      fiammaFesta(svg, x, 7.5);
+    var cifre = String(anni).split(''), passo = size * 0.62, x0 = cx - (cifre.length - 1) * passo / 2;
+    cifre.forEach(function (c, i) {
+      var x = x0 + i * passo, comune = { x: x, y: base, 'text-anchor': 'middle', 'font-family': 'Nunito, system-ui, sans-serif', 'font-weight': '900', 'font-size': size, 'stroke-linejoin': 'round' };
+      var a = {}, b = {}; for (var k in comune) { a[k] = comune[k]; b[k] = comune[k]; }
+      a.fill = '#4a2c4f'; a.stroke = '#4a2c4f'; a['stroke-width'] = size * 0.16;
+      b.fill = 'url(#' + id + (i % 2) + ')'; b.stroke = '#fff'; b['stroke-width'] = size * 0.06; b['paint-order'] = 'stroke';
+      s.appendChild(sv('text', a, c)); s.appendChild(sv('text', b, c));
+      var top = base - size * 0.74;
+      s.appendChild(sv('rect', { x: x - 0.8, y: top - 5, width: 1.6, height: 5, fill: '#5a6b80' }));
+      fiammaFesta(s, x, top - 6, size / 40);
     });
-    return svg;
+  }
+  function glassaCola(x1, x2, y, gocce) {
+    var d = 'M' + x1 + ' ' + (y + 9) + ' Q' + x1 + ' ' + y + ' ' + (x1 + 9) + ' ' + y + ' H' + (x2 - 9) + ' Q' + x2 + ' ' + y + ' ' + x2 + ' ' + (y + 9);
+    gocce.slice().sort(function (a, b) { return b[0] - a[0]; }).forEach(function (g) {
+      var xc = g[0], fondo = g[1], r = g[2] || 3.5;
+      d += ' L' + (xc + r) + ' ' + (y + 9) + ' V' + (fondo - r) + ' A' + r + ' ' + r + ' 0 0 1 ' + (xc - r) + ' ' + (fondo - r) + ' V' + (y + 9);
+    });
+    return d + ' L' + x1 + ' ' + (y + 9) + ' Z';
+  }
+  function fragolaFesta(s, x, y, k) {
+    s.appendChild(sv('path', { d: 'M' + x + ' ' + (y + 7 * k) + ' C ' + (x - 7 * k) + ' ' + (y + 2 * k) + ', ' + (x - 6.5 * k) + ' ' + (y - 5 * k) + ', ' + x + ' ' + (y - 4.5 * k) + ' C ' + (x + 6.5 * k) + ' ' + (y - 5 * k) + ', ' + (x + 7 * k) + ' ' + (y + 2 * k) + ', ' + x + ' ' + (y + 7 * k) + ' Z',
+      fill: '#e8384f', stroke: LINEA_FESTA, 'stroke-width': 1.4 }));
+    [[-2.5, -1], [2, -1.5], [0, 1.8], [-2.8, 2.4], [2.8, 2]].forEach(function (p) { s.appendChild(sv('ellipse', { cx: x + p[0] * k, cy: y + p[1] * k, rx: 0.55 * k, ry: 0.8 * k, fill: '#ffe08a' })); });
+    s.appendChild(sv('path', { d: 'M' + (x - 4 * k) + ' ' + (y - 4.5 * k) + ' L' + (x - 1.5 * k) + ' ' + (y - 3 * k) + ' L' + x + ' ' + (y - 6.5 * k) + ' L' + (x + 1.5 * k) + ' ' + (y - 3 * k) + ' L' + (x + 4 * k) + ' ' + (y - 4.5 * k) + ' L' + x + ' ' + (y - 2.5 * k) + ' Z', fill: '#4fae5a', stroke: LINEA_FESTA, 'stroke-width': 1, 'stroke-linejoin': 'round' }));
+  }
+  function pallinaFesta(s, x, y, r, colore) {   // mirtillo (blu) o ciliegia (rossa)
+    s.appendChild(sv('circle', { cx: x, cy: y, r: r, fill: colore, stroke: LINEA_FESTA, 'stroke-width': 1.2 }));
+    s.appendChild(sv('circle', { cx: x - r * 0.35, cy: y - r * 0.35, r: r * 0.28, fill: '#ffffff', opacity: '.7' }));
+  }
+  function pianoFesta(s, T, x, y, w, h, glassa, gocce, n, ip) {
+    s.appendChild(sv('rect', { x: x, y: y, width: w, height: h, rx: 7, fill: T.pan, stroke: LINEA_FESTA, 'stroke-width': 1.8 }));
+    s.appendChild(sv('rect', { x: x + 1, y: y + h * 0.58, width: w - 2, height: h * 0.16, fill: T.strato }));
+    s.appendChild(sv('path', { d: glassaCola(x, x + w, y, gocce), fill: glassa, stroke: LINEA_FESTA, 'stroke-width': 1.6, 'stroke-linejoin': 'round' }));
+    s.appendChild(sv('rect', { x: x + 4, y: y + h * 0.45, width: 3, height: h * 0.4, rx: 1.5, fill: '#ffffff', opacity: '.5' }));
+    for (var i = 0; i < n; i++) {
+      var blu = T.frutta === 'mirtilli' || (T.frutta === 'misto' && (i + ip) % 2);
+      pallinaFesta(s, x + 8 + i * (w - 16) / (n - 1), y + 1, 3.6, blu ? '#4a5fd6' : '#e8384f');
+    }
+  }
+  function tortaFesta(anni, T) {
+    var s = sv('svg', { 'class': 'torta', width: 116, height: 134, viewBox: '0 0 120 138', 'aria-hidden': 'true' });
+    s.appendChild(sv('ellipse', { cx: 60, cy: 129, rx: 57, ry: 7, fill: T.piatto, stroke: LINEA_FESTA, 'stroke-width': 1.8 }));
+    s.appendChild(sv('ellipse', { cx: 60, cy: 127, rx: 50, ry: 4.5, fill: '#ffffff', opacity: '.5' }));
+    pianoFesta(s, T, 6, 96, 108, 32, T.g[0], [[104, 112], [88, 118, 4], [70, 110], [52, 116, 4], [34, 111], [16, 114]], 7, 0);
+    pianoFesta(s, T, 18, 70, 84, 28, T.g[1], [[92, 85], [76, 91, 4], [58, 84], [40, 90, 4], [26, 86]], 6, 1);
+    pianoFesta(s, T, 31, 46, 58, 26, T.g[2], [[80, 60], [62, 64, 3.5], [44, 59], [36, 62]], 4, 0);
+    [[40, 45], [52, 43], [68, 43], [80, 45]].forEach(function (p) {
+      s.appendChild(sv('path', { d: 'M' + (p[0] - 7) + ' ' + p[1] + ' q0 -7 7 -7 q7 0 7 7 Z', fill: '#ffffff', stroke: LINEA_FESTA, 'stroke-width': 1.4 }));
+      s.appendChild(sv('path', { d: 'M' + (p[0] - 3) + ' ' + (p[1] - 6) + ' q3 -5 6 0', fill: '#ffffff', stroke: LINEA_FESTA, 'stroke-width': 1.2 }));
+    });
+    if (T.frutta === 'mirtilli') { pallinaFesta(s, 36, 40, 4, '#4a5fd6'); pallinaFesta(s, 84, 40, 4, '#4a5fd6'); pallinaFesta(s, 89, 44, 3, '#4a5fd6'); }
+    else { fragolaFesta(s, 35, 39, 1.1); fragolaFesta(s, 85, 39, 1.1); }
+    candeleFesta(s, T, anni, 60, 44, 36);
+    return s;
+  }
+  // il 🎉 disegnato, in basso a destra: spara i coriandoli verso l'alto, su tutto il riquadro
+  function bottoFesta(T) {
+    var b = el('button', { type: 'button', classe: 'botto', 'aria-label': 'Lancia i coriandoli' });
+    var id = 'cono' + (++ID_FESTA), s = sv('svg', { viewBox: '0 0 46 46', 'aria-hidden': 'true' });
+    var d = sv('defs'), p = sv('pattern', { id: id, width: 7, height: 7, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' });
+    p.appendChild(sv('rect', { width: 7, height: 7, fill: '#d9b44a' })); p.appendChild(sv('rect', { width: 3.5, height: 7, fill: T.cera[0] }));
+    d.appendChild(p); s.appendChild(d);
+    s.appendChild(sv('path', { d: 'M38 40 L14 30 L28 14 Z', fill: 'url(#' + id + ')', stroke: '#8a6212', 'stroke-width': '1.2', 'stroke-linejoin': 'round' }));
+    s.appendChild(sv('ellipse', { cx: 21, cy: 22, rx: 11, ry: 3.6, transform: 'rotate(-48 21 22)', fill: '#fff6e0', stroke: '#8a6212', 'stroke-width': '1.2' }));
+    [[8, 10, T.col[0]], [16, 5, T.col[4]], [5, 20, T.col[2]], [24, 6, T.col[1]]].forEach(function (c, i) {
+      s.appendChild(sv('rect', { x: c[0], y: c[1], width: 4, height: 2.4, rx: 1, fill: c[2], transform: 'rotate(' + (i * 40) + ' ' + c[0] + ' ' + c[1] + ')' })); });
+    b.appendChild(s);
+    return b;
+  }
+  // coriandoli su un canvas dentro il riquadro; con \"Riduci movimento\" restano fermi
+  var CORIANDOLI = null;
+  function coriandoliFesta(box, cv, T) {
+    if (CORIANDOLI) CORIANDOLI.stop();
+    var ctx = cv.getContext && cv.getContext('2d');
+    if (!ctx) return CORIANDOLI = { spara: function () {}, stop: function () {} };
+    var dpr = window.devicePixelRatio || 1, W = 0, H = 0, pezzi = [], fine = 0, raf = 0, attivo = true;
+    var fermi = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function misura() { W = box.clientWidth; H = box.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+    function pezzo(x, y, vx, vy) {
+      return { x: x, y: y, vx: vx, vy: vy, r: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.3, c: T.col[(Math.random() * T.col.length) | 0],
+        w: 5 + Math.random() * 4, h: 3 + Math.random() * 3, tondo: Math.random() < 0.3, onda: Math.random() * 6.28, t: 0 };
+    }
+    function disegna(p) {
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c;
+      var k = Math.abs(Math.cos(p.t * 3 + p.onda));
+      if (p.tondo) { ctx.beginPath(); ctx.arc(0, 0, p.h * 0.7, 0, 6.28); ctx.fill(); } else ctx.fillRect(-p.w / 2, -p.h / 2 * k - 0.5, p.w, p.h * k + 1);
+      ctx.restore();
+    }
+    function passo() {
+      if (!attivo) return;
+      ctx.clearRect(0, 0, W, H);
+      pezzi = pezzi.filter(function (p) {
+        p.t += 0.016; p.vy = Math.min(p.vy + 0.16, 3.4); p.vx *= 0.985;
+        p.x += p.vx + Math.sin(p.t * 2 + p.onda) * 0.5; p.y += p.vy; p.r += p.vr;
+        disegna(p); return p.y < H + 12;
+      });
+      if (pezzi.length || Date.now() < fine) raf = requestAnimationFrame(passo); else { raf = 0; ctx.clearRect(0, 0, W, H); }
+    }
+    return CORIANDOLI = {
+      spara: function (x, y) {
+        misura();
+        if (fermi) { ctx.clearRect(0, 0, W, H); for (var j = 0; j < 26; j++) disegna(pezzo(Math.random() * W, 30 + Math.random() * (H - 40), 0, 0)); return; }
+        for (var i = 0; i < 80; i++) { var a = Math.PI * 1.08 + Math.random() * 1.2, v = 6 + Math.random() * 7; pezzi.push(pezzo(x, y, Math.cos(a) * v, Math.sin(a) * v - 2)); }
+        fine = Date.now() + 3200;
+        if (!raf) raf = requestAnimationFrame(passo);
+      },
+      stop: function () { attivo = false; if (raf) cancelAnimationFrame(raf); }
+    };
   }
   function elencoNomi(n) { return n.length > 1 ? n.slice(0, -1).join(', ') + ' e ' + n[n.length - 1] : n[0]; }
   function anniTesto(a) { return a + (a === 1 ? ' anno' : ' anni'); }
+  var FESTA_SPARATA = { chiave: '', quando: 0 };
   // v10.25: con l'età. Tutti la stessa età → "oggi compie/compiono 10 anni!"; età diverse → "oggi è il loro compleanno!" +
-  // "Giulia e Sofia compiono 10 anni, Marco compie 9"; senza età → come la 10.24. Sulla torta il numero se l'età è una sola.
+  // "Giulia e Sofia compiono 10 anni, Marco compie 9"; senza età → 3 candeline. v11.8: colori per maschi, femmine e insieme.
   function avvisoFesta(bimbi) {
-    bimbi = bimbi.map(function (b) { return typeof b === 'string' ? { nome: b, anni: null } : b; });
+    bimbi = bimbi.map(function (b) { return typeof b === 'string' ? { nome: b, anni: null, sesso: '' } : b; });
     var nomi = bimbi.map(function (b) { return b.nome; });
     var conEta = bimbi.filter(function (b) { return b.anni; });
     var eta = []; conEta.forEach(function (b) { if (eta.indexOf(b.anni) < 0) eta.push(b.anni); });
-    var tutti = conEta.length === bimbi.length, frase, riga = '';
-    if (tutti && eta.length === 1) frase = 'oggi ' + (bimbi.length > 1 ? 'compiono ' : 'compie ') + anniTesto(eta[0]) + '!';
+    var tutti = conEta.length === bimbi.length, frase = null, riga = '';
+    var sessi = bimbi.map(function (b) { return b.sesso === 'm' || b.sesso === 'f' ? b.sesso : ''; });
+    var tema = sessi.every(function (x) { return x === 'f'; }) ? 'f' : 'x', T = TEMI_FESTA[tema];   // solo femmine = rosa; maschi, insieme o senza sesso = oro
+    if (tutti && eta.length === 1) frase = ['oggi ' + (bimbi.length > 1 ? 'compiono ' : 'compie '), el('em', { testo: anniTesto(eta[0]) }), '!'];
     else {
-      frase = bimbi.length > 1 ? 'oggi è il loro compleanno!' : 'oggi è il suo compleanno!';
+      frase = [bimbi.length > 1 ? 'oggi è il loro compleanno!' : 'oggi è il suo compleanno!'];
       if (conEta.length) {
         var gruppi = {}; conEta.forEach(function (b) { (gruppi[b.anni] = gruppi[b.anni] || []).push(b.nome); });
         riga = eta.slice().sort(function (a, b) { return b - a; }).map(function (a, i) {
@@ -4279,15 +4420,37 @@
         }).join(', ');
       }
     }
-    return el('div', { classe: 'festa', role: 'note' }, [
-      decorazioneFesta(),
-      el('div', { classe: 'festa-corpo' }, [tortaFesta(tutti && eta.length === 1 ? eta[0] : null), el('div', { classe: 'festa-tx' }, [
-        el('span', { classe: 'festa-nome', testo: elencoNomi(nomi) }),
-        el('span', { classe: 'festa-frase', testo: frase }),
+    var nome = el('span', { classe: 'festa-nome' });
+    bimbi.forEach(function (b, i) {
+      if (i) nome.appendChild(el('span', { classe: 'e', testo: i === bimbi.length - 1 ? ' e ' : ', ' }));
+      nome.appendChild(el('span', { classe: tema === 'x' && sessi[i] ? sessi[i] : null, testo: b.nome }));
+    });
+    var cv = el('canvas', { classe: 'cor', 'aria-hidden': 'true' }), bot = bottoFesta(T);
+    var box = el('div', { classe: 'festa', role: 'note', style: '--f-sfondo:' + T.sfondo + ';--f-bordo:' + T.bordo + ';--f-nome:' + T.nome + ';--f-eta-bg:' + T.etaBg }, [
+      decorazioneFesta(T),
+      el('div', { classe: 'festa-corpo' }, [tortaFesta(tutti && eta.length === 1 ? eta[0] : null, T), el('div', { classe: 'festa-tx' }, [
+        nome,
+        el('span', { classe: 'festa-frase' }, frase),
         riga ? el('span', { classe: 'festa-eta', testo: riga }) : null,
         el('span', { classe: 'festa-auguri', testo: 'Tanti auguri da tutta la 4a 🎉' })])]),
-      el('div', { classe: 'festa-piede' }, [el('span', { classe: 'badge', testo: 'NUOVO' }), el('span', { testo: 'solo oggi · dal calendario Compleanni' })])
+      el('div', { classe: 'festa-piede' }, [el('span', { classe: 'badge', testo: 'NUOVO' }), el('span', { testo: 'solo oggi · dal calendario Compleanni' })]),
+      cv, bot
     ]);
+    var g = coriandoliFesta(box, cv, T);
+    function lancia() {
+      if (!box.isConnected) return;
+      var r = box.getBoundingClientRect(), q = bot.getBoundingClientRect();
+      bot.classList.remove('scoppia'); void bot.offsetWidth; bot.classList.add('scoppia');
+      g.spara(q.left + 6 - r.left, q.top + 14 - r.top);
+    }
+    bot.addEventListener('click', function (ev) { ev.stopPropagation(); lancia(); });
+    // all'apertura della Home i coriandoli partono da soli, al massimo una volta ogni 30 minuti (la Home si ridisegna con le novità)
+    var chiave = oggiISO() + '|' + nomi.join(',');
+    if (FESTA_SPARATA.chiave !== chiave || Date.now() - FESTA_SPARATA.quando > 30 * 60000) {
+      FESTA_SPARATA = { chiave: chiave, quando: Date.now() };
+      setTimeout(lancia, 450);
+    }
+    return box;
   }
 
   function rigaAvviso(a, conAzioni, evidenza) {
@@ -6142,7 +6305,7 @@
             if (durata && d.dalle) date.forEach(function (iso) {
               sotto.push(el('div', { classe: 'col-giorno' }, [el('div', { classe: 'col-gd', testo: iso === oggiIso ? 'Oggi' : dataCorta(iso) }),
                 el('div', { classe: 'col-fasce' }, fasceDi(d, durata).map(function (f) {
-                  return el('button', { type: 'button', classe: 'col-fa mezza', onclick: function () { foglioColloquio(b, d, iso, f); } }, [el('b', { testo: f.da + '–' + f.a })]);
+                  return el('button', { type: 'button', classe: 'col-fa mezza', onclick: function () { foglioColloquio(b, d, iso, f); } }, [el('b', { testo: f.da }), el('small', { testo: '–' + f.a })]   /* v11.9: fine sotto, 4 per riga */);
                 }))]));
             });
             else sotto.push(el('div', { classe: 'ric-date' }, date.map(function (iso) {
