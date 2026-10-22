@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#1f5f99">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Prova 🔔">
+<title>Prova notifiche 4a</title>
+<link rel="manifest" href="prova-notifiche.webmanifest">
+<link rel="icon" type="image/png" href="icona-192.png">
+<link rel="apple-touch-icon" href="icona-180.png">
+<!--
+  PROVA NOTIFICHE (22 ottobre 2026, rifatta) — pagina a parte, NON è l'app vera.
+  Non tocca index.html, sw.js, Codice.gs, Contenuti.gs. Ha il suo service worker (prova-notifiche-sw.js) e il suo manifest.
+  Serve a vedere se una notifica arriva sul telefono con l'app chiusa (iPhone: solo dall'icona sulla schermata Home, iOS 16.4+).
+  A prova finita: cancellare da GitHub i tre file prova-notifiche*.
+-->
+<style>
+  :root { --bg: #edf5fb; --card: #fff; --ink: #15243b; --muted: #5a6b80; --line: #d6e4ef; --brand: #1f5f99; --brand-soft: #e1eff9;
+    --accent: #b07d1a; --accent-soft: #f8eed6; --oro: #d9b44a; --ok: #2f7d4f; --ok-soft: #e5f4e7; --danger: #b23b3b; --danger-soft: #fdf0ef; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: linear-gradient(180deg, #d6ebf8 0, var(--bg) 360px) no-repeat, var(--bg); color: var(--ink);
+    font: 16px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif; }
+  .col { max-width: 460px; margin: 0 auto; padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 40px max(16px, env(safe-area-inset-left)); }
+  .testa { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .testa img { width: 56px; height: 56px; border-radius: 14px; }
+  .testa b { display: block; font-size: 20px; line-height: 1.2; }
+  .testa small { color: var(--muted); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-bottom: 12px; box-shadow: 0 4px 16px rgba(20,50,90,.06); }
+  .card h2 { margin: 0 0 8px; font-size: 17px; display: flex; gap: 8px; align-items: center; }
+  .n { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; font-size: 14px; }
+  .card.fatto .n { background: var(--ok); }
+  p { margin: 0 0 10px; font-size: 14.5px; }
+  .righe { display: grid; gap: 6px; font-size: 14px; }
+  .riga { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-top: 1px solid var(--line); }
+  .riga:first-child { border-top: 0; }
+  .si { color: var(--ok); font-weight: 800; } .no { color: var(--danger); font-weight: 800; } .forse { color: var(--accent); font-weight: 800; }
+  label { display: block; font-size: 13px; font-weight: 800; color: var(--muted); margin-bottom: 4px; }
+  input { width: 100%; padding: 11px 14px; border: 1px solid var(--line); border-radius: 12px; font: inherit; margin-bottom: 10px; }
+  button { width: 100%; border: 0; border-radius: 12px; padding: 13px; font: inherit; font-weight: 800; font-size: 16px; background: var(--brand); color: #fff; cursor: pointer; }
+  button.oro { background: linear-gradient(180deg, #d6a93a, var(--accent)); }
+  button:disabled { opacity: .55; cursor: default; }
+  .msg { margin-top: 10px; padding: 10px 12px; border-radius: 10px; font-size: 14px; font-weight: 700; }
+  .msg.ok { background: var(--ok-soft); color: #1e5a37; } .msg.err { background: var(--danger-soft); color: var(--danger); } .msg.info { background: var(--accent-soft); color: #7a5a00; }
+  .ios { background: var(--accent-soft); border: 1px solid #ecd9a6; }
+  .ios ol { margin: 6px 0 0; padding-left: 20px; font-size: 14.5px; } .ios li { margin-bottom: 4px; }
+  .piccolo { font-size: 12.5px; color: var(--muted); word-break: break-all; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="col">
+  <div class="testa"><img src="icona-192.png" alt=""><span><b>Prova notifiche</b><small>4a primaria · pagina di prova</small></span></div>
+
+  <div class="card ios" id="cardIos" hidden>
+    <h2>📱 Su iPhone serve l’icona</h2>
+    <p>Le notifiche su iPhone arrivano solo aprendo questa pagina dall’icona sulla schermata Home (iOS 16.4 o più recente).</p>
+    <ol>
+      <li>In Safari tocca <b>Condividi</b> (il quadrato con la freccia).</li>
+      <li>Tocca <b>Aggiungi alla schermata Home</b> e poi <b>Aggiungi</b>.</li>
+      <li>Chiudi Safari e apri l’icona <b>Prova 🔔</b>.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>🔎 Questo telefono</h2>
+    <div class="righe" id="stato"></div>
+  </div>
+
+  <div class="card" id="card1">
+    <h2><span class="n">1</span> Attiva le notifiche</h2>
+    <label for="nome">Nome di questo telefono</label>
+    <input id="nome" maxlength="40" placeholder="es. iPhone Rossana" autocomplete="off">
+    <button id="attiva">🔔 Attiva le notifiche</button>
+    <div id="msg1" class="msg" hidden></div>
+  </div>
+
+  <div class="card" id="card2">
+    <h2><span class="n">2</span> Prova con l’app chiusa</h2>
+    <p>Tocca il pulsante, poi <b>esci subito dall’app e blocca il telefono</b>. Dopo circa 20 secondi deve arrivare una notifica.</p>
+    <button class="oro" id="prova" disabled>Mandami una prova tra 20 secondi</button>
+    <div id="msg2" class="msg" hidden></div>
+  </div>
+
+  <p class="piccolo" id="tok"></p>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-messaging-compat.js"></script>
+<script>
+(function () {
+  'use strict';
+  // ===================== Dati di Firebase (completati il 22/10/2026 con quelli mandati da Rossana) =====================
+  var firebaseConfig = {
+    apiKey: 'AIzaSyBvxbXR4NbaNkRnfKDFwrwpUlDwcF9xj3Q',
+    authDomain: 'app-4a-notifiche.firebaseapp.com',
+    projectId: 'app-4a-notifiche',
+    storageBucket: 'app-4a-notifiche.firebasestorage.app',
+    messagingSenderId: '175752538302',
+    appId: '1:175752538302:web:c6fc956eab39268645d6ef'
+  };
+  // Impostazioni progetto → Cloud Messaging → Certificati push web
+  var CHIAVE_PUSH_WEB = 'BHcoQxDNEOhAEmeE50M1YaCYMVcOA6-UbKEBYablZV3fqWv7iSSjVIac7zW3-uNFBEAtS35oEyJN5En0-_7DutQ';
+  // URL /exec del progetto Apps Script "Prova notifiche"
+  var URL_PROVA = 'https://script.google.com/macros/s/AKfycbwK07uIyMbAlaMOZuveKmLEpciPtyGd_p9yJ1_e1nnCc6xi6bNIMzBIyNdXbkhTBKKdRQ/exec';
+  // ======================================================================================================================
+
+  var $ = function (id) { return document.getElementById(id); };
+  var K_TOKEN = 'prova4a_token', K_NOME = 'prova4a_nome';
+  function leggi(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
+  function scrivi(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function msg(id, testo, tipo) { var m = $(id); m.textContent = testo; m.className = 'msg ' + (tipo || 'info'); m.hidden = !testo; }
+
+  var IOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var STANDALONE = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+  var completo = URL_PROVA.indexOf('https://script.google.com/') === 0 && CHIAVE_PUSH_WEB !== 'DA_COMPLETARE';
+
+  function riga(nome, valore, cls) { return '<div class="riga"><span>' + nome + '</span><span class="' + cls + '">' + valore + '</span></div>'; }
+  function disegnaStato() {
+    var perm = 'Notification' in window ? Notification.permission : 'non disponibili';
+    var h = '';
+    h += riga('Sistema', IOS ? 'iPhone / iPad' : (/android/i.test(navigator.userAgent) ? 'Android' : 'Computer'), 'forse');
+    h += riga('Aperta dall’icona', STANDALONE ? 'sì' : 'no', STANDALONE ? 'si' : (IOS ? 'no' : 'forse'));
+    h += riga('Notifiche del telefono', perm === 'granted' ? 'consentite' : perm === 'denied' ? 'bloccate' : perm === 'default' ? 'da chiedere' : 'non disponibili',
+      perm === 'granted' ? 'si' : perm === 'default' ? 'forse' : 'no');
+    h += riga('Registrato per la prova', leggi(K_TOKEN) ? 'sì' : 'no', leggi(K_TOKEN) ? 'si' : 'forse');
+    $('stato').innerHTML = h;
+    $('cardIos').hidden = !(IOS && !STANDALONE);
+    $('prova').disabled = !leggi(K_TOKEN);
+    $('card1').classList.toggle('fatto', !!leggi(K_TOKEN));
+    if (perm === 'denied') msg('msg1', 'Le notifiche sono bloccate per questa app: riattivale dalle impostazioni del telefono (Impostazioni → Notifiche), poi riprova.', 'err');
+  }
+
+  function chiama(dati) {
+    return fetch(URL_PROVA, { method: 'POST', body: JSON.stringify(dati), redirect: 'follow' })
+      .then(function (r) { if (!r.ok) throw new Error('Lo script non risponde (' + r.status + ')'); return r.json(); })
+      .then(function (r) { if (r.errore) throw new Error(r.messaggio || r.errore); return r; });
+  }
+  function attendiAttivo(reg) {
+    if (reg.active) return Promise.resolve(reg);
+    return new Promise(function (ok) {
+      var sw = reg.installing || reg.waiting;
+      if (!sw) return ok(reg);
+      sw.addEventListener('statechange', function () { if (sw.state === 'activated') ok(reg); });
+    });
+  }
+
+  $('nome').value = leggi(K_NOME);
+  $('attiva').addEventListener('click', function () {
+    var b = this, nome = $('nome').value.trim();
+    if (!completo) { msg('msg1', 'La pagina non è ancora completa: mancano i dati di Firebase (li aggiunge Claude).', 'err'); return; }
+    if (!nome) { msg('msg1', 'Scrivi un nome per questo telefono, così lo riconosci nell’elenco.', 'err'); $('nome').focus(); return; }
+    if (IOS && !STANDALONE) { msg('msg1', 'Su iPhone prima aggiungi la pagina alla schermata Home e aprila dall’icona (vedi sopra).', 'err'); return; }
+    if (!('serviceWorker' in navigator) || !('Notification' in window) || !('PushManager' in window)) { msg('msg1', 'Questo browser non sa ricevere notifiche. Su Android usa Chrome.', 'err'); return; }
+    b.disabled = true; msg('msg1', 'Chiedo il permesso al telefono…', 'info');
+    scrivi(K_NOME, nome);
+    Notification.requestPermission().then(function (p) {        // va chiesto subito dopo il tocco (iPhone)
+      if (p !== 'granted') throw new Error('Permesso non dato: senza “Consenti” le notifiche non arrivano.');
+      msg('msg1', 'Collego il telefono a Firebase…', 'info');
+      return navigator.serviceWorker.register('prova-notifiche-sw.js', { scope: 'prova-notifiche' });
+    }).then(attendiAttivo).then(function (reg) {
+      if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+      return firebase.messaging().getToken({ vapidKey: CHIAVE_PUSH_WEB, serviceWorkerRegistration: reg });
+    }).then(function (token) {
+      if (!token) throw new Error('Firebase non ha dato il codice del telefono. Riprova tra un attimo.');
+      scrivi(K_TOKEN, token);
+      msg('msg1', 'Registro il telefono nello script…', 'info');
+      return chiama({ azione: 'registra', token: token, nome: nome, sistema: navigator.userAgent.slice(0, 80) });
+    }).then(function (r) {
+      msg('msg1', '✓ Notifiche attive su “' + nome + '”. Telefoni registrati: ' + r.telefoni + '. Ora fai il passo 2.', 'ok');
+      disegnaStato();
+    }).catch(function (e) {
+      msg('msg1', 'Non riuscito: ' + (e && e.message || e), 'err');
+    }).then(function () { b.disabled = false; disegnaStato(); });
+  });
+
+  $('prova').addEventListener('click', function () {
+    var b = this; b.disabled = true;
+    msg('msg2', 'Partita! Esci dall’app e blocca il telefono adesso: la notifica arriva tra circa 20 secondi.', 'info');
+    chiama({ azione: 'prova', token: leggi(K_TOKEN) }).then(function () {
+      msg('msg2', '✓ Firebase ha accettato la notifica. Se l’app era chiusa, dovresti vederla sulla schermata bloccata.', 'ok');
+    }).catch(function (e) {
+      msg('msg2', 'Non mandata: ' + (e && e.message || e) + (/registrato|valido/.test(String(e && e.message)) ? ' Rifai il passo 1.' : ''), 'err');
+      if (/registrato|valido/.test(String(e && e.message))) { try { localStorage.removeItem(K_TOKEN); } catch (x) {} }
+    }).then(function () { b.disabled = false; disegnaStato(); });
+  });
+
+  if (leggi(K_TOKEN)) $('tok').textContent = 'Codice del telefono: …' + leggi(K_TOKEN).slice(-12);
+  disegnaStato();
+})();
+</script>
+</body>
+</html>
