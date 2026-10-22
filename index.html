@@ -14,7 +14,11 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.10, 21 ottobre 2026: DOCUMENTI NUOVI PIÙ EVIDENTI E "SEGNA COME LETTO" —
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.11, 21 ottobre 2026: AGGIORNA TUTTO — nell'intestazione di ogni
+  pagina, accanto al pupazzetto del profilo, un pulsante con le due frecce in cerchio: rilegge subito documenti, avvisi, fondo cassa,
+  calendari, divise, colloqui e libri (lo script ricontrolla anche le cartelle di Drive) e dice "Aggiornato alle …". Script e contenuti
+  non cambiano.
+  Versione 11.10, 21 ottobre 2026: DOCUMENTI NUOVI PIÙ EVIDENTI E "SEGNA COME LETTO" —
   in Comunicazioni & Moduli (anche Ultime notizie e storico degli avvisi) e nelle Ricevute di Contabilità i documenti NUOVI hanno il
   titolo dorato in grassetto, il bordo e lo sfondo dorati e l'etichetta NUOVO dorata; nella casella ⋯ di un documento non ancora letto
   la prima voce è "SEGNA COME LETTO" su fondo dorato: toglie NUOVO e il bollino senza aprire il file (lo script lo ricorda come visto,
@@ -169,6 +173,17 @@
   /* v10.24: pupazzetto del profilo al posto di Esci (Esci è dentro Il mio profilo) */
   .btn-profilo { flex: none; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; padding: 0; }
   .btn-profilo:hover { border-color: var(--brand); }
+  /* v11.11: Aggiorna tutto, accanto al pupazzetto; gira mentre rilegge */
+  .btn-aggiorna svg { display: block; }
+  .btn-aggiorna.gira svg { animation: gira .8s linear infinite; }
+  .btn-aggiorna:focus-visible, .btn-profilo:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { .btn-aggiorna.gira svg { animation-duration: 2.4s; } }
+  /* con il pulsante in più il titolo resta su una riga sola (al massimo si accorcia con …) */
+  .barra h1 .titolo-btn { display: block; max-width: 100%; }
+  .barra h1 #titoloApp, .barra h1 small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #titoloApp { display: block; }
+  @media (max-width: 420px) { .barra { gap: 8px; padding-left: 12px; padding-right: 12px; } .barra h1 { font-size: 16px; } }
+  @media (max-width: 360px) { .barra .btn-profilo { width: 36px; height: 36px; } .logo-btn .stemma { width: 34px; } }
   .esci-card { text-align: center; }
   .esci-card .riga-esci { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
   .btn-esci { background: transparent; color: var(--danger); border: 1px solid #f2c9c4; width: 100%; }
@@ -1641,8 +1656,8 @@
     .velo { background: rgba(21,36,59,.45); }
   }
   @media (max-width: 360px) {
-    .barra { gap: 8px; padding: 10px 12px; }
-    .barra h1 { font-size: 15px; }
+    .barra { gap: 6px; padding: 10px; }                                   /* v11.11: un po' più stretta per il pulsante Aggiorna */
+    .barra h1 { font-size: 14.5px; }
     .barra h1 small, .titolo-btn small { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .btn-menu { padding: 0 9px 0 7px; }
   }
@@ -1784,6 +1799,7 @@
     <button class="logo-btn" id="vaiHome" aria-label="Torna alla Home"><img class="stemma" data-img="stemma" alt="Stemma della 4a"></button>
     <h1 class="spazio"><button class="titolo-btn" id="vaiHome2"><span id="titoloApp"></span><small id="sottotitoloApp"></small></button></h1>
     <span class="chip-utente" id="chipUtente"></span>
+    <button class="btn-profilo btn-aggiorna" id="btnAggiorna" type="button" aria-label="Aggiorna tutto" title="Aggiorna tutto"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3.5V8h4.5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 20.5V16h-4.5"/></svg></button>
     <button class="btn-profilo" id="btnProfilo" aria-label="Il mio profilo" title="Il mio profilo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></button>
   </header>
   <div class="velo nascosto" id="velo"></div>
@@ -2120,22 +2136,49 @@
   // tornando all'app controlla subito. Con lo script vecchio (senza l'azione novita) resta tutto come prima.
   var SECONDI_RITORNO = 30, MINUTI_APERTA = 5, SECONDI_NOVITA = 10;
   function ricarica() {
-    if (!STATO.sessione || STATO.ricaricando || STATO.colloquiInVolo) return;   // v11.7: non durante un'azione sui colloqui
+    if (!STATO.sessione || STATO.ricaricando || STATO.colloquiInVolo) return Promise.resolve('occupato');   // v11.7: non durante un'azione sui colloqui
     STATO.ricaricando = true;
     var primaDoc = STATO.documenti, primaMiei = STATO.miei, primaArrivo = STATO.inArrivo || Promise.resolve(null);
     var primaVisti = STATO.visti ? Object.keys(STATO.visti.documenti).length : -1;
     var nuovi = caricaDati(true);
-    Promise.all([primaDoc, primaMiei, nuovi.documenti, nuovi.miei, primaArrivo, nuovi.inArrivo]).then(function (r) {
+    return Promise.all([primaDoc, primaMiei, nuovi.documenti, nuovi.miei, primaArrivo, nuovi.inArrivo]).then(function (r) {
       STATO.ricaricando = false;
-      if (!STATO.sessione || (r[2] && r[2].errore) || (r[3] && r[3].errore)) return;     // rete assente: resta com'era
+      if (!STATO.sessione || (r[2] && r[2].errore) || (r[3] && r[3].errore)) return 'errore';     // rete assente: resta com'era
       var cambiato = JSON.stringify(r[0]) !== JSON.stringify(r[2]) || JSON.stringify(r[1]) !== JSON.stringify(r[3])
         || JSON.stringify(r[4]) !== JSON.stringify(r[5])
         || primaVisti !== (STATO.visti ? Object.keys(STATO.visti.documenti).length : -1);
       STATO.documenti = nuovi.documenti; STATO.miei = nuovi.miei; STATO.inArrivo = nuovi.inArrivo; STATO.casse = {};
       aggiornaContatori();
       if (cambiato && !PAGINE_FISSE[STATO.pagina]) { if (occupatoLoSchermo()) STATO.ridisegna = true; else vaiA(STATO.pagina, true); }
-    }, function () { STATO.ricaricando = false; });
+      return 'ok';
+    }, function () { STATO.ricaricando = false; return 'errore'; });
   }
+  // v11.11: pulsante "Aggiorna tutto" nell'intestazione, accanto al pupazzetto. Fa ricontrollare allo script anche le cartelle
+  // di Drive (azione novita), poi rilegge documenti, avvisi, fondo cassa, calendari, divise, colloqui e libri, e ridisegna la pagina.
+  function aggiornaTutto() {
+    var b = $('btnAggiorna');
+    if (!STATO.sessione || b.classList.contains('gira')) return;
+    if (STATO.colloquiInVolo) { toast('Un attimo: sto salvando il colloquio'); return; }
+    b.classList.add('gira'); b.setAttribute('aria-busy', 'true');
+    var inizio = Date.now();
+    var aspetta = STATO.ricaricando ? new Promise(function (ok) {
+      var t = setInterval(function () { if (!STATO.ricaricando || Date.now() - inizio > 20000) { clearInterval(t); ok(); } }, 200);
+    }) : Promise.resolve();
+    aspetta.then(function () {
+      return chiama('novita').then(function (r) { if (r && r.n !== undefined) STATO.novita = r.n; }, function () {});
+    }).then(function () {
+      caricaLibri();
+      return ricarica();
+    }).then(function (esito) {
+      if (esito === 'errore') { toast('Aggiornamento non riuscito: controlla internet e riprova'); return; }
+      if (STATO.pagina === 'gestione' || STATO.pagina === 'libri') { if (occupatoLoSchermo()) STATO.ridisegna = true; else vaiA(STATO.pagina, true); }
+      var o = new Date();
+      toast('✓ Aggiornato alle ' + o.getHours() + ':' + ('0' + o.getMinutes()).slice(-2));
+    }).then(function () {
+      setTimeout(function () { b.classList.remove('gira'); b.removeAttribute('aria-busy'); }, Math.max(0, 600 - (Date.now() - inizio)));
+    });
+  }
+  $('btnAggiorna').addEventListener('click', function () { chiudiMenu(); aggiornaTutto(); });
   // v11.7: un foglio aperto o un campo in cui si sta scrivendo: la pagina si ridisegna dopo, per non perdere niente
   function occupatoLoSchermo() {
     if (document.querySelector('.velo-doc, .menu-file, .lb-lettore')) return true;
