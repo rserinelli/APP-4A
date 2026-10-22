@@ -14,7 +14,13 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.11, 21 ottobre 2026: AGGIORNA TUTTO — nell'intestazione di ogni
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.12, 22 ottobre 2026: NOTIFICHE DEI COLLOQUI SUL TELEFONO (n. 9) —
+  interruttore "Notifiche dei colloqui" in Il mio profilo e in Ricevimento, con il "?" che spiega cosa arriva e quando (genitori al tu,
+  maestra al Lei); su iPhone da Safari spiega che prima va scaricata l'app. Firebase Cloud Messaging (SDK 12.18.0, caricato solo quando
+  serve); le notifiche le mostra sw.js (icona della 4a, badge-4a.png nella barra di Android) e toccandole si apre Ricevimento (o la
+  videochiamata). Colloqui con la maestra: le fasce a meno di 36 ore non si mostrano più ("prenotazioni chiuse"), accanto alle richieste
+  "Da confermare entro mercoledì 28 ottobre alle 18:00". Link #ricevimento. Serve Codice.gs 11.9 (con lo script 11.8 tutto come prima).
+  Versione 11.11, 21 ottobre 2026: AGGIORNA TUTTO — nell'intestazione di ogni
   pagina, accanto al pupazzetto del profilo, un pulsante con le due frecce in cerchio: rilegge subito documenti, avvisi, fondo cassa,
   calendari, divise, colloqui e libri (lo script ricontrolla anche le cartelle di Drive) e dice "Aggiornato alle …". Script e contenuti
   non cambiano.
@@ -847,6 +853,29 @@
   .col-cb .conta { position: absolute; top: -6px; right: -2px; }
   .col-campanella p { margin: 4px 0 8px; font-size: 13px; }
   .prox-riga .cosa.col-prox { font-weight: 700; }
+  /* v11.12 (n. 9): notifiche dei colloqui */
+  .notif-card { border-color: #ecd9a6; background: linear-gradient(180deg, #fffaf0, var(--card) 70%); padding: 12px 14px; }
+  .notif { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto auto; gap: 10px; align-items: center; }
+  .notif-camp { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--brand-soft); color: var(--brand); }
+  .notif.on .notif-camp { background: var(--accent-soft); color: var(--accent); }
+  .notif .tx { min-width: 0; }
+  .notif .tx b { display: block; font-size: 15.5px; line-height: 1.25; }
+  .notif .tx small { display: block; font-size: 12.5px; color: var(--muted); font-weight: 700; }
+  .notif.on .tx small { color: var(--ok); }
+  .notif-q { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--brand); background: var(--card); color: var(--brand); font-weight: 900; font-size: 15px; display: grid; place-items: center; padding: 0; }
+  .notif-sw { position: relative; width: 52px; height: 30px; border-radius: 999px; border: 0; background: #c3cfdb; padding: 0; transition: background .15s; }
+  .notif-sw::after { content: ''; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform .15s; }
+  .notif-sw[aria-checked="true"] { background: var(--ok); }
+  .notif-sw[aria-checked="true"]::after { transform: translateX(22px); }
+  .notif-sw:disabled { opacity: .6; }
+  .notif-q:focus-visible, .notif-sw:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .notif-ios { margin: 10px 0 0; padding: 9px 11px; border-radius: 10px; background: #fff1dc; color: #9a4f04; font-size: 13px; font-weight: 700; }
+  .pannello ul.notif-lista { margin: 0 0 12px; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .notif-lista li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 8px; font-size: 14.5px; line-height: 1.4; }
+  .notif-lista li .e { font-size: 17px; line-height: 1.3; }
+  .col-entro { color: #9a4f04 !important; font-weight: 800; }
+  .col-chiusi { margin-top: 8px; }
+  @media (prefers-reduced-motion: reduce) { .notif-sw, .notif-sw::after { transition: none; } }
 
   /* ---------- v10.24: Visualizza come ---------- */
   .voce.voce-vista { color: #0d3fc2; font-weight: 800; }
@@ -1826,7 +1855,7 @@
   var CHIAVE_TOKEN = 'app4a_sessione', CHIAVE_EMAIL = 'app4a_email';
   // v10.24: Visualizza come. attiva = la pagina mostra la vista scelta; admin / persona = dati messi da parte per passare dall'una all'altra
   var VISTA = { attiva: false, scelta: null, admin: null, persona: null };
-  var VISTA_SALTA = { visto: 1, pagina: 1, visita: 1, passwordConfermata: 1, colloquioVisto: 1 };   // v11.6
+  var VISTA_SALTA = { visto: 1, pagina: 1, visita: 1, passwordConfermata: 1, colloquioVisto: 1, notificheAttiva: 1, notificheSpegni: 1 };   // v11.12: notifiche   // v11.6
   var STATO = { dati: null, pagina: 'home', schede: {}, sessione: null, tokenMem: '' };
   var $ = function (id) { return document.getElementById(id); };
   // Immagini incorporate (stemma della classe e loghi dei collegamenti)
@@ -1999,6 +2028,8 @@
   // v10.24: Esci sta dentro Il mio profilo; nell'intestazione il pupazzetto apre il profilo
   $('btnProfilo').addEventListener('click', function () { if (STATO.sessione) { chiudiMenu(); vaiA('profilo'); } });
   function esci() {
+    // v11.12: chi esce non riceve più le notifiche su questo telefono
+    if (leggi(K_NOTIF)) { chiama('notificheSpegni', { fcm: leggi(K_NOTIF) }).catch(function () {}); scrivi(K_NOTIF, ''); scrivi(K_NOTIF_Q, ''); }
     scrivi(CHIAVE_TOKEN, '');
     if (typeof spegniVista === 'function') spegniVista(true);
     STATO = { dati: null, pagina: 'home', schede: {}, sessione: null, tokenMem: '' };
@@ -2103,6 +2134,7 @@
     var d = caricaDati(false);
     STATO.documenti = d.documenti; STATO.miei = d.miei; STATO.inArrivo = d.inArrivo;
     caricaLibri();                                                     // v10.14: elenco dei libri
+    STATO.documenti.then(function (dd) { try { rinnovaNotifiche(colloquiDi(dd)); } catch (e) {} });   // v11.12: codice del telefono aggiornato
     aggiornaContatori();
     avviaApp();
   }
@@ -2241,7 +2273,8 @@
     var d = DESTINAZIONE; DESTINAZIONE = '';
     if (!d) return;
     try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
-    if (d === 'coordinate') { STATO.contoScelto = 'fc'; apriScheda('contabilita', SCHEDA_PAGAMENTI); return; }     // v11.2: con "Fondo cassa" già scelto
+    if (d === 'coordinate') { STATO.contoScelto = 'fc'; apriScheda('contabilita', SCHEDA_PAGAMENTI); return; }
+    if (d === 'ricevimento') { vaiA('ricevimento'); return; }          // v11.12: dalle notifiche dei colloqui     // v11.2: con "Fondo cassa" già scelto
     var dc = d.match(/^doc-([\w-]{10,100})$/);                         // v10.27: .../#doc-<id> apre un file (Condividi della casella ⋯)
     if (dc) { apriDocDaLink(dc[1]); return; }
     var m = d.match(/^avviso-(av_[\w-]+)$/);
@@ -2305,7 +2338,7 @@
 
   var PAGINA_GESTIONE = { id: 'gestione', titolo: 'Gestione accessi', descrizione: 'Solo per te · password delle famiglie e fondo cassa da versare',
     blocchi: [{ tipo: 'gestione' }] };
-  var PAGINA_PROFILO = { id: 'profilo', titolo: 'Il mio profilo', descrizione: 'Come entri nell’app e la tua password',
+  var PAGINA_PROFILO = { id: 'profilo', titolo: 'Il mio profilo', descrizione: 'Come entri nell’app, la tua password e le notifiche',
     blocchi: [{ tipo: 'profilo' }] };
   var PAGINE_FISSE = { gestione: PAGINA_GESTIONE, profilo: PAGINA_PROFILO };
 
@@ -3964,6 +3997,184 @@
     return el('a', { classe: piccolo ? 'col-btn col-video' : 'btn btn-primario col-vai', href: link, target: '_blank', rel: 'noopener', testo: '📹 Entra nella videochiamata' });
   }
 
+
+  // ---------- v11.12 (n. 9): notifiche dei colloqui sul telefono ----------
+  // Firebase Cloud Messaging (progetto "app-4a-notifiche" di Rossana). Questi dati sono pubblici per natura (stanno in ogni pagina
+  // che usa Firebase); la chiave segreta per MANDARE le notifiche sta solo nello script (proprietà NOTIFICHE_CHIAVE).
+  var FIREBASE = {
+    sdk: 'https://www.gstatic.com/firebasejs/12.18.0/',
+    config: { apiKey: 'AIzaSyBvxbXR4NbaNkRnfKDFwrwpUlDwcF9xj3Q', authDomain: 'app-4a-notifiche.firebaseapp.com', projectId: 'app-4a-notifiche',
+      storageBucket: 'app-4a-notifiche.firebasestorage.app', messagingSenderId: '175752538302', appId: '1:175752538302:web:c6fc956eab39268645d6ef' },
+    chiave: 'BHcoQxDNEOhAEmeE50M1YaCYMVcOA6-UbKEBYablZV3fqWv7iSSjVIac7zW3-uNFBEAtS35oEyJN5En0-_7DutQ'
+  };
+  var K_NOTIF = 'app4a_notifiche', K_NOTIF_Q = 'app4a_notifiche_q';      // codice di questo telefono e quando è stato rinnovato
+  function notifPossibili() { return 'serviceWorker' in navigator && 'Notification' in window && 'PushManager' in window && location.protocol === 'https:'; }
+  /** 'maestra', 'genitore' o '' (niente interruttore: script senza notifiche, Visualizza come, profilo docente senza colloqui). */
+  function notifChi(col) {
+    if (!col || !col.notifiche || !STATO.sessione || STATO.sessione.vista) return '';
+    if (col.maestra) return 'maestra';
+    return (STATO.sessione.alunni || []).some(function (n) { return !senzaAlunno(n); }) ? 'genitore' : '';
+  }
+  function notifAttiveQui() { return !!leggi(K_NOTIF) && notifPossibili() && Notification.permission === 'granted'; }
+  var FB_CARICATO = null;
+  function caricaFirebase() {
+    if (window.firebase && window.firebase.messaging) return Promise.resolve(window.firebase);
+    if (FB_CARICATO) return FB_CARICATO;
+    var uno = function (nome) {
+      return new Promise(function (ok, no) {
+        var s = document.createElement('script'); s.src = FIREBASE.sdk + nome; s.onload = ok;
+        s.onerror = function () { no(new Error('Firebase non si carica: controlla internet e riprova.')); };
+        document.head.appendChild(s);
+      });
+    };
+    FB_CARICATO = uno('firebase-app-compat.js').then(function () { return uno('firebase-messaging-compat.js'); })
+      .then(function () { return window.firebase; }, function (e) { FB_CARICATO = null; throw e; });
+    return FB_CARICATO;
+  }
+  function swAttivo() {
+    return navigator.serviceWorker.register('sw.js').then(function (reg) {
+      if (reg.active) return reg;
+      return new Promise(function (ok) {
+        var sw = reg.installing || reg.waiting;
+        if (!sw) return ok(reg);
+        sw.addEventListener('statechange', function () { if (sw.state === 'activated') ok(reg); });
+      });
+    });
+  }
+  /** Il codice con cui Firebase raggiunge questo telefono. */
+  function codiceTelefono() {
+    return Promise.all([caricaFirebase(), swAttivo()]).then(function (r) {
+      var fb = r[0];
+      if (!fb.apps.length) fb.initializeApp(FIREBASE.config);
+      return fb.messaging().getToken({ vapidKey: FIREBASE.chiave, serviceWorkerRegistration: r[1] });
+    }).then(function (t) { if (!t) throw new Error('Il telefono non ha dato il suo codice: riprova tra un attimo.'); return t; });
+  }
+  function sistemaTelefono() {
+    var ua = navigator.userAgent || '';
+    return (IS_IOS ? 'iPhone/iPad' : /android/i.test(ua) ? 'Android' : 'Computer') + (IN_APP ? ' · icona' : ' · browser');
+  }
+  /** Interruttore acceso: permesso del telefono (subito dopo il tocco, serve a iPhone), codice, registrazione nello script. */
+  function attivaNotifiche(chi, fatto) {
+    if (IS_IOS && !IN_APP) { foglioNotifScarica(); return; }
+    if (!notifPossibili()) { toast('Questo browser non riceve notifiche. Su Android apri l’app con Chrome.'); return; }
+    var chiesta = Notification.permission === 'granted' ? Promise.resolve('granted') : Notification.requestPermission();
+    Promise.resolve(chiesta).then(function (p) {
+      if (p !== 'granted') { var e = new Error(p === 'denied' ? 'BLOCCATE' : 'Notifiche non attivate: puoi riprovare quando vuoi.'); e.codice = p; throw e; }
+      toast('Attivo le notifiche…');
+      return codiceTelefono();
+    }).then(function (t) {
+      return chiama('notificheAttiva', { fcm: t, vecchio: leggi(K_NOTIF), sistema: sistemaTelefono() }).then(function () {
+        scrivi(K_NOTIF, t); scrivi(K_NOTIF_Q, String(Date.now()));
+        toast('Notifiche attivate su questo telefono ✓');
+        fatto();
+      });
+    }).catch(function (e) {
+      if (e && e.codice === 'SESSIONE') return;
+      if (e && e.message === 'BLOCCATE') foglioNotifBloccate();
+      else toast(e && e.message || 'Notifiche non attivate: riprova.');
+      fatto();
+    });
+  }
+  function spegniNotificheQui(fatto) {
+    var t = leggi(K_NOTIF);
+    scrivi(K_NOTIF, ''); scrivi(K_NOTIF_Q, '');
+    toast('Notifiche spente su questo telefono');
+    fatto();
+    if (t) chiama('notificheSpegni', { fcm: t }).catch(function () {});
+  }
+  /** All'avvio: se il telefono ha cambiato codice (succede) lo si comunica allo script; al massimo una volta alla settimana. */
+  function rinnovaNotifiche(col) {
+    if (!notifChi(col) || !leggi(K_NOTIF) || !notifPossibili()) return;
+    if (Notification.permission !== 'granted') { spegniNotificheQui(function () {}); return; }
+    if (Date.now() - Number(leggi(K_NOTIF_Q) || 0) < 7 * 86400000) return;
+    codiceTelefono().then(function (t) {
+      return chiama('notificheAttiva', { fcm: t, vecchio: leggi(K_NOTIF), sistema: sistemaTelefono() }).then(function () { scrivi(K_NOTIF, t); scrivi(K_NOTIF_Q, String(Date.now())); });
+    }).catch(function () {});
+  }
+  var SVG_CAMPANA = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10.3 20a1.9 1.9 0 0 0 3.4 0"/></svg>';
+  /** Il riquadro con l'interruttore "Notifiche dei colloqui" e il "?" (Il mio profilo e Ricevimento). null se non serve. */
+  function boxNotifiche(col) {
+    var chi = notifChi(col);
+    if (!chi) return null;
+    var box = el('div', { classe: 'card notif-card' });
+    var disegna = function () {
+      var on = notifAttiveQui(), occupato = false;
+      box.innerHTML = '';
+      var camp = el('span', { classe: 'notif-camp', 'aria-hidden': 'true' }); camp.innerHTML = SVG_CAMPANA;
+      var sw = el('button', { type: 'button', classe: 'notif-sw', role: 'switch', 'aria-checked': on ? 'true' : 'false', 'aria-label': 'Notifiche dei colloqui' });
+      sw.addEventListener('click', function () {
+        if (occupato) return;
+        occupato = true; sw.disabled = true;
+        if (notifAttiveQui()) spegniNotificheQui(disegna); else attivaNotifiche(chi, disegna);
+      });
+      box.appendChild(el('div', { classe: 'notif' + (on ? ' on' : '') }, [camp,
+        el('span', { classe: 'tx' }, [el('b', { testo: 'Notifiche dei colloqui' }), el('small', { testo: on ? 'Attive su questo telefono' : 'Spente su questo telefono' })]),
+        el('button', { type: 'button', classe: 'notif-q', 'aria-label': 'Cosa succede se attivi le notifiche', testo: '?', onclick: function () { spiegaNotifiche(chi, col); } }),
+        sw]));
+      if (IS_IOS && !IN_APP) box.appendChild(el('p', { classe: 'notif-ios', testo: 'Su iPhone le notifiche arrivano solo se apri l’app dall’icona sulla schermata Home.' }));
+      else if (notifPossibili() && Notification.permission === 'denied') box.appendChild(el('p', { classe: 'notif-ios', testo: 'Le notifiche sono bloccate per questa app: riattivale dalle impostazioni del telefono.' }));
+    };
+    disegna();
+    return box;
+  }
+  function foglioNotifScarica() {
+    var x = foglioFile([el('h3', { testo: 'Prima scarica l’app' }),
+      el('p', { testo: 'Su iPhone le notifiche funzionano solo dall’icona dell’app sulla schermata Home (iOS 16.4 o più recente). Scarica l’app, aprila dall’icona e tocca di nuovo l’interruttore.' }),
+      el('button', { type: 'button', classe: 'btn btn-primario', testo: 'Scarica l’app', onclick: function () { x.chiudi(); scaricaApp(); } }),
+      el('button', { type: 'button', classe: 'btn btn-sec', testo: 'Chiudi', onclick: function () { x.chiudi(); } })]);
+  }
+  function foglioNotifBloccate() {
+    var x = foglioFile([el('h3', { testo: 'Notifiche bloccate' }),
+      el('p', { testo: IS_IOS ? 'Le hai bloccate per questa app. Per riattivarle: Impostazioni → Notifiche → 4a primaria → Consenti notifiche. Poi tocca di nuovo l’interruttore.'
+        : 'Le hai bloccate per questa app. Per riattivarle: impostazioni del telefono → App → Chrome (o 4a primaria) → Notifiche, e consenti quelle di rserinelli.github.io. Poi tocca di nuovo l’interruttore.' }),
+      el('button', { type: 'button', classe: 'btn btn-primario', testo: 'Ho capito', onclick: function () { x.chiudi(); } })]);
+  }
+  /** Il "?" accanto all'interruttore: cosa arriva e quando (genitori al tu, maestra al Lei). */
+  function spiegaNotifiche(chi, col) {
+    var r = (col || {}).regole || { anticipoOre: 36, rispostaEntro: '18:00' };
+    var righe = chi === 'maestra' ? [
+      ['🙋', '<b>Nuove richieste</b>: dalle 8:00 alle 18:00. Quelle arrivate la sera o di notte le riceve alle 8:00 del mattino dopo.'],
+      ['↩️', '<b>Disdette</b> delle famiglie (richieste ritirate, colloqui annullati): dalle 8:00 alle 22:00.'],
+      ['📋', '<b>Riepilogo</b> alle 12:30 del giorno prima, con le richieste ancora da confermare. Le richieste vanno confermate entro le ' + r.rispostaEntro + ' del giorno prima: dopo valgono come declinate e la famiglia viene avvisata.'],
+      ['⏰', '15 minuti prima del primo colloquio, il riepilogo della mattina. Per i colloqui online, una notifica 2 minuti prima con il link.'],
+      ['📅', 'Le famiglie prenotano <b>almeno ' + r.anticipoOre + ' ore prima</b>.'],
+      ['🔒', 'Sulla schermata bloccata non compaiono nomi.'],
+      ['📱', 'Valgono <b>solo per questo telefono</b>. Su iPhone solo dall’icona dell’app sulla schermata Home. Se su Android vede solo un’iconcina, nelle impostazioni del telefono scelga per la schermata di blocco le notifiche “dettagliate”.'],
+      ['🔕', 'Per spegnerle tocchi di nuovo l’interruttore.']
+    ] : [
+      ['✅', 'Quando la maestra <b>conferma, declina o annulla</b> un tuo colloquio. Arrivano dalle 7:00 alle 24:00; di notte aspettano le 7:00.'],
+      ['⏰', '<b>Promemoria</b>: il giorno prima alle 18:00. A scuola 2 ore prima e 10 minuti prima; online 15 minuti prima e 2 minuti prima, con il link per entrare.'],
+      ['👪', 'Le ricevono <b>tutti e due i genitori</b>: chi ha prenotato e chi ha il colloquio condiviso.'],
+      ['📅', 'Si prenota <b>almeno ' + r.anticipoOre + ' ore prima</b>. La maestra risponde entro le ' + r.rispostaEntro + ' del giorno prima: se non risponde, la richiesta vale come declinata e ti avvisiamo.'],
+      ['🔒', 'Sulla schermata bloccata <b>non compare il nome</b> di tuo figlio.'],
+      ['📱', 'Valgono <b>solo per questo telefono</b>: se usi anche un altro telefono, attivale anche lì. Su iPhone solo dall’icona dell’app sulla schermata Home. Se su Android vedi solo un’iconcina, nelle impostazioni del telefono scegli per la schermata di blocco le notifiche “dettagliate”.'],
+      ['🔕', 'Per spegnerle tocca di nuovo l’interruttore.']
+    ];
+    var ul = el('ul', { classe: 'notif-lista' });
+    righe.forEach(function (x) { var t = el('span'); t.innerHTML = x[1]; ul.appendChild(el('li', null, [el('span', { classe: 'e', 'aria-hidden': 'true', testo: x[0] }), t])); });
+    var f = foglioFile([el('h3', { testo: chi === 'maestra' ? 'Cosa succede se attiva le notifiche' : 'Cosa succede se attivi le notifiche' }),
+      el('p', { testo: chi === 'maestra' ? 'Le arrivano sul telefono anche quando l’app è chiusa. Riguardano solo i suoi colloqui con le famiglie.'
+        : 'Ti avvisiamo sul telefono anche quando l’app è chiusa. Riguardano solo i colloqui con la maestra Marianna.' }), ul,
+      el('button', { type: 'button', classe: 'btn btn-primario', testo: 'Ho capito', onclick: function () { f.chiudi(); } })]);
+  }
+  // un tocco su una notifica con l'app già aperta: il service worker chiede di andare a Ricevimento
+  try {
+    if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', function (ev) {
+      var d = ev.data || {};
+      if (d.tipo === 'apri' && STATO.sessione && /#ricevimento$/.test(String(d.url || ''))) { chiudiMenu(); vaiA('ricevimento'); }
+    });
+  } catch (errNotif) {}
+  // v11.12: regole dei colloqui (script 11.9): prenotazione almeno 36 ore prima, risposta della maestra entro le 18:00 del giorno prima
+  function regoleCol(col) { return col && col.regole ? col.regole : null; }
+  function inizioFascia(iso, hhmm) { var d = dataDa(iso), h = String(hhmm).split(':'); d.setHours(+h[0], +h[1], 0, 0); return d; }
+  function fasciaChiusa(col, iso, hhmm) { var r = regoleCol(col); return !!r && inizioFascia(iso, hhmm).getTime() - Date.now() < r.anticipoOre * 3600000; }
+  function entroQuando(col, iso) {
+    var r = regoleCol(col);
+    if (!r) return '';
+    var d = dataDa(iso); d.setDate(d.getDate() - 1);
+    return dataLunga(isoDi(d)) + ' alle ' + r.rispostaEntro;
+  }
+
   // ---------- Famiglia ----------
   function sottoFamiglia(b, d, col, vac) {
     var sotto = [], miei = (col.miei || []).filter(function (c) { return c.docente === d.id; }).sort(perData);
@@ -3973,6 +4184,7 @@
         box.appendChild(el('div', { classe: 'col-riga' }, [
           el('div', { classe: 'col-riga-tx' }, [el('b', { testo: quandoCol(c) }),
             el('span', { testo: (c.stato === 'confermato' ? '✓ Confermato' : '⏳ In attesa della maestra') + ' · ' + modoTesto(c.modo) }),
+            c.stato === 'attesa' && entroQuando(col, c.data) ? el('small', { classe: 'col-entro', testo: 'La maestra risponde entro ' + entroQuando(col, c.data) }) : null,
             c.mio ? null : el('small', { testo: '👥 prenotato da ' + (c.di || 'l’altro genitore') + (c.diRuolo ? ' (' + c.diRuolo + ')' : '') })]),
           el('button', { type: 'button', classe: 'col-btn', testo: 'Apri', onclick: function () { foglioMio(d, col, c.data); } })]));
       });
@@ -3981,13 +4193,15 @@
       sotto.push(box);
     }
     var giorni = giorniApp(d, vac), fasce = fasceDi(d);
-    sotto.push(el('div', { classe: 'ric-scegli', testo: 'Tutti i ' + (GIORNI_LUNGHI[d.giorno] || 'giorni') + ' del prossimo mese. Scegli la fascia (' + (d.durata || 15) + ' minuti):' }));
-    var mostrati = 0;
+    sotto.push(el('div', { classe: 'ric-scegli', testo: 'Tutti i ' + (GIORNI_LUNGHI[d.giorno] || 'giorni') + ' del prossimo mese' +
+      (regoleCol(col) ? ', almeno ' + regoleCol(col).anticipoOre + ' ore prima' : '') + '. Scegli la fascia (' + (d.durata || 15) + ' minuti):' }));
+    var mostrati = 0, posChiusi = sotto.length, giorniChiusi = [];      // v11.12: giorni con tutte le fasce a meno di 36 ore
     giorni.forEach(function (iso) {
-      var chips = [];
+      var chips = [], chiuse = 0;
       fasce.forEach(function (f) {
         var s = infoFascia(col, d, iso, f);
         if (s.tipo === 'tolta') return;
+        if (s.tipo !== 'mio' && fasciaChiusa(col, iso, f.da)) { chiuse++; return; }   // v11.12: a meno di 36 ore non si mostra
         var cls = 'col-fa', sotto2 = 'Libera';
         if (s.tipo === 'mio') { cls += s.c.stato === 'confermato' ? ' ok' : ' attesa'; sotto2 = s.c.stato === 'confermato' ? '✓ tua' : '⏳ tua'; }
         else if (s.tipo === 'richiesta') { cls += ' attesa'; sotto2 = 'Richiesta'; }
@@ -3997,10 +4211,14 @@
         else bt.addEventListener('click', function () { if (s.tipo === 'mio') foglioMio(d, col, iso); else foglioPrenota(d, col, iso, f); });
         chips.push(bt);
       });
-      if (!chips.length) return;
+      if (!chips.length) { if (chiuse) giorniChiusi.push(iso); return; }
       mostrati++;
       sotto.push(el('div', { classe: 'col-giorno' }, [el('div', { classe: 'col-gd', testo: dataCorta(iso) }), el('div', { classe: 'col-fasce' }, chips)]));
     });
+    if (giorniChiusi.length) {
+      var gc = giorniChiusi.map(dataLunga).join(', ');
+      sotto.splice(posChiusi, 0, el('p', { classe: 'ric-pross col-chiusi', testo: gc.charAt(0).toUpperCase() + gc.slice(1) + ': prenotazioni chiuse (mancano meno di ' + regoleCol(col).anticipoOre + ' ore).' }));
+    }
     if (!mostrati) sotto.push(el('p', { classe: 'ric-pross', testo: 'Nessuna data disponibile nel prossimo mese.' }));
     sotto.push(el('div', { classe: 'col-legenda' }, [el('span', { classe: 'l lib', testo: 'Libera' }), el('span', { classe: 'l att', testo: 'In attesa' }),
       el('span', { classe: 'l ok', testo: 'Confermata' }), el('span', { classe: 'l pre', testo: 'Occupata' })]));
@@ -4090,6 +4308,7 @@
         } }) : null]) : null;
       corpo.appendChild(el('div', { classe: 'col-stato ' + (c.stato === 'confermato' ? 'ok' : 'att') }, [
         el('b', { testo: (c.stato === 'confermato' ? '✓ Confermato: ' : '⏳ In attesa della maestra: ') + c.dalle + '–' + c.alle }),
+        c.stato === 'attesa' && entroQuando(col, c.data) ? el('small', { classe: 'col-entro', testo: 'La maestra risponde entro ' + entroQuando(col, c.data) + '. Se non risponde, la richiesta vale come declinata.' }) : null,
         c.mio ? ((col.altri || []).length ? el('small', { testo: c.condiviso ? '👥 Condiviso con ' + elencoNomi(col.altri) + ': lo vede nella sua app, ma non può annullarlo.' : 'Non condiviso: ' + elencoNomi(col.altri) + ' non lo vede.' }) : null)
           : el('small', { testo: '👥 Prenotato da ' + (c.di || 'l’altro genitore') + (c.diRuolo ? ' (' + c.diRuolo + ')' : '') + '. Può annullarlo solo chi l’ha prenotato o la maestra.' }),
         az]));
@@ -4110,6 +4329,7 @@
       return el('div', { classe: 'col-riga' }, [
         el('div', { classe: 'col-riga-tx' }, [el('b', { testo: c.alunno }), el('span', { testo: quandoCol(c) + ' · ' + modoTesto(c.modo) }),
           el('small', { testo: (c.genitore || '') + (c.ruolo ? ' (' + c.ruolo + ')' : '') }),
+          conAzioni && entroQuando(col, c.data) ? el('small', { classe: 'col-entro', testo: 'Da confermare entro ' + entroQuando(col, c.data) }) : null,
           conAzioni ? el('div', { classe: 'col-azioni' }, [
             el('button', { type: 'button', classe: 'btn-ok', testo: '✓ Conferma', onclick: function (ev) { azioneColloquio('colloquioConferma', { id: c.id }, 'Colloquio confermato: la famiglia riceve un avviso', null, ev.currentTarget, function (col) { confermaColloquio(col, c); }).catch(function () {}); } }),
             el('button', { type: 'button', classe: 'btn-no', testo: 'Declina', onclick: function () { foglioMaestra(d, c, true); } })]) : null]),
@@ -4132,7 +4352,7 @@
         var c = miei.filter(q)[0], t = (m.tolte || []).filter(q)[0], cls = 'col-fa', s2 = 'Libera', fai;
         if (c) { cls += c.stato === 'confermato' ? ' ok' : ' attesa'; s2 = (c.stato === 'confermato' ? '✓ ' : '⏳ ') + String(c.alunno).split(' ')[0] + (c.stato === 'confermato' && c.modo === 'online' ? ' 📹' : ''); fai = function () { foglioMaestra(d, c); }; }
         else if (t) { tolteGiorno++; cls += t.nota ? ' fuori' : ' tolta'; s2 = t.nota ? '✉️ ' + t.nota.split(/[ ,]/)[0] : 'Tolta'; fai = function () { foglioTogli(d, iso, f, t); }; }
-        else fai = function () { foglioTogli(d, iso, f, null); };
+        else { if (fasciaChiusa(col, iso, f.da)) { cls += ' preso'; s2 = 'Chiusa'; } fai = function () { foglioTogli(d, iso, f, null); }; }   // v11.12: a meno di 36 ore le famiglie non la vedono
         chips.push(el('button', { type: 'button', classe: cls, onclick: fai }, [el('b', { testo: f.da }), el('small', { testo: s2 })]));
       });
       sotto.push(el('div', { classe: 'col-giorno' }, [el('div', { classe: 'col-gd', testo: dataCorta(iso) + (tolteGiorno === fasce.length ? ' · non disponibile: i genitori non lo vedono' : '') }), el('div', { classe: 'col-fasce' }, chips)]));
@@ -4145,7 +4365,8 @@
     var x = foglioFile([el('h3', { testo: att ? 'Richiesta di colloquio' : 'Colloquio' }),
       el('div', { classe: 'ric-riass' }, [el('b', { testo: c.alunno }), el('span', { testo: quandoCol(c) })]),
       el('div', { classe: 'col-stato ' + (att ? 'att' : 'ok') }, [el('b', { testo: att ? '⏳ Da confermare' : '✓ Confermato' }),
-        (c.genitore || '') + (c.ruolo ? ' (' + c.ruolo + ')' : '') + ' · ' + modoTesto(c.modo)]),
+        (c.genitore || '') + (c.ruolo ? ' (' + c.ruolo + ')' : '') + ' · ' + modoTesto(c.modo),
+        att && entroQuando(STATO.colUltimi, c.data) ? el('small', { classe: 'col-entro', testo: 'Entro ' + entroQuando(STATO.colUltimi, c.data) + ': dopo vale come declinata.' }) : null]),
       !att && c.modo === 'online' ? linkVideoCol(c.link) : null,
       !att && c.modo === 'online' ? el('p', { classe: 'ric-sotto col-link', testo: c.link }) : null,
       el('div', { classe: 'col-azioni' }, att ? [
@@ -6352,6 +6573,9 @@
       box.innerHTML = '';
       var av = col ? boxAvvisiCol(col) : null;
       if (av) box.appendChild(av);
+      if (col) STATO.colUltimi = col;
+      var nbx = col ? boxNotifiche(col) : null;                     // v11.12: interruttore delle notifiche
+      if (nbx) box.appendChild(nbx);
       var nota = col && b.notaApp ? b.notaApp : b.nota;            // v11.6: con i colloqui dell'app la nota nuova (la pagina 11.5 legge solo nota)
       if (nota) box.appendChild(el('div', { classe: 'ric-nota' }, [el('span', { testo: '✉️' }), el('span', { testo: nota })]));
       var oggiIso = oggiISO();
@@ -6954,6 +7178,11 @@
         el('div', { classe: 'prof-valore', testo: ses.mail || ses.email }),
         el('p', { classe: 'prof-nota', testo: testi.notaEmail || 'L’email non si cambia dall’app: per modificarla chiama la rappresentante.' })
       ]));
+
+      // v11.12: notifiche dei colloqui (solo se lo script le ha attivate e se riguardano questa persona)
+      var notifBox = el('div');
+      altro.appendChild(notifBox);
+      STATO.documenti.then(function (dd) { var nb = boxNotifiche(colloquiDi(dd)); if (nb) notifBox.appendChild(nb); });
 
       // 2) Password attuale: nascosta, si vede con Visualizza (al primo ingresso è già in cima)
       var attuale = null, visibile = false;
