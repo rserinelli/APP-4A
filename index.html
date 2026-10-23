@@ -14,7 +14,15 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.12, 22 ottobre 2026: NOTIFICHE DEI COLLOQUI SUL TELEFONO (n. 9) —
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.13, 23 ottobre 2026: SORPRESA DEL COMPLEANNO — nell'avviso del
+  compleanno la torta si dondola e ha la nuvoletta "Toccami!": toccandola si apre a tutto schermo la sorpresa. La famiglia del
+  festeggiato spegne una candelina per ogni anno (una candelina magica si riaccende una volta), poi "Esprimi un desiderio!" con i
+  coriandoli e il gioco; tutte le altre famiglie e la maestra vanno subito al gioco "Missione torta" (il proprio aereo segue il dito e
+  spara da solo, gli aerei golosi lanciano torte alla panna da schivare, 3 vite, regali con il triplo colpo, livelli, aerei grigi da
+  3 colpi, record finché l'app resta aperta). Niente suoni, permessi o dati salvati; il tasto "indietro" chiude la sorpresa.
+  AFTERSCHOOL: attività con "genitori: true" (Teatro per i genitori) fuori dalla settimana della 4a, icona delle maschere e pulsante
+  "vai" che apre una linguetta di un'altra pagina (Teatro → Piedi in teatro (Adulti)). Script invariato; Contenuti.gs 11.7.
+  Versione 11.12, 22 ottobre 2026: NOTIFICHE DEI COLLOQUI SUL TELEFONO (n. 9) —
   interruttore "Notifiche dei colloqui" in Il mio profilo e in Ricevimento, con il "?" che spiega cosa arriva e quando (genitori al tu,
   maestra al Lei); su iPhone da Safari spiega che prima va scaricata l'app. Firebase Cloud Messaging (SDK 12.18.0, caricato solo quando
   serve); le notifiche le mostra sw.js (icona della 4a, badge-4a.png nella barra di Android) e toccandole si apre Ricevimento (o la
@@ -946,6 +954,56 @@
   @keyframes tremola { 0%,100% { transform: scale(1, 1) rotate(-3deg); } 50% { transform: scale(.88, 1.12) rotate(3deg); } }
   @media (prefers-reduced-motion: reduce) { .palloncino, .galleggia, .fiamma, .festa .botto.scoppia svg { animation: none; } }
   @media (max-width: 360px) { .festa-nome { font-size: 19px; } .festa-corpo { gap: 8px; padding: 0 10px 10px; } .festa .botto, .festa .botto svg { width: 44px; height: 44px; } }
+  /* ---------- v11.13: sorpresa del compleanno (si tocca la torta dell'avviso) ---------- */
+  .festa-torta { position: relative; flex: none; max-width: 38%; border: 0; padding: 0; background: transparent; cursor: pointer; border-radius: 14px; -webkit-tap-highlight-color: transparent; }
+  .festa-torta:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .festa-corpo .festa-torta svg.torta { display: block; max-width: 100%; }
+  .festa-torta .dondola { display: block; transform-origin: 50% 95%; animation: dondola 4s ease-in-out infinite; }
+  @keyframes dondola { 0%, 78%, 100% { transform: rotate(0); } 82% { transform: rotate(-5deg); } 87% { transform: rotate(5deg); } 92% { transform: rotate(-3deg); } 96% { transform: rotate(1deg); } }
+  .festa-toccami { position: absolute; top: -20px; left: 50%; margin-left: -34px; z-index: 5; background: #fff; color: #b07d1a; font-size: 11.5px; font-weight: 800; line-height: 1.4;
+    padding: 2px 8px; border-radius: 999px; border: 1.5px solid var(--f-bordo, #f1cfa3); box-shadow: 0 2px 6px rgba(120,80,20,.18); white-space: nowrap; animation: saltella 1.6s ease-in-out infinite; }
+  @keyframes saltella { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  .fs { position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column; background: var(--f-sfondo, #fff8e8); color: var(--ink);
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px); animation: fs-apri .25s ease-out; }
+  @keyframes fs-apri { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+  .fs canvas.cor { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
+  .fs-testa { position: relative; z-index: 4; display: flex; align-items: center; gap: 8px; padding: 10px 12px 4px 16px; }
+  .fs-testa span { flex: 1; min-width: 0; font-size: 13px; font-weight: 800; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fs-chiudi { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(255,255,255,.85); color: var(--ink); font: inherit; font-size: 24px; font-weight: 800; line-height: 1; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+  .fs-corpo { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 4px 16px 18px; }
+  .fs-titolo { margin: 0; font-size: 26px; font-weight: 800; line-height: 1.15; text-wrap: balance; color: var(--f-titolo); }
+  .fs-sotto { margin: 0; font-size: 16px; font-weight: 700; }
+  .fs-torta { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; width: 100%; }
+  .fs-torta svg { width: min(320px, 86vw); height: auto; max-height: 100%; overflow: visible; cursor: pointer; touch-action: manipulation; }
+  .fs-torta svg:focus-visible { outline: 2px solid var(--brand); outline-offset: 4px; border-radius: 12px; }
+  .fs-fumo { transform-box: fill-box; transform-origin: 50% 100%; animation: fs-fumo 1.2s ease-out forwards; }
+  @keyframes fs-fumo { from { opacity: .8; transform: translateY(0) scale(.6); } to { opacity: 0; transform: translateY(-26px) scale(1.4); } }
+  .fs-conta { min-height: 1.5em; font-size: 14px; font-weight: 800; color: var(--muted); }
+  .fs-azioni { position: relative; z-index: 4; display: grid; gap: 8px; width: min(320px, 100%); }
+  .fs-grande { border: 0; border-radius: 14px; padding: 14px 16px; font: inherit; font-size: 18px; font-weight: 800; cursor: pointer; color: #fff;
+    background: linear-gradient(180deg, var(--f-btn1), var(--f-btn2)); box-shadow: 0 3px 0 var(--f-btn3), 0 6px 16px rgba(0,0,0,.12); min-width: 160px; }
+  .fs-grande:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--f-btn3); }
+  .fs-secondo { border: 1.5px solid var(--f-bordo); border-radius: 14px; padding: 11px 16px; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer; background: rgba(255,255,255,.8); color: var(--ink); }
+  .fs-grande:focus-visible, .fs-secondo:focus-visible, .fs-chiudi:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .fs-hud { position: relative; z-index: 4; display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; max-width: 440px; }
+  .fs-punti { font-size: 22px; font-weight: 800; color: var(--f-titolo); font-variant-numeric: tabular-nums; min-width: 3em; text-align: left; }
+  .fs-vite { font-size: 16px; letter-spacing: 1px; }
+  .fs-rec { font-size: 14px; font-weight: 800; color: var(--muted); background: rgba(255,255,255,.75); border-radius: 999px; padding: 3px 10px; font-variant-numeric: tabular-nums; }
+  .fs-campo { position: relative; flex: 1; min-height: 0; width: 100%; max-width: 440px; border-radius: 18px; overflow: hidden; touch-action: none;
+    background: linear-gradient(180deg, #8fd3ff 0, #c9ecff 60%, #eaf8ff 100%); }
+  .fs-campo canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .fs-msg { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 16px; background: rgba(255,255,255,.55); }
+  .fs-msg[hidden] { display: none; }
+  .fs-msg p { margin: 0; font-size: 16px; font-weight: 700; max-width: 22em; }
+  .fs-esito { font-size: 30px; font-weight: 800; color: var(--f-titolo); line-height: 1.1; }
+  @media (prefers-reduced-motion: reduce) { .festa-torta .dondola, .festa-toccami, .fs, .fs-fumo { animation: none; } .fs-fumo { opacity: 0; } }
+  @media (max-width: 360px) { .fs-titolo { font-size: 23px; } .fs-sotto, .fs-msg p { font-size: 15px; } }
+  /* v11.13: Teatro per i genitori in Afterschool */
+  .as-att.teatro .ic { background: #fdebef; color: #b0283f; }
+  .as-chip.teatro { background: #fdebef; color: #b0283f; }
+  .as-vai { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; margin-top: 12px; border: 1.5px solid #f2b8c4; background: #fff7f9; cursor: pointer; font: inherit; color: var(--ink); }
+  .as-vai .tx { flex: 1; min-width: 0; } .as-vai b { display: block; font-size: 15.5px; } .as-vai small { display: block; color: var(--muted); font-size: 13px; }
+  .as-vai img { flex: none; width: 48px; height: 48px; object-fit: contain; }
   .ag-frase { display: block; font-size: 13.5px; font-weight: 700; color: var(--muted); line-height: 1.35; margin-top: 1px; }
   .ag-ev.compleanno-oggi { background: linear-gradient(90deg, #fff4f7, var(--card) 80%); border-color: #f1cfa3; }
   .ag-ev.compleanno-oggi .ag-frase { color: #a2337a; }
@@ -2213,7 +2271,7 @@
   $('btnAggiorna').addEventListener('click', function () { chiudiMenu(); aggiornaTutto(); });
   // v11.7: un foglio aperto o un campo in cui si sta scrivendo: la pagina si ridisegna dopo, per non perdere niente
   function occupatoLoSchermo() {
-    if (document.querySelector('.velo-doc, .menu-file, .lb-lettore')) return true;
+    if (document.querySelector('.velo-doc, .menu-file, .lb-lettore, .fs')) return true;   // v11.13: anche con la sorpresa del compleanno aperta
     var a = document.activeElement;
     return !!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && $('contenuto').contains(a));
   }
@@ -4557,6 +4615,7 @@
     g.appendChild(sv('path', { d: 'M' + x + ' ' + (y - 9 * r) + ' C ' + (x + 5 * r) + ' ' + (y - 3 * r) + ', ' + (x + 4 * r) + ' ' + (y + 2 * r) + ', ' + x + ' ' + (y + 2 * r) + ' C ' + (x - 4 * r) + ' ' + (y + 2 * r) + ', ' + (x - 5 * r) + ' ' + (y - 3 * r) + ', ' + x + ' ' + (y - 9 * r) + ' Z', fill: '#ffb547' }));
     g.appendChild(sv('ellipse', { cx: x, cy: y - r, rx: 1.6 * r, ry: 2.6 * r, fill: '#fff3c4' }));
     s.appendChild(g);
+    return g;                                                              // v11.13: per spegnerla nella sorpresa
   }
   // cifre dell'età a forma di candela (cera a righe, contorno, stoppino e fiammella); senza età 3 candeline a righe
   function candeleFesta(s, T, anni, cx, base, size) {
@@ -4648,16 +4707,18 @@
   }
   // coriandoli su un canvas dentro il riquadro; con \"Riduci movimento\" restano fermi
   var CORIANDOLI = null;
-  function coriandoliFesta(box, cv, T) {
-    if (CORIANDOLI) CORIANDOLI.stop();
+  // v11.13: proprio = coriandoli della sorpresa (non fermano quelli dell'avviso); pioggia(ms) = coriandoli che cadono dall'alto
+  function coriandoliFesta(box, cv, T, proprio) {
+    if (CORIANDOLI && !proprio) CORIANDOLI.stop();
+    var nulla = { spara: function () {}, pioggia: function () {}, stop: function () {} };
     var ctx = cv.getContext && cv.getContext('2d');
-    if (!ctx) return CORIANDOLI = { spara: function () {}, stop: function () {} };
-    var dpr = window.devicePixelRatio || 1, W = 0, H = 0, pezzi = [], fine = 0, raf = 0, attivo = true;
+    if (!ctx) { if (!proprio) CORIANDOLI = nulla; return nulla; }
+    var dpr = window.devicePixelRatio || 1, W = 0, H = 0, pezzi = [], fine = 0, raf = 0, attivo = true, pioveFino = 0, ultimo = 0;
     var fermi = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     function misura() { W = box.clientWidth; H = box.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
     function pezzo(x, y, vx, vy) {
       return { x: x, y: y, vx: vx, vy: vy, r: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.3, c: T.col[(Math.random() * T.col.length) | 0],
-        w: 5 + Math.random() * 4, h: 3 + Math.random() * 3, tondo: Math.random() < 0.3, onda: Math.random() * 6.28, t: 0 };
+        w: 5 + Math.random() * 4, h: 3 + Math.random() * 3, tondo: Math.random() < 0.3, onda: Math.random() * 6.28, t: 0, lento: false };
     }
     function disegna(p) {
       ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c;
@@ -4665,26 +4726,37 @@
       if (p.tondo) { ctx.beginPath(); ctx.arc(0, 0, p.h * 0.7, 0, 6.28); ctx.fill(); } else ctx.fillRect(-p.w / 2, -p.h / 2 * k - 0.5, p.w, p.h * k + 1);
       ctx.restore();
     }
-    function passo() {
+    function fermiOra(n) { ctx.clearRect(0, 0, W, H); for (var j = 0; j < n; j++) disegna(pezzo(Math.random() * W, 30 + Math.random() * (H - 40), 0, 0)); }
+    function passo(ts) {
       if (!attivo) return;
       ctx.clearRect(0, 0, W, H);
+      var ora = Date.now();
+      if (ora < pioveFino && ts - ultimo > 45) { ultimo = ts; var q = pezzo(Math.random() * W, -8, (Math.random() - 0.5) * 0.6, 1 + Math.random() * 1.4); q.lento = true; pezzi.push(q); }
       pezzi = pezzi.filter(function (p) {
-        p.t += 0.016; p.vy = Math.min(p.vy + 0.16, 3.4); p.vx *= 0.985;
+        p.t += 0.016; p.vy = Math.min(p.vy + (p.lento ? 0.02 : 0.16), p.lento ? 2.4 : 3.4); p.vx *= 0.985;
         p.x += p.vx + Math.sin(p.t * 2 + p.onda) * 0.5; p.y += p.vy; p.r += p.vr;
         disegna(p); return p.y < H + 12;
       });
-      if (pezzi.length || Date.now() < fine) raf = requestAnimationFrame(passo); else { raf = 0; ctx.clearRect(0, 0, W, H); }
+      if (pezzi.length || ora < fine || ora < pioveFino) raf = requestAnimationFrame(passo); else { raf = 0; ctx.clearRect(0, 0, W, H); }
     }
-    return CORIANDOLI = {
+    var g = {
       spara: function (x, y) {
         misura();
-        if (fermi) { ctx.clearRect(0, 0, W, H); for (var j = 0; j < 26; j++) disegna(pezzo(Math.random() * W, 30 + Math.random() * (H - 40), 0, 0)); return; }
+        if (fermi) { fermiOra(26); return; }
         for (var i = 0; i < 80; i++) { var a = Math.PI * 1.08 + Math.random() * 1.2, v = 6 + Math.random() * 7; pezzi.push(pezzo(x, y, Math.cos(a) * v, Math.sin(a) * v - 2)); }
         fine = Date.now() + 3200;
         if (!raf) raf = requestAnimationFrame(passo);
       },
+      pioggia: function (ms) {
+        misura();
+        if (fermi) { fermiOra(40); return; }
+        pioveFino = Date.now() + ms;
+        if (!raf) raf = requestAnimationFrame(passo);
+      },
       stop: function () { attivo = false; if (raf) cancelAnimationFrame(raf); }
     };
+    if (!proprio) CORIANDOLI = g;
+    return g;
   }
   function elencoNomi(n) { return n.length > 1 ? n.slice(0, -1).join(', ') + ' e ' + n[n.length - 1] : n[0]; }
   function anniTesto(a) { return a + (a === 1 ? ' anno' : ' anni'); }
@@ -4716,9 +4788,13 @@
       nome.appendChild(el('span', { classe: tema === 'x' && sessi[i] ? sessi[i] : null, testo: b.nome }));
     });
     var cv = el('canvas', { classe: 'cor', 'aria-hidden': 'true' }), bot = bottoFesta(T);
+    var mio = festeggiatoMio(bimbi);                                        // v11.13: la sorpresa (candeline solo per la famiglia del festeggiato)
+    var tortaBtn = el('button', { type: 'button', classe: 'festa-torta', 'aria-label': mio ? 'Sorpresa: spegni le candeline' : 'Sorpresa: gioca a Missione torta',
+      onclick: function (ev) { ev.stopPropagation(); apriSorpresa(bimbi, T, mio); } },
+      [el('span', { classe: 'dondola' }, [tortaFesta(tutti && eta.length === 1 ? eta[0] : null, T)]), el('span', { classe: 'festa-toccami', 'aria-hidden': 'true', testo: 'Toccami!' })]);
     var box = el('div', { classe: 'festa', role: 'note', style: '--f-sfondo:' + T.sfondo + ';--f-bordo:' + T.bordo + ';--f-nome:' + T.nome + ';--f-eta-bg:' + T.etaBg }, [
       decorazioneFesta(T),
-      el('div', { classe: 'festa-corpo' }, [tortaFesta(tutti && eta.length === 1 ? eta[0] : null, T), el('div', { classe: 'festa-tx' }, [
+      el('div', { classe: 'festa-corpo' }, [tortaBtn, el('div', { classe: 'festa-tx' }, [
         nome,
         el('span', { classe: 'festa-frase' }, frase),
         riga ? el('span', { classe: 'festa-eta', testo: riga }) : null,
@@ -4741,6 +4817,351 @@
       setTimeout(lancia, 450);
     }
     return box;
+  }
+
+  // ---------- v11.13: SORPRESA DEL COMPLEANNO — si tocca la torta dell'avviso (approvata da Rossana il 23/10, anteprima «Sorpresa del compleanno») ----------
+  // Famiglia del festeggiato: spegne una candelina per ogni anno (una "candelina magica" si riaccende una volta), poi "Esprimi un desiderio!"
+  // e il pulsante per il gioco. Tutte le altre famiglie (e la maestra): subito il gioco "Missione torta". Niente suoni, niente permessi,
+  // niente dati salvati (il record vale finché l'app resta aperta). Il festeggiato si riconosce dal nome dei figli di chi è entrato.
+  var SORPRESA = null, RECORD_MISSIONE = 0;
+  var FERMO_FESTA = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function fe(tag, classe, testo) { var n = document.createElement(tag); if (classe) n.className = classe; if (testo != null) n.textContent = testo; return n; }
+  function pulitoNome(x) { return String(x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); }
+  function festeggiatoMio(bimbi) {
+    var figli = ((STATO.sessione && STATO.sessione.alunni) || []).filter(function (n) { return !senzaAlunno(n); }).map(pulitoNome);
+    return bimbi.filter(function (b) {
+      var n = pulitoNome(b.nome);
+      return n && figli.some(function (f) { return f === n || (n.indexOf(' ') < 0 && f.split(' ')[0] === n); });   // titolo con il solo nome: basta il nome
+    })[0] || null;
+  }
+  function apriSorpresa(bimbi, T0, mio) {
+    chiudiSorpresa();
+    var rosa = T0 === TEMI_FESTA.f, T = {};
+    for (var k in T0) T[k] = T0[k];
+    T.titolo = rosa ? '#e0177a' : '#0b74d1';
+    T.btn = rosa ? ['#ff5fa2', '#e0177a', '#a80f5a'] : ['#33a4ff', '#0b74d1', '#07528f'];
+    var primi = bimbi.map(function (b) { return String(b.nome).split(' ')[0]; });
+    var chi = mio ? String(mio.nome).split(' ')[0] : elencoNomi(primi);
+    var corpo = fe('div', 'fs-corpo'), cv = el('canvas', { classe: 'cor', 'aria-hidden': 'true' });
+    var x = el('button', { type: 'button', classe: 'fs-chiudi', 'aria-label': 'Chiudi', testo: '×', onclick: function () { chiudiSorpresa(); } });
+    var box = el('div', { classe: 'fs', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Sorpresa del compleanno',
+      style: '--f-sfondo:' + T.sfondo + ';--f-bordo:' + T.bordo + ';--f-titolo:' + T.titolo + ';--f-btn1:' + T.btn[0] + ';--f-btn2:' + T.btn[1] + ';--f-btn3:' + T.btn[2] },
+      [el('div', { classe: 'fs-testa' }, [el('span', { testo: 'Compleanno di ' + elencoNomi(primi) }), x]), corpo, cv]);
+    document.body.appendChild(box); document.body.style.overflow = 'hidden';
+    function indietro() { chiudiSorpresa(true); }
+    function tasti(e) { if (e.key === 'Escape') chiudiSorpresa(); }
+    SORPRESA = { box: box, cor: coriandoliFesta(box, cv, T, true), gioco: null, T: T, chi: chi, mio: mio,
+      fine: function (daIndietro) {
+        document.removeEventListener('keydown', tasti); window.removeEventListener('popstate', indietro);
+        if (!daIndietro && history.state && history.state.sorpresa) { try { history.back(); } catch (e) {} }
+      } };
+    document.addEventListener('keydown', tasti);
+    try { history.pushState({ sorpresa: 1 }, ''); window.addEventListener('popstate', indietro); } catch (e) {}   // il tasto "indietro" chiude la sorpresa
+    if (mio) candelineSorpresa(corpo); else missioneTorta(corpo);
+    x.focus();
+  }
+  function chiudiSorpresa(daIndietro) {
+    if (!SORPRESA) return;
+    var s = SORPRESA; SORPRESA = null;
+    if (s.gioco) s.gioco.stop();
+    s.cor.stop(); s.box.remove(); document.body.style.overflow = '';
+    s.fine(daIndietro);
+    ridisegnaSeServe();
+  }
+  function vibra(x) { try { if (navigator.vibrate) navigator.vibrate(x); } catch (e) {} }
+
+  // torta grande con una candelina vera per ogni anno: 4 sui gradini dei piani di sotto, le altre sul piano in cima
+  function tortaCandeline(T, n) {
+    var s = sv('svg', { 'class': 'fs-tortona', viewBox: '0 -6 120 144', role: 'img', 'aria-label': 'Torta con ' + n + (n === 1 ? ' candelina' : ' candeline'), tabindex: '0' });
+    s.appendChild(sv('ellipse', { cx: 60, cy: 129, rx: 57, ry: 7, fill: T.piatto, stroke: LINEA_FESTA, 'stroke-width': 1.8 }));
+    s.appendChild(sv('ellipse', { cx: 60, cy: 127, rx: 50, ry: 4.5, fill: '#ffffff', opacity: '.5' }));
+    pianoFesta(s, T, 6, 96, 108, 32, T.g[0], [[104, 112], [88, 118, 4], [70, 110], [52, 116, 4], [34, 111], [16, 114]], 7, 0);
+    pianoFesta(s, T, 18, 70, 84, 28, T.g[1], [[92, 85], [76, 91, 4], [58, 84], [40, 90, 4], [26, 86]], 6, 1);
+    pianoFesta(s, T, 31, 46, 58, 26, T.g[2], [[80, 60], [62, 64, 3.5], [44, 59], [36, 62]], 4, 0);
+    var id = 'cr' + (++ID_FESTA) + '_', defs = sv('defs');
+    [0, 1].forEach(function (i) {
+      var p = sv('pattern', { id: id + i, width: 4, height: 4, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(40)' });
+      p.appendChild(sv('rect', { width: 4, height: 4, fill: T.cera[i] })); p.appendChild(sv('rect', { width: 1.6, height: 4, fill: '#fff', opacity: '.7' }));
+      defs.appendChild(p);
+    });
+    s.appendChild(defs);
+    var gradini = [[12, 96], [108, 96], [24.5, 70], [95.5, 70]], pos = n > 4 ? gradini.slice() : [], k = n > 4 ? n - 4 : n;
+    for (var i = 0; i < k; i++) pos.push([k === 1 ? 60 : 37 + i * 46 / (k - 1), 46]);
+    pos.sort(function (a, b) { return a[1] - b[1] || a[0] - b[0]; });
+    var out = pos.map(function (p, i) {
+      var cx = p[0], y = p[1];
+      s.appendChild(sv('rect', { x: cx - 1.8, y: y - 15, width: 3.6, height: 15, rx: 1, fill: 'url(#' + id + (i % 2) + ')', stroke: LINEA_FESTA, 'stroke-width': 0.7 }));
+      s.appendChild(sv('rect', { x: cx - 0.4, y: y - 18, width: 0.8, height: 3, fill: '#4a3a3a' }));
+      return { g: fiammaFesta(s, cx, y - 18.5, 0.62), x: cx, y: y - 21 };
+    });
+    return { svg: s, candele: out };
+  }
+  function candelineSorpresa(corpo) {
+    var S = SORPRESA, T = S.T, nome = S.chi, anni = S.mio.anni > 0 ? Math.min(15, Number(S.mio.anni)) : 0, n = anni || 5;
+    corpo.innerHTML = '';
+    var tit = fe('h2', 'fs-titolo', 'Soffia le candeline, ' + nome + '!');
+    var sotto = fe('p', 'fs-sotto', anni ? anni + ' candeline per ' + anni + ' anni: tocca ogni fiammella.' : 'Tocca ogni fiammella per spegnerla.');
+    var zona = fe('div', 'fs-torta'), t = tortaCandeline(T, n);
+    zona.appendChild(t.svg);
+    var cont = fe('div', 'fs-conta'), azioni = fe('div', 'fs-azioni');
+    [tit, sotto, zona, cont, azioni].forEach(function (x) { corpo.appendChild(x); });
+    var accese = n, magia = false, finito = false;
+    function conta() { cont.textContent = accese === 1 ? 'Ancora 1 candelina' : 'Ancora ' + accese + ' candeline'; }
+    conta();
+    function spegni(c) {
+      c.spenta = true; accese--; c.g.style.display = 'none';
+      var f = sv('path', { d: 'M' + c.x + ' ' + (c.y + 2) + ' c -2.5 -3.5 2.5 -5 0 -8 c -2.5 -3.5 2.5 -5 0 -8', fill: 'none', stroke: '#9aa8b8', 'stroke-width': 1.6, 'stroke-linecap': 'round', 'class': 'fs-fumo' });
+      t.svg.appendChild(f); setTimeout(function () { f.remove(); }, 1300);
+      vibra(15);
+      if (accese) return conta();
+      if (!magia && n > 1) {   // una candelina magica si riaccende, una volta sola
+        magia = true; cont.textContent = '…';
+        setTimeout(function () {
+          if (SORPRESA !== S) return;
+          var r = t.candele[(Math.random() * t.candele.length) | 0];
+          r.spenta = false; accese = 1; r.g.style.display = '';
+          cont.textContent = 'Ops! Una candelina magica si è riaccesa!';
+        }, 650);
+        return;
+      }
+      fatto();
+    }
+    function vicina(px, py) {   // la fiammella accesa più vicina al dito; vale anche toccare la candela
+      var best = null, d0 = 99;
+      t.candele.forEach(function (c) {
+        if (c.spenta) return;
+        var dx = Math.abs(px - c.x), dy = py - c.y;
+        if (dx < 7 && dy > -10 && dy < 20) { var d = dx + Math.abs(dy) * 0.3; if (d < d0) { d0 = d; best = c; } }
+      });
+      return best;
+    }
+    t.svg.addEventListener('pointerdown', function (e) {
+      if (finito) return;
+      var pt = t.svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+      var p = pt.matrixTransform(t.svg.getScreenCTM().inverse()), c = vicina(p.x, p.y);
+      if (c) spegni(c);
+    });
+    t.svg.addEventListener('keydown', function (e) {   // da tastiera: Invio spegne la prossima
+      if (finito || (e.key !== 'Enter' && e.key !== ' ')) return; e.preventDefault();
+      var c = t.candele.filter(function (x) { return !x.spenta; })[0]; if (c) spegni(c);
+    });
+    function fatto() {
+      finito = true;
+      tit.textContent = 'Esprimi un desiderio, ' + nome + '! ✨';
+      sotto.textContent = 'Tanti auguri da tutta la 4a!';
+      cont.textContent = '';
+      S.cor.pioggia(4500);
+      setTimeout(function () {
+        if (SORPRESA !== S) return;
+        var gioca = el('button', { type: 'button', classe: 'fs-grande', testo: '✈️ Gioca a Missione torta', onclick: function () { missioneTorta(corpo); } });
+        azioni.appendChild(gioca);
+        azioni.appendChild(el('button', { type: 'button', classe: 'fs-secondo', testo: 'Riaccendi le candeline', onclick: function () { candelineSorpresa(corpo); } }));
+        gioca.focus();
+      }, 1200);
+    }
+  }
+
+  // Missione torta: il tuo aereo (in basso) segue il dito e spara da solo; gli "aerei golosi" vogliono rubare la torta e lanciano
+  // torte alla panna. 3 vite; i regali danno il triplo colpo; ogni 8 aerei fermati si sale di livello; dal livello 3 aerei grigi da colpire 3 volte.
+  function missioneTorta(corpo) {
+    var S = SORPRESA, T = S.T, chi = S.chi;
+    if (S.gioco) { S.gioco.stop(); S.gioco = null; }
+    corpo.innerHTML = '';
+    var tit = fe('h2', 'fs-titolo', 'Missione torta');
+    var sotto = fe('p', 'fs-sotto', 'Gli aerei golosi vogliono rubare la torta di ' + chi + ': fermali!');
+    var hud = fe('div', 'fs-hud'), punti = fe('div', 'fs-punti', '0'), vite = fe('div', 'fs-vite', '❤️❤️❤️'), rec = fe('div', 'fs-rec', 'Record ' + RECORD_MISSIONE);
+    hud.appendChild(punti); hud.appendChild(vite); hud.appendChild(rec);
+    var campo = fe('div', 'fs-campo'), cv = el('canvas', { 'aria-label': 'Campo di gioco: trascina il dito per muovere il tuo aereo' });
+    campo.appendChild(cv);
+    [tit, sotto, hud, campo].forEach(function (x) { corpo.appendChild(x); });
+    var msg = fe('div', 'fs-msg'); campo.appendChild(msg);
+
+    var ctx = cv.getContext('2d'), dpr = window.devicePixelRatio || 1, W = 0, H = 0, K = 1, VEL = FERMO_FESTA ? 0.85 : 1, LIN = LINEA_FESTA;
+    var io, nemici, colpi, torte, regali, pezzi, scritte, nuvole, schizzi, score, vita, fermati, livello, gioca, finito, finitoT;
+    var prossimoNemico, prossimoColpo, triplo, invulnerabile, tremore, raf = 0, prima = 0, vivo = true, tasto = 0;
+    function rr(x, y, w, h, r) { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h); }
+    function misura() {
+      W = campo.clientWidth; H = campo.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      K = Math.max(0.8, Math.min(1.2, W / 380));
+    }
+    function reset() {
+      io = { x: W / 2, y: H - 46 * K, tx: W / 2 };
+      nemici = []; colpi = []; torte = []; regali = []; pezzi = []; scritte = []; schizzi = []; nuvole = [];
+      for (var i = 0; i < 6; i++) nuvole.push({ x: Math.random() * W, y: Math.random() * H, r: 18 + Math.random() * 22, v: 20 + Math.random() * 25 });
+      score = 0; vita = 3; fermati = 0; livello = 1; finito = false; finitoT = 0;
+      prossimoNemico = 0.6; prossimoColpo = 0; triplo = 0; invulnerabile = 0; tremore = 0;
+      punti.textContent = '0'; vite.textContent = '❤️❤️❤️';
+    }
+    // ---- disegni ----
+    function aereo(x, y, s, giu, corpoC, aliC, t) {
+      ctx.save(); ctx.translate(x, y); ctx.scale(s, giu ? -s : s);
+      ctx.lineWidth = 1.6; ctx.strokeStyle = LIN; ctx.lineJoin = 'round';
+      ctx.fillStyle = aliC; rr(-27, -3, 54, 13, 6); ctx.fill(); ctx.stroke(); rr(-11, 17, 22, 7, 3); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = corpoC; ctx.beginPath(); ctx.ellipse(0, 4, 9, 25, 0, 0, 6.2832); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#bfe9ff'; ctx.beginPath(); ctx.ellipse(0, -6, 5, 7, 0, 0, 6.2832); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#ffffff'; ctx.globalAlpha = 0.6; ctx.beginPath(); ctx.ellipse(-1.8, -8, 1.6, 2.6, 0, 0, 6.2832); ctx.fill(); ctx.globalAlpha = 1;
+      ctx.fillStyle = '#4a3a3a'; var e = 10 * Math.abs(Math.sin(t * 40)); ctx.fillRect(-e, -23, e * 2, 2.4);   // elica
+      ctx.restore();
+    }
+    function torta(x, y, r, giro) {   // torta alla panna
+      ctx.save(); ctx.translate(x, y); ctx.rotate(giro); ctx.lineWidth = 1.4; ctx.strokeStyle = LIN;
+      ctx.fillStyle = '#d9954f'; ctx.beginPath(); ctx.ellipse(0, r * 0.45, r * 1.1, r * 0.42, 0, 0, 6.2832); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(0, r * 0.3, r, Math.PI, 0); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#e8384f'; ctx.beginPath(); ctx.arc(0, -r * 0.72, r * 0.3, 0, 6.2832); ctx.fill(); ctx.stroke();
+      ctx.restore();
+    }
+    function regalo(x, y, s) {
+      ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineWidth = 1.4; ctx.strokeStyle = LIN;
+      ctx.fillStyle = T.pall[1]; rr(-11, -9, 22, 19, 3); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#ffd000'; ctx.fillRect(-2.5, -9, 5, 19); ctx.fillRect(-11, -1, 22, 5);
+      ctx.beginPath(); ctx.ellipse(-5, -12, 5, 3.2, -0.4, 0, 6.2832); ctx.ellipse(5, -12, 5, 3.2, 0.4, 0, 6.2832); ctx.fill(); ctx.stroke();
+      ctx.restore();
+    }
+    function nuvola(n) {
+      ctx.fillStyle = 'rgba(255,255,255,.75)'; ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, 6.2832); ctx.arc(n.x + n.r * 0.9, n.y + n.r * 0.2, n.r * 0.75, 0, 6.2832); ctx.arc(n.x - n.r * 0.9, n.y + n.r * 0.25, n.r * 0.65, 0, 6.2832); ctx.fill();
+    }
+    function coriandoliQui(x, y, n, col) {
+      for (var i = 0; i < n; i++) { var a = Math.random() * 6.28, v = 60 + Math.random() * 160;
+        pezzi.push({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, c: col || T.col[(Math.random() * T.col.length) | 0], t: 0, r: Math.random() * 6 }); }
+    }
+    function scrivi(testo, x, y, col, size) { scritte.push({ testo: testo, x: x, y: y, col: col, size: size || 18, t: 0 }); }
+    // ---- logica ----
+    function nasceNemico() {
+      var forte = livello >= 3 && Math.random() < Math.min(0.4, 0.1 * (livello - 2));
+      var x = 30 * K + Math.random() * (W - 60 * K);
+      nemici.push({ x: x, x0: x, y: -30 * K, vy: (55 + livello * 11) * VEL, zig: 18 + Math.random() * 30, f: Math.random() * 6.28, t: 0,
+        hp: forte ? 3 : 1, max: forte ? 3 : 1, lancio: 0.8 + Math.random() * Math.max(0.7, 2.4 - livello * 0.18), colpito: 0,
+        c: forte ? ['#6b7a8f', '#3f4b5c'] : [T.pall[(Math.random() * 2 | 0) + 2], T.pall[(Math.random() * 2 | 0)]] });
+    }
+    function spara() {
+      var v = -560 * K;
+      colpi.push({ x: io.x, y: io.y - 26 * K, vx: 0, vy: v });
+      if (triplo > 0) { colpi.push({ x: io.x - 12 * K, y: io.y - 14 * K, vx: -110 * K, vy: v }); colpi.push({ x: io.x + 12 * K, y: io.y - 14 * K, vx: 110 * K, vy: v }); }
+    }
+    function colpitoIo() {
+      if (invulnerabile > 0 || finito) return;
+      vita--; invulnerabile = 1.4; tremore = 0.35;
+      schizzi.push({ x: io.x, y: io.y, t: 0 });
+      vite.textContent = vita > 0 ? '❤️'.repeat(vita) + '🤍'.repeat(3 - vita) : '🤍🤍🤍';
+      vibra([40, 30, 40]);
+      if (vita <= 0) { finito = true; gioca = false; finitoT = 1.1; coriandoliQui(io.x, io.y, 30, '#ffffff'); }
+    }
+    function passo(ts) {
+      if (!vivo) return;
+      var dt = Math.min(0.04, prima ? (ts - prima) / 1000 : 0); prima = ts;
+      if (tasto) io.tx = Math.max(24 * K, Math.min(W - 24 * K, io.tx + tasto * 360 * K * dt));
+      if (!finito) io.x += (io.tx - io.x) * Math.min(1, dt * 14);
+      if (gioca) {
+        prossimoColpo -= dt; if (prossimoColpo <= 0) { spara(); prossimoColpo = 0.2; }
+        prossimoNemico -= dt; if (prossimoNemico <= 0) { nasceNemico(); prossimoNemico = Math.max(0.42, 1.35 - livello * 0.1) * (0.7 + Math.random() * 0.6); }
+        if (Math.random() < dt * 0.09 && !regali.length) regali.push({ x: 24 * K + Math.random() * (W - 48 * K), y: -20, vy: 90 * VEL, f: Math.random() * 6 });
+      }
+      triplo = Math.max(0, triplo - dt); invulnerabile = Math.max(0, invulnerabile - dt); tremore = Math.max(0, tremore - dt);
+      nuvole.forEach(function (n) { n.y += n.v * dt; if (n.y - n.r > H) { n.y = -n.r * 2; n.x = Math.random() * W; } });
+      colpi = colpi.filter(function (c) { c.x += c.vx * dt; c.y += c.vy * dt; return c.y > -20 && c.x > -20 && c.x < W + 20; });
+      nemici = nemici.filter(function (n) {
+        n.t += dt; n.y += n.vy * dt; n.x = n.x0 + Math.sin(n.t * 1.6 + n.f) * n.zig; n.colpito = Math.max(0, n.colpito - dt);
+        if (gioca && n.y > 10 && n.y < H * 0.7) { n.lancio -= dt; if (n.lancio <= 0) {
+          n.lancio = Math.max(0.9, 2.6 - livello * 0.17) * (0.7 + Math.random() * 0.7);
+          torte.push({ x: n.x, y: n.y + 22 * K, vx: Math.max(-70, Math.min(70, (io.x - n.x) * 0.35)) * K, vy: (150 + livello * 13) * VEL * K, g: 0, vg: (Math.random() - 0.5) * 4 });
+        } }
+        for (var i = 0; i < colpi.length; i++) {
+          var c = colpi[i];
+          if (Math.abs(c.x - n.x) < 26 * K && Math.abs(c.y - n.y) < 22 * K) {
+            colpi.splice(i, 1); n.hp--; n.colpito = 0.12;
+            if (n.hp <= 0) {
+              var p = n.max > 1 ? 30 : 10; score += p; fermati++; punti.textContent = score;
+              coriandoliQui(n.x, n.y, n.max > 1 ? 34 : 20); scrivi('+' + p, n.x, n.y, n.max > 1 ? '#b07d1a' : T.titolo);
+              vibra(10);
+              var nuovoLiv = 1 + Math.floor(fermati / 8);
+              if (nuovoLiv > livello) { livello = nuovoLiv; scrivi('Livello ' + livello + '!', W / 2, H * 0.38, T.titolo, 30); }
+              return false;
+            }
+            break;
+          }
+        }
+        if (!finito && Math.abs(n.x - io.x) < 30 * K && Math.abs(n.y - io.y) < 30 * K) { colpitoIo(); coriandoliQui(n.x, n.y, 16); return false; }
+        return n.y < H + 40;
+      });
+      torte = torte.filter(function (o) {
+        o.x += o.vx * dt; o.y += o.vy * dt; o.g += o.vg * dt;
+        if (!finito && Math.abs(o.x - io.x) < 20 * K && Math.abs(o.y - io.y) < 22 * K) { colpitoIo(); return false; }
+        return o.y < H + 20;
+      });
+      regali = regali.filter(function (r) {
+        r.y += r.vy * dt; r.f += dt;
+        if (!finito && Math.abs(r.x - io.x) < 28 * K && Math.abs(r.y - io.y) < 28 * K) {
+          triplo = 7; scrivi('Triplo colpo!', io.x, io.y - 40 * K, '#b07d1a', 20); coriandoliQui(r.x, r.y, 14, '#ffd000'); return false;
+        }
+        return r.y < H + 20;
+      });
+      pezzi = pezzi.filter(function (p) { p.t += dt; p.vy += 260 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.r += dt * 8; return p.t < 1.1; });
+      scritte = scritte.filter(function (s) { s.t += dt; return s.t < 1; });
+      schizzi = schizzi.filter(function (s) { s.t += dt; return s.t < 0.9; });
+      disegna(ts / 1000);
+      if (finito) { finitoT -= dt; if (finitoT <= 0) { raf = 0; return fine(); } }
+      raf = requestAnimationFrame(passo);
+    }
+    function disegna(t) {
+      ctx.clearRect(0, 0, W, H);
+      ctx.save();
+      if (tremore > 0) ctx.translate((Math.random() - 0.5) * 8, (Math.random() - 0.5) * 8);
+      nuvole.forEach(nuvola);
+      regali.forEach(function (r) { regalo(r.x, r.y + Math.sin(r.f * 4) * 3, K); });
+      ctx.fillStyle = '#ffd000'; ctx.strokeStyle = '#b07d1a'; ctx.lineWidth = 1;
+      colpi.forEach(function (c) { rr(c.x - 2.5, c.y - 7, 5, 14, 2.5); ctx.fill(); ctx.stroke(); });
+      nemici.forEach(function (n) {
+        aereo(n.x, n.y, K * (n.max > 1 ? 1.15 : 0.95), true, n.colpito > 0 ? '#ffffff' : n.c[0], n.c[1], t);
+        if (n.max > 1) for (var i = 0; i < n.hp; i++) { ctx.fillStyle = '#ffd000'; ctx.beginPath(); ctx.arc(n.x - 8 * K + i * 8 * K, n.y - 30 * K, 3 * K, 0, 6.2832); ctx.fill(); }
+      });
+      torte.forEach(function (o) { torta(o.x, o.y, 10 * K, o.g); });
+      if (!finito && (invulnerabile <= 0 || Math.floor(t * 12) % 2)) {
+        if (triplo > 0) { ctx.strokeStyle = 'rgba(255,208,0,.8)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(io.x, io.y, 34 * K, 0, 6.2832); ctx.stroke(); }
+        aereo(io.x, io.y, K * 1.1, false, T.btn[0], T.btn[1], t);
+      }
+      pezzi.forEach(function (p) { ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.globalAlpha = Math.max(0, 1 - p.t / 1.1); ctx.fillStyle = p.c; ctx.fillRect(-3, -2, 6, 4); ctx.restore(); });
+      ctx.restore();
+      schizzi.forEach(function (s) {   // la panna in faccia
+        ctx.globalAlpha = Math.max(0, 1 - s.t / 0.9); ctx.fillStyle = '#ffffff'; ctx.strokeStyle = 'rgba(122,74,58,.35)'; ctx.lineWidth = 1.5;
+        for (var i = 0; i < 9; i++) { var a = i / 9 * 6.28, d = (16 + (i % 3) * 8) * K * (1 + s.t); ctx.beginPath(); ctx.arc(s.x + Math.cos(a) * d, s.y + Math.sin(a) * d, (9 - (i % 3) * 2) * K, 0, 6.2832); ctx.fill(); ctx.stroke(); }
+        ctx.beginPath(); ctx.arc(s.x, s.y, 22 * K, 0, 6.2832); ctx.fill(); ctx.globalAlpha = 1;
+      });
+      scritte.forEach(function (s) {
+        ctx.globalAlpha = Math.max(0, 1 - s.t); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.font = '900 ' + s.size + 'px Nunito, system-ui, sans-serif'; ctx.lineWidth = 4; ctx.strokeStyle = '#ffffff';
+        ctx.strokeText(s.testo, s.x, s.y - s.t * 30); ctx.fillStyle = s.col; ctx.fillText(s.testo, s.x, s.y - s.t * 30); ctx.globalAlpha = 1;
+      });
+    }
+    function parti() {
+      misura(); reset(); msg.hidden = true; gioca = true; prima = 0;
+      cancelAnimationFrame(raf); raf = requestAnimationFrame(passo);
+    }
+    function fine() {
+      var nuovoRec = score > RECORD_MISSIONE; if (nuovoRec) RECORD_MISSIONE = score;
+      rec.textContent = 'Record ' + RECORD_MISSIONE;
+      msg.innerHTML = '';
+      msg.appendChild(fe('div', 'fs-esito', score + ' punti!'));
+      msg.appendChild(fe('p', null, 'Sei arrivato al livello ' + livello + ' e hai fermato ' + fermati + (fermati === 1 ? ' aereo goloso.' : ' aerei golosi.')));
+      msg.appendChild(fe('p', null, nuovoRec && score > 0 ? 'Nuovo record! La torta di ' + chi + ' è salva 🎂' : 'Il tuo record di oggi: ' + RECORD_MISSIONE + ' punti.'));
+      var ri = el('button', { type: 'button', classe: 'fs-grande', testo: 'Gioca ancora', onclick: parti });
+      msg.appendChild(el('div', { classe: 'fs-azioni' }, [ri, el('button', { type: 'button', classe: 'fs-secondo', testo: 'Torna all’app', onclick: function () { chiudiSorpresa(); } })]));
+      msg.hidden = false; ri.focus();
+      if (nuovoRec && score > 0) S.cor.pioggia(2500);
+    }
+    function dito(e) { if (!msg.hidden || !io) return; var r = campo.getBoundingClientRect(); io.tx = Math.max(24 * K, Math.min(W - 24 * K, e.clientX - r.left)); e.preventDefault(); }
+    campo.addEventListener('pointerdown', function (e) { if (msg.hidden) { try { campo.setPointerCapture(e.pointerId); } catch (er) {} dito(e); } });
+    campo.addEventListener('pointermove', dito);
+    function giu(e) { if (!msg.hidden) return; if (e.key === 'ArrowLeft') { tasto = -1; e.preventDefault(); } if (e.key === 'ArrowRight') { tasto = 1; e.preventDefault(); } }
+    function su(e) { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') tasto = 0; }
+    document.addEventListener('keydown', giu); document.addEventListener('keyup', su);
+    S.gioco = { stop: function () { vivo = false; cancelAnimationFrame(raf); document.removeEventListener('keydown', giu); document.removeEventListener('keyup', su); } };
+
+    msg.appendChild(fe('p', null, 'Trascina il dito per muovere il tuo aereo: spara da solo. Ogni aereo goloso fermato scoppia in coriandoli.'));
+    msg.appendChild(fe('p', null, 'Schiva le torte alla panna! Hai 3 vite. Prendi i regali: per qualche secondo spari tre colpi alla volta. Dal livello 3 arrivano gli aerei grigi, da colpire 3 volte.'));
+    var go = el('button', { type: 'button', classe: 'fs-grande', testo: 'Decolla!', onclick: parti });
+    msg.appendChild(go); go.focus();
+    misura(); reset(); disegna(0);
   }
 
   function rigaAvviso(a, conAzioni, evidenza) {
@@ -6101,7 +6522,8 @@
       var ICONE_AS = {
         inglese: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H10l-4.5 3.5V16H4z"/><path d="M8.5 13l1.8-5 1.8 5M9.1 11.4h2.4M14.5 8v5h1.6a1.25 1.25 0 0 0 0-2.5h-1.6"/></svg>',
         sport: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5l3.6 2.6-1.4 4.2H9.8l-1.4-4.2z"/><path d="M12 3.5v4M15.6 10.1l4.2-1.4M14.2 14.3l2.6 3.6M9.8 14.3l-2.6 3.6M8.4 10.1L4.2 8.7"/></svg>',
-        musica: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="11" rx="8" ry="3"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/><path d="M8 14.5v4M12 15v5M16 14.5v4"/><path d="M14 8l5-5M10 8L6 3"/></svg>'
+        musica: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="11" rx="8" ry="3"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/><path d="M8 14.5v4M12 15v5M16 14.5v4"/><path d="M14 8l5-5M10 8L6 3"/></svg>',
+        teatro: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4.5c3 1.2 6 1.2 9 0v6.5a4.5 4.5 0 0 1-9 0z"/><path d="M5.5 8.5h1.2M8.6 8.5h1.2M5.8 12.2c1 .8 2.6.8 3.6 0"/><path d="M14 9.5c2.4.8 4.6.8 7-.2v5.7a3.9 3.9 0 0 1-7 2.3"/><path d="M16 13h1M19 13h1M16.3 17c.9-.7 2.3-.7 3.2 0"/></svg>'   // v11.13: maschere
       };
       var FRECCIA_AS = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
       function minuti(t) { var p = String(t || '').split(':'); return +p[0] * 60 + +(p[1] || 0); }
@@ -6169,7 +6591,7 @@
         var senzaGiorno = [];
         for (var g = 1; g <= 5; g++) {
           var voci = [];
-          att.forEach(function (a) { (a.corsi || []).forEach(function (c) {
+          att.forEach(function (a) { if (a.genitori) return; (a.corsi || []).forEach(function (c) {   // v11.13: i corsi per i genitori non sono nella settimana della 4a
             if (!(c.giorni || []).length) { if (g === 1) senzaGiorno.push({ a: a, c: c }); return; }
             if (c.giorni.indexOf(g) >= 0) voci.push({ a: a, c: c });
           }); });
@@ -6202,6 +6624,12 @@
           el('h3', { testo: a.titolo }), a.descrizione ? el('p', { testo: a.descrizione }) : null]);
         (a.dettagli || []).forEach(function (d) { intro.appendChild(riga(d.etichetta, d.valore, d.nota)); });
         corpo.appendChild(intro);
+        if (a.vai && a.vai.pagina) {                                          // v11.13: apre una linguetta di un'altra pagina (Teatro → Adulti)
+          var vai = el('button', { type: 'button', classe: 'card as-vai', onclick: function () { apriScheda(a.vai.pagina, a.vai.scheda || 0); } }, [
+            imgIll(a.vai.ill || a.vai.pagina), el('span', { classe: 'tx' }, [el('b', { testo: a.vai.testo || 'Apri la pagina' }), a.vai.sotto ? el('small', { testo: a.vai.sotto }) : null])]);
+          vai.appendChild(svgSpan('fr', FRECCIA_AS));
+          corpo.appendChild(vai);
+        }
         // corsi con il gruppo (sport)
         var conGruppo = (a.corsi || []).filter(function (c) { return c.gruppo; });
         if (conGruppo.length) {
