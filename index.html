@@ -14,7 +14,10 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.13, 23 ottobre 2026: SORPRESA DEL COMPLEANNO — nell'avviso del
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.14, 23 ottobre 2026: RENDICONTO DI CLASSE CON IL SALDO INIZIALE —
+  in Contabilità → Classe e ricevute, sopra Entrate, Uscite e Saldo, la riga "Saldo iniziale" (cella B8 del master, già mandata
+  dallo script come classe.saldoIniziale), in verde se positivo: così saldo iniziale + entrate − uscite = saldo. Se B8 è vuota
+  o zero la riga non compare. Script e contenuti invariati. Versione 11.13, 23 ottobre 2026: SORPRESA DEL COMPLEANNO — nell'avviso del
   compleanno la torta si dondola e ha la nuvoletta "Toccami!": toccandola si apre a tutto schermo la sorpresa. La famiglia del
   festeggiato spegne una candelina per ogni anno (una candelina magica si riaccende una volta), poi "Esprimi un desiderio!" con i
   coriandoli e il gioco; tutte le altre famiglie e la maestra vanno subito al gioco "Missione torta" (il proprio aereo segue il dito e
@@ -448,6 +451,11 @@
   .classe-num small { display: block; font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
   .classe-num b { display: block; font-size: 17px; font-variant-numeric: tabular-nums; }
   .classe-num .saldo { background: #eef8f1; } .classe-num .saldo b { color: #1e6b3d; }
+  /* v11.14: saldo iniziale (B8 del master) sopra i tre riquadri */
+  .classe-ini { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 9px 12px; margin-bottom: 8px; border-radius: 12px; background: #f1f4f8; }
+  .classe-ini span { font-size: 13px; font-weight: 700; color: var(--muted); }
+  .classe-ini b { font-size: 15px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .classe-ini b.piu { color: var(--ok); }
   .barre { display: grid; gap: 9px; }
   .barre-riga { display: grid; grid-template-columns: minmax(110px, 38%) 1fr auto; gap: 10px; align-items: center; font-size: 14px; }
   .barre-riga .nm { font-weight: 700; line-height: 1.2; }
@@ -6818,6 +6826,11 @@
         var c = dati && dati.classe;
         if (!c) { corpo.appendChild(vuoto('Rendiconto di classe non disponibile al momento.')); return; }
         var uscite = -Math.abs(c.uscite || 0);
+        // v11.14: saldo iniziale (B8): saldo iniziale + entrate − uscite = saldo. Vuoto o zero: la riga non compare
+        if (typeof c.saldoIniziale === 'number' && Math.abs(c.saldoIniziale) >= 0.005) {
+          corpo.appendChild(el('div', { classe: 'classe-ini' }, [el('span', { testo: 'Saldo iniziale' }),
+            el('b', { classe: c.saldoIniziale > 0 ? 'piu' : '', testo: (c.saldoIniziale > 0 ? '+' : '') + euroSegno(c.saldoIniziale) })]));
+        }
         corpo.appendChild(el('div', { classe: 'classe-num' }, [
           el('div', null, [el('small', { testo: 'Entrate' }), el('b', { classe: 'piu', testo: '+' + euro(c.entrate || 0) })]),
           el('div', null, [el('small', { testo: 'Uscite' }), el('b', { testo: (uscite < 0 ? '−' : '') + euro(uscite) })]),
