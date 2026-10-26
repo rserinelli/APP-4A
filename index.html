@@ -6853,7 +6853,11 @@
           });
           corpo.appendChild(righe);
         }
-        if (versati) corpo.appendChild(el('p', { classe: 'classe-nota', testo: 'Versamento medio per alunno: +' + euro(versati.valore) }));
+        var attivo = spesa.filter(function (v) { return /^ATTIVO/i.test(v.voce); })[0];   // attivo medio (AC14 del master)
+        var nota = [];
+        if (versati) nota.push('Versamento medio per alunno: +' + euro(versati.valore));
+        if (attivo) nota.push('Attivo medio: ' + (attivo.valore > 0 ? '+' : '') + euroSegno(attivo.valore));
+        if (nota.length) corpo.appendChild(el('p', { classe: 'classe-nota', testo: nota.join(' · ') }));
       });
       return box;
     },
