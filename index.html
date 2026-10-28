@@ -14,7 +14,18 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.15, 28 ottobre 2026: SEGNA TUTTI COME LETTI — in cima a
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.16, 28 ottobre 2026: ONLINE O IN PRESENZA (n. 62) — nel foglio
+  del colloquio (famiglia e maestra) una banda colorata in cima: viola con la videocamera = ONLINE, verde acqua con la scuola =
+  IN PRESENZA. Prenotazione con due riquadri grandi (Online già scelto). Chi ha prenotato cambia la modalità dal colloquio aperto
+  ("Cambia: passa a …" → "Cambiare modalità?", motivo facoltativo), in tutti e due i sensi; la maestra, dal colloquio aperto, può
+  solo spostarlo online ("Non può essere a scuola?"): con meno di 4 ore le si apre il messaggio per la rappresentante (WhatsApp, chat
+  scelta da lei). Si cambia fino a 1 ora prima; mai dagli elenchi. Etichette ONLINE / IN PRESENZA (SCUOLA nelle fasce) negli elenchi,
+  nelle fasce della propria famiglia, nell'agenda della maestra (fascia confermata del colore della modalità), in Prossimi 7 giorni,
+  negli avvisi (avviso nuovo "ORA È ONLINE / IN PRESENZA", con il link se è online). Saluto della maestra "Buongiorno, maestra
+  Marianna!". Le frasi restano come prima ("Il colloquio è a scuola, all'orario indicato."). Il link della videochiamata resta
+  dov'era (pulsante + link scritto sotto). Serve lo script 11.11 (azione colloquioModo); con lo script vecchio il pulsante per cambiare
+  non compare. Contenuti invariati.
+  Versione 11.15, 28 ottobre 2026: SEGNA TUTTI COME LETTI — in cima a
   Comunicazioni & Moduli e alle Ricevute di Contabilità un pulsante dorato "SEGNA TUTTI COME LETTI" con il numero dei documenti
   NUOVI; compare solo se ce ne sono; prima chiede "Sei sicuro?" (Sì / Annulla). In Comunicazioni vale per Comunicazioni, Moduli e
   Verbali insieme (quelli che contano nel bollino), nelle Ricevute per le ricevute: il bollino di Contabilità resta a 1 per figlio
@@ -899,6 +910,59 @@
   .pannello p.col-link { text-align: left; word-break: break-all; }
   .pannello p.col-sx { text-align: left; }
   .col-avvisi h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font-size: 15px; }
+  /* v11.16 (n. 62): online o in presenza. Viola = ONLINE, verde acqua = IN PRESENZA, sempre con icona e parola */
+  .modo-ic { display: inline-grid; place-items: center; flex: none; }
+  .modo-banda { display: flex; align-items: center; gap: 12px; margin: -20px -20px 16px; padding: 14px 20px; border-radius: 18px 18px 0 0; color: #fff; }
+  .modo-banda.online { background: #5b21b6; }
+  .modo-banda.scuola { background: #0f5e57; }
+  .modo-banda .modo-tondo { width: 46px; height: 46px; border-radius: 14px; background: rgba(255,255,255,.18); display: grid; place-items: center; flex: none; }
+  .modo-banda .tx { display: grid; gap: 1px; min-width: 0; }
+  .modo-banda b { font-size: 21px; font-weight: 800; letter-spacing: .04em; line-height: 1.1; }
+  .modo-banda small { font-size: 13.5px; font-weight: 700; color: #fff; }
+  .modo-pill { display: inline-flex; align-items: center; gap: 3px; padding: 1px 7px; border-radius: 999px; font-size: 10.5px; font-weight: 800; letter-spacing: .03em; line-height: 1.5; vertical-align: 1px; white-space: nowrap; }
+  .modo-pill.online { background: #ede4ff; color: #4c1d95; }
+  .modo-pill.scuola { background: #dcf1ed; color: #0f5e57; }
+  .col-fa .fa-modo { font-style: normal; font-size: 9.5px; font-weight: 800; letter-spacing: .03em; line-height: 1.2; }
+  .col-fa.ok.m-online { border-color: #5b21b6; background: #f1eaff; color: #4c1d95; }
+  .col-fa.ok.m-scuola { border-color: #0f5e57; background: #e3f4f1; color: #0f5e57; }
+  .pannello .btn.modo-cambia { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; margin: 4px 0 12px; padding: 10px 10px; background: #fff; font-weight: 800; font-size: 15px; }
+  .pannello .btn .modo-tx { flex: 0 1 auto; min-width: 0; text-align: center; }
+  .pannello .btn.modo-cambia.online { border: 2px solid #5b21b6; color: #5b21b6; }
+  .pannello .btn.modo-cambia.scuola { border: 2px solid #0f5e57; color: #0f5e57; }
+  .pannello .btn.modo-si { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; border: 0; color: #fff; font-weight: 800; font-size: 16px; }
+  .pannello .btn.modo-si.online { background: #5b21b6; }
+  .pannello .btn.modo-si.scuola { background: #0f5e57; }
+  .modo-da-a { display: grid; grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1fr); gap: 6px; align-items: center; margin: 0 0 12px; }
+  .modo-da-a .m { display: grid; justify-items: center; gap: 3px; padding: 12px 6px; border-radius: 14px; text-align: center; }
+  .modo-da-a .m b { font-size: 13px; font-weight: 800; }
+  .modo-da-a .m small { font-size: 11px; font-weight: 700; }
+  .modo-da-a .m.prima { opacity: .75; }
+  .modo-da-a .m.prima b { text-decoration: line-through; }
+  .modo-da-a .m.prima.online { background: #f1eaff; color: #4c1d95; }
+  .modo-da-a .m.prima.scuola { background: #e3f4f1; color: #0f5e57; }
+  .modo-da-a .m.dopo.online { background: #5b21b6; color: #fff; }
+  .modo-da-a .m.dopo.scuola { background: #0f5e57; color: #fff; }
+  .modo-da-a .freccia { display: grid; place-items: center; color: var(--ink); font-size: 22px; font-weight: 800; }
+  .modo-nota { padding: 10px 12px; margin: 0 0 12px; border-radius: 12px; background: var(--warn-bg); border: 1px solid var(--warn-line); font-size: 13.5px; color: var(--ink); }
+  .modo-perche { display: grid; gap: 4px; margin: 0 0 4px; font-size: 13px; font-weight: 800; color: var(--muted); }
+  .pannello p.modo-quando { margin: 0 0 12px; color: var(--ink); }
+  .modo-sposta { display: grid; gap: 10px; padding: 12px; margin: 0 0 12px; border: 1.5px solid #5b21b6; border-radius: 14px; background: #f8f4ff; }
+  .modo-sposta > b { color: #3b1478; font-size: 14.5px; }
+  .modo-sposta > span { font-size: 13px; color: var(--muted); }
+  .modo-sposta .modo-nota { margin: 0; }
+  .modo-sposta .btn.modo-si { margin: 0; }
+  .ric-modo.modo-scelta { gap: 10px; }
+  .ric-modo.modo-scelta .modo-op { display: grid; justify-items: center; gap: 4px; padding: 14px 8px; border-radius: 14px; border: 2px solid var(--line); background: var(--card); color: var(--muted); font: inherit; cursor: pointer; }
+  .ric-modo.modo-scelta .modo-op b { font-size: 15px; font-weight: 800; letter-spacing: .03em; }
+  .ric-modo.modo-scelta .modo-op small { font-size: 12px; font-weight: 700; }
+  .ric-modo.modo-scelta .modo-op.online.on { border-color: #5b21b6; background: #5b21b6; color: #fff; }
+  .ric-modo.modo-scelta .modo-op.scuola.on { border-color: #0f5e57; background: #0f5e57; color: #fff; }
+  .col-stato.modo { padding-top: 0; overflow: hidden; }
+  .col-stato.modo.online { background: #f8f4ff; border: 1px solid #c9b3f5; }
+  .col-stato.modo.scuola { background: #eef8f6; border: 1px solid #9fd3c9; }
+  .av-banda { display: flex; align-items: center; gap: 8px; margin: 0 -12px 4px; padding: 7px 12px; color: #fff; font-size: 13px; font-weight: 800; letter-spacing: .04em; }
+  .av-banda.online { background: #5b21b6; }
+  .av-banda.scuola { background: #0f5e57; }
   .col-avvisi .col-stato:last-child { margin-bottom: 0; }
   .col-porta b { color: #9a4f04; }
   .col-campanella { display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: start; }
@@ -3258,7 +3322,18 @@
     var nomi = (s.alunni || []).filter(function (a) { return !senzaAlunno(a); }).map(function (a) { return String(a).trim().split(/\s+/)[0]; })
       .filter(function (n) { if (!n || visti[n]) return false; visti[n] = 1; return true; });
     if (nomi.length) return 'Ciao, famiglia di ' + (nomi.length === 1 ? nomi[0] : nomi.slice(0, -1).join(', ') + ' e ' + nomi[nomi.length - 1]) + '!';
+    if (s.nome && eMaestraApp(s) && !/^maestra\b/i.test(s.nome)) return 'Buongiorno, maestra ' + s.nome + '!';   // v11.16: "Buongiorno, maestra Marianna!"
     return s.nome ? 'Buongiorno, ' + s.nome + '!' : 'Buongiorno!';   // v11.5: profilo docente con "Buongiorno"
+  }
+  /** v11.16: chi entra è una maestra con i colloqui nell'app (email negli accessi di un docente con materia "Maestra…")? */
+  function eMaestraApp(s) {
+    var io = String(s.chiave || s.email || '').trim().toLowerCase(), si = false;
+    (STATO.dati && STATO.dati.pagine || []).forEach(function (p) { (p.blocchi || []).forEach(function (b) {
+      if (b.tipo === 'ricevimento') (b.docenti || []).forEach(function (d) {
+        if (d.app && /maestra/i.test(d.materia || '') && (Array.isArray(d.accessi) && d.accessi.length ? d.accessi : [d.email]).some(function (e) { return String(e || '').trim().toLowerCase() === io; })) si = true;
+      });
+    }); });
+    return si;
   }
   function oggiLungo() { var d = new Date(), g = GIORNI_LUNGHI[d.getDay()]; return g.charAt(0).toUpperCase() + g.slice(1) + ' ' + d.getDate() + ' ' + MESI[d.getMonth()]; }
 
@@ -4109,6 +4184,95 @@
     return { tipo: 'libera' };
   }
   function modoTesto(m) { return m === 'scuola' ? '🏫 a scuola' : '💻 online'; }
+  // ---------- v11.16 (n. 62): online o in presenza ----------
+  var SVG_VIDEO = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="13" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3z"/></svg>';
+  var SVG_SCUOLA = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M10 21v-5h4v5"/></svg>';
+  function modoDi(m) { return m === 'scuola' ? 'scuola' : 'online'; }
+  function iconaModo(m, px) {
+    var s = el('span', { classe: 'modo-ic', 'aria-hidden': 'true' });
+    s.innerHTML = (modoDi(m) === 'scuola' ? SVG_SCUOLA : SVG_VIDEO).replace('width="20" height="20"', 'width="' + (px || 20) + '" height="' + (px || 20) + '"');
+    return s;
+  }
+  function nomeModo(m) { return modoDi(m) === 'scuola' ? 'IN PRESENZA' : 'ONLINE'; }
+  /** Etichetta ONLINE / IN PRESENZA (corto: SCUOLA, per le fasce e i Prossimi 7 giorni). */
+  function pillModo(m, corto) { m = modoDi(m); return el('span', { classe: 'modo-pill ' + m }, [iconaModo(m, 11), m === 'scuola' ? (corto ? 'SCUOLA' : 'IN PRESENZA') : 'ONLINE']); }
+  /** La banda in cima al foglio del colloquio (proposta A). chi = 'maestra' per il testo piccolo della maestra. */
+  function bandaModo(m, chi) {
+    m = modoDi(m);
+    var sotto = m === 'scuola' ? (chi === 'maestra' ? 'La famiglia viene a scuola' : 'A scuola, all’orario indicato') : (chi === 'maestra' ? 'Videochiamata con la famiglia' : 'Videochiamata: non serve venire a scuola');
+    return el('div', { classe: 'modo-banda ' + m }, [el('span', { classe: 'modo-tondo' }, [iconaModo(m, 26)]), el('span', { classe: 'tx' }, [el('b', { testo: nomeModo(m) }), el('small', { testo: sotto })])]);
+  }
+  function testoMinuti(m) { m = Number(m) || 60; return m % 60 ? m + ' minuti' : m === 60 ? '1 ora' : (m / 60) + ' ore'; }
+  function minutiAl(iso, hhmm) { return (inizioFascia(iso, hhmm).getTime() - Date.now()) / 60000; }
+  /** Si può ancora cambiare la modalità? Solo con lo script 11.11 (regole.cambioModoMinuti) e fino a 1 ora prima. */
+  function cambioModoAperto(col, iso, hhmm) { var r = regoleCol(col); return !!r && r.cambioModoMinuti !== undefined && minutiAl(iso, hhmm) >= r.cambioModoMinuti; }
+  function contaModiPag(lista) {
+    var on = lista.filter(function (c) { return modoDi(c.modo) === 'online'; }).length, sc = lista.length - on;
+    return [on ? '💻 ' + on + ' online' : '', sc ? '🏫 ' + sc + ' in presenza' : ''].filter(String).join(' · ');
+  }
+  /** Sul telefono di chi tocca, prima che risponda lo script: tutte le fasce di quel colloquio cambiano modalità. */
+  function cambiaModoLocale(col, c, nuovo) {
+    var stesso = function (x) { return x.docente === c.docente && x.data === c.data && (x.id === c.id || (c.alunno && x.alunno === c.alunno)); };
+    (col.miei || []).forEach(function (x) { if (stesso(x)) x.modo = nuovo; });
+    if (col.maestra) (col.maestra.colloqui || []).forEach(function (x) { if (stesso(x)) x.modo = nuovo; });
+  }
+  /** Famiglia: "Cambiare modalità?" con prima → dopo, motivo facoltativo, Sì / No. */
+  function foglioCambiaModo(d, col, iso, c, nuovo) {
+    var vecchio = nuovo === 'online' ? 'scuola' : 'online', r = regoleCol(col) || {};
+    var righe = (col.miei || []).filter(function (x) { return x.docente === d.id && x.data === iso; }).sort(perData), ga = dalleAlle(righe.length ? righe : [c]);
+    var riquadro = function (m, cls, sotto) { return el('div', { classe: 'm ' + cls + ' ' + m }, [iconaModo(m, 24), el('b', { testo: nomeModo(m) }), el('small', { testo: sotto })]); };
+    var nota = 'La maestra riceve subito un avviso nell’app e una notifica.' + (c.condiviso && (col.altri || []).length ? ' Anche ' + elencoNomi(col.altri) + ' lo vede.' : '') +
+      (c.stato === 'confermato' ? ' Il colloquio resta confermato: non serve una nuova conferma.' : ' La richiesta resta in attesa della maestra.') +
+      (nuovo === 'online' ? ' Il link della videochiamata lo trovi nel colloquio.' : '');
+    var ta = el('input', { type: 'text', classe: 'col-motivo', maxlength: '300', placeholder: nuovo === 'online' ? 'Es. non riesco a venire a scuola' : 'Es. preferisco parlarne di persona', 'aria-label': 'Perché? (facoltativo)' });
+    var si = el('button', { type: 'button', classe: 'btn modo-si ' + nuovo, testo: 'Sì, passa a ' + nomeModo(nuovo), onclick: function () {
+      azioneColloquio('colloquioModo', { id: c.id, modo: nuovo, motivo: ta.value }, nuovo === 'online' ? 'Ora il colloquio è online: la maestra riceve un avviso' : 'Ora il colloquio è in presenza: la maestra riceve un avviso',
+        x, si, function (col) { cambiaModoLocale(col, c, nuovo); }).catch(function () {});
+    } });
+    var x = foglioFile([el('h3', { testo: 'Cambiare modalità?' }),
+      el('p', { classe: 'modo-quando', testo: dataLunga(iso) + ', ' + ga.dalle + '–' + ga.alle + ' · ' + d.nome }),
+      el('div', { classe: 'modo-da-a' }, [riquadro(vecchio, 'prima', 'adesso'), el('span', { classe: 'freccia', 'aria-hidden': 'true', testo: '→' }), riquadro(nuovo, 'dopo', 'diventa')]),
+      el('div', { classe: 'modo-nota', testo: nota }),
+      el('label', { classe: 'modo-perche' }, ['Perché? (facoltativo, si legge nell’avviso)', ta]),
+      si,
+      el('button', { type: 'button', classe: 'btn btn-sec', testo: 'No, resta ' + (vecchio === 'scuola' ? 'in presenza' : 'online'), onclick: function () { x.chiudi(); foglioMio(d, col, iso); } }),
+      el('p', { classe: 'ric-sotto', testo: 'Si può cambiare fino a ' + testoMinuti(r.cambioModoMinuti) + ' prima del colloquio.' })]);
+  }
+  /** Il messaggio per la rappresentante (maestra, meno di 4 ore): WhatsApp con il testo pronto, la chat la sceglie la maestra. */
+  function testoRappresentante(d, c, ga) {
+    var b = null;
+    (STATO.dati.pagine || []).forEach(function (p) { (p.blocchi || []).forEach(function (x) { if (x.tipo === 'ricevimento') b = x; }); });
+    var t = (b && b.avvisaRappresentante) || 'Buongiorno! Sono {maestra}. Il colloquio di {giorno} alle {ora} con la famiglia di {alunno} ({genitore}) non si fa più a scuola: è ONLINE, in videochiamata, alla stessa ora. Il link è nell’app, in Ricevimento. Può avvisare la famiglia? Grazie mille.';
+    var maestra = /maestra/i.test(d.materia || '') ? 'la maestra ' + String(d.nome || '').split(' ')[0] : (d.nome || 'la maestra');
+    return t.replace(/\{maestra\}/g, maestra).replace(/\{giorno\}/g, c.data === oggiISO() ? 'oggi' : dataLunga(c.data)).replace(/\{ora\}/g, ga.dalle)
+      .replace(/\{alunno\}/g, String(c.alunno || '').split(' ')[0]).replace(/\{genitore\}/g, (c.genitore || '') + (c.ruolo ? ', ' + c.ruolo : '')).replace(/ \(\)/g, '');
+  }
+  function foglioRappresentante(d, c, ga) {
+    var testo = testoRappresentante(d, c, ga);
+    var x = foglioFile([el('h3', { testo: 'Avvisi anche la rappresentante' }),
+      el('p', { testo: 'Mancano meno di 4 ore. Non tutte le famiglie hanno le notifiche: la rappresentante di classe può avvisare la famiglia. Il messaggio è già scritto; la chat la sceglie Lei.' }),
+      el('div', { classe: 'bolla-wa' }, [el('div', { testo: testo })]),
+      el('div', { classe: 'ev-azioni' }, [
+        el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } }),
+        el('a', { classe: 'mf-apri-wa', href: linkWhatsapp(testo), target: '_blank', rel: 'noopener', onclick: function () { setTimeout(x.chiudi, 300); } }, [iconaWa(18), 'Avvisa la rappresentante su WhatsApp'])])]);
+  }
+  /** Maestra, colloquio a scuola aperto: "Non può essere a scuola?" → Sposta online (fino a 1 ora prima). null se non si può. */
+  function boxSpostaOnline(d, c, x) {
+    var col = STATO.colUltimi, r = regoleCol(col) || {};
+    var gr = ((col && col.maestra && col.maestra.colloqui) || []).filter(function (y) { return y.docente === c.docente && y.data === c.data && y.alunno === c.alunno; }).sort(perData);
+    var ga = dalleAlle(gr.length ? gr : [c]);
+    if (!cambioModoAperto(col, c.data, ga.dalle)) return null;
+    var poco = r.rappresentanteOre && minutiAl(c.data, ga.dalle) < r.rappresentanteOre * 60;
+    var ta = el('input', { type: 'text', classe: 'col-motivo', maxlength: '300', placeholder: 'Es. non mi sento bene', 'aria-label': 'Motivo (facoltativo, lo legge la famiglia)' });
+    var vai = el('button', { type: 'button', classe: 'btn modo-si online', onclick: function () {
+      azioneColloquio('colloquioModo', { id: c.id, modo: 'online', motivo: ta.value }, 'Colloquio spostato online: la famiglia riceve un avviso', x, vai,
+        function (col) { cambiaModoLocale(col, c, 'online'); }, function () { if (poco) foglioRappresentante(d, c, ga); }).catch(function () {});
+    } }, [iconaModo('online', 20), el('span', { classe: 'modo-tx', testo: 'Sposta online' })]);
+    return el('div', { classe: 'modo-sposta' }, [el('b', { testo: 'Non può essere a scuola?' }),
+      el('span', { testo: 'Può spostare il colloquio online alla stessa ora, fino a ' + testoMinuti(r.cambioModoMinuti) + ' prima. Il cambio vale subito: la famiglia riceve un avviso nell’app e una notifica con il link.' }),
+      poco ? el('div', { classe: 'modo-nota' }, [el('b', { testo: 'Mancano meno di ' + r.rappresentanteOre + ' ore. ' }), 'Non tutte le famiglie hanno le notifiche: avvisi anche la rappresentante di classe, che le informa. Dopo «Sposta online» si apre il messaggio già scritto per WhatsApp.']) : null,
+      el('label', { classe: 'modo-perche' }, ['Motivo (facoltativo, lo legge la famiglia)', ta]), vai]);
+  }
   function quandoCol(c) { return dataLunga(c.data) + ', ' + c.dalle + '–' + c.alle; }
   function perData(a, b) { return (a.data + a.dalle) < (b.data + b.dalle) ? -1 : 1; }
   function dalleAlle(lista) { return { dalle: lista[0].dalle, alle: lista[lista.length - 1].alle }; }
@@ -4123,7 +4287,7 @@
     if (msg) toast(msg);
     vaiA(STATO.pagina, true);
   }
-  function azioneColloquio(azione, dati, msg, x, bottone, subito) {
+  function azioneColloquio(azione, dati, msg, x, bottone, subito, fatto) {   // v11.16: fatto = dopo la risposta buona dello script
     // v11.7 (n. 47): con "subito" la pagina mostra il risultato senza aspettare lo script; se lo script dice di no, torna com'era
     if (subito) {
       var prima = STATO.documenti, testoBt = bottone ? bottone.textContent : '';
@@ -4140,6 +4304,7 @@
       return chiama(azione, dati).then(function (r) {
         STATO.colloquiInVolo--;
         dopoColloquio(r, '');
+        if (fatto) fatto(r);
       }, function (e) {
         STATO.colloquiInVolo--;
         STATO.documenti = prima;
@@ -4149,7 +4314,7 @@
       });
     }
     if (bottone) { bottone.disabled = true; bottone.textContent = 'Un attimo…'; }
-    return chiama(azione, dati).then(function (r) { if (x) x.chiudi(); dopoColloquio(r, msg); }, function (e) {
+    return chiama(azione, dati).then(function (r) { if (x) x.chiudi(); dopoColloquio(r, msg); if (fatto) fatto(r); }, function (e) {
       if (bottone) { bottone.disabled = false; bottone.textContent = 'Riprova'; }
       toast(e && e.message || 'Non riuscito: riprova.');
       if (x && e && e.codice === 'DATI') { x.chiudi(); ricarica(); }
@@ -4321,12 +4486,14 @@
       ['📋', '<b>Riepilogo</b> alle 12:30 del giorno prima, con le richieste ancora da confermare. Le richieste vanno confermate entro le ' + r.rispostaEntro + ' del giorno prima: dopo valgono come declinate e la famiglia viene avvisata.'],
       ['⏰', '15 minuti prima del primo colloquio, il riepilogo della mattina. Per i colloqui online, una notifica 2 minuti prima con il link.'],
       ['📅', 'Le famiglie prenotano <b>almeno ' + r.anticipoOre + ' ore prima</b>.'],
+      ['🔁', 'Se una famiglia cambia la modalità (online o in presenza): dalle 8:00 alle 22:00.'],   // v11.16
       ['🔒', 'Sulla schermata bloccata non compaiono nomi.'],
       ['📱', 'Valgono <b>solo per questo telefono</b>. Su iPhone solo dall’icona dell’app sulla schermata Home. Se su Android vede solo un’iconcina, nelle impostazioni del telefono scelga per la schermata di blocco le notifiche “dettagliate”.'],
       ['🔕', 'Per spegnerle tocchi di nuovo l’interruttore.']
     ] : [
       ['✅', 'Quando la maestra <b>conferma, declina o annulla</b> un tuo colloquio. Arrivano dalle 7:00 alle 24:00; di notte aspettano le 7:00.'],
       ['⏰', '<b>Promemoria</b>: il giorno prima alle 18:00. A scuola 2 ore prima e 10 minuti prima; online 15 minuti prima e 2 minuti prima, con il link per entrare.'],
+      ['🔁', 'Se il colloquio passa <b>online o in presenza</b>: se lo sposta la maestra online, la notifica ti porta al link.'],   // v11.16
       ['👪', 'Le ricevono <b>tutti e due i genitori</b>: chi ha prenotato e chi ha il colloquio condiviso.'],
       ['📅', 'Si prenota <b>almeno ' + r.anticipoOre + ' ore prima</b>. La maestra risponde entro le ' + r.rispostaEntro + ' del giorno prima: se non risponde, la richiesta vale come declinata e ti avvisiamo.'],
       ['🔒', 'Sulla schermata bloccata <b>non compare il nome</b> di tuo figlio.'],
@@ -4366,7 +4533,7 @@
       miei.forEach(function (c) {
         box.appendChild(el('div', { classe: 'col-riga' }, [
           el('div', { classe: 'col-riga-tx' }, [el('b', { testo: quandoCol(c) }),
-            el('span', { testo: (c.stato === 'confermato' ? '✓ Confermato' : '⏳ In attesa della maestra') + ' · ' + modoTesto(c.modo) }),
+            el('span', {}, [(c.stato === 'confermato' ? '✓ Confermato' : '⏳ In attesa della maestra') + ' ', pillModo(c.modo)]),   /* v11.16 */
             c.stato === 'attesa' && entroQuando(col, c.data) ? el('small', { classe: 'col-entro', testo: 'La maestra risponde entro ' + entroQuando(col, c.data) }) : null,
             c.mio ? null : el('small', { testo: '👥 prenotato da ' + (c.di || 'l’altro genitore') + (c.diRuolo ? ' (' + c.diRuolo + ')' : '') })]),
           el('button', { type: 'button', classe: 'col-btn', testo: 'Apri', onclick: function () { foglioMio(d, col, c.data); } })]));
@@ -4389,7 +4556,8 @@
         if (s.tipo === 'mio') { cls += s.c.stato === 'confermato' ? ' ok' : ' attesa'; sotto2 = s.c.stato === 'confermato' ? '✓ tua' : '⏳ tua'; }
         else if (s.tipo === 'richiesta') { cls += ' attesa'; sotto2 = 'Richiesta'; }
         else if (s.tipo === 'occupata') { cls += ' preso'; sotto2 = 'Occupata'; }
-        var bt = el('button', { type: 'button', classe: cls }, [el('b', { testo: f.da }), el('small', { testo: sotto2 })]);
+        var bt = el('button', { type: 'button', classe: cls }, [el('b', { testo: f.da }), el('small', { testo: sotto2 }),
+          s.tipo === 'mio' ? el('i', { classe: 'fa-modo', testo: modoDi(s.c.modo) === 'scuola' ? 'SCUOLA' : 'ONLINE' }) : null]);   // v11.16
         if (s.tipo === 'richiesta' || s.tipo === 'occupata') bt.disabled = true;
         else bt.addEventListener('click', function () { if (s.tipo === 'mio') foglioMio(d, col, iso); else foglioPrenota(d, col, iso, f); });
         chips.push(bt);
@@ -4436,17 +4604,19 @@
     var aggiorna = function () {
       titoloDur.textContent = 'Quanto tempo? Dalle ' + f.da + ' alle ' + scelta.fine;
       Array.prototype.forEach.call(durata.children, function (bt) { bt.className = bt.getAttribute('data-fine') === scelta.fine ? 'on' : ''; });
-      bA.className = scelta.modo === 'scuola' ? 'on' : ''; bO.className = scelta.modo === 'online' ? 'on' : '';
+      bA.className = 'modo-op scuola' + (scelta.modo === 'scuola' ? ' on' : ''); bO.className = 'modo-op online' + (scelta.modo === 'online' ? ' on' : '');   // v11.16
+      bA.setAttribute('aria-pressed', scelta.modo === 'scuola' ? 'true' : 'false'); bO.setAttribute('aria-pressed', scelta.modo === 'online' ? 'true' : 'false');
+      invia.textContent = 'Invia la richiesta (' + (scelta.modo === 'scuola' ? 'in presenza' : 'online') + ')';
     };
     fini.forEach(function (a) { durata.appendChild(el('button', { type: 'button', 'data-fine': a, testo: (minDi(a) - minDi(f.da)) + ' min', onclick: function () { scelta.fine = a; aggiorna(); } })); });
-    var bA = el('button', { type: 'button', testo: '🏫 A scuola', onclick: function () { scelta.modo = 'scuola'; aggiorna(); } });
-    var bO = el('button', { type: 'button', testo: '💻 Online', onclick: function () { scelta.modo = 'online'; aggiorna(); } });
+    var bA = el('button', { type: 'button', classe: 'modo-op scuola', onclick: function () { scelta.modo = 'scuola'; aggiorna(); } }, [iconaModo('scuola', 28), el('b', { testo: 'IN PRESENZA' }), el('small', { testo: 'A scuola, di persona' })]);   // v11.16
+    var bO = el('button', { type: 'button', classe: 'modo-op online', onclick: function () { scelta.modo = 'online'; aggiorna(); } }, [iconaModo('online', 28), el('b', { testo: 'ONLINE' }), el('small', { testo: 'Videochiamata da casa' })]);
     corpo.appendChild(titoloDur); corpo.appendChild(durata);
     if (stesso.length) corpo.appendChild(el('p', { classe: 'ric-sotto col-sx', testo: 'Si aggiunge al vostro colloquio delle ' + dalleAlle(stesso).dalle + '–' + dalleAlle(stesso).alle + ', ' + modoTesto(scelta.modo) + ', con lo stesso link.' }));
     else {
       corpo.appendChild(el('span', { classe: 'ric-lbl', testo: 'Come?' }));
-      corpo.appendChild(el('div', { classe: 'ric-modo' }, [bA, bO]));
-      corpo.appendChild(el('p', { classe: 'ric-sotto col-sx', testo: 'Online è già scelto: il link della videochiamata c’è sempre, anche se poi venite a scuola.' }));
+      corpo.appendChild(el('div', { classe: 'ric-modo modo-scelta' }, [bO, bA]));   // v11.16: online per primo, già scelto
+      corpo.appendChild(el('p', { classe: 'ric-sotto col-sx', testo: 'Potrai cambiare idea anche dopo: nel colloquio c’è «Cambia», fino a 1 ora prima. Il link della videochiamata c’è sempre.' }));
       if ((col.altri || []).length) {
         var cb = el('input', { type: 'checkbox', id: 'colCondividi' });
         cb.checked = true; cb.addEventListener('change', function () { scelta.condiviso = cb.checked; });
@@ -4476,8 +4646,9 @@
     if (!righe.length) return;
     var corpo = el('div'), conferma = el('div');
     var tutti = righe.every(function (c) { return c.stato === 'confermato'; });
-    var x = foglioFile([el('h3', { testo: tutti ? 'Colloquio confermato' : 'Il tuo colloquio' }),
-      el('div', { classe: 'ric-riass' }, [el('b', { testo: d.nome }), el('span', { testo: dataLunga(iso) + ' · ' + modoTesto(righe[0].modo) })]), corpo, conferma]);
+    var modo = modoDi(righe[0].modo), ga = dalleAlle(righe);                          // v11.16: banda della modalità in cima
+    var x = foglioFile([bandaModo(modo), el('h3', { testo: tutti ? 'Colloquio confermato' : 'Il tuo colloquio' }),
+      el('div', { classe: 'ric-riass' }, [el('b', { testo: d.nome }), el('span', { testo: dataLunga(iso) + ', ' + ga.dalle + '–' + ga.alle })]), corpo, conferma]);
     righe.forEach(function (c) {
       var az = c.mio ? el('div', { classe: 'col-azioni' }, [
         el('button', { type: 'button', classe: 'btn-no', testo: c.stato === 'confermato' ? 'Annulla' : 'Ritira la richiesta', onclick: function () {
@@ -4500,6 +4671,14 @@
     if (ok && ok.modo === 'online') { corpo.appendChild(linkVideoCol(ok.link)); corpo.appendChild(el('p', { classe: 'ric-sotto col-link', testo: ok.link })); }
     else if (ok) corpo.appendChild(el('p', { classe: 'ric-sotto', testo: 'Il colloquio è a scuola, all’orario indicato.' }));
     if (!tutti) corpo.appendChild(el('p', { classe: 'ric-sotto', testo: 'Quando la maestra decide, lo vedi qui e in Home con un avviso.' }));
+    // v11.16: cambiare modalità (solo chi ha prenotato, fino a 1 ora prima). Mai dagli elenchi.
+    var mio = righe.filter(function (c) { return c.mio; })[0], altroModo = modo === 'scuola' ? 'online' : 'scuola', rr = regoleCol(col);
+    if (rr && rr.cambioModoMinuti !== undefined && !VISTA.attiva) {
+      if (mio && cambioModoAperto(col, iso, ga.dalle)) corpo.appendChild(el('button', { type: 'button', classe: 'btn modo-cambia ' + altroModo, onclick: function () { x.chiudi(); foglioCambiaModo(d, col, iso, mio, altroModo); } },
+        [iconaModo(altroModo, 20), el('span', { classe: 'modo-tx', testo: 'Cambia: passa a ' + nomeModo(altroModo) })]));
+      else if (mio) corpo.appendChild(el('p', { classe: 'ric-sotto', testo: 'Manca meno di ' + testoMinuti(rr.cambioModoMinuti) + ': la modalità non si può più cambiare.' }));
+      else if (cambioModoAperto(col, iso, ga.dalle)) corpo.appendChild(el('p', { classe: 'ric-sotto', testo: 'La modalità la può cambiare solo chi ha prenotato.' }));
+    }
     corpo.appendChild(el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } })]));
   }
 
@@ -4510,7 +4689,7 @@
     var att = miei.filter(function (c) { return c.stato === 'attesa'; }), conf = miei.filter(function (c) { return c.stato === 'confermato'; });
     var riga = function (c, conAzioni) {
       return el('div', { classe: 'col-riga' }, [
-        el('div', { classe: 'col-riga-tx' }, [el('b', { testo: c.alunno }), el('span', { testo: quandoCol(c) + ' · ' + modoTesto(c.modo) }),
+        el('div', { classe: 'col-riga-tx' }, [el('b', { testo: c.alunno }), el('span', {}, [quandoCol(c) + ' ', pillModo(c.modo)]),   /* v11.16: niente cambio dall'elenco */
           el('small', { testo: (c.genitore || '') + (c.ruolo ? ' (' + c.ruolo + ')' : '') }),
           conAzioni && entroQuando(col, c.data) ? el('small', { classe: 'col-entro', testo: 'Da confermare entro ' + entroQuando(col, c.data) }) : null,
           conAzioni ? el('div', { classe: 'col-azioni' }, [
@@ -4533,10 +4712,11 @@
       fasce.forEach(function (f) {
         var q = function (x) { return x.docente === d.id && x.data === iso && sovrappone(x, f.da, f.a); };
         var c = miei.filter(q)[0], t = (m.tolte || []).filter(q)[0], cls = 'col-fa', s2 = 'Libera', fai;
-        if (c) { cls += c.stato === 'confermato' ? ' ok' : ' attesa'; s2 = (c.stato === 'confermato' ? '✓ ' : '⏳ ') + String(c.alunno).split(' ')[0] + (c.stato === 'confermato' && c.modo === 'online' ? ' 📹' : ''); fai = function () { foglioMaestra(d, c); }; }
+        if (c) { cls += (c.stato === 'confermato' ? ' ok m-' + modoDi(c.modo) : ' attesa'); s2 = (c.stato === 'confermato' ? '✓ ' : '⏳ ') + String(c.alunno).split(' ')[0] + (c.stato === 'confermato' && c.modo === 'online' ? ' 📹' : ''); fai = function () { foglioMaestra(d, c); }; }
         else if (t) { tolteGiorno++; cls += t.nota ? ' fuori' : ' tolta'; s2 = t.nota ? '✉️ ' + t.nota.split(/[ ,]/)[0] : 'Tolta'; fai = function () { foglioTogli(d, iso, f, t); }; }
         else { if (fasciaChiusa(col, iso, f.da)) { cls += ' preso'; s2 = 'Chiusa'; } fai = function () { foglioTogli(d, iso, f, null); }; }   // v11.12: a meno di 36 ore le famiglie non la vedono
-        chips.push(el('button', { type: 'button', classe: cls, onclick: fai }, [el('b', { testo: f.da }), el('small', { testo: s2 })]));
+        chips.push(el('button', { type: 'button', classe: cls, onclick: fai }, [el('b', { testo: f.da }), el('small', { testo: s2 }),
+          c ? el('i', { classe: 'fa-modo', testo: modoDi(c.modo) === 'scuola' ? 'SCUOLA' : 'ONLINE' }) : null]));   // v11.16
       });
       sotto.push(el('div', { classe: 'col-giorno' }, [el('div', { classe: 'col-gd', testo: dataCorta(iso) + (tolteGiorno === fasce.length ? ' · non disponibile: i genitori non lo vedono' : '') }), el('div', { classe: 'col-fasce' }, chips)]));
     });
@@ -4545,13 +4725,15 @@
   function foglioMaestra(d, c, declina) {
     var conferma = el('div');
     var att = c.stato === 'attesa';
-    var x = foglioFile([el('h3', { testo: att ? 'Richiesta di colloquio' : 'Colloquio' }),
+    var xx = { chiudi: function () { if (x) x.chiudi(); } }, spostaBox = att ? null : boxSpostaOnline(d, c, xx);
+    var x = foglioFile([bandaModo(c.modo, 'maestra'), el('h3', { testo: att ? 'Richiesta di colloquio' : 'Colloquio' }),   /* v11.16: banda */
       el('div', { classe: 'ric-riass' }, [el('b', { testo: c.alunno }), el('span', { testo: quandoCol(c) })]),
       el('div', { classe: 'col-stato ' + (att ? 'att' : 'ok') }, [el('b', { testo: att ? '⏳ Da confermare' : '✓ Confermato' }),
-        (c.genitore || '') + (c.ruolo ? ' (' + c.ruolo + ')' : '') + ' · ' + modoTesto(c.modo),
+        (c.genitore || '') + (c.ruolo ? ' (' + c.ruolo + ')' : ''),
         att && entroQuando(STATO.colUltimi, c.data) ? el('small', { classe: 'col-entro', testo: 'Entro ' + entroQuando(STATO.colUltimi, c.data) + ': dopo vale come declinata.' }) : null]),
       !att && c.modo === 'online' ? linkVideoCol(c.link) : null,
       !att && c.modo === 'online' ? el('p', { classe: 'ric-sotto col-link', testo: c.link }) : null,
+      !att && modoDi(c.modo) === 'scuola' && !VISTA.attiva ? spostaBox : null,          // v11.16: la maestra sposta solo online
       el('div', { classe: 'col-azioni' }, att ? [
         el('button', { type: 'button', classe: 'btn-ok', testo: '✓ Conferma', onclick: function (ev) { azioneColloquio('colloquioConferma', { id: c.id }, 'Colloquio confermato: la famiglia riceve un avviso', x, ev.currentTarget, function (col) { confermaColloquio(col, c); }).catch(function () {}); } }),
         el('button', { type: 'button', classe: 'btn-no', testo: 'Declina', onclick: chiedi })] : [el('button', { type: 'button', classe: 'btn-no', testo: 'Annulla il colloquio', onclick: chiedi })]),
@@ -4592,6 +4774,11 @@
   function testoAvvisoCol(a) {
     var d = docenteRic(a.docente), q = dataLunga(a.data) + ', ' + a.dalle + '–' + a.alle;
     var chi = a.daMaestra ? d.nome : (a.da || 'Il genitore') + (a.daRuolo ? ' (' + a.daRuolo + ' di ' + String(a.alunno || '').split(' ')[0] + ')' : (a.perMaestra && a.alunno ? ' (famiglia di ' + String(a.alunno).split(' ')[0] + ')' : ''));
+    if (a.tipo === 'modo') {                                                         // v11.16: cambio di modalità
+      var nv = modoDi(a.nuovo || a.modo), da = nv === 'online' ? 'in presenza' : 'online', aa = nv === 'online' ? 'online' : 'in presenza';
+      return ['modo ' + nv, a.daMaestra ? d.nome + ' ha spostato ' + aa + ' il colloquio di ' + q + (nv === 'online' ? ': si fa in videochiamata, alla stessa ora.' : '.')
+        : chi + ' ha cambiato il colloquio di ' + q + ': da ' + da + ' a ' + aa + '.', nv];
+    }
     if (a.tipo === 'confermato') return ['ok', '✓ ' + d.nome + ' ha confermato il colloquio di ' + q + '.'];
     if (a.tipo === 'declinato') return ['no', d.nome + ' ha declinato la richiesta di ' + q + '. Si può scegliere un’altra fascia.'];
     if (a.tipo === 'ritirato') return ['no', chi + ' ha ritirato la richiesta di ' + q + '.'];
@@ -4607,8 +4794,11 @@
         if (VISTA.attiva) { toast('In “Visualizza come” si può solo guardare.'); return; }
         azioneColloquio('colloquioVisto', { ids: [a.id] }, '', null, visto).catch(function () {});
       } });
-      sez.appendChild(el('div', { classe: 'col-stato ' + t[0] }, [el('b', { testo: t[1] }),
-        a.motivo ? el('span', { classe: 'col-perche', testo: 'Motivo: «' + a.motivo + '»' }) : null, el('div', { classe: 'col-azioni' }, [visto])]));
+      var lk = t[2] === 'online' ? ((col.miei || []).filter(function (m) { return m.docente === a.docente && m.data === a.data && m.stato === 'confermato' && m.modo === 'online' && m.link; })[0]
+        || ((col.maestra && col.maestra.colloqui) || []).filter(function (m) { return m.docente === a.docente && m.data === a.data && m.dalle === a.dalle && m.stato === 'confermato' && m.modo === 'online' && m.link; })[0]) : null;
+      sez.appendChild(el('div', { classe: 'col-stato ' + t[0] }, [t[2] ? el('div', { classe: 'av-banda ' + t[2] }, [iconaModo(t[2], 16), 'ORA È ' + nomeModo(t[2])]) : null,   // v11.16
+        el('b', {}, [t[1], a.tipo === 'confermato' && a.modo ? ' ' : '', a.tipo === 'confermato' && a.modo ? pillModo(a.modo) : null]),
+        a.motivo ? el('span', { classe: 'col-perche', testo: 'Motivo: «' + a.motivo + '»' }) : null, lk ? linkVideoCol(lk.link, true) : null, el('div', { classe: 'col-azioni' }, [visto])]));
     });
     return sez;
   }
@@ -4619,18 +4809,20 @@
     var oggi = oggiISO(), lim = new Date(); lim.setDate(lim.getDate() + giorni);
     var fine = isoDi(lim), dentro = function (c) { return c.data >= oggi && c.data <= fine; }, perGiorno = {};
     if (col.maestra) {
-      (col.maestra.colloqui || []).filter(function (c) { return c.stato === 'confermato' && dentro(c); }).forEach(function (c) { (perGiorno[c.data] = perGiorno[c.data] || []).push({ ora: c.dalle, t: c.dalle + ' ' + String(c.alunno).split(' ')[0] + (c.modo === 'online' ? ' 📹' : '') }); });
+      (col.maestra.colloqui || []).filter(function (c) { return c.stato === 'confermato' && dentro(c); }).forEach(function (c) { (perGiorno[c.data] = perGiorno[c.data] || []).push({ ora: c.dalle, t: c.dalle + ' ' + String(c.alunno).split(' ')[0], modo: modoDi(c.modo) }); });   // v11.16: etichetta della modalità
       (col.maestra.tolte || []).filter(function (t) { return t.nota && dentro(t); }).forEach(function (t) { (perGiorno[t.data] = perGiorno[t.data] || []).push({ ora: t.dalle, t: t.dalle + ' ✉️ ' + t.nota.split(',')[0] }); });
       Object.keys(perGiorno).forEach(function (g) {
         var l = perGiorno[g].sort(function (a, b) { return a.ora < b.ora ? -1 : 1; });
-        out.push({ giorno: g, data: g, titolo: (l.length === 1 ? '1 colloquio: ' : l.length + ' colloqui: ') + l.map(function (x) { return x.t; }).join(' · '), ora: l[0].ora, colloquio: true });
+        var nodi = [l.length === 1 ? '1 colloquio: ' : l.length + ' colloqui: '];
+        l.forEach(function (x, i) { if (i) nodi.push(' · '); nodi.push(x.t + (x.modo ? ' ' : '')); if (x.modo) nodi.push(pillModo(x.modo, true)); });
+        out.push({ giorno: g, data: g, titolo: (l.length === 1 ? '1 colloquio: ' : l.length + ' colloqui: ') + l.map(function (x) { return x.t + (x.modo === 'online' ? ' 📹' : ''); }).join(' · '), nodi: nodi, ora: l[0].ora, colloquio: true });
       });
       return out;
     }
     (col.miei || []).filter(function (c) { return c.stato === 'confermato' && dentro(c); }).forEach(function (c) { (perGiorno[c.docente + '|' + c.data] = perGiorno[c.docente + '|' + c.data] || []).push(c); });
     Object.keys(perGiorno).forEach(function (k) {
       var l = perGiorno[k].sort(perData), d = docenteRic(l[0].docente);
-      out.push({ giorno: l[0].data, data: l[0].data, titolo: 'Colloquio con ' + d.nome + (l[0].modo === 'online' ? ' · 📹 online' : ' · a scuola'), ora: l[0].dalle, colloquio: true });
+      out.push({ giorno: l[0].data, data: l[0].data, titolo: 'Colloquio con ' + d.nome + (l[0].modo === 'online' ? ' · 📹 online' : ' · a scuola'), nodi: ['Colloquio con ' + d.nome + ' ', pillModo(l[0].modo, true)], ora: l[0].dalle, colloquio: true });   // v11.16
     });
     return out;
   }
@@ -6486,7 +6678,7 @@
         var att = col.maestra ? (col.maestra.colloqui || []).filter(function (c) { return c.stato === 'attesa'; }).length : 0;
         if (att) box.appendChild(el('button', { type: 'button', classe: 'porta col-porta', 'data-porta': 'ricevimento', onclick: function () { vaiA('ricevimento'); } }, [illPagina('ricevimento'),
           el('span', { classe: 'tx' }, [el('b', { testo: '⏳ ' + (att === 1 ? '1 richiesta di colloquio da confermare' : att + ' richieste di colloquio da confermare') }),
-            el('small', { testo: 'La tocchi per aprire Ricevimento e confermare o declinare.' })]), frecciaTonda()]));
+            el('small', { testo: contaModiPag((col.maestra.colloqui || []).filter(function (c) { return c.stato === 'attesa'; })) + ' · La tocchi per aprire Ricevimento e confermare o declinare.' })]), frecciaTonda()]));   // v11.16
         var cam = col.campanella;
         if (cam && cam.n) box.appendChild(el('section', { classe: 'riquadro oro col-campanella' }, [
           el('div', { classe: 'col-cb' }, [el('span', { 'aria-hidden': 'true', testo: '🔔' }), el('span', { classe: 'conta', testo: String(cam.n) })]),
@@ -6565,7 +6757,7 @@
           var quando = GIORNI_SETT[new Date(+p[0], +p[1] - 1, +p[2]).getDay()].toLowerCase() + ' ' + (+p[2]) + ' ' + MESI[+p[1] - 1].slice(0, 3);
           righe.appendChild(el('div', { classe: 'prox-riga' + (g <= 1 ? ' urgente' : '') }, [
             el('span', { classe: 'quando', testo: quando }),
-            e.colloquio ? el('span', { classe: 'cosa col-prox', testo: e.titolo }) : eCompleanno(e) ? el('span', { classe: 'cosa' }, [titoloEvento(e) + ' ', el('em', { testo: g === 0 ? '· oggi è il suo compleanno' : '· sarà il suo compleanno' })])
+            e.colloquio ? el('span', { classe: 'cosa col-prox' }, e.nodi || [e.titolo]) : eCompleanno(e) ? el('span', { classe: 'cosa' }, [titoloEvento(e) + ' ', el('em', { testo: g === 0 ? '· oggi è il suo compleanno' : '· sarà il suo compleanno' })])
               : el('span', { classe: 'cosa', testo: e.titolo }), e.ora ? el('span', { classe: 'ora', testo: e.ora }) : null
           ]));
         });
