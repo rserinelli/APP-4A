@@ -14,7 +14,13 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.16, 28 ottobre 2026: ONLINE O IN PRESENZA (n. 62) — nel foglio
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.17, 28 ottobre 2026: FASCE IN 5 COLORI E CONDIVISIONE DI PROVA
+  (n. 63) — le fasce dei colloqui, per le famiglie e nell'agenda della maestra: Libera azzurra, In attesa arancione tratteggiata,
+  Occupata (o tolta) grigia, Confermato a scuola PIENO verde acqua con SCUOLA, Confermato online PIENO viola con ONLINE; il verde
+  "confermato" sparisce dalle fasce; legenda con i 5 colori; etichette ONLINE / IN PRESENZA piene. Con la Maestra di prova il pulsante
+  "Condividi" condivide con l'altro profilo di Rossana (campo altriProva dello script 11.12), con la riga che lo spiega. Con lo script
+  11.11 la pagina funziona lo stesso (la condivisione di prova resta spenta).
+  Versione 11.16, 28 ottobre 2026: ONLINE O IN PRESENZA (n. 62) — nel foglio
   del colloquio (famiglia e maestra) una banda colorata in cima: viola con la videocamera = ONLINE, verde acqua con la scuola =
   IN PRESENZA. Prenotazione con due riquadri grandi (Online già scelto). Chi ha prenotato cambia la modalità dal colloquio aperto
   ("Cambia: passa a …" → "Cambiare modalità?", motivo facoltativo), in tutti e due i sensi; la maestra, dal colloquio aperto, può
@@ -880,6 +886,9 @@
   .col-legenda .lib::before { border-color: var(--brand); background: var(--brand-soft); }
   .col-legenda .att::before { border-color: #b45f06; border-style: dashed; background: #fff1dc; }
   .col-legenda .ok::before { border-color: var(--ok); background: #e5f4e7; }
+  .col-legenda .sc::before { border-color: #0f5e57; background: #0f5e57; }   /* v11.17 */
+  .col-legenda .on::before { border-color: #5b21b6; background: #5b21b6; }
+  .col-prova { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
   .col-legenda .pre::before { border-color: var(--line); background: #eef1f4; }
   .col-miei { margin-top: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
   .col-tit { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: var(--brand); margin-bottom: 4px; }
@@ -891,6 +900,7 @@
   .col-riga-tx small { color: var(--muted); font-size: 12px; }
   .col-btn { flex: none; padding: 7px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--brand); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; }
   .col-btn.col-video { display: inline-block; margin-top: 6px; border-color: var(--brand); }
+  .col-stato .col-btn { max-width: 100%; white-space: normal; text-align: left; overflow-wrap: anywhere; }   /* v11.17: i nomi lunghi vanno a capo */
   .col-azioni { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
   .col-azioni .btn-ok, .col-azioni .btn-no { padding: 7px 12px; font-size: 13px; }
   .col-stato { display: grid; gap: 4px; padding: 10px 12px; border-radius: 12px; margin: 0 0 10px; font-size: 13.5px; }
@@ -920,11 +930,12 @@
   .modo-banda b { font-size: 21px; font-weight: 800; letter-spacing: .04em; line-height: 1.1; }
   .modo-banda small { font-size: 13.5px; font-weight: 700; color: #fff; }
   .modo-pill { display: inline-flex; align-items: center; gap: 3px; padding: 1px 7px; border-radius: 999px; font-size: 10.5px; font-weight: 800; letter-spacing: .03em; line-height: 1.5; vertical-align: 1px; white-space: nowrap; }
-  .modo-pill.online { background: #ede4ff; color: #4c1d95; }
-  .modo-pill.scuola { background: #dcf1ed; color: #0f5e57; }
+  .modo-pill.online { background: #5b21b6; color: #fff; }   /* v11.17: piene */
+  .modo-pill.scuola { background: #0f5e57; color: #fff; }
   .col-fa .fa-modo { font-style: normal; font-size: 9.5px; font-weight: 800; letter-spacing: .03em; line-height: 1.2; }
-  .col-fa.ok.m-online { border-color: #5b21b6; background: #f1eaff; color: #4c1d95; }
-  .col-fa.ok.m-scuola { border-color: #0f5e57; background: #e3f4f1; color: #0f5e57; }
+  /* v11.17 (n. 63): confermati pieni, viola ONLINE e verde acqua SCUOLA (il verde "confermato" non c'è più nelle fasce) */
+  .col-fa.ok.m-online { border-color: #5b21b6; background: #5b21b6; color: #fff; }
+  .col-fa.ok.m-scuola { border-color: #0f5e57; background: #0f5e57; color: #fff; }
   .pannello .btn.modo-cambia { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; margin: 4px 0 12px; padding: 10px 10px; background: #fff; font-weight: 800; font-size: 15px; }
   .pannello .btn .modo-tx { flex: 0 1 auto; min-width: 0; text-align: center; }
   .pannello .btn.modo-cambia.online { border: 2px solid #5b21b6; color: #5b21b6; }
@@ -960,6 +971,8 @@
   .col-stato.modo { padding-top: 0; overflow: hidden; }
   .col-stato.modo.online { background: #f8f4ff; border: 1px solid #c9b3f5; }
   .col-stato.modo.scuola { background: #eef8f6; border: 1px solid #9fd3c9; }
+  .col-stato.ok.m-online { background: #f8f4ff; border: 1px solid #c9b3f5; }   /* v11.17: il confermato prende il colore della modalità */
+  .col-stato.ok.m-scuola { background: #eef8f6; border: 1px solid #9fd3c9; }
   .av-banda { display: flex; align-items: center; gap: 8px; margin: 0 -12px 4px; padding: 7px 12px; color: #fff; font-size: 13px; font-weight: 800; letter-spacing: .04em; }
   .av-banda.online { background: #5b21b6; }
   .av-banda.scuola { background: #0f5e57; }
@@ -4079,6 +4092,17 @@
   };
   function riempi(t, v) { return String(t || '').replace(/\{(\w+)\}/g, function (x, k) { return v[k] !== undefined ? v[k] : x; }); }
   function elencoNomi(a) { return a.length > 1 ? a.slice(0, -1).join(', ') + ' e ' + a[a.length - 1] : (a[0] || ''); }
+  /** v11.17 (n. 63): con chi si condivide un colloquio di questo docente. Maestra di prova = solo l'altro profilo di Rossana (script 11.12). */
+  function eProvaCol(col, idDoc) { var p = col && col.altriProva; return !!(p && (p.docenti || []).indexOf(idDoc) >= 0); }
+  function altriCol(col, idDoc) {
+    if (eProvaCol(col, idDoc)) return (col.altriProva.email || []).length ? ['il tuo altro profilo'] : [];
+    return col.altri || [];
+  }
+  function rigaProva(col, idDoc) {
+    if (!eProvaCol(col, idDoc)) return null;
+    var e = col.altriProva.email || [];
+    return el('small', { classe: 'col-prova', testo: 'Prova: si condivide solo tra i tuoi profili' + (e.length ? ' (' + e.join(', ') + ')' : '') + ', mai con l’altro genitore vero.' });
+  }
   function stanzaVideo(base, alunno, iso) {
     var pulito = function (x) { return String(x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Za-z0-9]+/g, ''); };
     var g = iso ? dataDa(iso) : null, caso = '', ab = 'abcdefghjkmnpqrstuvwxyz23456789';
@@ -4221,7 +4245,7 @@
     var vecchio = nuovo === 'online' ? 'scuola' : 'online', r = regoleCol(col) || {};
     var righe = (col.miei || []).filter(function (x) { return x.docente === d.id && x.data === iso; }).sort(perData), ga = dalleAlle(righe.length ? righe : [c]);
     var riquadro = function (m, cls, sotto) { return el('div', { classe: 'm ' + cls + ' ' + m }, [iconaModo(m, 24), el('b', { testo: nomeModo(m) }), el('small', { testo: sotto })]); };
-    var nota = 'La maestra riceve subito un avviso nell’app e una notifica.' + (c.condiviso && (col.altri || []).length ? ' Anche ' + elencoNomi(col.altri) + ' lo vede.' : '') +
+    var nota = 'La maestra riceve subito un avviso nell’app e una notifica.' + (c.condiviso && altriCol(col, c.docente).length ? ' Anche ' + elencoNomi(altriCol(col, c.docente)) + ' lo vede.' : '') +
       (c.stato === 'confermato' ? ' Il colloquio resta confermato: non serve una nuova conferma.' : ' La richiesta resta in attesa della maestra.') +
       (nuovo === 'online' ? ' Il link della videochiamata lo trovi nel colloquio.' : '');
     var ta = el('input', { type: 'text', classe: 'col-motivo', maxlength: '300', placeholder: nuovo === 'online' ? 'Es. non riesco a venire a scuola' : 'Es. preferisco parlarne di persona', 'aria-label': 'Perché? (facoltativo)' });
@@ -4553,7 +4577,7 @@
         if (s.tipo === 'tolta') return;
         if (s.tipo !== 'mio' && fasciaChiusa(col, iso, f.da)) { chiuse++; return; }   // v11.12: a meno di 36 ore non si mostra
         var cls = 'col-fa', sotto2 = 'Libera';
-        if (s.tipo === 'mio') { cls += s.c.stato === 'confermato' ? ' ok' : ' attesa'; sotto2 = s.c.stato === 'confermato' ? '✓ tua' : '⏳ tua'; }
+        if (s.tipo === 'mio') { cls += s.c.stato === 'confermato' ? ' ok m-' + modoDi(s.c.modo) : ' attesa'; sotto2 = s.c.stato === 'confermato' ? '✓ tua' : '⏳ tua'; }   // v11.17: colore della modalità
         else if (s.tipo === 'richiesta') { cls += ' attesa'; sotto2 = 'Richiesta'; }
         else if (s.tipo === 'occupata') { cls += ' preso'; sotto2 = 'Occupata'; }
         var bt = el('button', { type: 'button', classe: cls }, [el('b', { testo: f.da }), el('small', { testo: sotto2 }),
@@ -4572,7 +4596,7 @@
     }
     if (!mostrati) sotto.push(el('p', { classe: 'ric-pross', testo: 'Nessuna data disponibile nel prossimo mese.' }));
     sotto.push(el('div', { classe: 'col-legenda' }, [el('span', { classe: 'l lib', testo: 'Libera' }), el('span', { classe: 'l att', testo: 'In attesa' }),
-      el('span', { classe: 'l ok', testo: 'Confermata' }), el('span', { classe: 'l pre', testo: 'Occupata' })]));
+      el('span', { classe: 'l pre', testo: 'Occupata' }), el('span', { classe: 'l sc', testo: 'Confermato a scuola' }), el('span', { classe: 'l on', testo: 'Confermato online' })]));   // v11.17
     return sotto;
   }
 
@@ -4617,11 +4641,11 @@
       corpo.appendChild(el('span', { classe: 'ric-lbl', testo: 'Come?' }));
       corpo.appendChild(el('div', { classe: 'ric-modo modo-scelta' }, [bO, bA]));   // v11.16: online per primo, già scelto
       corpo.appendChild(el('p', { classe: 'ric-sotto col-sx', testo: 'Potrai cambiare idea anche dopo: nel colloquio c’è «Cambia», fino a 1 ora prima. Il link della videochiamata c’è sempre.' }));
-      if ((col.altri || []).length) {
+      if (altriCol(col, d.id).length) {                                              // v11.17: con la prova l'altro profilo
         var cb = el('input', { type: 'checkbox', id: 'colCondividi' });
         cb.checked = true; cb.addEventListener('change', function () { scelta.condiviso = cb.checked; });
-        corpo.appendChild(el('label', { classe: 'col-cond', 'for': 'colCondividi' }, [cb, el('span', {}, [el('b', { testo: '👥 Condividi con ' + elencoNomi(col.altri) }),
-          'Lo vede nella sua app con data, stato e link della videochiamata. Può annullarlo solo chi prenota o la maestra.'])]));
+        corpo.appendChild(el('label', { classe: 'col-cond', 'for': 'colCondividi' }, [cb, el('span', {}, [el('b', { testo: '👥 Condividi con ' + elencoNomi(altriCol(col, d.id)) }),
+          'Lo vede nella sua app con data, stato e link della videochiamata. Può annullarlo solo chi prenota o la maestra.', rigaProva(col, d.id)])]));
       }
     }
     var invia = el('button', { type: 'button', classe: 'btn btn-primario ric-vai', testo: 'Invia la richiesta alla maestra', onclick: function () {
@@ -4652,19 +4676,20 @@
     righe.forEach(function (c) {
       var az = c.mio ? el('div', { classe: 'col-azioni' }, [
         el('button', { type: 'button', classe: 'btn-no', testo: c.stato === 'confermato' ? 'Annulla' : 'Ritira la richiesta', onclick: function () {
-          chiediMotivo(conferma, c.stato === 'confermato' ? 'Annullare il colloquio delle ' + c.dalle + '? La maestra riceve un avviso' + (c.condiviso && (col.altri || []).length ? ', e anche ' + elencoNomi(col.altri) + '.' : '.') : 'Ritirare la richiesta delle ' + c.dalle + '?',
+          chiediMotivo(conferma, c.stato === 'confermato' ? 'Annullare il colloquio delle ' + c.dalle + '? La maestra riceve un avviso' + (c.condiviso && altriCol(col, c.docente).length ? ', e anche ' + elencoNomi(altriCol(col, c.docente)) + '.' : '.') : 'Ritirare la richiesta delle ' + c.dalle + '?',
             c.stato === 'confermato' ? 'Sì, annulla' : 'Sì, ritira', function (motivo, bt) {
               azioneColloquio('colloquioAnnulla', { id: c.id, motivo: motivo }, c.stato === 'confermato' ? 'Colloquio annullato' : 'Richiesta ritirata', x, bt, function (col) { togliColloquio(col, c); }).catch(function () {});
             });
         } }),
-        (col.altri || []).length ? el('button', { type: 'button', classe: 'col-btn', testo: c.condiviso ? 'Smetti di condividere' : '👥 Condividi con ' + elencoNomi(col.altri), onclick: function (ev) {
+        altriCol(col, c.docente).length ? el('button', { type: 'button', classe: 'col-btn', testo: c.condiviso ? 'Smetti di condividere' : '👥 Condividi con ' + elencoNomi(altriCol(col, c.docente)), onclick: function (ev) {
           azioneColloquio('colloquioCondividi', { id: c.id, condiviso: !c.condiviso }, c.condiviso ? 'Non più condiviso' : 'Condiviso', x, ev.currentTarget).catch(function () {});
         } }) : null]) : null;
-      corpo.appendChild(el('div', { classe: 'col-stato ' + (c.stato === 'confermato' ? 'ok' : 'att') }, [
+      corpo.appendChild(el('div', { classe: 'col-stato ' + (c.stato === 'confermato' ? 'ok m-' + modoDi(c.modo) : 'att') }, [   // v11.17
         el('b', { testo: (c.stato === 'confermato' ? '✓ Confermato: ' : '⏳ In attesa della maestra: ') + c.dalle + '–' + c.alle }),
         c.stato === 'attesa' && entroQuando(col, c.data) ? el('small', { classe: 'col-entro', testo: 'La maestra risponde entro ' + entroQuando(col, c.data) + '. Se non risponde, la richiesta vale come declinata.' }) : null,
-        c.mio ? ((col.altri || []).length ? el('small', { testo: c.condiviso ? '👥 Condiviso con ' + elencoNomi(col.altri) + ': lo vede nella sua app, ma non può annullarlo.' : 'Non condiviso: ' + elencoNomi(col.altri) + ' non lo vede.' }) : null)
+        c.mio ? (altriCol(col, c.docente).length ? el('small', { testo: c.condiviso ? '👥 Condiviso con ' + elencoNomi(altriCol(col, c.docente)) + ': lo vede nella sua app, ma non può annullarlo.' : 'Non condiviso: ' + elencoNomi(altriCol(col, c.docente)) + ' non lo vede.' }) : null)
           : el('small', { testo: '👥 Prenotato da ' + (c.di || 'l’altro genitore') + (c.diRuolo ? ' (' + c.diRuolo + ')' : '') + '. Può annullarlo solo chi l’ha prenotato o la maestra.' }),
+        c.mio ? rigaProva(col, c.docente) : null,                                       // v11.17: Maestra di prova
         az]));
     });
     var ok = righe.filter(function (c) { return c.stato === 'confermato'; })[0];
@@ -4728,7 +4753,7 @@
     var xx = { chiudi: function () { if (x) x.chiudi(); } }, spostaBox = att ? null : boxSpostaOnline(d, c, xx);
     var x = foglioFile([bandaModo(c.modo, 'maestra'), el('h3', { testo: att ? 'Richiesta di colloquio' : 'Colloquio' }),   /* v11.16: banda */
       el('div', { classe: 'ric-riass' }, [el('b', { testo: c.alunno }), el('span', { testo: quandoCol(c) })]),
-      el('div', { classe: 'col-stato ' + (att ? 'att' : 'ok') }, [el('b', { testo: att ? '⏳ Da confermare' : '✓ Confermato' }),
+      el('div', { classe: 'col-stato ' + (att ? 'att' : 'ok m-' + modoDi(c.modo)) }, [   // v11.17el('b', { testo: att ? '⏳ Da confermare' : '✓ Confermato' }),
         (c.genitore || '') + (c.ruolo ? ' (' + c.ruolo + ')' : ''),
         att && entroQuando(STATO.colUltimi, c.data) ? el('small', { classe: 'col-entro', testo: 'Entro ' + entroQuando(STATO.colUltimi, c.data) + ': dopo vale come declinata.' }) : null]),
       !att && c.modo === 'online' ? linkVideoCol(c.link) : null,
