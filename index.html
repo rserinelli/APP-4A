@@ -14,7 +14,19 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.17, 28 ottobre 2026: FASCE IN 5 COLORI E CONDIVISIONE DI PROVA
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.19, 29 ottobre 2026: GIORNATE CHIUSE E TOLTE (n. 65) — nel
+  Ricevimento le famiglie vedono le fasce come l'agenda della maestra: a meno di 36 ore grigie "Chiusa" (la giornata intera con
+  "· prenotazioni chiuse", al posto della riga di prima), le fasce tolte tratteggiate e barrate "Tolta" (la giornata intera con
+  "· la maestra non riceve"), quelle già date per email grigie "Occupata", senza la nota. Nessuna si può toccare. Legenda con
+  "Occupata o chiusa" e "Tolta dalla maestra". Serve lo script 11.13 per riconoscere le fasce date per email (con lo script 11.12
+  compaiono come "Tolta"). Contenuti invariati.
+  Versione 11.18, 28 ottobre 2026: VISUALIZZA COME NEI COLLOQUI (n. 64) —
+  in Visualizza come i fogli del colloquio (famiglia e maestra) mostrano TUTTI i pulsanti che vedrebbe quella persona (Cambia: passa
+  a …, Annulla, Condividi, Sposta online, Conferma, Declina), ma grigi e non toccabili, con la riga "In Visualizza come non si cambia
+  niente: i pulsanti sono quelli che vede la famiglia / la maestra." Corretta la scritta "✓ Confermato" / "⏳ Da confermare" del
+  foglio della maestra, sparita con la 11.17 (finita dentro un commento). Con un foglio aperto il pulsante blu fisso di Visualizza
+  come si nasconde (copriva «Chiudi»). Script 11.12 e contenuti 11.9 invariati.
+  Versione 11.17, 28 ottobre 2026: FASCE IN 5 COLORI E CONDIVISIONE DI PROVA
   (n. 63) — le fasce dei colloqui, per le famiglie e nell'agenda della maestra: Libera azzurra, In attesa arancione tratteggiata,
   Occupata (o tolta) grigia, Confermato a scuola PIENO verde acqua con SCUOLA, Confermato online PIENO viola con ONLINE; il verde
   "confermato" sparisce dalle fasce; legenda con i 5 colori; etichette ONLINE / IN PRESENZA piene. Con la Maestra di prova il pulsante
@@ -890,6 +902,7 @@
   .col-legenda .on::before { border-color: #5b21b6; background: #5b21b6; }
   .col-prova { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
   .col-legenda .pre::before { border-color: var(--line); background: #eef1f4; }
+  .col-legenda .tol::before { border-color: var(--muted); border-style: dashed; background: repeating-linear-gradient(135deg, #eef1f4 0 3px, #fff 3px 6px); }   /* v11.19 */
   .col-miei { margin-top: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
   .col-tit { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: var(--brand); margin-bottom: 4px; }
   .col-tit .conta, .col-avvisi .conta, .col-cb .conta { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
@@ -901,6 +914,9 @@
   .col-btn { flex: none; padding: 7px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--brand); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; }
   .col-btn.col-video { display: inline-block; margin-top: 6px; border-color: var(--brand); }
   .col-stato .col-btn { max-width: 100%; white-space: normal; text-align: left; overflow-wrap: anywhere; }   /* v11.17: i nomi lunghi vanno a capo */
+  .pannello .vista-off, .pannello .vista-off:hover { opacity: .45; cursor: not-allowed; filter: grayscale(1); }   /* v11.18: Visualizza come */
+  body:has(.velo-doc) .vista-pill { display: none; }   /* v11.18: con un foglio aperto il pulsante blu di Visualizza come non copre «Chiudi» */
+  .pannello p.vista-nota { margin: 0 0 12px; padding: 8px 10px; border-radius: 10px; background: #eaf0ff; border: 1px dashed #3b5bdb; color: #1d3a8a; font-size: 12.5px; font-weight: 700; text-align: left; }
   .col-azioni { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
   .col-azioni .btn-ok, .col-azioni .btn-no { padding: 7px 12px; font-size: 13px; }
   .col-stato { display: grid; gap: 4px; padding: 10px 12px; border-radius: 12px; margin: 0 0 10px; font-size: 13.5px; }
@@ -4197,10 +4213,11 @@
     return out || { id: id, nome: 'la maestra', durata: 15 };
   }
   function eMaestra(col, d) { return !!(col && col.maestra && (col.maestra.docenti || []).indexOf(d.id) >= 0); }
-  // stato di una fascia per la famiglia: tolta (non si mostra), mio, richiesta (di altri, in attesa), occupata, libera
+  // stato di una fascia per la famiglia: tolta (v11.19: si mostra barrata; email = già data per email, si mostra Occupata), mio, richiesta (di altri, in attesa), occupata, libera
   function infoFascia(col, d, iso, f) {
     var q = function (x) { return x.docente === d.id && x.data === iso && sovrappone(x, f.da, f.a); };
-    if ((col.tolte || []).some(q)) return { tipo: 'tolta' };
+    var tt = (col.tolte || []).filter(q)[0];
+    if (tt) return { tipo: 'tolta', email: !!tt.email };
     var mio = (col.miei || []).filter(q)[0];
     if (mio) return { tipo: 'mio', c: mio };
     var occ = (col.occupate || []).filter(q)[0];
@@ -4569,34 +4586,33 @@
     var giorni = giorniApp(d, vac), fasce = fasceDi(d);
     sotto.push(el('div', { classe: 'ric-scegli', testo: 'Tutti i ' + (GIORNI_LUNGHI[d.giorno] || 'giorni') + ' del prossimo mese' +
       (regoleCol(col) ? ', almeno ' + regoleCol(col).anticipoOre + ' ore prima' : '') + '. Scegli la fascia (' + (d.durata || 15) + ' minuti):' }));
-    var mostrati = 0, posChiusi = sotto.length, giorniChiusi = [];      // v11.12: giorni con tutte le fasce a meno di 36 ore
+    var mostrati = 0;                                                  // v11.19 (n. 65): giornate chiuse e tolte come nell'agenda della maestra
     giorni.forEach(function (iso) {
-      var chips = [], chiuse = 0;
+      var chips = [], chiuse = 0, tolte = 0;
       fasce.forEach(function (f) {
-        var s = infoFascia(col, d, iso, f);
-        if (s.tipo === 'tolta') return;
-        if (s.tipo !== 'mio' && fasciaChiusa(col, iso, f.da)) { chiuse++; return; }   // v11.12: a meno di 36 ore non si mostra
-        var cls = 'col-fa', sotto2 = 'Libera';
-        if (s.tipo === 'mio') { cls += s.c.stato === 'confermato' ? ' ok m-' + modoDi(s.c.modo) : ' attesa'; sotto2 = s.c.stato === 'confermato' ? '✓ tua' : '⏳ tua'; }   // v11.17: colore della modalità
+        var s = infoFascia(col, d, iso, f), cls = 'col-fa', sotto2 = 'Libera';
+        if (fasciaChiusa(col, iso, f.da)) chiuse++;
+        if (s.tipo === 'tolta' && !s.email) { tolte++; cls += ' tolta'; sotto2 = 'Tolta'; }
+        else if (s.tipo === 'tolta') { cls += ' preso'; sotto2 = 'Occupata'; }   // già data per email: per le famiglie è occupata
+        else if (s.tipo === 'libera' && fasciaChiusa(col, iso, f.da)) { cls += ' preso'; sotto2 = 'Chiusa'; }   // a meno di 36 ore
+        else if (s.tipo === 'mio') { cls += s.c.stato === 'confermato' ? ' ok m-' + modoDi(s.c.modo) : ' attesa'; sotto2 = s.c.stato === 'confermato' ? '✓ tua' : '⏳ tua'; }   // v11.17: colore della modalità
         else if (s.tipo === 'richiesta') { cls += ' attesa'; sotto2 = 'Richiesta'; }
         else if (s.tipo === 'occupata') { cls += ' preso'; sotto2 = 'Occupata'; }
         var bt = el('button', { type: 'button', classe: cls }, [el('b', { testo: f.da }), el('small', { testo: sotto2 }),
           s.tipo === 'mio' ? el('i', { classe: 'fa-modo', testo: modoDi(s.c.modo) === 'scuola' ? 'SCUOLA' : 'ONLINE' }) : null]);   // v11.16
-        if (s.tipo === 'richiesta' || s.tipo === 'occupata') bt.disabled = true;
+        if (s.tipo !== 'mio' && (s.tipo !== 'libera' || sotto2 === 'Chiusa')) bt.disabled = true;   // v11.19: anche tolte e chiuse
         else bt.addEventListener('click', function () { if (s.tipo === 'mio') foglioMio(d, col, iso); else foglioPrenota(d, col, iso, f); });
         chips.push(bt);
       });
-      if (!chips.length) { if (chiuse) giorniChiusi.push(iso); return; }
+      if (!chips.length) return;
       mostrati++;
-      sotto.push(el('div', { classe: 'col-giorno' }, [el('div', { classe: 'col-gd', testo: dataCorta(iso) }), el('div', { classe: 'col-fasce' }, chips)]));
+      var dopo = tolte === fasce.length ? ' · la maestra non riceve' : chiuse === fasce.length ? ' · prenotazioni chiuse' : '';
+      sotto.push(el('div', { classe: 'col-giorno' }, [el('div', { classe: 'col-gd', testo: dataCorta(iso) + dopo }), el('div', { classe: 'col-fasce' }, chips)]));
     });
-    if (giorniChiusi.length) {
-      var gc = giorniChiusi.map(dataLunga).join(', ');
-      sotto.splice(posChiusi, 0, el('p', { classe: 'ric-pross col-chiusi', testo: gc.charAt(0).toUpperCase() + gc.slice(1) + ': prenotazioni chiuse (mancano meno di ' + regoleCol(col).anticipoOre + ' ore).' }));
-    }
     if (!mostrati) sotto.push(el('p', { classe: 'ric-pross', testo: 'Nessuna data disponibile nel prossimo mese.' }));
     sotto.push(el('div', { classe: 'col-legenda' }, [el('span', { classe: 'l lib', testo: 'Libera' }), el('span', { classe: 'l att', testo: 'In attesa' }),
-      el('span', { classe: 'l pre', testo: 'Occupata' }), el('span', { classe: 'l sc', testo: 'Confermato a scuola' }), el('span', { classe: 'l on', testo: 'Confermato online' })]));   // v11.17
+      el('span', { classe: 'l pre', testo: 'Occupata o chiusa' }), el('span', { classe: 'l tol', testo: 'Tolta dalla maestra' }),   // v11.19
+      el('span', { classe: 'l sc', testo: 'Confermato a scuola' }), el('span', { classe: 'l on', testo: 'Confermato online' })]));   // v11.17
     return sotto;
   }
 
@@ -4663,8 +4679,21 @@
     corpo.appendChild(el('p', { classe: 'ric-sotto', testo: 'Niente mail da scrivere. La fascia resta bloccata per voi finché la maestra decide.' }));
     corpo.appendChild(el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } })]));
     aggiorna();
+    soloLetturaVista(x.pannello, 'la famiglia');                                      // v11.18
   }
 
+  /** v11.18 (n. 64): in Visualizza come i pulsanti del foglio restano dove sono ma grigi e non toccabili (si chiude con Chiudi). */
+  function soloLetturaVista(pannello, chi) {
+    if (!VISTA.attiva || !pannello) return false;
+    pannello.querySelectorAll('button, input, textarea').forEach(function (b) {
+      if (b.closest('.ev-azioni')) return;                                           // Chiudi resta
+      b.disabled = true; b.classList.add('vista-off'); b.setAttribute('aria-disabled', 'true');
+    });
+    var dopo = pannello.querySelector('.modo-banda');
+    var nota = el('p', { classe: 'vista-nota', testo: 'In Visualizza come non si cambia niente: i pulsanti sono quelli che vede ' + chi + '.' });
+    if (dopo && dopo.nextSibling) pannello.insertBefore(nota, dopo.nextSibling); else pannello.insertBefore(nota, pannello.firstChild);
+    return true;
+  }
   function foglioMio(d, col, iso) {
     var righe = (col.miei || []).filter(function (c) { return c.docente === d.id && c.data === iso; }).sort(perData);
     if (!righe.length) return;
@@ -4698,13 +4727,14 @@
     if (!tutti) corpo.appendChild(el('p', { classe: 'ric-sotto', testo: 'Quando la maestra decide, lo vedi qui e in Home con un avviso.' }));
     // v11.16: cambiare modalità (solo chi ha prenotato, fino a 1 ora prima). Mai dagli elenchi.
     var mio = righe.filter(function (c) { return c.mio; })[0], altroModo = modo === 'scuola' ? 'online' : 'scuola', rr = regoleCol(col);
-    if (rr && rr.cambioModoMinuti !== undefined && !VISTA.attiva) {
+    if (rr && rr.cambioModoMinuti !== undefined) {                                  // v11.18: anche in Visualizza come (pulsante grigio)
       if (mio && cambioModoAperto(col, iso, ga.dalle)) corpo.appendChild(el('button', { type: 'button', classe: 'btn modo-cambia ' + altroModo, onclick: function () { x.chiudi(); foglioCambiaModo(d, col, iso, mio, altroModo); } },
         [iconaModo(altroModo, 20), el('span', { classe: 'modo-tx', testo: 'Cambia: passa a ' + nomeModo(altroModo) })]));
       else if (mio) corpo.appendChild(el('p', { classe: 'ric-sotto', testo: 'Manca meno di ' + testoMinuti(rr.cambioModoMinuti) + ': la modalità non si può più cambiare.' }));
       else if (cambioModoAperto(col, iso, ga.dalle)) corpo.appendChild(el('p', { classe: 'ric-sotto', testo: 'La modalità la può cambiare solo chi ha prenotato.' }));
     }
     corpo.appendChild(el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } })]));
+    soloLetturaVista(x.pannello, 'la famiglia');                                      // v11.18
   }
 
   // ---------- Maestra (si dà del Lei) ----------
@@ -4731,7 +4761,7 @@
     conf.forEach(function (c) { r2.appendChild(riga(c, false)); if (c.modo === 'online') r2.appendChild(linkVideoCol(c.link, true)); });
     sotto.push(r2);
     sotto.push(el('div', { classe: 'ric-scegli', testo: 'La mia agenda' }));
-    sotto.push(el('p', { classe: 'ric-pross', testo: 'Tutti i ' + (GIORNI_LUNGHI[d.giorno] || 'giorni') + ' del prossimo mese. Tocchi una fascia libera per toglierla: perché non è disponibile o perché l’ha già data a un genitore per email. Ai genitori le fasce tolte non compaiono.' }));
+    sotto.push(el('p', { classe: 'ric-pross', testo: 'Tutti i ' + (GIORNI_LUNGHI[d.giorno] || 'giorni') + ' del prossimo mese. Tocchi una fascia libera per toglierla: perché non è disponibile o perché l’ha già data a un genitore per email. Le famiglie vedono le fasce tolte barrate («Tolta») e quelle date per email come «Occupata», senza la sua nota.' }));
     giorniApp(d, vac).forEach(function (iso) {
       var chips = [], tolteGiorno = 0, fasce = fasceDi(d);
       fasce.forEach(function (f) {
@@ -4743,7 +4773,7 @@
         chips.push(el('button', { type: 'button', classe: cls, onclick: fai }, [el('b', { testo: f.da }), el('small', { testo: s2 }),
           c ? el('i', { classe: 'fa-modo', testo: modoDi(c.modo) === 'scuola' ? 'SCUOLA' : 'ONLINE' }) : null]));   // v11.16
       });
-      sotto.push(el('div', { classe: 'col-giorno' }, [el('div', { classe: 'col-gd', testo: dataCorta(iso) + (tolteGiorno === fasce.length ? ' · non disponibile: i genitori non lo vedono' : '') }), el('div', { classe: 'col-fasce' }, chips)]));
+      sotto.push(el('div', { classe: 'col-giorno' }, [el('div', { classe: 'col-gd', testo: dataCorta(iso) + (tolteGiorno === fasce.length ? ' · non disponibile' : '') }), el('div', { classe: 'col-fasce' }, chips)]));
     });
     return sotto;
   }
@@ -4753,12 +4783,12 @@
     var xx = { chiudi: function () { if (x) x.chiudi(); } }, spostaBox = att ? null : boxSpostaOnline(d, c, xx);
     var x = foglioFile([bandaModo(c.modo, 'maestra'), el('h3', { testo: att ? 'Richiesta di colloquio' : 'Colloquio' }),   /* v11.16: banda */
       el('div', { classe: 'ric-riass' }, [el('b', { testo: c.alunno }), el('span', { testo: quandoCol(c) })]),
-      el('div', { classe: 'col-stato ' + (att ? 'att' : 'ok m-' + modoDi(c.modo)) }, [   // v11.17el('b', { testo: att ? '⏳ Da confermare' : '✓ Confermato' }),
+      el('div', { classe: 'col-stato ' + (att ? 'att' : 'ok m-' + modoDi(c.modo)) }, [el('b', { testo: att ? '⏳ Da confermare' : '✓ Confermato' }),   // v11.17 colore; v11.18 scritta di nuovo visibile
         (c.genitore || '') + (c.ruolo ? ' (' + c.ruolo + ')' : ''),
         att && entroQuando(STATO.colUltimi, c.data) ? el('small', { classe: 'col-entro', testo: 'Entro ' + entroQuando(STATO.colUltimi, c.data) + ': dopo vale come declinata.' }) : null]),
       !att && c.modo === 'online' ? linkVideoCol(c.link) : null,
       !att && c.modo === 'online' ? el('p', { classe: 'ric-sotto col-link', testo: c.link }) : null,
-      !att && modoDi(c.modo) === 'scuola' && !VISTA.attiva ? spostaBox : null,          // v11.16: la maestra sposta solo online
+      !att && modoDi(c.modo) === 'scuola' ? spostaBox : null,                           // v11.16: la maestra sposta solo online; v11.18: in Visualizza come grigio
       el('div', { classe: 'col-azioni' }, att ? [
         el('button', { type: 'button', classe: 'btn-ok', testo: '✓ Conferma', onclick: function (ev) { azioneColloquio('colloquioConferma', { id: c.id }, 'Colloquio confermato: la famiglia riceve un avviso', x, ev.currentTarget, function (col) { confermaColloquio(col, c); }).catch(function () {}); } }),
         el('button', { type: 'button', classe: 'btn-no', testo: 'Declina', onclick: chiedi })] : [el('button', { type: 'button', classe: 'btn-no', testo: 'Annulla il colloquio', onclick: chiedi })]),
@@ -4768,6 +4798,7 @@
       chiediMotivo(conferma, att ? 'Declinare la richiesta? La famiglia riceve un avviso.' : 'Annullare il colloquio? La famiglia riceve un avviso.', att ? 'Sì, declina' : 'Sì, annulla',
         function (motivo, bt) { azioneColloquio('colloquioDeclina', { id: c.id, motivo: motivo }, att ? 'Richiesta declinata' : 'Colloquio annullato', x, bt, function (col) { togliColloquio(col, c); }).catch(function () {}); });
     }
+    if (soloLetturaVista(x.pannello, 'la maestra')) return;                          // v11.18
     if (declina) chiedi();
   }
   function foglioTogli(d, iso, f, t) {
@@ -4775,7 +4806,7 @@
     var x = foglioFile([el('h3', { testo: t ? 'Fascia tolta' : 'Togli la fascia' }),
       el('div', { classe: 'ric-riass' }, [el('b', { testo: dataLunga(iso) }), el('span', { testo: 'dalle ' + f.da + ' alle ' + f.a })]), corpo]);
     if (t) {
-      corpo.appendChild(el('div', { classe: 'col-stato ' + (t.nota ? 'ok' : 'no') }, [el('b', { testo: t.nota ? '✉️ Colloquio fuori dall’app' : 'Non disponibile' }), t.nota || 'I genitori non la vedono.']));
+      corpo.appendChild(el('div', { classe: 'col-stato ' + (t.nota ? 'ok' : 'no') }, [el('b', { testo: t.nota ? '✉️ Colloquio fuori dall’app' : 'Non disponibile' }), t.nota || 'I genitori la vedono barrata e non possono prenotarla.']));
       var rim = el('button', { type: 'button', classe: 'btn btn-primario ric-vai', testo: 'Rimetti disponibile', onclick: function () { azioneColloquio('fasciaRimetti', { id: t.id }, 'Fascia di nuovo disponibile', x, rim).catch(function () {}); } });
       corpo.appendChild(rim);
     } else {
@@ -4787,12 +4818,13 @@
       corpo.appendChild(el('div', { classe: 'ric-modo' }, [b1, b2]));
       corpo.appendChild(campo);
       var vai = el('button', { type: 'button', classe: 'btn btn-primario ric-vai', testo: 'Togli la fascia', onclick: function () {
-        azioneColloquio('fasciaTogli', { docente: d.id, data: iso, dalle: f.da, nota: perche === 'mail' ? (nota.value.trim() || 'Colloquio per email') : '' }, 'Fascia tolta: i genitori non la vedono', x, vai).catch(function () {});
+        azioneColloquio('fasciaTogli', { docente: d.id, data: iso, dalle: f.da, nota: perche === 'mail' ? (nota.value.trim() || 'Colloquio per email') : '' }, 'Fascia tolta', x, vai).catch(function () {});
       } });
       corpo.appendChild(vai);
-      corpo.appendChild(el('p', { classe: 'ric-sotto', testo: 'Ai genitori la fascia non compare più. Si può rimettere quando vuole.' }));
+      corpo.appendChild(el('p', { classe: 'ric-sotto', testo: 'Non disponibile: i genitori la vedono barrata. Già data per email: la vedono occupata, senza la nota. Si può rimettere quando vuole.' }));
     }
     corpo.appendChild(el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } })]));
+    soloLetturaVista(x.pannello, 'la maestra');                                       // v11.18
   }
 
   // ---------- Avvisi dei colloqui (Home e Ricevimento) ----------
