@@ -14,7 +14,12 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.20, 29 ottobre 2026: ONLINE O IN PRESENZA ANCHE CON GLI
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.21, 2 novembre 2026: MODIFICA DEGLI AVVISI (n. 67) — solo per
+  Rossana, sotto ogni avviso in Home "Modifica" (accanto a Condividi e Togli) e "Modifica" nel foglio dell'avviso aperto da Ultime
+  notizie (anche se è tolto o scaduto): si cambiano titolo, testo, "Sparisce dalla Home dopo il" e si può togliere l'allegato; dopo il
+  salvataggio, se si vuole, Condividi su WhatsApp. L'avviso resta lo stesso: chi l'ha già visto non lo rivede come NUOVO. Serve lo
+  script 11.14 (azione avvisoModifica); con lo script vecchio la pagina dice di incollarlo. Il resto non cambia.
+  Versione 11.20, 29 ottobre 2026: ONLINE O IN PRESENZA ANCHE CON GLI
   ALTRI INSEGNANTI (n. 66) — nel foglio "Richiesta di colloquio" degli insegnanti senza prenotazione nell'app (Sgro, Pingitore,
   Chekuri, Fiorelli, Coordinatore didattico) la banda colorata in cima (viola ONLINE / verde acqua IN PRESENZA, cambia con la scelta),
   i due riquadri grandi come con la maestra Marianna (ONLINE per primo, già scelto), l'anteprima della mail e il pulsante "Apri la mail
@@ -5570,6 +5575,7 @@
     if (a.scade) piede.push(el('span', { testo: 'fino al ' + dataCorta(a.scade) }));
     if (conAzioni) {
       piede.push(el('a', { classe: 'wa', href: linkWhatsapp(testoCondivisione(a)), target: '_blank', rel: 'noopener' }, [iconaWa(), 'Condividi']));
+      piede.push(el('button', { type: 'button', classe: 'av-mini', testo: '✏️ Modifica', onclick: function () { apriModificaAvviso(a); } }));   // v11.21
       piede.push(el('button', { type: 'button', classe: 'av-mini', testo: 'Togli', onclick: function () { chiediTogli(a); } }));
     }
     return el('div', { classe: 'av' + (evidenza ? ' evidenza' : ''), id: 'avviso-' + a.id }, [
@@ -5590,6 +5596,7 @@
       a.testo ? el('p', { style: 'color:var(--ink);white-space:pre-line;font-size:15px', testo: a.testo }) : null,
       a.allegato ? el('button', { type: 'button', classe: 'btn btn-sec', onclick: function () { chiudi(); apriAllegato(a.allegato); } }, ['📎 ' + a.allegato.titolo]) : null,
       admin ? el('a', { classe: 'btn btn-sec', href: linkWhatsapp(testoCondivisione(a)), target: '_blank', rel: 'noopener' }, [iconaWa(16), 'Condividi su WhatsApp']) : null,
+      admin ? el('button', { type: 'button', classe: 'btn btn-sec', testo: '✏️ Modifica', onclick: function () { chiudi(); apriModificaAvviso(a); } }) : null,   // v11.21
       admin && avvisoAttivo(a) ? el('button', { type: 'button', classe: 'btn btn-sec', testo: 'Togli dalla Home', onclick: function () { chiudi(); chiediTogli(a); } }) : null,
       el('button', { type: 'button', classe: 'link-piccolo', testo: 'Chiudi', onclick: chiudi })
     ]));
@@ -5623,6 +5630,20 @@
     setTimeout(function () { annulla.focus(); }, 30);
   }
 
+  // v11.21 (n. 67): modificare un avviso già pubblicato (solo Rossana), con lo stesso modulo di "Nuovo avviso"
+  function apriModificaAvviso(a) {
+    var velo = el('div', { classe: 'velo-doc' });
+    var foglio = el('div', { classe: 'pannello ev-foglio', role: 'dialog', 'aria-label': 'Modifica avviso' });
+    var chiudi = function () { velo.remove(); };
+    velo.appendChild(foglio);
+    velo.addEventListener('click', function (x) { if (x.target === velo) chiudi(); });
+    velo.addEventListener('keydown', function (x) { if (x.key === 'Escape') chiudi(); });
+    document.body.appendChild(velo);
+    foglio.appendChild(el('h3', { testo: 'Modifica avviso' }));
+    foglio.appendChild(el('p', { testo: a.tolto ? 'È tolto dalla Home: resta tolto, cambia solo in Ultime notizie.' : 'Le famiglie vedono subito il testo nuovo. Chi l’aveva già letto non lo rivede come NUOVO.' }));
+    foglio.appendChild(moduloAvviso({ id: a.id, titolo: a.titolo, testo: a.testo, scade: a.scade, allegato: a.allegato }, chiudi, foglio));
+  }
+
   // ---------- Pannello della rappresentante: scrivere un avviso o mettere un file nell'app ----------
   var CARTELLE_APP = [['comunicazioni', 'Comunicazioni'], ['moduli', 'Moduli'], ['verbali', 'Verbali'], ['archivio', 'Archivio'], ['ricevute', 'Ricevute']];
   var MB_CARICA = 20;
@@ -5651,7 +5672,9 @@
     var fTesto = el('textarea', { id: 'avTesto', rows: '4', maxlength: '2000' });
     var fScade = el('input', { id: 'avScade', type: 'date', min: oggiISO() });
     var fWa = el('input', { id: 'avWa', type: 'checkbox' });
-    fTitolo.value = b.titolo || ''; fTesto.value = b.testo || ''; fScade.value = b.scade || ''; fWa.checked = true;
+    var modifica = !!b.id;                                                   // v11.21: stesso modulo per modificare
+    fTitolo.value = b.titolo || ''; fTesto.value = b.testo || ''; fScade.value = b.scade || ''; fWa.checked = !modifica;
+    if (modifica) fScade.removeAttribute('min');
     var allegato = b.allegato || null;
     var rigaAllegato = el('div', { classe: 'ev-campo' });
     function disegnaAllegato() {
@@ -5664,13 +5687,13 @@
     }
     disegnaAllegato();
     var errore = el('p', { classe: 'ev-errore nascosto', role: 'alert' });
-    var salva = el('button', { type: 'submit', classe: 'salva', testo: 'Pubblica' });
+    var salva = el('button', { type: 'submit', classe: 'salva', testo: modifica ? 'Salva' : 'Pubblica' });
     var modulo = el('form', { novalidate: 'novalidate' }, [
       el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Titolo' }), fTitolo]),
       el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Testo' }), fTesto]),
       rigaAllegato,
       el('label', { classe: 'ev-campo' }, [el('span', null, ['Sparisce dalla Home dopo il ', el('em', { testo: '(facoltativo)' })]), fScade]),
-      el('label', { classe: 'ev-spunta' }, [fWa, el('span', null, ['Dopo la pubblicazione condividi su WhatsApp',
+      el('label', { classe: 'ev-spunta' }, [fWa, el('span', null, [modifica ? 'Dopo il salvataggio condividi su WhatsApp' : 'Dopo la pubblicazione condividi su WhatsApp',
         el('small', { testo: 'Il messaggio contiene titolo, testo e il link che apre l’app su questo avviso: scegli tu la chat.' })])]),
       errore,
       el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Annulla', onclick: chiudi }), salva])
@@ -5678,12 +5701,13 @@
     modulo.addEventListener('submit', function (ev) {
       ev.preventDefault();
       var t = fTitolo.value.replace(/\s+/g, ' ').trim(), scade = fScade.value;
-      var msg = !t ? 'Scrivi il titolo.' : scade && scade < oggiISO() ? 'La data è già passata: l’avviso non comparirebbe in Home.' : '';
+      var msg = !t ? 'Scrivi il titolo.' : scade && scade < oggiISO() && !(modifica && scade === b.scade) ? 'La data è già passata: l’avviso non comparirebbe in Home.' : '';
       if (msg) { errore.textContent = msg; errore.classList.remove('nascosto'); return; }
       errore.classList.add('nascosto');
-      occupato(salva, true, 'Pubblico…');
+      occupato(salva, true, modifica ? 'Salvo…' : 'Pubblico…');
       var richiesta = { titolo: t, testo: fTesto.value.trim(), scade: scade };
       if (allegato) { richiesta.allegato = allegato.id; richiesta.allegatoTitolo = allegato.titolo; }
+      if (modifica) { richiesta.id = b.id; return salvaModifica(richiesta); }   // v11.21
       chiama('avvisoNuovo', richiesta).then(function (r) {
         if (STATO.visti && r.id) STATO.visti.documenti[r.id] = 1;          // chi lo scrive non lo vede come NUOVO
         stessiDati(r);
@@ -5702,6 +5726,25 @@
         occupato(salva, false, 'Pubblica');
       });
     });
+    // v11.21 (n. 67): salvataggio della modifica (azione avvisoModifica, script 11.14)
+    function salvaModifica(richiesta) {
+      chiama('avvisoModifica', richiesta).then(function (r) {
+        stessiDati(r);
+        var a = (avvisiDi(r.documenti) || []).filter(function (x) { return x.id === b.id; })[0]
+          || { id: b.id, titolo: richiesta.titolo, testo: richiesta.testo, allegato: allegato };
+        if (!fWa.checked) { chiudi(); toast('Avviso modificato ✓'); return; }
+        foglio.innerHTML = '';
+        foglio.appendChild(el('h3', { testo: 'Avviso modificato ✓' }));
+        foglio.appendChild(el('p', { testo: 'Le famiglie vedono subito il testo nuovo.' }));
+        foglio.appendChild(el('a', { classe: 'fatto-wa', href: linkWhatsapp(testoCondivisione(a)), target: '_blank', rel: 'noopener', onclick: function () { setTimeout(chiudi, 300); } }, [iconaWa(18), 'Condividi su WhatsApp']));
+        foglio.appendChild(el('button', { type: 'button', classe: 'link-piccolo', testo: 'Chiudi', onclick: chiudi }));
+      }).catch(function (x) {
+        if (x.codice === 'SESSIONE') return;
+        errore.textContent = x.codice === 'AZIONE' ? 'Lo script non sa ancora modificare gli avvisi: incolla Codice.gs 11.14 nel file Codice e fai Nuova versione.' : x.message;
+        errore.classList.remove('nascosto');
+        occupato(salva, false, 'Salva');
+      });
+    }
     setTimeout(function () { (fTitolo.value ? fTesto : fTitolo).focus(); }, 30);
     return modulo;
   }
