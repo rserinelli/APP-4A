@@ -14,7 +14,11 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.22, 3 novembre 2026: FOGLIO DEGLI ALTRI INSEGNANTI COME QUELLO DI
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.23, 4 novembre 2026: MODIFICA DELL'ORARIO (n. 69) — solo per
+  Rossana, nella pagina Orario il pulsante «✏️ Modifica»: finestra con le linguette Orario (Lun–Ven, orari di ogni ora e della pausa,
+  materia a tendina colorata) e Materie (nome, nome corto, colori, icona pronta o caricata, aggiungere e togliere materie), un solo Salva.
+  L'orario salvato arriva dallo script 11.15 (campo orario dei documenti) e vince su quello dei contenuti. Il resto non cambia.
+  Versione 11.22, 3 novembre 2026: FOGLIO DEGLI ALTRI INSEGNANTI COME QUELLO DI
   MARIANNA (n. 68) — nel foglio "Richiesta di colloquio" di Sgro, Pingitore, Chekuri, Fiorelli e del Coordinatore didattico niente più
   banda in cima: come nella prenotazione con la maestra Marianna restano il titolo, il riquadro con insegnante e data, "Come?" con i
   due riquadri grandi ONLINE / IN PRESENZA e il pulsante blu "Apri la mail già scritta (online / in presenza)". Della mail si vedono
@@ -1944,6 +1948,61 @@
   @media (max-width: 340px) { .accesso h1.istituto { font-size: 40px; } }
   .filetti { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 10px 0 18px; font-size: 15px; font-weight: 800; color: var(--ink); }
   .filetti::before, .filetti::after { content: ''; height: 1px; width: 36px; background: #e4cf92; }
+  /* v11.23 (n. 69): Modifica dell'orario (solo Rossana) */
+  .om-apri { display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 14px; margin: 0 0 12px; border-radius: 12px; border: 0;
+    background: linear-gradient(180deg, #d6a93a, var(--accent)); color: #fff; font-weight: 800; font-size: 14px; }
+  .om-apri:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .pannello.om h3 { margin-bottom: 10px; }
+  .om-seg { margin-bottom: 12px; }
+  .om-giorni { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; padding: 4px; margin-bottom: 12px; background: var(--brand-soft); border-radius: 12px; }
+  .om-giorni button { border: 0; border-radius: 9px; background: transparent; color: var(--brand); font-weight: 800; font-size: 14px; padding: 7px 0; }
+  .om-giorni button[aria-pressed="true"] { background: var(--brand); color: #fff; }
+  .om-righe { display: grid; gap: 8px; }
+  .om-r { display: grid; grid-template-columns: 28px 112px minmax(0, 1fr); gap: 8px; align-items: center; }
+  .om-r > b { font-size: 14px; text-align: right; }
+  .om-orari { display: flex; align-items: center; gap: 3px; color: var(--muted); }
+  .om-orari i { font-style: normal; }
+  .om-orari input { width: 52px; min-width: 0; padding: 7px 2px; border: 1px solid var(--line); border-radius: 9px; text-align: center; font: inherit; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; background: var(--card); color: var(--ink); }
+  .om-r select { width: 100%; min-width: 0; padding: 8px; border-radius: 10px; border: 1px solid rgba(21,36,59,.2); background: var(--sf, #fff); color: var(--tx, var(--ink)); font: inherit; font-weight: 800; font-size: 14px; }
+  .om-pausa { font-size: 12.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .om-materie { display: grid; gap: 8px; }
+  .om-mat { display: flex; align-items: center; gap: 10px; width: 100%; padding: 6px 10px 6px 6px; border-radius: 12px; border: 1px solid rgba(21,36,59,.14); background: var(--sf); color: var(--tx); text-align: left; font: inherit; font-weight: 800; font-size: 15px; }
+  .om-mat .tx { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .om-mat .giu { flex: none; font-size: 13px; opacity: .8; }
+  .om-mat.aperta { border-radius: 12px 12px 0 0; }
+  .om-ic { flex: none; width: 36px; height: 36px; border-radius: 9px; background: #fff; display: grid; place-items: center; }
+  .om-ic img { width: 28px; height: 28px; object-fit: contain; }
+  .om-ore { flex: none; padding: 1px 8px; border-radius: 999px; background: rgba(255,255,255,.88); color: var(--ink); font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .om-dett { margin-top: -8px; padding: 12px; border: 1px solid var(--line); border-top: 0; border-radius: 0 0 12px 12px; background: var(--bg); display: grid; gap: 4px; }
+  .om-dett .ev-campo { margin-bottom: 6px; }
+  .om-dett .ev-campo > span:first-child { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  .om-due { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+  .om-corto { display: grid; grid-template-columns: minmax(0, 1fr) 50px; gap: 6px; align-items: center; }
+  .om-mini { display: grid; justify-items: center; gap: 1px; padding: 3px 1px 4px; border-radius: 8px; border: 1px solid rgba(21,36,59,.14); background: var(--sf); color: var(--tx); font-size: 10px; font-weight: 800; line-height: 1.1; overflow: hidden; }
+  .om-mini .om-ic { width: 22px; height: 22px; border-radius: 5px; }
+  .om-mini .om-ic img { width: 18px; height: 18px; }
+  .om-mini i { font-style: normal; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .om-colore { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+  .om-colore input { width: 36px; height: 30px; padding: 0; border: 0; background: none; cursor: pointer; }
+  .om-colore code { font-size: 12.5px; font-weight: 700; color: var(--muted); }
+  .om-icone { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 7px; }
+  .om-icw { position: relative; display: grid; }
+  .om-icw > button:first-child, .om-carica { aspect-ratio: 1; max-width: 100%; border: 1.5px solid var(--line); border-radius: 10px; background: var(--card); display: grid; place-items: center; padding: 0; }
+  .om-icw > button:first-child img { width: 70%; height: 70%; object-fit: contain; }
+  .om-icw > button.on { border-color: var(--ink); box-shadow: 0 0 0 1.5px var(--ink); }
+  .om-icw > button.tua { border-style: dashed; }
+  .om-meno { position: absolute; top: -6px; right: -6px; width: 22px; height: 22px; padding: 0; border-radius: 50%; border: 2px solid var(--card); background: var(--danger); color: #fff; font-size: 15px; font-weight: 900; line-height: 1; display: grid; place-items: center; }
+  .om-icw.conf > button:first-child { border-color: var(--danger); opacity: .5; }
+  .om-sino { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 3px; }
+  .om-sino button { border: 0; border-radius: 7px; padding: 0; font-size: 14px; font-weight: 900; color: #fff; }
+  .om-sino .si { background: var(--danger); } .om-sino .no { background: var(--muted); }
+  .om-carica { position: relative; border: 1.5px dashed var(--accent); background: var(--accent-soft); color: #8a6212; align-content: center; cursor: pointer; line-height: 1; }
+  .om-carica b { font-size: 20px; } .om-carica small { font-size: 12px; }
+  .om-carica input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .om-carica:focus-within { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .om-togli { justify-self: start; border: 1px solid #f2c9c4; background: var(--card); color: var(--danger); border-radius: 10px; padding: 6px 12px; font: inherit; font-size: 13px; font-weight: 800; }
+  .om-nuova { width: 100%; margin-top: 4px; padding: 11px; border-radius: 12px; border: 1.5px dashed var(--accent); background: var(--accent-soft); color: #8a6212; font: inherit; font-weight: 800; font-size: 15px; }
+  @media (max-width: 360px) { .om-r { grid-template-columns: 24px 100px minmax(0, 1fr); gap: 6px; } .om-orari input { width: 46px; } .om-icone { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 </style>
 </head>
 <body>
@@ -2424,6 +2483,7 @@
         || JSON.stringify(r[4]) !== JSON.stringify(r[5])
         || primaVisti !== (STATO.visti ? Object.keys(STATO.visti.documenti).length : -1);
       STATO.documenti = nuovi.documenti; STATO.miei = nuovi.miei; STATO.inArrivo = nuovi.inArrivo; STATO.casse = {};
+      if (r[2] && r[2].orario) STATO.orarioSalvato = null;                       // v11.23: da qui vale l'orario riletto
       aggiornaContatori();
       if (cambiato && !PAGINE_FISSE[STATO.pagina]) { if (occupatoLoSchermo()) STATO.ridisegna = true; else vaiA(STATO.pagina, true); }
       return 'ok';
@@ -6678,14 +6738,232 @@
     });
   }
 
+  // ---------- v11.23 (n. 69): MODIFICA DELL'ORARIO (solo Rossana). Finestra con due linguette, Orario e Materie, e un solo Salva.
+  // L'orario e le materie si salvano nello script (azione orarioSalva, script 11.15), non più in Contenuti.gs.
+  var ICONE_ORARIO = ['italiano', 'storia', 'geografia', 'matematica', 'scienze', 'tecnologia', 'inglese', 'musica', 'arte', 'motorie', 'religione', 'teatro'];
+  // l'orario da mostrare: quello salvato dall'app (arriva con i documenti) oppure quello dei contenuti
+  function orarioDa(b, dati) {
+    var o = dati && dati.orario;
+    if (!o || !o.righe || !o.materie) return b;
+    return { tipo: 'orario', materie: o.materie, righe: o.righe, icone: o.icone || {}, nota: b.nota, dallApp: true };
+  }
+  function apriModificaOrario(b) {
+    var giorniCorti = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven'];
+    var cont = 0, nuovoId = function () { return 'm' + (++cont); };
+    var materie = [], perNome = {};
+    Object.keys(b.materie || {}).forEach(function (n) {
+      var m = b.materie[n] || {};
+      var x = { id: nuovoId(), nome: n, breve: m.breve || n, img: m.img || '', tua: m.tua || '', sfondo: (m.sfondo || '#E1EFF9').toUpperCase(), testo: (m.testo || '#15243B').toUpperCase() };
+      if (!x.tua && ICONE_ORARIO.indexOf(x.img) < 0) x.img = 'italiano';
+      materie.push(x); perNome[n] = x.id;
+    });
+    var righe = (b.righe || []).map(function (r) {
+      return r.pausa ? { pausa: r.pausa, dalle: r.dalle, alle: r.alle }
+        : { ora: r.ora, dalle: r.dalle, alle: r.alle, materie: [0, 1, 2, 3, 4].map(function (g) { return perNome[(r.materie || [])[g]] || ''; }) };
+    });
+    var S = { vista: 'orario', giorno: Math.min(4, (new Date().getDay() + 6) % 7), aperta: null, cancella: null,
+      icone: JSON.parse(JSON.stringify(b.icone || {})), nuove: {}, togli: [] };
+    var velo = el('div', { classe: 'velo-doc' });
+    var foglio = el('div', { classe: 'pannello ev-foglio om', role: 'dialog', 'aria-label': 'Modifica l’orario' });
+    var chiudi = function () { velo.remove(); };
+    velo.appendChild(foglio);
+    velo.addEventListener('click', function (x) { if (x.target === velo) chiudi(); });
+    velo.addEventListener('keydown', function (x) { if (x.key === 'Escape') chiudi(); });
+    document.body.appendChild(velo);
+    var errore = el('p', { classe: 'ev-errore nascosto', role: 'alert' });
+
+    function trova(id) { return materie.filter(function (m) { return m.id === id; })[0] || null; }
+    function ore(id) { var n = 0; righe.forEach(function (r) { (r.materie || []).forEach(function (x) { if (x === id) n++; }); }); return n; }
+    function colori(n, m) { n.style.setProperty('--sf', m ? m.sfondo : '#FFFFFF'); n.style.setProperty('--tx', m ? m.testo : '#5A6B80'); return n; }
+    function srcIcona(m) { return m.tua ? (S.icone[m.tua] || S.nuove[m.tua] || '') : 'mat-' + m.img + '.png'; }
+    function icona(m, classe) {
+      var s = el('span', { classe: classe || 'om-ic', 'aria-hidden': 'true' });
+      var src = srcIcona(m);
+      if (src) s.appendChild(el('img', { src: src, alt: '' }));
+      return s;
+    }
+    function tueIcone() { var o = {}; Object.keys(S.icone).forEach(function (k) { o[k] = S.icone[k]; }); Object.keys(S.nuove).forEach(function (k) { o[k] = S.nuove[k]; }); return o; }
+    function mostraErrore(t) { errore.textContent = t || ''; errore.classList.toggle('nascosto', !t); }
+
+    function disegna() {
+      var su = foglio.scrollTop;
+      foglio.innerHTML = '';
+      foglio.appendChild(el('h3', { testo: 'Modifica l’orario' }));
+      foglio.appendChild(el('div', { classe: 'seg2 om-seg', role: 'group', 'aria-label': 'Cosa cambiare' }, [
+        el('button', { type: 'button', 'aria-pressed': String(S.vista === 'orario'), testo: '🕘 Orario', onclick: function () { S.vista = 'orario'; mostraErrore(''); disegna(); } }),
+        el('button', { type: 'button', 'aria-pressed': String(S.vista === 'materie'), testo: '🎨 Materie', onclick: function () { S.vista = 'materie'; mostraErrore(''); disegna(); } })
+      ]));
+      foglio.appendChild(S.vista === 'orario' ? linguettaOrario() : linguettaMaterie());
+      foglio.appendChild(errore);
+      var salva = el('button', { type: 'button', classe: 'salva', testo: 'Salva', onclick: function () { salvaTutto(salva); } });
+      foglio.appendChild(el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Annulla', onclick: chiudi }), salva]));
+      foglio.scrollTop = su;
+    }
+
+    function linguettaOrario() {
+      var box = el('div');
+      box.appendChild(el('div', { classe: 'om-giorni', role: 'group', 'aria-label': 'Giorno' }, giorniCorti.map(function (g, i) {
+        return el('button', { type: 'button', 'aria-pressed': String(S.giorno === i), testo: g, onclick: function () { S.giorno = i; disegna(); } });
+      })));
+      var lista = el('div', { classe: 'om-righe' });
+      righe.forEach(function (r, ri) {
+        var nome = r.pausa || r.ora;
+        var orario = function (campo) {
+          var i = el('input', { id: 'om' + campo + ri, type: 'text', inputmode: 'numeric', maxlength: '5', autocomplete: 'off', 'aria-label': nome + ', ' + campo, value: r[campo] });
+          i.addEventListener('input', function () { r[campo] = i.value.trim(); });
+          return i;
+        };
+        var ore_ = el('span', { classe: 'om-orari' }, [orario('dalle'), el('i', { testo: '–' }), orario('alle')]);
+        if (r.pausa) { lista.appendChild(el('div', { classe: 'om-r pausa' }, [el('b'), ore_, el('span', { classe: 'om-pausa', testo: r.pausa })])); return; }
+        var sel = el('select', { id: 'omm' + ri, 'aria-label': giorniCorti[S.giorno] + ', ' + r.ora + ' ora' });
+        sel.appendChild(el('option', { value: '', testo: '—' }));
+        materie.forEach(function (m) { var o = el('option', { value: m.id, testo: m.nome }); if (r.materie[S.giorno] === m.id) o.selected = true; sel.appendChild(o); });
+        colori(sel, trova(r.materie[S.giorno]));
+        sel.addEventListener('change', function () { r.materie[S.giorno] = sel.value; colori(sel, trova(sel.value)); });
+        lista.appendChild(el('div', { classe: 'om-r' }, [el('b', { testo: r.ora }), ore_, sel]));
+      });
+      box.appendChild(lista);
+      return box;
+    }
+
+    function linguettaMaterie() {
+      var box = el('div', { classe: 'om-materie' });
+      materie.forEach(function (m) {
+        var n = ore(m.id), aperta = S.aperta === m.id;
+        var riga = colori(el('button', { type: 'button', classe: 'om-mat' + (aperta ? ' aperta' : ''), 'aria-expanded': String(aperta), onclick: function () { S.aperta = aperta ? null : m.id; S.cancella = null; disegna(); } }, [
+          icona(m), el('span', { classe: 'tx', testo: m.nome }), el('span', { classe: 'om-ore', testo: '🕘 ' + n }), el('span', { classe: 'giu', testo: aperta ? '▴' : '▾' })]), m);
+        box.appendChild(riga);
+        if (!aperta) return;
+        var mini = colori(el('span', { classe: 'om-mini' }, [icona(m, 'om-ic'), el('i', { testo: m.breve || m.nome })]), m);
+        var campo = function (etichetta, input) { return el('label', { classe: 'ev-campo' }, [el('span', { testo: etichetta }), input]); };
+        var fNome = el('input', { id: 'omn' + m.id, type: 'text', maxlength: '24', autocomplete: 'off', value: m.nome });
+        fNome.addEventListener('input', function () { m.nome = fNome.value; riga.querySelector('.tx').textContent = fNome.value; });
+        var fBreve = el('input', { id: 'omb' + m.id, type: 'text', maxlength: '10', autocomplete: 'off', value: m.breve });
+        fBreve.addEventListener('input', function () { m.breve = fBreve.value; mini.querySelector('i').textContent = fBreve.value || m.nome; });
+        var colore = function (campo_) {
+          var c = el('input', { id: 'omc' + campo_ + m.id, type: 'color', value: m[campo_] });
+          var codice = el('code', { testo: m[campo_] });
+          c.addEventListener('input', function () { m[campo_] = c.value.toUpperCase(); codice.textContent = m[campo_]; colori(riga, m); colori(mini, m); });
+          return el('span', { classe: 'om-colore' }, [c, codice]);
+        };
+        var griglia = el('div', { classe: 'om-icone' });
+        var tutte = ICONE_ORARIO.map(function (id) { return { id: id, src: 'mat-' + id + '.png', pronta: true }; });
+        var tue = tueIcone();
+        Object.keys(tue).forEach(function (id) { tutte.push({ id: id, src: tue[id] }); });
+        tutte.forEach(function (ic) {
+          var scelta = ic.pronta ? (!m.tua && m.img === ic.id) : m.tua === ic.id;
+          var usata = !ic.pronta && materie.some(function (x) { return x.tua === ic.id; });
+          var cella = el('span', { classe: 'om-icw' + (S.cancella === ic.id ? ' conf' : '') });
+          cella.appendChild(el('button', { type: 'button', classe: (scelta ? 'on' : '') + (ic.pronta ? '' : ' tua'), 'aria-label': 'Icona', 'aria-pressed': String(scelta), onclick: function () {
+            if (ic.pronta) { m.img = ic.id; m.tua = ''; } else m.tua = ic.id;
+            disegna();
+          } }, [el('img', { src: ic.src, alt: '' })]));
+          if (!ic.pronta && !usata && S.cancella !== ic.id) cella.appendChild(el('button', { type: 'button', classe: 'om-meno', 'aria-label': 'Cancella l’icona', testo: '−', onclick: function () { S.cancella = ic.id; disegna(); } }));
+          if (S.cancella === ic.id) cella.appendChild(el('span', { classe: 'om-sino' }, [
+            el('button', { type: 'button', classe: 'si', 'aria-label': 'Sì, cancella', testo: '✓', onclick: function () {
+              if (S.nuove[ic.id]) delete S.nuove[ic.id]; else { delete S.icone[ic.id]; S.togli.push(ic.id); }
+              S.cancella = null; disegna();
+            } }),
+            el('button', { type: 'button', classe: 'no', 'aria-label': 'Annulla', testo: '✕', onclick: function () { S.cancella = null; disegna(); } })]));
+          griglia.appendChild(cella);
+        });
+        var file = el('input', { id: 'omf' + m.id, type: 'file', accept: 'image/png,image/jpeg,image/webp' });
+        file.addEventListener('change', function () { if (file.files && file.files[0]) caricaIcona(file.files[0], m); });
+        griglia.appendChild(el('label', { classe: 'om-carica', 'aria-label': 'Carica un’icona' }, [file, el('b', { testo: '+' }), el('small', { testo: '📷' })]));
+        var dett = el('div', { classe: 'om-dett' }, [
+          el('div', { classe: 'om-due' }, [campo('Nome', fNome), el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Nome corto' }), el('span', { classe: 'om-corto' }, [fBreve, mini])])]),
+          el('div', { classe: 'om-due' }, [el('div', { classe: 'ev-campo' }, [el('span', { testo: 'Fondo' }), colore('sfondo')]), el('div', { classe: 'ev-campo' }, [el('span', { testo: 'Testo' }), colore('testo')])]),
+          el('div', { classe: 'ev-campo' }, [el('span', { testo: 'Icona' }), griglia])
+        ]);
+        if (!n) dett.appendChild(el('button', { type: 'button', classe: 'om-togli', testo: '🗑 Togli la materia', onclick: function () {
+          materie = materie.filter(function (x) { return x.id !== m.id; }); S.aperta = null; disegna();
+        } }));
+        box.appendChild(dett);
+      });
+      box.appendChild(el('button', { type: 'button', classe: 'om-nuova', testo: '+ Aggiungi una materia', onclick: function () {
+        var base = 'Nuova materia', nome = base, k = 2;
+        while (materie.some(function (x) { return x.nome.toLowerCase() === nome.toLowerCase(); })) nome = base + ' ' + (k++);
+        var x = { id: nuovoId(), nome: nome, breve: 'Nuova', img: 'italiano', tua: '', sfondo: '#E1EFF9', testo: '#1F5F99' };
+        materie.push(x); S.aperta = x.id; disegna();
+      } }));
+      return box;
+    }
+
+    // l'immagine scelta diventa un'icona quadrata di 96 px (PNG), che si salva con l'orario
+    function caricaIcona(f, m) {
+      if (!/^image\//.test(f.type)) { mostraErrore('Questo file non è un’immagine.'); return; }
+      var fr = new FileReader();
+      fr.onload = function () {
+        var img = new Image();
+        img.onload = function () {
+          var lato = 96, c = document.createElement('canvas'); c.width = c.height = lato;
+          var k = Math.min(lato / img.width, lato / img.height), w = img.width * k, h = img.height * k;
+          c.getContext('2d').drawImage(img, (lato - w) / 2, (lato - h) / 2, w, h);
+          var id = 'tua_' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36);
+          S.nuove[id] = c.toDataURL('image/png'); m.tua = id; mostraErrore(''); disegna();
+        };
+        img.onerror = function () { mostraErrore('Non riesco ad aprire questa immagine.'); };
+        img.src = fr.result;
+      };
+      fr.readAsDataURL(f);
+    }
+
+    function salvaTutto(bottone) {
+      var visti = {}, sbagliata = null;
+      for (var i = 0; i < materie.length; i++) {
+        var nm = materie[i].nome.replace(/\s+/g, ' ').trim();
+        if (!nm || visti[nm.toLowerCase()]) { S.vista = 'materie'; S.aperta = materie[i].id; disegna(); mostraErrore(nm ? 'Due materie con lo stesso nome.' : 'Una materia senza nome.'); return; }
+        visti[nm.toLowerCase()] = 1; materie[i].nome = nm;
+      }
+      righe.forEach(function (r) { if (!sbagliata && (!/^\d{1,2}[:.]\d{2}$/.test(r.dalle) || !/^\d{1,2}[:.]\d{2}$/.test(r.alle))) sbagliata = r; });
+      if (sbagliata) { S.vista = 'orario'; disegna(); mostraErrore('Orari da scrivere come 8:30: ' + (sbagliata.pausa || sbagliata.ora + ' ora') + '.'); return; }
+      var richiesta = {
+        materie: materie.map(function (m) { var x = { nome: m.nome, breve: (m.breve || '').trim(), sfondo: m.sfondo, testo: m.testo }; if (m.tua) x.tua = m.tua; else x.img = m.img; return x; }),
+        righe: righe.map(function (r) {
+          return r.pausa ? { pausa: r.pausa, dalle: r.dalle, alle: r.alle }
+            : { ora: r.ora, dalle: r.dalle, alle: r.alle, materie: r.materie.map(function (id) { var m = trova(id); return m ? m.nome : ''; }) };
+        }),
+        icone: Object.keys(S.nuove).map(function (id) { return { id: id, src: S.nuove[id] }; }),
+        togli: S.togli
+      };
+      mostraErrore('');
+      occupato(bottone, true, 'Salvo…');
+      chiama('orarioSalva', richiesta).then(function (r) {
+        STATO.orarioSalvato = r.orario || null;                     // si vede subito, senza aspettare la rilettura
+        chiudi(); toast('✓ Orario salvato');
+        vaiA(STATO.pagina, true);
+        ricarica();
+      }).catch(function (x) {
+        if (x.codice === 'SESSIONE') return;
+        mostraErrore(x.codice === 'AZIONE' ? 'Manca lo script 11.15: incolla Codice.gs nel file Codice e fai Nuova versione.' : x.message);
+        occupato(bottone, false, 'Salva');
+      });
+    }
+    disegna();
+  }
+
   var RENDER = {
     // v10.14: libri
     libri: function (b) { return bloccoLibri(b); },
     libroHome: function () { return el('div', { classe: 'nascosto' }); },   // v10.17: niente libri in Home, basta l'icona Libri
     // Orario delle lezioni: giorno per giorno, vista settimana e ore per materia
+    // v11.23 (n. 69): l'orario salvato dall'app vince su quello dei contenuti; per Rossana il pulsante «✏️ Modifica»
     orario: function (b) {
+      var box = el('div'), dentro = el('div'), mostrato = STATO.orarioSalvato ? orarioDa(b, { orario: STATO.orarioSalvato }) : b;
+      if (adminVero()) box.appendChild(el('button', { type: 'button', classe: 'om-apri', testo: '✏️ Modifica', onclick: function () { apriModificaOrario(mostrato); } }));
+      dentro.appendChild(RENDER.orarioVista(mostrato));
+      box.appendChild(dentro);
+      STATO.documenti.then(function (dati) {
+        if (STATO.orarioSalvato || !dati || !dati.orario) return;
+        var nb = orarioDa(b, dati), firma = function (x) { return JSON.stringify([x.righe, x.materie, Object.keys(x.icone || {})]); };
+        if (firma(nb) === firma(mostrato)) return;
+        mostrato = nb; dentro.innerHTML = ''; dentro.appendChild(RENDER.orarioVista(nb));
+      });
+      return box;
+    },
+    orarioVista: function (b) {
       var GIORNI = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'];
-      var righe = b.righe || [], materie = b.materie || {};
+      var righe = b.righe || [], materie = b.materie || {}, icone = b.icone || {};
       var info = function (nome) { return materie[nome] || { icona: '📘', colore: '#1f4e79' }; };
       var minuti = function (t) { var p = String(t).split(':'); return +p[0] * 60 + +(p[1] || 0); };
       var adesso = new Date(), oggi = (adesso.getDay() + 6) % 7;
@@ -6715,8 +6993,8 @@
       var colFile = Object.keys(materie).some(function (k) { return materie[k] && materie[k].sfondo; });
       function iconaMateria(m) {
         var s = el('span', { classe: 'ic', 'aria-hidden': 'true' });
-        if (m.img) {
-          var i = el('img', { src: 'mat-' + m.img + '.png', alt: '', decoding: 'async' });
+        if (m.img || (m.tua && icone[m.tua])) {
+          var i = el('img', { src: m.tua && icone[m.tua] ? icone[m.tua] : 'mat-' + m.img + '.png', alt: '', decoding: 'async' });   // v11.23: anche le icone caricate
           i.addEventListener('error', function () { s.innerHTML = ''; s.textContent = m.icona || '📘'; });
           s.appendChild(i);
         } else s.textContent = m.icona || '📘';
@@ -6764,6 +7042,7 @@
         righe.forEach(function (r) {
           if (r.pausa) { tb.appendChild(el('tr', null, [el('td'), el('td', { classe: 'pausa', colspan: '5', testo: r.pausa + ' ' + r.dalle + '–' + r.alle })])); return; }
           tb.appendChild(el('tr', null, [el('td', { classe: 'h' }, [el('b', { testo: r.dalle }), el('span', { testo: r.alle })])].concat(r.materie.map(function (nome, i) {
+            if (!nome) return el('td');                                                   // v11.23: ora senza materia
             var m = info(nome);
             if (m.sfondo) return el('td', { classe: (i === oggi ? 'oggi-col' : '') + (i === oggi && inCorso(r, i) ? ' oggi' : '') + (vac[isoDi(dataDi(i))] ? ' vacanza' : '') }, [coloriFile(el('div', { classe: 'or-cella file', title: nome }, [
               iconaMateria(m), el('span', { classe: 'lungo', testo: nome }), el('span', { classe: 'corto', testo: m.breve || nome })
