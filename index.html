@@ -14,7 +14,13 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.21, 2 novembre 2026: MODIFICA DEGLI AVVISI (n. 67) — solo per
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.22, 3 novembre 2026: FOGLIO DEGLI ALTRI INSEGNANTI COME QUELLO DI
+  MARIANNA (n. 68) — nel foglio "Richiesta di colloquio" di Sgro, Pingitore, Chekuri, Fiorelli e del Coordinatore didattico niente più
+  banda in cima: come nella prenotazione con la maestra Marianna restano il titolo, il riquadro con insegnante e data, "Come?" con i
+  due riquadri grandi ONLINE / IN PRESENZA e il pulsante blu "Apri la mail già scritta (online / in presenza)". Della mail si vedono
+  destinatario, oggetto e la prima riga: il testo intero si apre con "Mostra tutta la mail ▾" (e si richiude). Sotto la mail resta la
+  riga con il link della videochiamata o "Il colloquio è a scuola". Testi della mail invariati. Script e contenuti invariati.
+  Versione 11.21, 2 novembre 2026: MODIFICA DEGLI AVVISI (n. 67) — solo per
   Rossana, sotto ogni avviso in Home "Modifica" (accanto a Condividi e Togli) e "Modifica" nel foglio dell'avviso aperto da Ultime
   notizie (anche se è tolto o scaduto): si cambiano titolo, testo, "Sparisce dalla Home dopo il" e si può togliere l'allegato; dopo il
   salvataggio, se si vuole, Condividi su WhatsApp. L'avviso resta lo stesso: chi l'ha già visto non lo rivede come NUOVO. Serve lo
@@ -1008,6 +1014,11 @@
   .ric-anteprima.m-online p.ric-modo-riga { border: 1px solid #c9b3f5; color: #3b1478; }
   .ric-anteprima.m-scuola p.ric-modo-riga { border: 1px solid #9fd3c9; color: #0f5e57; }
   .pannello .btn.ric-vai.modo-si { margin: 0; }
+  /* v11.22 (n. 68): mail chiusa, si apre con "Mostra tutta la mail" */
+  .pannello .ric-anteprima p.ric-chiusa { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
+  .ric-mostra { display: block; margin: 4px 0 0; padding: 4px 0; border: 0; background: none; color: var(--brand); font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; text-align: left; }
+  .ric-anteprima.m-online .ric-mostra { color: #5b21b6; }
+  .ric-anteprima.m-scuola .ric-mostra { color: #0f5e57; }
   .av-banda { display: flex; align-items: center; gap: 8px; margin: 0 -12px 4px; padding: 7px 12px; color: #fff; font-size: 13px; font-weight: 800; letter-spacing: .04em; }
   .av-banda.online { background: #5b21b6; }
   .av-banda.scuola { background: #0f5e57; }
@@ -4166,13 +4177,11 @@
   function foglioColloquio(b, d, iso, f) {
     var online = true,
     link = stanzaVideo(b.online, (STATO.sessione.alunni || []).filter(function (n) { return !senzaAlunno(n); })[0], iso);
-    var banda = el('div'), riass = el('div', { classe: 'ric-riass' }), anteprima = el('div', { classe: 'ric-anteprima' });
-    var testoVai = el('span', { classe: 'modo-tx' });
-    var vai = el('a', { classe: 'btn ric-vai modo-si', href: '#', onclick: function () { setTimeout(x.chiudi, 400); } }, [el('span', { classe: 'modo-ic', 'aria-hidden': 'true', testo: '✉️' }), testoVai]);
+    var riass = el('div', { classe: 'ric-riass' }), anteprima = el('div', { classe: 'ric-anteprima' }), aperta = false;   // v11.22: niente banda, mail chiusa
+    var vai = el('a', { classe: 'btn btn-primario ric-vai', href: '#', onclick: function () { setTimeout(x.chiudi, 400); } });
     var bO = el('button', { type: 'button', classe: 'modo-op online', onclick: function () { online = true; aggiorna(); } }, [iconaModo('online', 28), el('b', { testo: 'ONLINE' }), el('small', { testo: 'Videochiamata da casa' })]);
     var bA = el('button', { type: 'button', classe: 'modo-op scuola', onclick: function () { online = false; aggiorna(); } }, [iconaModo('scuola', 28), el('b', { testo: 'IN PRESENZA' }), el('small', { testo: 'A scuola, di persona' })]);
     var x = foglioFile([
-      banda,
       el('h3', { testo: 'Richiesta di colloquio' }),
       riass,
       el('span', { classe: 'ric-lbl', testo: 'Come?' }), el('div', { classe: 'ric-modo modo-scelta' }, [bO, bA]),
@@ -4187,7 +4196,6 @@
     aggiorna();
     function aggiorna() {
       var m = online ? 'online' : 'scuola', t = testiColloquio(b, d, iso, online, link, f);
-      banda.replaceWith(banda = bandaModo(m));
       bO.className = 'modo-op online' + (online ? ' on' : ''); bA.className = 'modo-op scuola' + (online ? '' : ' on');
       bO.setAttribute('aria-pressed', online ? 'true' : 'false'); bA.setAttribute('aria-pressed', online ? 'false' : 'true');
       riass.innerHTML = '';
@@ -4198,12 +4206,14 @@
       anteprima.appendChild(el('p', {}, [el('b', { testo: 'A: ' }), d.email]));
       anteprima.appendChild(el('p', {}, [el('b', { testo: 'Oggetto: ' }), t.oggetto]));
       var pezzi = t.corpo.split(t.firma);
-      anteprima.appendChild(el('p', { classe: 'ric-corpo' }, [pezzi[0], el('b', { testo: t.firma }), pezzi.slice(1).join(t.firma)]));
+      if (aperta) anteprima.appendChild(el('p', { classe: 'ric-corpo' }, [pezzi[0], el('b', { testo: t.firma }), pezzi.slice(1).join(t.firma)]));
+      else { var inizio = t.corpo.replace(/\s+/g, ' ').trim(); anteprima.appendChild(el('p', { classe: 'ric-corpo ric-chiusa', testo: inizio.length > 90 ? inizio.slice(0, 90).replace(/\s+\S*$/, '') + '…' : inizio })); }   // v11.22: solo l'inizio
+      anteprima.appendChild(el('button', { type: 'button', classe: 'ric-mostra', 'aria-expanded': aperta ? 'true' : 'false', testo: aperta ? 'Nascondi la mail ▴' : 'Mostra tutta la mail ▾',
+        onclick: function () { aperta = !aperta; aggiorna(); } }));
       anteprima.appendChild(online
         ? el('p', { classe: 'ric-link ric-modo-riga' }, [iconaModo('online', 16), el('span', {}, ['Link della videochiamata: ', el('a', { href: link, target: '_blank', rel: 'noopener', testo: 'prova ad aprirlo' })])])
         : el('p', { classe: 'ric-link ric-modo-riga' }, [iconaModo('scuola', 16), el('span', { testo: 'Il colloquio è a scuola, all’orario indicato.' })]));
-      testoVai.textContent = 'Apri la mail già scritta (' + (online ? 'online' : 'in presenza') + ')';
-      vai.className = 'btn ric-vai modo-si ' + m;
+      vai.textContent = '✉️ Apri la mail già scritta (' + (online ? 'online' : 'in presenza') + ')';
       vai.href = 'mailto:' + d.email + '?subject=' + encodeURIComponent(t.oggetto) + '&body=' + encodeURIComponent(t.corpo);
     }
   }
