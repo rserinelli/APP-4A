@@ -14,7 +14,14 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.23, 4 novembre 2026: MODIFICA DELL'ORARIO (n. 69) — solo per
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.24, 4 novembre 2026: I TRE PROFILI DELLA SCUOLA E PROVE PIÙ FACILI
+  (n. 71) — il PRESIDE (scelto da Rossana in Gestione accessi con la pillola 🏫 / 👩‍🏫) vede in sola lettura, con «👁 Solo guardare»: della
+  maestra principale una sintesi senza nomi (colloqui confermati, a scuola, online, in attesa) e l'agenda con i soli colori; degli altri
+  insegnanti orari, fasce e la mail già scritta, con «Apri la mail» e «Copia il testo» grigi. Il maestro comune resta com'era (dei colloqui
+  della maestra non vede niente). Visualizza come: Genitore · Maestra principale · Preside · Maestro comune · Maestra di prova · Errore.
+  In Il mio profilo, solo per Rossana, la versione della pagina e dello script (rosso se manca la Nuova versione). Ricevimento della
+  maestra senza l'elenco «Confermati»: il foglio del colloquio, con il link, si apre dalla fascia dell'agenda. Serve lo script 11.16.
+  Versione 11.23, 4 novembre 2026: MODIFICA DELL'ORARIO (n. 69) — solo per
   Rossana, nella pagina Orario il pulsante «✏️ Modifica»: finestra con le linguette Orario (Lun–Ven, orari di ogni ora e della pausa,
   materia a tendina colorata) e Materie (nome, nome corto, colori, icona pronta o caricata, aggiungere e togliere materie), un solo Salva.
   L'orario salvato arriva dallo script 11.15 (campo orario dei documenti) e vince su quello dei contenuti. Il resto non cambia.
@@ -2002,6 +2009,27 @@
   .om-carica:focus-within { outline: 2px solid var(--brand); outline-offset: 2px; }
   .om-togli { justify-self: start; border: 1px solid #f2c9c4; background: var(--card); color: var(--danger); border-radius: 10px; padding: 6px 12px; font: inherit; font-size: 13px; font-weight: 800; }
   .om-nuova { width: 100%; margin-top: 4px; padding: 11px; border-radius: 12px; border: 1.5px dashed var(--accent); background: var(--accent-soft); color: #8a6212; font: inherit; font-weight: 800; font-size: 15px; }
+  /* v11.24 (n. 71): i tre profili della scuola, versioni nel profilo */
+  .pres-solo { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; margin: 0 0 12px; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 800; font-size: 13px; }
+  .pres-sint { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 4px 0 10px; }
+  .pres-sint > div { display: grid; justify-items: center; gap: 2px; padding: 8px 2px; border-radius: 12px; background: var(--brand-soft); color: var(--brand); min-width: 0; }
+  .pres-sint b { font-size: 22px; font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums; }
+  .pres-sint small { font-size: 11px; font-weight: 800; white-space: nowrap; }
+  .pres-sint .scu { background: #e0f2ee; color: #0f6b5c; } .pres-sint .onl { background: #efe8fa; color: #6a3fb0; } .pres-sint .att { background: #fff3e0; color: #b25b00; }
+  .pres-fa { cursor: default; }
+  .pannello a.vista-off { pointer-events: none; }
+  .ga-ruoli { display: flex; gap: 6px; padding: 0 12px 10px; }
+  .ga-ruoli button, .ga-ruoli span { padding: 5px 12px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--card); color: var(--muted); font: inherit; font-size: 15px; font-weight: 800; line-height: 1.2; }
+  .ga-ruoli button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: #fff; }
+  .ga-ruoli span.fisso { border-color: var(--oro); background: var(--accent-soft); color: var(--accent); }
+  .ver-righe { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+  .ver-chip { display: grid; justify-items: center; gap: 2px; padding: 10px 6px; border-radius: 12px; font-weight: 900; }
+  .ver-chip i { font-style: normal; font-size: 18px; }
+  .ver-chip small { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+  .ver-chip b { font-size: 19px; font-variant-numeric: tabular-nums; }
+  .ver-chip.ok { background: #e3f3e8; color: var(--ok); }
+  .ver-chip.no { background: #fbe7e5; color: var(--danger); box-shadow: inset 0 0 0 2px var(--danger); }
+  .ver-rifai { margin-top: 8px; padding: 9px 10px; border-radius: 10px; background: #fbe7e5; color: var(--danger); font-weight: 800; font-size: 14px; }
   @media (max-width: 360px) { .om-r { grid-template-columns: 24px 100px minmax(0, 1fr); gap: 6px; } .om-orari input { width: 46px; } .om-icone { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 </style>
 </head>
@@ -2428,11 +2456,19 @@
     mostraLogin();
   }
 
+  var VERSIONE_PAGINA = '11.24', SCRIPT_NECESSARIO = '11.16';                          // v11.24: in Il mio profilo, solo per Rossana
+  function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
+    var x = String(a || '').split('.'), y = String(b || '').split('.');
+    for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
+    return true;
+  }
+  function soloGuardare() { return !!(STATO.sessione && STATO.sessione.preside); }      // v11.24 (n. 71): il preside
   function avvia(r) {
     STATO.dati = r.contenuti;
+    STATO.versioneScript = r.versione || '';                                            // v11.24: dallo script 11.16
     STATO.sessione = { email: r.utente.email, amministratore: !!r.utente.admin, alunni: r.utente.alunni || [],
       chiave: r.utente.chiave || r.utente.email, mail: r.utente.mail === undefined ? r.utente.email : r.utente.mail, telefono: r.utente.telefono || '',
-      primoIngresso: !!r.utente.primoIngresso, nome: r.utente.nome || '', nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '' };   // v11.5: firma della mail del colloquio   // v10.28: nome = primo nome del genitore (saluto del profilo docente); v10.15: password appena ricevuta dalla rappresentante → si apre il profilo
+      primoIngresso: !!r.utente.primoIngresso, nome: r.utente.nome || '', nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '', preside: !!r.utente.preside };   // v11.5: firma della mail del colloquio   // v10.28: nome = primo nome del genitore (saluto del profilo docente); v10.15: password appena ricevuta dalla rappresentante → si apre il profilo
     STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null;
     var d = caricaDati(false);
     STATO.documenti = d.documenti; STATO.miei = d.miei; STATO.inArrivo = d.inArrivo;
@@ -2692,7 +2728,8 @@
   // ---------- v10.24: Visualizza come (solo Rossana) ----------
   // Si sceglie Genitore (di quale alunno), Docente o Errore. Lo script risponde come se fosse entrata quella persona, in sola lettura.
   // Il pulsante blu fa da interruttore: amministratrice ⇄ vista. Riaprendo l'app si riparte sempre amministratrice.
-  var VISTE = { genitore: { e: '👪', n: 'Genitore' }, docente: { e: '👩‍🏫', n: 'Docente' }, maestra: { e: '🍎', n: 'Maestra' }, errore: { e: '⚠️', n: 'Errore' } };   // v11.10: Maestra
+  var VISTE = { genitore: { e: '👪', n: 'Genitore' }, docente: { e: '👩‍🏫', n: 'Maestro comune' }, maestra: { e: '🍎', n: 'Maestra' }, errore: { e: '⚠️', n: 'Errore' },   // v11.10: Maestra
+    preside: { e: '🏫', n: 'Preside' }, prova: { e: '🧪', n: 'Maestra di prova' } };   // v11.24 (n. 71)
   function fotografia() {
     return { sessione: STATO.sessione, dati: STATO.dati, visti: STATO.visti, calPrima: STATO.calPrima, divPrima: STATO.divPrima,
       documenti: STATO.documenti, miei: STATO.miei, inArrivo: STATO.inArrivo, casse: STATO.casse, pagina: STATO.pagina, caricato: STATO.caricato, novita: STATO.novita };
@@ -2720,7 +2757,7 @@
       var dove = STATO.pagina === 'profilo' ? 'home' : STATO.pagina;
       STATO.dati = r.contenuti;
       STATO.sessione = { email: r.utente.email, amministratore: false, alunni: r.utente.alunni || [], chiave: r.utente.chiave, mail: '', telefono: '',
-        primoIngresso: false, vista: r.utente.vista || scelta.tipo, nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '', nome: r.utente.nome || '' };   // v11.10: nome del saluto
+        primoIngresso: false, vista: r.utente.vista || scelta.tipo, nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '', nome: r.utente.nome || '', preside: !!r.utente.preside };   // v11.24: preside   // v11.10: nome del saluto
       if (r.utente.manca) toast('Email della maestra non trovata nel foglio accessi: controlla “accessi” in Contenuti.gs');
       STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null; STATO.casse = {};
       var d = caricaDati(false);
@@ -2730,7 +2767,7 @@
     }).catch(function (e) {
       VISTA.attiva = false; if (VISTA.admin) ripristina(VISTA.admin); VISTA.scelta = null;
       ridisegnaTutto(STATO.pagina);
-      if (e.codice !== 'SESSIONE') toast(e.codice === 'AZIONE' || e.codice === 'NEGATO' ? (scelta.tipo === 'maestra' ? 'Per la vista “Maestra” serve lo script 11.8' : 'Per “Visualizza come” serve lo script 10.16') : e.message);
+      if (e.codice !== 'SESSIONE') toast(e.codice === 'AZIONE' || e.codice === 'NEGATO' ? (scelta.tipo === 'preside' || scelta.tipo === 'prova' ? 'Per questa vista serve lo script 11.16' : scelta.tipo === 'maestra' ? 'Per la vista “Maestra” serve lo script 11.8' : 'Per “Visualizza come” serve lo script 10.16') : e.message);
     });
   }
   function tornaAdmin() {
@@ -2772,19 +2809,19 @@
     f.appendChild(el('p', { testo: 'L’app si mostra come la vede una famiglia o una docente. Puoi solo guardare: nulla viene segnato come visto né contato nelle statistiche.' }));
     var sel = el('select', { id: 'vistaAlunno', 'aria-label': 'Alunno' }, [el('option', { value: '', testo: 'Carico gli alunni…' })]);
     var nomeErr = el('span', { classe: 'nome-err', testo: '…' }), notaErr = el('small', { testo: '' });
-    var opz = [
-      ['genitore', 'Genitore', 'App normale: avvisi, fondo cassa, Coordinate con la causale, bollini della famiglia.',
-        el('div', { classe: 'sotto' }, [el('label', { 'for': 'vistaAlunno', testo: 'Come il genitore di' }), sel])],
-      ['docente', 'Docente', 'Profilo “Nessun bambino/a” generico (non la maestra Marianna): riquadro PROFILO DOCENTE, Contabilità senza fondo cassa personale.', null],
-      ['maestra', 'Maestra Marianna', 'Come la vede lei: richieste da confermare, i suoi colloqui, bollino su Ricevimento.', null],   // v11.10
-      ['errore', 'Errore', 'Nome del foglio accessi che non c’è nel master: riquadro rosso e “Segnalalo su WhatsApp”.',
-        el('div', { classe: 'sotto' }, [el('label', { testo: 'Nome usato' }), nomeErr, ' ', notaErr])]
+    var opz = [                                                                      // v11.24 (n. 71): i tre profili della scuola, senza frasi
+      ['genitore', 'Genitore', '', el('div', { classe: 'sotto' }, [el('label', { 'for': 'vistaAlunno', testo: 'Come il genitore di' }), sel])],
+      ['maestra', 'Maestra principale', '', null],
+      ['preside', 'Preside', '', null],
+      ['docente', 'Maestro comune', '', null],
+      ['prova', 'Maestra di prova', '', null],
+      ['errore', 'Errore', '', el('div', { classe: 'sotto' }, [el('label', { testo: 'Nome usato' }), nomeErr, ' ', notaErr])]
     ];
     var bottoni = [];
     var lista = el('div', { classe: 'vista-opz' });
     opz.forEach(function (o) {
       var b = el('div', { classe: 'vista-v', role: 'button', tabindex: '0', 'aria-pressed': scelta.tipo === o[0] ? 'true' : 'false' },
-        [el('span', { classe: 'e', testo: VISTE[o[0]].e }), el('b', { testo: o[1] }), el('small', { testo: o[2] }), o[3]]);
+        [el('span', { classe: 'e', testo: VISTE[o[0]].e }), el('b', { testo: o[1] }), o[2] ? el('small', { testo: o[2] }) : null, o[3]]);
       function sc(ev) { if (ev && ev.target && /SELECT|OPTION/.test(ev.target.tagName)) return; scelta.tipo = o[0]; bottoni.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }); }
       b.addEventListener('click', sc);
       b.addEventListener('keydown', function (k) { if ((k.key === 'Enter' || k.key === ' ') && k.target === b) { k.preventDefault(); sc(); } });
@@ -4220,7 +4257,7 @@
   function testiColloquio(b, d, iso, online, link, f) {         // v11.6: f = fascia scelta { da, a }
     var t = Object.assign({}, MAIL_COLLOQUIO, b.mail || {});
     var alunni = (STATO.sessione.alunni || []).filter(function (n) { return !senzaAlunno(n); });
-    var alunno = elencoNomi(alunni), data = iso ? dataLunga(iso) : '';
+    var alunno = alunni.length ? elencoNomi(alunni) : soloGuardare() ? 'Nome Cognome' : elencoNomi(alunni), data = iso ? dataLunga(iso) : '';   // v11.24: il preside
     var v = { alunno: alunno, docente: d.nome, data: data, dalle: f ? f.da : d.dalle || '', alle: f ? f.a : d.alle || '', link: link,
       genitore: STATO.sessione.nomeIntero || '', ruolo: STATO.sessione.ruolo || 'genitore' };
     var firma = riempi(t.firma, v);
@@ -4250,7 +4287,8 @@
       el('p', { classe: 'ric-sotto', testo: 'Si apre la tua app di posta: puoi cambiare il testo prima di premere Invia. La risposta dell’insegnante arriva alla tua email.' }),
       el('div', { classe: 'ev-azioni' }, [
         el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } }),
-        el('button', { type: 'button', testo: 'Copia il testo', onclick: function () { var t = testiColloquio(b, d, iso, online, link, f); copia(d.email + '\n' + t.oggetto + '\n\n' + t.corpo, 'Testo copiato'); } })
+        soloGuardare() ? el('button', { type: 'button', classe: 'vista-off', disabled: 'disabled', 'aria-disabled': 'true', testo: 'Copia il testo' })   // v11.24: il preside non la manda
+          : el('button', { type: 'button', testo: 'Copia il testo', onclick: function () { var t = testiColloquio(b, d, iso, online, link, f); copia(d.email + '\n' + t.oggetto + '\n\n' + t.corpo, 'Testo copiato'); } })
       ])
     ]);
     aggiorna();
@@ -4275,6 +4313,7 @@
         : el('p', { classe: 'ric-link ric-modo-riga' }, [iconaModo('scuola', 16), el('span', { testo: 'Il colloquio è a scuola, all’orario indicato.' })]));
       vai.textContent = '✉️ Apri la mail già scritta (' + (online ? 'online' : 'in presenza') + ')';
       vai.href = 'mailto:' + d.email + '?subject=' + encodeURIComponent(t.oggetto) + '&body=' + encodeURIComponent(t.corpo);
+      if (soloGuardare()) { vai.removeAttribute('href'); vai.classList.add('vista-off'); vai.setAttribute('aria-disabled', 'true'); }   // v11.24 (n. 71)
     }
   }
 
@@ -4838,6 +4877,29 @@
     soloLetturaVista(x.pannello, 'la famiglia');                                      // v11.18
   }
 
+  // ---------- v11.24 (n. 71): il preside — della maestra principale solo numeri e colori, nessun nome, nessun link, niente da toccare ----------
+  function sottoPreside(d, col, vac) {
+    var lista = ((col.preside && col.preside.colloqui) || []).filter(function (c) { return c.docente === d.id; });
+    var conf = lista.filter(function (c) { return c.stato === 'confermato'; });
+    var cella = function (cls, n, tx) { return el('div', { classe: cls }, [el('b', { testo: String(n) }), el('small', { testo: tx })]); };
+    var sotto = [el('div', { classe: 'pres-sint' }, [
+      cella('', conf.length, 'colloqui'),
+      cella('scu', conf.filter(function (c) { return c.modo !== 'online'; }).length, '🏫 scuola'),
+      cella('onl', conf.filter(function (c) { return c.modo === 'online'; }).length, '📹 online'),
+      cella('att', lista.filter(function (c) { return c.stato === 'attesa'; }).length, '⏳ attesa')])];
+    giorniApp(d, vac).forEach(function (iso) {
+      var chips = fasceDi(d).map(function (f) {
+        var q = function (x) { return x.docente === d.id && x.data === iso && sovrappone(x, f.da, f.a); };
+        var c = lista.filter(q)[0], t = (col.tolte || []).filter(q)[0], cls = 'col-fa pres-fa';
+        if (c) cls += c.stato === 'confermato' ? ' ok m-' + (c.modo === 'online' ? 'online' : 'scuola') : ' attesa';
+        else if (t) cls += ' tolta';
+        return el('span', { classe: cls }, [el('b', { testo: f.da })]);
+      });
+      sotto.push(el('div', { classe: 'col-giorno' }, [el('div', { classe: 'col-gd', testo: dataCorta(iso) }), el('div', { classe: 'col-fasce' }, chips)]));
+    });
+    return sotto;
+  }
+
   // ---------- Maestra (si dà del Lei) ----------
   function sottoMaestra(b, d, col, vac) {
     var m = col.maestra, sotto = [];
@@ -4857,10 +4919,7 @@
     if (!att.length) r1.appendChild(el('p', { classe: 'ric-pross', testo: 'Nessuna richiesta in attesa.' }));
     att.forEach(function (c) { r1.appendChild(riga(c, true)); });
     sotto.push(r1);
-    var r2 = el('div', { classe: 'col-miei' }, [el('div', { classe: 'col-tit', testo: 'Confermati' })]);
-    if (!conf.length) r2.appendChild(el('p', { classe: 'ric-pross', testo: 'Nessun colloquio confermato.' }));
-    conf.forEach(function (c) { r2.appendChild(riga(c, false)); if (c.modo === 'online') r2.appendChild(linkVideoCol(c.link, true)); });
-    sotto.push(r2);
+    // v11.24: niente elenco «Confermati»: il foglio del colloquio (con il link della videochiamata) si apre toccando la fascia dell'agenda
     sotto.push(el('div', { classe: 'ric-scegli', testo: 'La mia agenda' }));
     sotto.push(el('p', { classe: 'ric-pross', testo: 'Tutti i ' + (GIORNI_LUNGHI[d.giorno] || 'giorni') + ' del prossimo mese. Tocchi una fascia libera per toglierla: perché non è disponibile o perché l’ha già data a un genitore per email. Le famiglie vedono le fasce tolte barrate («Tolta») e quelle date per email come «Occupata», senza la sua nota.' }));
     giorniApp(d, vac).forEach(function (iso) {
@@ -7765,11 +7824,12 @@
       if (col) STATO.colUltimi = col;
       var nbx = col ? boxNotifiche(col) : null;                     // v11.12: interruttore delle notifiche
       if (nbx) box.appendChild(nbx);
+      if (soloGuardare()) box.appendChild(el('span', { classe: 'pres-solo', testo: '👁 Solo guardare' }));   // v11.24 (n. 71)
       var nota = col && b.notaApp ? b.notaApp : b.nota;            // v11.6: con i colloqui dell'app la nota nuova (la pagina 11.5 legge solo nota)
       if (nota) box.appendChild(el('div', { classe: 'ric-nota' }, [el('span', { testo: '✉️' }), el('span', { testo: nota })]));
       var oggiIso = oggiISO();
       var alunni = (STATO.sessione.alunni || []).filter(function (n) { return !senzaAlunno(n); });
-      var conMail = alunni.length > 0 && !!b.mail;            // profilo docente: solo la mail vuota, come prima
+      var conMail = (alunni.length > 0 || soloGuardare()) && !!b.mail;   // profilo docente: solo la mail vuota, come prima; v11.24: il preside vede le fasce e la mail pronta
       (b.docenti || []).forEach(function (d) {
         var app = d.app && d.id && col !== null;                      // v11.6: prenotazione nell'app (null = script 11.3: come prima)
         var date = prossimiRicevimenti(app ? { giorno: d.giorno, dalle: d.dalle, alle: d.alle } : d, b.quanteDate || 3, vac);
@@ -7779,6 +7839,7 @@
         var sotto = [];
         if (app && col === undefined) sotto.push(el('p', { classe: 'ric-pross', testo: 'Carico le fasce…' }));
         else if (app && eMaestra(col, d)) sotto = sottoMaestra(b, d, col, vac);
+        else if (app && col && col.preside) sotto = sottoPreside(d, col, vac);              // v11.24 (n. 71): sintesi senza nomi
         else if (app && alunni.length) sotto = sottoFamiglia(b, d, col, vac);
         else if (conMail && d.email) {
           if (date.length) {
@@ -7819,7 +7880,7 @@
             el('span', { classe: 'ric-nome', testo: d.nome }),
             el('div', { classe: 'ric-quando' }, [d.quando || '', d.dalle ? ' · ' : '', d.dalle ? el('b', { testo: d.dalle + '–' + d.alle }) : null]),
             saltato ? el('div', { classe: 'ric-vacanza', testo: '🏖️ Il ' + dataLunga(saltato.iso) + ' non c’è: ' + saltato.titolo }) : null
-          ].concat(sotto, [d.email && !(app && col && (eMaestra(col, d) || alunni.length)) ? el('small', { classe: 'ric-email', testo: d.email }) : null]))
+          ].concat(sotto, [d.email && !(app && col && (eMaestra(col, d) || alunni.length || col.preside)) ? el('small', { classe: 'ric-email', testo: d.email }) : null]))
         ]));
       });
       if (b.piede) box.appendChild(el('p', { classe: 'or-nota', testo: b.piede }));
@@ -8040,6 +8101,19 @@
         })));
         var elenco = el('div');
         ca.appendChild(elenco);
+        function ruoliScuola(p) {                                                        // v11.24: un tocco = preside o maestro comune
+          var box = el('div', { classe: 'ga-ruoli', role: 'group', 'aria-label': 'Profilo a scuola' });
+          if (p.scuola === 'maestra') { box.appendChild(el('span', { classe: 'fisso', 'aria-label': 'Maestra principale', testo: '🍎' })); return box; }
+          [['preside', '🏫', 'Preside'], ['comune', '👩‍🏫', 'Maestro comune']].forEach(function (r) {
+            box.appendChild(el('button', { type: 'button', 'aria-label': r[2], 'aria-pressed': String(p.scuola === r[0]), testo: r[1], onclick: function (ev) {
+              if (p.scuola === r[0]) return;
+              var b = ev.currentTarget; b.disabled = true;
+              chiama('ruoloDocente', { email: p.chiave, ruolo: r[0] }).then(function (x) { p.scuola = x.scuola || r[0]; toast(r[1] + ' ' + r[2]); disegnaElenco(); })
+                .catch(function (e) { b.disabled = false; if (e.codice !== 'SESSIONE') toast(e.codice === 'AZIONE' ? 'Serve lo script 11.16' : e.message); });
+            } }));
+          });
+          return box;
+        }
         function rigaPersona(p, nome) {
           var io = p.chiave === STATO.sessione.chiave, id = nome + '|' + p.chiave, aperto = aperta === id;
           var riga = el('div', { classe: 'ga-persona' + (aperto ? ' aperta' : '') });
@@ -8047,6 +8121,7 @@
           riga.appendChild(el('button', { type: 'button', classe: 'ga-pers', 'aria-expanded': aperto ? 'true' : 'false', onclick: function () { aperta = aperto ? '' : id; disegnaElenco(); } }, [
             el('span', { classe: 'tx' }, [el('span', { classe: 'nome-r' }, [el('b', { testo: nomePersona(p) }), pill(p, io)]), el('small', { testo: contatto(p) })]),
             freccia]));
+          if (p.scuola) riga.appendChild(ruoliScuola(p));                          // v11.24 (n. 71): maestra / preside / maestro comune
           if (p.stato !== 'dentro' && !io) riga.appendChild(pulsantiInvio(p));
           if (aperto) {
             var d = el('div', { classe: 'ga-dett' });
@@ -8367,6 +8442,16 @@
         el('div', { classe: 'prof-valore', testo: ses.mail || ses.email }),
         el('p', { classe: 'prof-nota', testo: testi.notaEmail || 'L’email non si cambia dall’app: per modificarla chiama la rappresentante.' })
       ]));
+
+      // v11.24 (n. 71): versione della pagina e dello script, solo per Rossana. Rosso = lo script non è quello che serve (Nuova versione)
+      if (adminVero()) {
+        var vs = STATO.versioneScript || '', okS = !!vs && versioneMaggiore(vs, SCRIPT_NECESSARIO);
+        altro.appendChild(el('div', { classe: 'card' }, [
+          el('div', { classe: 'ver-righe' }, [
+            el('div', { classe: 'ver-chip ok' }, [el('i', { testo: '📱' }), el('small', { testo: 'Pagina' }), el('b', { testo: VERSIONE_PAGINA })]),
+            el('div', { classe: 'ver-chip ' + (okS ? 'ok' : 'no') }, [el('i', { testo: '⚙️' }), el('small', { testo: 'Script' }), el('b', { testo: vs || '?' })])]),
+          okS ? null : el('div', { classe: 'ver-rifai', testo: '↻ Nuova versione dello script (serve la ' + SCRIPT_NECESSARIO + ')' })]));
+      }
 
       // v11.12: notifiche dei colloqui (solo se lo script le ha attivate e se riguardano questa persona)
       var notifBox = el('div');
