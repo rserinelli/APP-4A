@@ -14,7 +14,9 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.25, 5 novembre 2026: FASCE DI UN GIORNO CON UN'ALTRA DURATA —
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.26, 5 novembre 2026: LA MAESTRA VEDE I GIOVEDÌ PRIMA — con
+  giorniMaestra: 7 nella scheda del docente in Contenuti.gs, nell'agenda della maestra un giovedì compare 7 giorni prima che le famiglie
+  possano prenotarlo, così può togliere le fasce in tempo. Famiglie e preside come prima. Serve lo script 11.17. Versione 11.25, 5 novembre 2026: FASCE DI UN GIORNO CON UN'ALTRA DURATA —
   nella scheda di un docente con app: true di Contenuti.gs si può scrivere durate: { "2026-11-12": 20 }: quel giorno le fasce sono da
   20 minuti (famiglie, agenda della maestra, preside), gli altri giorni vale durata. Il resto non cambia. Versione 11.24, 4 novembre 2026: I TRE PROFILI DELLA SCUOLA E PROVE PIÙ FACILI
   (n. 71) — il PRESIDE (scelto da Rossana in Gestione accessi con la pillola 🏫 / 👩‍🏫) vede in sola lettura, con «👁 Solo guardare»: della
@@ -2458,7 +2460,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '11.25', SCRIPT_NECESSARIO = '11.16';                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '11.26', SCRIPT_NECESSARIO = '11.17';                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -4336,9 +4338,10 @@
   function sovrappone(x, da, a) { return minDi(x.dalle) < minDi(a) && minDi(da) < minDi(x.alle); }
   function dataCorta(iso) { var g = dataDa(iso); return GIORNI_LUNGHI[g.getDay()].slice(0, 3) + ' ' + g.getDate() + ' ' + MESI[g.getMonth()].slice(0, 3); }
   // tutti i giorni di ricevimento da oggi a "mesi" (1) mese avanti, senza i giorni senza lezione
-  function giorniApp(d, vac) {
+  function giorniApp(d, vac, piu) {   // v11.26: piu = giorni in più (la maestra vede i giovedì una settimana prima delle famiglie)
     var out = [], data = new Date(), fine = new Date(), adesso = data.getHours() * 60 + data.getMinutes();
     fine.setMonth(fine.getMonth() + (d.mesi || 1));
+    fine.setDate(fine.getDate() + (+piu || 0));
     var fIso = isoDi(fine);
     data.setHours(12, 0, 0, 0);
     for (var i = 0; i < 70; i++, data.setDate(data.getDate() + 1)) {
@@ -4926,7 +4929,7 @@
     // v11.24: niente elenco «Confermati»: il foglio del colloquio (con il link della videochiamata) si apre toccando la fascia dell'agenda
     sotto.push(el('div', { classe: 'ric-scegli', testo: 'La mia agenda' }));
     sotto.push(el('p', { classe: 'ric-pross', testo: 'Tutti i ' + (GIORNI_LUNGHI[d.giorno] || 'giorni') + ' del prossimo mese. Tocchi una fascia libera per toglierla: perché non è disponibile o perché l’ha già data a un genitore per email. Le famiglie vedono le fasce tolte barrate («Tolta») e quelle date per email come «Occupata», senza la sua nota.' }));
-    giorniApp(d, vac).forEach(function (iso) {
+    giorniApp(d, vac, d.giorniMaestra).forEach(function (iso) {   // v11.26: la maestra vede giorniMaestra giorni prima
       var chips = [], tolteGiorno = 0, fasce = fasceDi(d, null, iso);   // v11.25: durata del giorno
       fasce.forEach(function (f) {
         var q = function (x) { return x.docente === d.id && x.data === iso && sovrappone(x, f.da, f.a); };
