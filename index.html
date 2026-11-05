@@ -14,7 +14,9 @@
 <link rel="apple-touch-icon" href="icona-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600&family=Italianno&display=swap" rel="stylesheet">
 <!--
-  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.24, 4 novembre 2026: I TRE PROFILI DELLA SCUOLA E PROVE PIÙ FACILI
+  APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.25, 5 novembre 2026: FASCE DI UN GIORNO CON UN'ALTRA DURATA —
+  nella scheda di un docente con app: true di Contenuti.gs si può scrivere durate: { "2026-11-12": 20 }: quel giorno le fasce sono da
+  20 minuti (famiglie, agenda della maestra, preside), gli altri giorni vale durata. Il resto non cambia. Versione 11.24, 4 novembre 2026: I TRE PROFILI DELLA SCUOLA E PROVE PIÙ FACILI
   (n. 71) — il PRESIDE (scelto da Rossana in Gestione accessi con la pillola 🏫 / 👩‍🏫) vede in sola lettura, con «👁 Solo guardare»: della
   maestra principale una sintesi senza nomi (colloqui confermati, a scuola, online, in attesa) e l'agenda con i soli colori; degli altri
   insegnanti orari, fasce e la mail già scritta, con «Apri la mail» e «Copia il testo» grigi. Il maestro comune resta com'era (dei colloqui
@@ -2456,7 +2458,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '11.24', SCRIPT_NECESSARIO = '11.16';                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '11.25', SCRIPT_NECESSARIO = '11.16';                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -4324,8 +4326,10 @@
   // ====================================================================
   function minDi(h) { var p = String(h || '').split(':'); return +p[0] * 60 + +(p[1] || 0); }
   function hhmmDi(m) { return ('0' + Math.floor(m / 60)).slice(-2) + ':' + ('0' + (m % 60)).slice(-2); }
-  function fasceDi(d, durata) {
-    var du = durata || d.durata || 15, out = [];
+  // v11.25: la durata delle fasce può cambiare per un giorno solo (durate: { "aaaa-mm-gg": minuti } nella scheda del docente in Contenuti.gs)
+  function durataDi(d, iso) { return (iso && d.durate && d.durate[iso]) || d.durata || 15; }
+  function fasceDi(d, durata, iso) {
+    var du = durata || durataDi(d, iso), out = [];
     for (var m = minDi(d.dalle); m + du <= minDi(d.alle); m += du) out.push({ da: hhmmDi(m), a: hhmmDi(m + du) });
     return out;
   }
@@ -4723,12 +4727,12 @@
       if (ok) box.appendChild(linkVideoCol(ok.link, true));
       sotto.push(box);
     }
-    var giorni = giorniApp(d, vac), fasce = fasceDi(d);
+    var giorni = giorniApp(d, vac);
     sotto.push(el('div', { classe: 'ric-scegli', testo: 'Tutti i ' + (GIORNI_LUNGHI[d.giorno] || 'giorni') + ' del prossimo mese' +
       (regoleCol(col) ? ', almeno ' + regoleCol(col).anticipoOre + ' ore prima' : '') + '. Scegli la fascia (' + (d.durata || 15) + ' minuti):' }));
     var mostrati = 0;                                                  // v11.19 (n. 65): giornate chiuse e tolte come nell'agenda della maestra
     giorni.forEach(function (iso) {
-      var chips = [], chiuse = 0, tolte = 0;
+      var chips = [], chiuse = 0, tolte = 0, fasce = fasceDi(d, null, iso);   // v11.25: durata del giorno
       fasce.forEach(function (f) {
         var s = infoFascia(col, d, iso, f), cls = 'col-fa', sotto2 = 'Libera';
         if (fasciaChiusa(col, iso, f.da)) chiuse++;
@@ -4767,7 +4771,7 @@
       corpo.appendChild(el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Chiudi', onclick: function () { x.chiudi(); } })]));
       return;
     }
-    var fasce = fasceDi(d), i = fasce.map(function (z) { return z.da; }).indexOf(f.da), fini = [];
+    var fasce = fasceDi(d, null, iso), i = fasce.map(function (z) { return z.da; }).indexOf(f.da), fini = [];
     for (var j = i; j >= 0 && j < fasce.length && infoFascia(col, d, iso, fasce[j]).tipo === 'libera'; j++) fini.push(fasce[j].a);
     var stesso = fam.filter(function (c) { return c.data === iso; }).sort(perData), mio = (col.miei || []).filter(function (c) { return c.docente === d.id && c.data === iso; })[0];
     if (stesso.length) {
@@ -4888,7 +4892,7 @@
       cella('onl', conf.filter(function (c) { return c.modo === 'online'; }).length, '📹 online'),
       cella('att', lista.filter(function (c) { return c.stato === 'attesa'; }).length, '⏳ attesa')])];
     giorniApp(d, vac).forEach(function (iso) {
-      var chips = fasceDi(d).map(function (f) {
+      var chips = fasceDi(d, null, iso).map(function (f) {
         var q = function (x) { return x.docente === d.id && x.data === iso && sovrappone(x, f.da, f.a); };
         var c = lista.filter(q)[0], t = (col.tolte || []).filter(q)[0], cls = 'col-fa pres-fa';
         if (c) cls += c.stato === 'confermato' ? ' ok m-' + (c.modo === 'online' ? 'online' : 'scuola') : ' attesa';
@@ -4923,7 +4927,7 @@
     sotto.push(el('div', { classe: 'ric-scegli', testo: 'La mia agenda' }));
     sotto.push(el('p', { classe: 'ric-pross', testo: 'Tutti i ' + (GIORNI_LUNGHI[d.giorno] || 'giorni') + ' del prossimo mese. Tocchi una fascia libera per toglierla: perché non è disponibile o perché l’ha già data a un genitore per email. Le famiglie vedono le fasce tolte barrate («Tolta») e quelle date per email come «Occupata», senza la sua nota.' }));
     giorniApp(d, vac).forEach(function (iso) {
-      var chips = [], tolteGiorno = 0, fasce = fasceDi(d);
+      var chips = [], tolteGiorno = 0, fasce = fasceDi(d, null, iso);   // v11.25: durata del giorno
       fasce.forEach(function (f) {
         var q = function (x) { return x.docente === d.id && x.data === iso && sovrappone(x, f.da, f.a); };
         var c = miei.filter(q)[0], t = (m.tolte || []).filter(q)[0], cls = 'col-fa', s2 = 'Libera', fai;
