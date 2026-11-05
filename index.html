@@ -16,7 +16,7 @@
 <!--
   APP "4a primaria 2026-27" — pagina per GitHub Pages (versione 11.26, 5 novembre 2026: LA MAESTRA VEDE I GIOVEDÌ PRIMA — con
   giorniMaestra: 7 nella scheda del docente in Contenuti.gs, nell'agenda della maestra un giovedì compare 7 giorni prima che le famiglie
-  possano prenotarlo, così può togliere le fasce in tempo. Famiglie e preside come prima. Serve lo script 11.17. Versione 11.25, 5 novembre 2026: FASCE DI UN GIORNO CON UN'ALTRA DURATA —
+  possano prenotarlo, così può togliere le fasce in tempo. Famiglie e preside come prima. Script 11.16 con la riga di fasciaTogli_ del 5/11. Versione 11.25, 5 novembre 2026: FASCE DI UN GIORNO CON UN'ALTRA DURATA —
   nella scheda di un docente con app: true di Contenuti.gs si può scrivere durate: { "2026-11-12": 20 }: quel giorno le fasce sono da
   20 minuti (famiglie, agenda della maestra, preside), gli altri giorni vale durata. Il resto non cambia. Versione 11.24, 4 novembre 2026: I TRE PROFILI DELLA SCUOLA E PROVE PIÙ FACILI
   (n. 71) — il PRESIDE (scelto da Rossana in Gestione accessi con la pillola 🏫 / 👩‍🏫) vede in sola lettura, con «👁 Solo guardare»: della
@@ -2460,7 +2460,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '11.26', SCRIPT_NECESSARIO = '11.17';                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '11.26', SCRIPT_NECESSARIO = '11.16';                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
