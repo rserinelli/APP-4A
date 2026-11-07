@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- pagina 11.27 · 7 novembre 2026: Avvisi, Documenti e Calendario separati (n. 74) -->
+<!-- pagina 11.28 · 7 novembre 2026: pillole dorate in Documenti, avvisi passati via dalla Home (n. 75) -->
 <html lang="it">
 <head>
 <meta charset="utf-8">
@@ -1932,6 +1932,14 @@
   .doc-altro .n { flex: none; min-width: 26px; height: 26px; padding: 0 7px; border-radius: 999px; background: #eceff3; display: grid; place-items: center; font-size: 13px; }
   .doc-altro .giu { flex: none; transition: transform .2s; }
   .doc-altro[aria-expanded="true"] .giu { transform: rotate(180deg); }
+  /* v11.28 (n. 75): pillole dorate COMUNICAZIONI · MODULI · VERBALI · ARCHIVIO (una sola scelta) */
+  .doc-pill { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 0 0 12px; }
+  @media (max-width: 520px) { .doc-pill { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .doc-pill button { position: relative; min-height: 42px; padding: 0 8px; border: 1.5px solid var(--oro); border-radius: 999px; background: #fffaf0;
+    color: #8a5d06; font: inherit; font-weight: 800; font-size: 12.5px; letter-spacing: .04em; white-space: nowrap; }
+  .doc-pill button.attiva { border-color: var(--accent); background: linear-gradient(180deg, #d6a93a, var(--accent)); color: #fff; box-shadow: 0 2px 8px rgba(176,125,26,.4); }
+  .doc-pill button .conta { position: absolute; top: -7px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: var(--rosso);
+    color: #fff; font-size: 11.5px; font-weight: 800; display: grid; place-items: center; letter-spacing: 0; }
   /* v11.27 (n. 74): documento collegato a un appuntamento */
   .ag-pdf { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; margin-top: 4px; padding: 6px 11px; border: 1px solid var(--line);
     border-radius: 999px; background: var(--card); color: var(--brand); font: inherit; font-weight: 800; font-size: 13px; text-align: left; }
@@ -2509,7 +2517,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '11.27', SCRIPT_NECESSARIO = '11.18';                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '11.28', SCRIPT_NECESSARIO = '11.18';                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -2790,6 +2798,7 @@
       else main.appendChild(el('div', { style: 'height:16px' }));
     }
     if (id === 'contabilita' && !ridisegno && soloSenzaAlunno() && STATO.schede['contabilita-0'] === undefined) STATO.schede['contabilita-0'] = SCHEDA_CLASSE;   // v11.2
+    if (id === 'comunicazioni' && !ridisegno) STATO.docPill = 'comunicazioni';   // v11.28 (n. 75): si entra sempre su COMUNICAZIONI
     if (id === 'calendario' && !ridisegno) calendarioVisto();          // prima di disegnare: gli appuntamenti nuovi restano segnati NUOVO in questa visita
     if (id === 'divise' && !ridisegno) diviseViste();                  // lo stesso per le date delle divise
     if (id === 'home') { var colonna = el('div', { classe: 'home-n4' }); main.appendChild(colonna); disegnaBlocchi(p.blocchi, colonna, id); }   // v10.28
@@ -3105,7 +3114,7 @@
       var dati = r[0] || {}, miei = r[1] || {};
       STATO.datiDocumenti = r[0] || null;                                // v11.15: per "Segna tutti come letti"
       STATO.allegatiAvvisi = {};                                           // v11.27 (n. 74): il documento di un avviso in Home ha il NUOVO solo sull'avviso
-      (avvisiDi(dati) || []).forEach(function (a) { if (a.allegato && a.allegato.id && avvisoAttivo(a)) STATO.allegatiAvvisi[a.allegato.id] = 1; });
+      (avvisiDi(dati) || []).forEach(function (a) { if (a.allegato && a.allegato.id) STATO.allegatiAvvisi[a.allegato.id] = 1; });   // v11.28 (n. 75): anche a avviso superato il documento non torna NUOVO
       var conta = function (sezioni) {
         var n = 0;
         sezioni.forEach(function (k) { (elencoSezione(dati, k) || []).forEach(function (f) { if (eNuovo(f)) n++; }); });
@@ -3124,7 +3133,7 @@
           : 0,
         ricevimento: (function (col) {                                    // v11.6: avvisi dei colloqui + richieste da confermare (maestra)
           if (!col) return 0;
-          return (col.avvisi || []).length + (col.maestra ? (col.maestra.colloqui || []).filter(function (c) { return c.stato === 'attesa'; }).length : 0);
+          return avvisiColAttuali(col).length + attesaAttuali(col).length;   // v11.28 (n. 75): senza quelli superati
         })(colloquiDi(dati))
       };
       applicaContatori();
@@ -4478,6 +4487,16 @@
     return out;
   }
   function colloquiDi(dati) { return dati && dati.colloqui ? dati.colloqui : null; }
+  // v11.28 (n. 75): un colloquio (o il suo avviso) è superato quando è finito: non si mostra più in Home e non accende il bollino
+  function colloquioPassato(x) {
+    if (!x || !x.data) return false;
+    var oggi = oggiISO();
+    if (x.data !== oggi) return x.data < oggi;
+    var ora = new Date();
+    return minDi(x.alle || x.dalle || '23:59') <= ora.getHours() * 60 + ora.getMinutes();
+  }
+  function avvisiColAttuali(col) { return ((col && col.avvisi) || []).filter(function (a) { return !colloquioPassato(a); }); }
+  function attesaAttuali(col) { return col && col.maestra ? (col.maestra.colloqui || []).filter(function (c) { return c.stato === 'attesa' && !colloquioPassato(c); }) : []; }
   function docenteRic(id) {
     var out = null;
     (STATO.dati.pagine || []).forEach(function (p) { (p.blocchi || []).forEach(function (b) { if (b.tipo === 'ricevimento') (b.docenti || []).forEach(function (d) { if (d.id === id) out = d; }); }); });
@@ -5133,7 +5152,7 @@
     return ['no', chi + ' ha annullato il colloquio di ' + q + (a.daMaestra ? '. Si può prenotarne un altro.' : '.')];
   }
   function boxAvvisiCol(col) {
-    var av = (col && col.avvisi) || [];
+    var av = avvisiColAttuali(col);                                    // v11.28 (n. 75): gli avvisi dei colloqui superati spariscono
     if (!av.length) return null;
     var sez = el('section', { classe: 'riquadro col-avvisi' }, [el('h3', {}, ['🔔 Avvisi dei colloqui ', el('span', { classe: 'conta', testo: String(av.length) })])]);
     av.forEach(function (a) {
@@ -5204,7 +5223,7 @@
 
   // ---------- Avvisi ----------
   function avvisiDi(dati) { return dati && Array.isArray(dati.avvisi) ? dati.avvisi : null; }
-  function avvisoAttivo(a) { return !a.tolto && (!a.scade || a.scade >= oggiISO()); }
+  function avvisoAttivo(a) { return !a.tolto && (!a.scade || String(a.scade).slice(0, 10) >= oggiISO()); }   // v11.28: anche "aaaa-mm-gg hh:mm"
   function avvisoNuovo(a) { return !!(STATO.visti && !STATO.visti.documenti[a.id]); }
   function testoCondivisione(a) {
     return '📢 *' + a.titolo + '*' + (a.testo ? '\n' + a.testo : '') +
@@ -7306,10 +7325,10 @@
         if (!col) return;
         var av = boxAvvisiCol(col);
         if (av) box.appendChild(av);
-        var att = col.maestra ? (col.maestra.colloqui || []).filter(function (c) { return c.stato === 'attesa'; }).length : 0;
+        var att = attesaAttuali(col).length;                             // v11.28 (n. 75)
         if (att) box.appendChild(el('button', { type: 'button', classe: 'porta col-porta', 'data-porta': 'ricevimento', onclick: function () { vaiA('ricevimento'); } }, [illPagina('ricevimento'),
           el('span', { classe: 'tx' }, [el('b', { testo: '⏳ ' + (att === 1 ? '1 richiesta di colloquio da confermare' : att + ' richieste di colloquio da confermare') }),
-            el('small', { testo: contaModiPag((col.maestra.colloqui || []).filter(function (c) { return c.stato === 'attesa'; })) + ' · La tocchi per aprire Ricevimento e confermare o declinare.' })]), frecciaTonda()]));   // v11.16
+            el('small', { testo: contaModiPag(attesaAttuali(col)) + ' · La tocchi per aprire Ricevimento e confermare o declinare.' })]), frecciaTonda()]));   // v11.16
         var cam = col.campanella;
         if (cam && cam.n) box.appendChild(el('section', { classe: 'riquadro oro col-campanella' }, [
           el('div', { classe: 'col-cb' }, [el('span', { 'aria-hidden': 'true', testo: '🔔' }), el('span', { classe: 'conta', testo: String(cam.n) })]),
@@ -8717,8 +8736,8 @@
       });
       return box;
     },
-    // v11.27 (n. 74): pagina Documenti — ricerca, un solo elenco per mese (Comunicazioni, Moduli, Verbali) con il colore del tipo,
-    // "Segna letti" piccolo, in fondo l'Archivio e, solo per Rossana, gli avvisi passati.
+    // v11.27 (n. 74): pagina Documenti — ricerca, elenco per mese con il colore del tipo, "Segna letti" piccolo, solo per Rossana gli avvisi passati.
+    // v11.28 (n. 75): pillole dorate COMUNICAZIONI · MODULI · VERBALI · ARCHIVIO al posto dell'elenco unico (entrando: COMUNICAZIONI).
     documentiTutti: function (b) {
       var box = el('div');
       box.appendChild(attesa('Carico i documenti…'));
@@ -8727,16 +8746,26 @@
         STATO.datiDocumenti = dati || STATO.datiDocumenti;
         var sezioni = b.sezioni || ['comunicazioni', 'moduli', 'verbali'], arch = b.archivio || 'archivio';
         var nomi = { comunicazioni: 'Comunicazione', moduli: 'Modulo', verbali: 'Verbale', archivio: 'Archivio' };
-        var tutti = [], archivio = [];
-        sezioni.forEach(function (k) { (elencoSezione(dati, k) || []).forEach(function (f) { tutti.push({ f: f, k: k }); }); });
-        (elencoSezione(dati, arch) || []).forEach(function (f) { archivio.push({ f: f, k: arch }); });
         var perData = function (x, y) { var a = x.f.data || '', c = y.f.data || ''; return a < c ? 1 : a > c ? -1 : 0; };
-        tutti.sort(perData); archivio.sort(perData);
         if (!elencoSezione(dati, sezioni[0]) && b.riserva) { box.appendChild(RENDER.embed({ titolo: 'Elenco documenti', url: b.riserva, altezza: 560 })); return; }
         var c = el('input', { classe: 'cerca', type: 'search', placeholder: 'Cerca', 'aria-label': 'Cerca tra i documenti' });
         var tl = boxTuttiLetti(sezioni, 'comunicazioni'); tl.classList.add('compatto'); disegnaTuttiLetti(tl);
+        // v11.28 (n. 75): pillole dorate, una sola scelta; entrando è scelta COMUNICAZIONI. Cercando, si cerca in tutte.
+        var elenchi = {}, PILL = [];
+        sezioni.concat([arch]).forEach(function (k) {
+          elenchi[k] = (elencoSezione(dati, k) || []).map(function (f) { return { f: f, k: k }; }).sort(perData);
+          PILL.push([k, ({ comunicazioni: 'COMUNICAZIONI', moduli: 'MODULI', verbali: 'VERBALI', archivio: 'ARCHIVIO' })[k] || k.toUpperCase()]);
+        });
+        if (!elenchi[STATO.docPill]) STATO.docPill = sezioni[0];
+        var pill = el('div', { classe: 'doc-pill', role: 'tablist', 'aria-label': 'Tipo di documento' });
+        PILL.forEach(function (x) {
+          var nNuovi = x[0] === arch ? 0 : elenchi[x[0]].filter(function (y) { return eNuovo(y.f); }).length;
+          var bt = el('button', { type: 'button', role: 'tab', 'data-pill': x[0], onclick: function () { STATO.docPill = x[0]; c.value = ''; disegna(''); } }, [x[1],
+            nNuovi ? el('span', { classe: 'conta', testo: nNuovi > 9 ? '9+' : String(nNuovi) }) : null]);
+          pill.appendChild(bt);
+        });
         var lista = el('div');
-        box.appendChild(c); box.appendChild(tl); box.appendChild(lista);
+        box.appendChild(c); box.appendChild(pill); box.appendChild(tl); box.appendChild(lista);
         function righe(dove, elenco, q) {
           var mese = null, n = 0;
           elenco.forEach(function (x) {
@@ -8761,14 +8790,19 @@
         function disegna(filtro) {
           lista.innerHTML = '';
           var q = (filtro || '').toLowerCase().trim();
-          var n = righe(lista, tutti, q);
-          if (q) {                                                     // cercando, anche l'Archivio
-            var na = righe(lista, archivio, q);
-            if (!n && !na) lista.appendChild(el('div', { classe: 'vuoto', testo: 'Nessun documento trovato per "' + filtro + '".' }));
+          Array.prototype.forEach.call(pill.children, function (bt) {             // cercando nessuna pillola è scelta
+            var si = !q && bt.getAttribute('data-pill') === STATO.docPill;
+            bt.classList.toggle('attiva', si); bt.setAttribute('aria-selected', String(si));
+          });
+          if (q) {
+            var n = 0, tuttiQ = [];
+            PILL.forEach(function (x) { tuttiQ = tuttiQ.concat(elenchi[x[0]]); });
+            tuttiQ.sort(perData);
+            n = righe(lista, tuttiQ, q);
+            if (!n) lista.appendChild(el('div', { classe: 'vuoto', testo: 'Nessun documento trovato per "' + filtro + '".' }));
             return;
           }
-          if (!n) lista.appendChild(el('div', { classe: 'vuoto', testo: 'Nessun documento presente.' }));
-          if (archivio.length) altro('🗄️ Archivio', archivio.length, function (dove) { righe(dove, archivio, ''); }).forEach(function (x) { lista.appendChild(x); });
+          if (!righe(lista, elenchi[STATO.docPill], '')) lista.appendChild(el('div', { classe: 'vuoto', testo: 'Nessun documento.' }));
           if (STATO.sessione.amministratore) {                          // gli avvisi passati li vede solo Rossana
             var passati = (avvisiDi(dati) || []).filter(function (a) { return !avvisoAttivo(a); })
               .sort(function (x, y) { return (x.creato || '') < (y.creato || '') ? 1 : -1; });
