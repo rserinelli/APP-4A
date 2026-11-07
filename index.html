@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- pagina 11.26 · ricaricata il 5/11 alle 21:30 per ripubblicare su GitHub -->
+<!-- pagina 11.27 · 7 novembre 2026: Avvisi, Documenti e Calendario separati (n. 74) -->
 <html lang="it">
 <head>
 <meta charset="utf-8">
@@ -1889,6 +1889,54 @@
   .riquadro.oro .festa { margin: 0 0 8px; }
   .riquadro.oro .av-vuoto { margin: 0; }
   .admin-riga { display: flex; justify-content: flex-end; margin: -2px 0 8px; }
+  /* v11.27 (n. 74): avvisi in Home chiusi, si aprono toccandoli */
+  .testa-avvisi { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; }
+  .testa-avvisi .ill { width: 30px; height: 30px; }
+  .testa-avvisi h3 { margin: 0; font-size: 16px; font-weight: 800; flex: 1; }
+  .riquadro.oro .av2 { background: var(--card); border-radius: 12px; margin-top: 8px; overflow: hidden; }
+  .riquadro.oro .av2:first-of-type { margin-top: 0; }
+  .av2.evidenza { box-shadow: 0 0 0 2px var(--oro); }
+  .av2-testa { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 52px; padding: 9px 10px 9px 12px; border: 0; background: transparent;
+    font: inherit; color: var(--ink); text-align: left; }
+  .av2-testa .tit { flex: 1; min-width: 0; font-size: 15px; font-weight: 800; line-height: 1.3; overflow-wrap: anywhere; }
+  .av2.nuovo .av2-testa .tit { color: #8a5d06; }
+  .av2-testa .clip { flex: none; color: var(--muted); display: grid; place-items: center; }
+  .av2-testa .giu { flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--brand-soft); color: var(--brand); display: grid; place-items: center;
+    transition: transform .2s; }
+  .av2.aperto .av2-testa .giu { transform: rotate(180deg); }
+  .av2-corpo { padding: 0 12px 12px; }
+  .av2-corpo p { margin: 0 0 8px; font-size: 14px; white-space: pre-line; overflow-wrap: anywhere; }
+  .av2-corpo .av-piede { margin-top: 4px; }
+  .av2-doc { display: flex; align-items: center; gap: 10px; width: 100%; margin: 4px 0 6px; padding: 9px 10px; border: 1px solid #b9dcc6; border-radius: 12px;
+    background: #eef8f1; color: var(--ink); font: inherit; font-weight: 800; font-size: 14px; text-align: left; }
+  .av2-doc .tx { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .av2-doc .tipo { flex: none; width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; background: #fff; font-size: 17px; }
+  /* v11.27 (n. 74): pagina Documenti — un elenco solo, colore per tipo */
+  .doc.sez-comunicazioni .data b { color: #1f5f99; }
+  .doc.sez-moduli .data b { color: #2f7d4f; }
+  .doc.sez-verbali .data b { color: #4a5a70; }
+  .doc.sez-archivio .data b { color: #5a6b80; }
+  .etichetta.et-comunicazioni { background: #e1eff9; color: #1f5f99; }
+  .etichetta.et-moduli { background: #e3f3e9; color: #256b41; }
+  .etichetta.et-verbali { background: #eceff3; color: #3f4d60; }
+  .etichetta.et-archivio { background: #eef0f3; color: #4f5d70; }
+  .doc-testa { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 8px; }
+  .doc-testa .mese { margin: 0; }
+  .tutti-letti.compatto { margin: 0 0 10px; display: flex; justify-content: flex-end; }
+  .tutti-letti.compatto .tl-pill { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border: 0; border-radius: 999px;
+    background: #a8740d; color: #fff; font: inherit; font-weight: 800; font-size: 13.5px; }
+  .tutti-letti.compatto .tl-conf { width: 100%; }
+  .doc-altro { display: flex; align-items: center; gap: 12px; width: 100%; margin: 14px 0 8px; padding: 12px 14px; border: 1.5px dashed #b9cadb; border-radius: 14px;
+    background: transparent; color: #4a5a70; font: inherit; font-weight: 800; text-align: left; }
+  .doc-altro .tx { flex: 1; }
+  .doc-altro .n { flex: none; min-width: 26px; height: 26px; padding: 0 7px; border-radius: 999px; background: #eceff3; display: grid; place-items: center; font-size: 13px; }
+  .doc-altro .giu { flex: none; transition: transform .2s; }
+  .doc-altro[aria-expanded="true"] .giu { transform: rotate(180deg); }
+  /* v11.27 (n. 74): documento collegato a un appuntamento */
+  .ag-pdf { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; margin-top: 4px; padding: 6px 11px; border: 1px solid var(--line);
+    border-radius: 999px; background: var(--card); color: var(--brand); font: inherit; font-weight: 800; font-size: 13px; text-align: left; }
+  .prox-riga .pdf { flex: none; padding: 2px 9px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--brand);
+    font: inherit; font-weight: 800; font-size: 12px; }
   .prox-righe { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
   .prox-riga { display: flex; gap: 10px; align-items: baseline; }
   .prox-riga .quando { width: 78px; flex: none; font-weight: 800; color: var(--brand); white-space: nowrap; }
@@ -2461,15 +2509,36 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '11.26', SCRIPT_NECESSARIO = '11.16';                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '11.27', SCRIPT_NECESSARIO = '11.18';                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
     return true;
   }
+  // v11.27 (n. 74): Avvisi, Documenti e Calendario separati, senza toccare Contenuti.gs (i contenuti 11.12 restano validi).
+  // Home: il riquadro si chiama "Avvisi" e dopo "Prossimi 7 giorni" c'è la riga "Documenti". La sezione comunicazioni si chiama
+  // "Documenti" e mostra un elenco solo (blocco documentiTutti) al posto delle linguette. Le statistiche dello script restano
+  // sotto "Comunicazioni & Moduli" (lo script usa il titolo di Contenuti.gs). Se Contenuti.gs ha già i blocchi nuovi, non cambia niente.
+  function sistemaContenuti(c) {
+    if (!c || !Array.isArray(c.pagine)) return c;
+    c.pagine.forEach(function (p) {
+      var bl = p.blocchi || [];
+      if (p.id === 'home' && !bl.some(function (b) { return b.tipo === 'documentiPorta'; })) {
+        var i = -1;
+        bl.forEach(function (b, j) { if (b.tipo === 'prossimi') i = j; });
+        if (i >= 0) bl.splice(i + 1, 0, { tipo: 'documentiPorta' });
+        bl.forEach(function (b) { if (b.tipo === 'avvisi' && (!b.titolo || b.titolo === 'Avvisi e comunicazioni')) b.titolo = 'Avvisi'; });
+      }
+      if (p.id === 'comunicazioni' && !bl.some(function (b) { return b.tipo === 'documentiTutti'; })) {
+        p.titolo = 'Documenti'; p.breve = 'Documenti'; p.descrizione = '';
+        p.blocchi = [{ tipo: 'documentiTutti', sezioni: ['comunicazioni', 'moduli', 'verbali'], archivio: 'archivio' }];
+      }
+    });
+    return c;
+  }
   function soloGuardare() { return !!(STATO.sessione && STATO.sessione.preside); }      // v11.24 (n. 71): il preside
   function avvia(r) {
-    STATO.dati = r.contenuti;
+    STATO.dati = sistemaContenuti(r.contenuti);   // v11.27 (n. 74)
     STATO.versioneScript = r.versione || '';                                            // v11.24: dallo script 11.16
     STATO.sessione = { email: r.utente.email, amministratore: !!r.utente.admin, alunni: r.utente.alunni || [],
       chiave: r.utente.chiave || r.utente.email, mail: r.utente.mail === undefined ? r.utente.email : r.utente.mail, telefono: r.utente.telefono || '',
@@ -2497,6 +2566,7 @@
     return {
       documenti: Promise.all([chiama('documenti'), visti]).then(function (r) {
         if (r[0] && r[0].novita !== undefined) STATO.novita = r[0].novita;   // v11.7: numero delle novità di questi dati
+        if (r[0] && !r[0].errore) STATO.datiDocumenti = r[0];               // v11.27: documenti degli appuntamenti e degli avvisi
         return r[0];
       }).catch(function () { return { errore: 'non disponibile' }; }),
       miei: chiama('cassa').catch(function () { return { errore: 'non disponibile' }; }),
@@ -2760,7 +2830,7 @@
     toast('Preparo la vista…');
     return chiama('avvio').then(function (r) {
       var dove = STATO.pagina === 'profilo' ? 'home' : STATO.pagina;
-      STATO.dati = r.contenuti;
+      STATO.dati = sistemaContenuti(r.contenuti);   // v11.27 (n. 74)
       STATO.sessione = { email: r.utente.email, amministratore: false, alunni: r.utente.alunni || [], chiave: r.utente.chiave, mail: '', telefono: '',
         primoIngresso: false, vista: r.utente.vista || scelta.tipo, nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '', nome: r.utente.nome || '', preside: !!r.utente.preside };   // v11.24: preside   // v11.10: nome del saluto
       if (r.utente.manca) toast('Email della maestra non trovata nel foglio accessi: controlla “accessi” in Contenuti.gs');
@@ -2892,6 +2962,21 @@
   }
   function apriScheda(pagina, indice) { STATO.schede[pagina + '-0'] = indice; vaiA(pagina); }
   var SEZIONI_NOVITA = { comunicazioni: 'Comunicazione', moduli: 'Modulo', verbali: 'Verbale' };
+  var SEZ_COLORE = { comunicazioni: 1, moduli: 1, verbali: 1, archivio: 1 };            // v11.27 (n. 74)
+  var ICONE_SEZ = { comunicazioni: '📄', moduli: '📝', verbali: '📋', archivio: '🗄️', ricevute: '🧾' };
+  // v11.27 (n. 74): documento collegato a un appuntamento = "[doc:ID]" nelle note (lo scrive la finestra dell'appuntamento)
+  var RE_DOC_EVENTO = /\s*\[doc:([A-Za-z0-9_-]{10,})\]\s*/;
+  function docEvento(e) { var m = RE_DOC_EVENTO.exec(String((e && e.note) || '')); return m ? m[1] : ''; }
+  function notaEvento(e) { return String((e && e.note) || '').replace(RE_DOC_EVENTO, ' ').trim(); }
+  function trovaDoc(dati, id) {
+    var out = null;
+    if (!id) return null;
+    Object.keys((dati && dati.sezioni) || {}).forEach(function (k) {
+      (elencoSezione(dati, k) || []).forEach(function (x) { if (!out && x.id === id) out = { f: x, sezione: k }; });
+    });
+    return out;
+  }
+  function apriDocDi(f) { segnaVisto(f); if (f.url) window.open(f.url, '_blank', 'noopener'); else apriFile(f); }
   var NOMI_TIPO = { pdf: 'PDF', foglio: 'Foglio', documento: 'Documento', modulo: 'Modulo online', immagine: 'Immagine', presentazione: 'Presentazione', file: 'File' };
   var ICONE_TIPO = { pdf: '📕', foglio: '📊', documento: '📝', modulo: '🧾', immagine: '🖼️', presentazione: '📽️', file: '📄' };
 
@@ -2905,7 +2990,7 @@
   // NUOVO = documento che questa email non ha ancora aperto (su qualsiasi dispositivo).
   // Solo se lo script non è ancora aggiornato vale il vecchio criterio: data degli ultimi giorni.
   function eNuovo(f) {
-    if (STATO.visti) return !!f.id && !STATO.visti.documenti[f.id];
+    if (STATO.visti) return !!f.id && !STATO.visti.documenti[f.id] && !(STATO.allegatiAvvisi && STATO.allegatiAvvisi[f.id]);   // v11.27 (n. 74)
     if (!f.data) return false;
     var g = giorniDa(f.data);
     return g >= 0 && g <= (STATO.dati.giorniNovita || 10);
@@ -2972,6 +3057,13 @@
       ]));
       return;
     }
+    if (box.classList.contains('compatto')) {                            // v11.27 (n. 74): pillola piccola nella pagina Documenti
+      var pill = el('button', { type: 'button', classe: 'tl-pill', onclick: function () { box._conferma = true; disegnaTuttiLetti(box); } });
+      pill.appendChild(svgSpan('', '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12.5l4.5 4.5L15 8.5M10 16l1 1 10-10"/></svg>'));
+      pill.appendChild(document.createTextNode('Segna letti · ' + n));
+      box.appendChild(pill);
+      return;
+    }
     var b = el('button', { type: 'button', classe: 'tl-btn', onclick: function () { box._conferma = true; disegnaTuttiLetti(box); } });
     b.appendChild(svgSpan('ic', '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12.5l4.5 4.5L15 8.5M10 16l1 1 10-10"/></svg>'));
     b.appendChild(el('span', { classe: 'tx' }, [el('b', { testo: 'SEGNA TUTTI COME LETTI' }),
@@ -3012,6 +3104,8 @@
     Promise.all([STATO.documenti, STATO.miei]).then(function (r) {
       var dati = r[0] || {}, miei = r[1] || {};
       STATO.datiDocumenti = r[0] || null;                                // v11.15: per "Segna tutti come letti"
+      STATO.allegatiAvvisi = {};                                           // v11.27 (n. 74): il documento di un avviso in Home ha il NUOVO solo sull'avviso
+      (avvisiDi(dati) || []).forEach(function (a) { if (a.allegato && a.allegato.id && avvisoAttivo(a)) STATO.allegatiAvvisi[a.allegato.id] = 1; });
       var conta = function (sezioni) {
         var n = 0;
         sezioni.forEach(function (k) { (elencoSezione(dati, k) || []).forEach(function (f) { if (eNuovo(f)) n++; }); });
@@ -3057,7 +3151,7 @@
     // v10.28: riga di "Avvisi e comunicazioni" senza avvisi
     Array.prototype.forEach.call(document.querySelectorAll('[data-riga-com]'), function (x) { x.textContent = rigaComunicazioni(c.comunicazioni || 0); });
   }
-  function rigaComunicazioni(n) { return !n ? 'Nessun avviso nuovo' : n === 1 ? '1 documento nuovo' : n + ' documenti nuovi'; }
+  function rigaComunicazioni(n) { return !n ? 'Nessun documento nuovo' : n === 1 ? '1 documento nuovo' : n + ' documenti nuovi'; }   // v11.27
 
   // ---------- Documenti: i file restano privati, lo script li passa all'app ----------
   // v10.27: con la casella ⋯ a destra (sezione = cartella del file)
@@ -3067,13 +3161,14 @@
       ? el('span', { classe: 'data' }, [el('b', { testo: String(+p[2]) }), el('span', { testo: MESI[+p[1] - 1].slice(0, 3) })])
       : el('span', { classe: 'data' }, [el('b', { testo: ICONE_TIPO[f.tipo] || '📄' })]);
     var sotto = [];
-    if (etichetta) sotto.push(el('span', { classe: 'etichetta', testo: etichetta }));
+    if (etichetta) sotto.push(el('span', { classe: 'etichetta' + (SEZ_COLORE[sezione] ? ' et-' + sezione : ''), testo: etichetta }));
     sotto.push(document.createTextNode((ICONE_TIPO[f.tipo] || '📄') + ' ' + (NOMI_TIPO[f.tipo] || 'File') + (p ? ' · ' + MESI[+p[1] - 1] + ' ' + p[0] : '')));
     var titolo = el('strong', { testo: f.titolo }), nuovo = eNuovo(f);
     if (nuovo) titolo.appendChild(el('span', { classe: 'badge', testo: 'NUOVO' }));
     var figli = [dataBox, el('span', { classe: 'tx' }, [titolo, el('small', null, sotto)]), el('span', { classe: 'freccia', testo: f.url ? '↗' : '›' })];
-    var riga = f.url ? el('a', { classe: 'doc' + (nuovo ? ' nuovo' : ''), 'data-doc': f.id, href: f.url, target: '_blank', rel: 'noopener', title: f.nome, onclick: function () { segnaVisto(f); } }, figli)
-      : el('button', { classe: 'doc' + (nuovo ? ' nuovo' : ''), 'data-doc': f.id, title: f.nome, onclick: function () { segnaVisto(f); apriFile(f); } }, figli);
+    var cs = 'doc' + (nuovo ? ' nuovo' : '') + (SEZ_COLORE[sezione] ? ' sez-' + sezione : '');   // v11.27 (n. 74): colore del tipo
+    var riga = f.url ? el('a', { classe: cs, 'data-doc': f.id, href: f.url, target: '_blank', rel: 'noopener', title: f.nome, onclick: function () { segnaVisto(f); } }, figli)
+      : el('button', { classe: cs, 'data-doc': f.id, title: f.nome, onclick: function () { segnaVisto(f); apriFile(f); } }, figli);
     var w = conPiu(riga, f, { sezione: sezione });
     if (nuovo) w.classList.add('nuovo');                               // v11.10: documento NUOVO dorato
     return w;
@@ -3896,7 +3991,7 @@
       }
       righe.push(rigaIcs('SUMMARY:' + testoIcs(e.titolo)));
       if (e.luogo) righe.push(rigaIcs('LOCATION:' + testoIcs(e.luogo)));
-      var nota = [e.note, e.calendario ? '(' + e.calendario + ')' : ''].filter(Boolean).join('\n');
+      var nota = [notaEvento(e), e.calendario ? '(' + e.calendario + ')' : ''].filter(Boolean).join('\n');   // v11.27: senza [doc:…]
       if (nota) righe.push(rigaIcs('DESCRIPTION:' + testoIcs(nota)));
       righe.push('END:VEVENT');
     });
@@ -3977,7 +4072,8 @@
         durata,
         info.length ? el('small', { classe: extra, testo: info.join(' · ') }) : null,
         mappa,
-        e.note ? el('small', { classe: extra, testo: e.note }) : null,
+        notaEvento(e) ? el('small', { classe: extra, testo: notaEvento(e) }) : null,
+        pdfEvento(e),                                                     // v11.27 (n. 74): il documento collegato, sempre visibile
         e.calendario ? colora(el('span', { classe: 'ag-cal' + (compatta ? ' ag-extra' : '') }, [el('i'), el('span', { testo: e.calendario })]), e.colore) : null,
         compatta || e.ci === CI_DIVISE ? azioniRossana(e) : null        // Divise: pulsanti sempre visibili sotto ogni data
       ]),
@@ -3994,6 +4090,11 @@
       if ((ev.key === 'Enter' || ev.key === ' ') && ev.target === card) { ev.preventDefault(); apriChiudiEvento(card, chiave); }
     });
     return card;
+  }
+  function pdfEvento(e) {
+    var id = docEvento(e), t = id ? trovaDoc(STATO.datiDocumenti, id) : null;
+    if (!t) return null;
+    return el('button', { type: 'button', classe: 'ag-pdf', onclick: function () { apriDocDi(t.f); } }, ['📎 ' + t.f.titolo]);
   }
   // ---------- v10.11: Rossana aggiunge, modifica, duplica ed elimina gli appuntamenti dall'app ----------
   // Lo script (10.8) manda per ogni appuntamento id e ci (= quale calendario) e l'elenco dei calendari modificabili.
@@ -4023,7 +4124,7 @@
   }
   // Dopo un salvataggio lo script manda subito gli appuntamenti aggiornati: la pagina si ridisegna al suo posto
   function dopoSalvataggio(r, ci) {
-    if (r && r.documenti && !r.documenti.errore) STATO.documenti = Promise.resolve(r.documenti);
+    if (r && r.documenti && !r.documenti.errore) { STATO.documenti = Promise.resolve(r.documenti); STATO.datiDocumenti = r.documenti; }   // v11.27
     if (STATO.visti) STATO.visti[ci === CI_DIVISE ? 'divise' : 'calendario'] = new Date().toISOString();   // quello che aggiunge Rossana non le fa il bollino
     var c = calendariDi(r && r.documenti).filter(function (x) { return x.ci === ci; })[0];
     if (c && STATO.calNascosti) delete STATO.calNascosti[c.nome];               // il calendario scelto torna visibile
@@ -4047,7 +4148,8 @@
     var fNote = el('textarea', { rows: '2', maxlength: '2000' });
     fTitolo.value = e.titolo || ''; fTutto.checked = !e.ora; fDal.value = e.data; fAl.value = fineEvento(e);
     fOra.value = e.ora || '17:00'; fOraF.value = e.oraFine || (e.ora ? e.ora : '18:00');
-    fLuogo.value = e.luogo || ''; fNote.value = e.note || '';
+    fLuogo.value = e.luogo || ''; fNote.value = notaEvento(e);
+    var fDoc = divise ? null : sceltaDocumento(dati, docEvento(e));        // v11.27 (n. 74): un documento collegato
     var chips = el('div', { classe: 'ev-chips', role: 'radiogroup', 'aria-label': 'Calendario' });
     function segnaChip() { Array.prototype.forEach.call(chips.children, function (l) { l.classList.toggle('scelto', +l.getAttribute('data-ci') === scelto); }); }
     cal.forEach(function (c) {
@@ -4089,6 +4191,7 @@
       ore,
       el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Luogo (si apre su Maps)' }), fLuogo]),
       el('label', { classe: 'ev-campo' }, [el('span', { testo: 'Note' }), fNote]),
+      fDoc ? el('label', { classe: 'ev-campo' }, [el('span', { testo: '📎 Documento' }), fDoc]) : null,
       errore,
       el('div', { classe: 'ev-azioni' }, [el('button', { type: 'button', testo: 'Annulla', onclick: chiudi }), salva]),
       divise ? null : el('p', { classe: 'ev-google' }, ['Compleanni e appuntamenti che si ripetono: ',
@@ -4104,6 +4207,8 @@
       errore.classList.add('nascosto');
       var richiesta = { cal: scelto, titolo: t, dal: dal, al: al, tutto: tutto, ora: tutto ? '' : fOra.value, oraFine: tutto ? '' : fOraF.value,
         luogo: fLuogo.value.trim(), note: fNote.value.trim() };
+      if (fDoc && fDoc.value) richiesta.note = ('[doc:' + fDoc.value + '] ' + richiesta.note).trim();   // v11.27: in testa, così non si perde
+      else if (divise && docEvento(e)) richiesta.note = ('[doc:' + docEvento(e) + '] ' + richiesta.note).trim();
       if (modo === 'modifica') { richiesta.id = e.id; richiesta.calDa = e.ci; }
       occupato(salva, true, 'Salvo…');
       chiama(modo === 'modifica' ? 'eventoModifica' : 'eventoNuovo', richiesta).then(function (r) {
@@ -4121,6 +4226,24 @@
     velo.addEventListener('keydown', function (x) { if (x.key === 'Escape') chiudi(); });
     document.body.appendChild(velo);
     setTimeout(function () { (modo === 'duplica' ? fDal : fTitolo).focus(); }, 30);
+  }
+  // v11.27 (n. 74): tendina con i documenti dell'app (Comunicazioni, Moduli, Verbali, Archivio), il più nuovo in alto
+  function sceltaDocumento(dati, scelto) {
+    dati = dati && dati.sezioni ? dati : STATO.datiDocumenti;
+    var sel = el('select', { 'aria-label': 'Documento collegato' });
+    sel.appendChild(el('option', { value: '', testo: '— Nessuno —' }));
+    var c = 0;
+    [['comunicazioni', 'Comunicazioni'], ['moduli', 'Moduli'], ['verbali', 'Verbali'], ['archivio', 'Archivio']].forEach(function (k) {
+      var l = elencoSezione(dati, k[0]) || [];
+      if (!l.length) return;
+      var g = el('optgroup', { label: k[1] });
+      l.forEach(function (f) { if (f.url) return; g.appendChild(el('option', { value: f.id, testo: (f.data ? dataCorta(f.data) + ' · ' : '') + f.titolo })); c++; });
+      sel.appendChild(g);
+    });
+    if (!c) return null;
+    sel.value = scelto || '';
+    if (scelto && sel.value !== scelto) sel.value = '';                        // documento spostato o cancellato
+    return sel;
   }
   function chiediElimina(e) {
     var velo = el('div', { classe: 'velo-doc' });
@@ -5098,7 +5221,7 @@
   }
   function apriAllegato(al) { var f = { id: al.id, titolo: al.titolo }; segnaVisto(f); apriFile(f); }
   function stessiDati(r) {
-    if (r && r.documenti && !r.documenti.errore) STATO.documenti = Promise.resolve(r.documenti);
+    if (r && r.documenti && !r.documenti.errore) { STATO.documenti = Promise.resolve(r.documenti); STATO.datiDocumenti = r.documenti; }   // v11.27
     if (r && Array.isArray(r.inArrivo)) STATO.inArrivo = Promise.resolve(r.inArrivo);
     aggiornaContatori();
     vaiA(STATO.pagina, true);
@@ -5706,20 +5829,41 @@
     misura(); reset(); disegna(0);
   }
 
+  // v11.27 (n. 74): avviso chiuso; toccandolo si apre (testo, fino al, documento, per Rossana Condividi · Modifica · Togli).
+  // Aprendolo, il documento collegato conta come visto: il NUOVO è dell'avviso.
+  var SVG_GIU = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+  var SVG_CLIP = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11l-8 8a5 5 0 0 1-7-7l8.5-8.5a3.5 3.5 0 0 1 5 5L10 17a2 2 0 0 1-3-3l7.5-7.5"/></svg>';
   function rigaAvviso(a, conAzioni, evidenza) {
+    STATO.avvisiAperti = STATO.avvisiAperti || {};
+    var nuovo = avvisoNuovo(a), aperto = !!(evidenza || STATO.avvisiAperti[a.id]);
     var piede = [];
-    if (a.allegato) piede.push(el('button', { type: 'button', classe: 'av-doc', onclick: function () { apriAllegato(a.allegato); } }, ['📎 ' + a.allegato.titolo]));
     if (a.scade) piede.push(el('span', { testo: 'fino al ' + dataCorta(a.scade) }));
     if (conAzioni) {
       piede.push(el('a', { classe: 'wa', href: linkWhatsapp(testoCondivisione(a)), target: '_blank', rel: 'noopener' }, [iconaWa(), 'Condividi']));
       piede.push(el('button', { type: 'button', classe: 'av-mini', testo: '✏️ Modifica', onclick: function () { apriModificaAvviso(a); } }));   // v11.21
       piede.push(el('button', { type: 'button', classe: 'av-mini', testo: 'Togli', onclick: function () { chiediTogli(a); } }));
     }
-    return el('div', { classe: 'av' + (evidenza ? ' evidenza' : ''), id: 'avviso-' + a.id }, [
-      el('h4', null, [a.titolo, avvisoNuovo(a) ? el('span', { classe: 'badge', testo: 'NUOVO' }) : null]),
+    var t = a.allegato ? trovaDoc(STATO.datiDocumenti, a.allegato.id) : null;
+    var corpo = el('div', { classe: 'av2-corpo', id: 'avc-' + a.id }, [
       a.testo ? el('p', { testo: a.testo }) : null,
+      a.allegato ? el('button', { type: 'button', classe: 'av2-doc', onclick: function () { apriAllegato(a.allegato); } }, [
+        el('span', { classe: 'tipo', 'aria-hidden': 'true', testo: ICONE_SEZ[t && t.sezione] || '📄' }), el('span', { classe: 'tx', testo: a.allegato.titolo }), frecciaTonda()]) : null,
       piede.length ? el('div', { classe: 'av-piede' }, piede) : null
     ]);
+    var giu = el('span', { classe: 'giu', 'aria-hidden': 'true' }); giu.innerHTML = SVG_GIU;
+    var clip = null; if (a.allegato) { clip = el('span', { classe: 'clip', 'aria-label': 'con documento' }); clip.innerHTML = SVG_CLIP; }
+    var testa = el('button', { type: 'button', classe: 'av2-testa', 'aria-expanded': String(aperto), 'aria-controls': 'avc-' + a.id }, [
+      el('span', { classe: 'tit' }, [a.titolo, nuovo ? el('span', { classe: 'badge', testo: 'NUOVO' }) : null]), clip, giu]);
+    var w = el('div', { classe: 'av2' + (aperto ? ' aperto' : '') + (nuovo ? ' nuovo' : '') + (evidenza ? ' evidenza' : ''), id: 'avviso-' + a.id }, [testa, corpo]);
+    nascondi_(corpo, !aperto);
+    function apri(si) {
+      STATO.avvisiAperti[a.id] = si;
+      w.classList.toggle('aperto', si); testa.setAttribute('aria-expanded', String(si)); nascondi_(corpo, !si);
+      if (si && a.allegato && a.allegato.id) segnaVisto({ id: a.allegato.id, titolo: a.allegato.titolo });
+    }
+    testa.addEventListener('click', function () { apri(!w.classList.contains('aperto')); });
+    if (aperto && a.allegato && a.allegato.id) setTimeout(function () { segnaVisto({ id: a.allegato.id }); }, 0);
+    return w;
   }
   // Un avviso a tutto schermo (da Ultime notizie, o da un link quando non è più in Home)
   function apriAvviso(a) {
@@ -5749,7 +5893,7 @@
     var errore = el('p', { classe: 'ev-errore nascosto', role: 'alert' });
     togli.addEventListener('click', function () {
       occupato(togli, true, 'Tolgo…'); annulla.disabled = true;
-      chiama('avvisoTogli', { id: a.id }).then(function (r) { chiudi(); stessiDati(r); toast('Tolto dalla Home: resta in Ultime notizie'); })
+      chiama('avvisoTogli', { id: a.id }).then(function (r) { chiudi(); stessiDati(r); toast('Tolto: resta per te in Documenti → Avvisi passati'); })
         .catch(function (x) {
           if (x.codice === 'SESSIONE') return;
           errore.textContent = x.message; errore.classList.remove('nascosto');
@@ -5758,7 +5902,7 @@
     });
     velo.appendChild(el('div', { classe: 'pannello ev-foglio', role: 'alertdialog', 'aria-label': 'Togliere l’avviso?' }, [
       el('h3', { testo: 'Togliere “' + a.titolo + '” dalla Home?' }),
-      el('p', { testo: 'Le famiglie non lo vedono più in Home. Resta in Comunicazioni → Ultime notizie.' }),
+      el('p', { testo: 'Le famiglie non lo vedono più. Resta solo per te in Documenti → Avvisi passati.' }),
       errore,
       el('div', { classe: 'ev-azioni' }, [annulla, togli])
     ]));
@@ -5777,7 +5921,7 @@
     velo.addEventListener('keydown', function (x) { if (x.key === 'Escape') chiudi(); });
     document.body.appendChild(velo);
     foglio.appendChild(el('h3', { testo: 'Modifica avviso' }));
-    foglio.appendChild(el('p', { testo: a.tolto ? 'È tolto dalla Home: resta tolto, cambia solo in Ultime notizie.' : 'Le famiglie vedono subito il testo nuovo. Chi l’aveva già letto non lo rivede come NUOVO.' }));
+    foglio.appendChild(el('p', { testo: a.tolto ? 'È tolto dalla Home: resta tolto.' : 'Le famiglie vedono subito il testo nuovo. Chi l’aveva già letto non lo rivede come NUOVO.' }));
     foglio.appendChild(moduloAvviso({ id: a.id, titolo: a.titolo, testo: a.testo, scade: a.scade, allegato: a.allegato }, chiudi, foglio));
   }
 
@@ -5813,16 +5957,21 @@
     fTitolo.value = b.titolo || ''; fTesto.value = b.testo || ''; fScade.value = b.scade || ''; fWa.checked = !modifica;
     if (modifica) fScade.removeAttribute('min');
     var allegato = b.allegato || null;
-    var rigaAllegato = el('div', { classe: 'ev-campo' });
-    function disegnaAllegato() {
-      rigaAllegato.innerHTML = '';
-      if (!allegato) { rigaAllegato.classList.add('nascosto'); return; }
-      rigaAllegato.classList.remove('nascosto');
-      rigaAllegato.appendChild(el('span', { testo: 'Documento allegato' }));
-      rigaAllegato.appendChild(el('div', { classe: 'fi-voce scelto' }, [el('span', { classe: 'tx' }, [el('strong', { testo: '📎 ' + allegato.titolo })]),
-        el('button', { type: 'button', classe: 'av-mini', testo: 'Togli', onclick: function () { allegato = null; disegnaAllegato(); } })]));
+    // v11.27 (n. 74): un documento collegato, scelto dalla tendina (con lo script 11.18 anche quando si modifica)
+    var rigaAllegato = el('label', { classe: 'ev-campo' });
+    var fDoc = sceltaDocumento(STATO.datiDocumenti, allegato && allegato.id);
+    if (fDoc && allegato && allegato.id && fDoc.value !== allegato.id) {         // documento in Ricevute o non più in elenco: resta scelto
+      fDoc.insertBefore(el('option', { value: allegato.id, testo: allegato.titolo }), fDoc.children[1] || null); fDoc.value = allegato.id;
     }
-    disegnaAllegato();
+    if (fDoc) {
+      fDoc.addEventListener('change', function () {
+        var o = fDoc.options[fDoc.selectedIndex];
+        allegato = fDoc.value ? { id: fDoc.value, titolo: o.textContent.replace(/^[^·]*· /, '') } : null;
+        if (fDoc.value) { var t = trovaDoc(STATO.datiDocumenti, fDoc.value); if (t) allegato.titolo = t.f.titolo; }
+      });
+      rigaAllegato.appendChild(el('span', { testo: '📎 Documento' }));
+      rigaAllegato.appendChild(fDoc);
+    } else nascondi_(rigaAllegato, true);
     var errore = el('p', { classe: 'ev-errore nascosto', role: 'alert' });
     var salva = el('button', { type: 'submit', classe: 'salva', testo: modifica ? 'Salva' : 'Pubblica' });
     var modulo = el('form', { novalidate: 'novalidate' }, [
@@ -7173,18 +7322,12 @@
     },
     // v10.12 → v10.28: "Avvisi e comunicazioni", sempre visibile: porta di Comunicazioni con il bollino dei documenti non aperti.
     // Con avvisi (o per la rappresentante) il riquadro dorato con gli avvisi; senza, una riga sola.
+    // v11.27 (n. 74): solo gli avvisi, chiusi (titolo, NUOVO, graffetta); toccandoli si aprono con il testo e il documento.
+    // Il riquadro non porta più a Comunicazioni: i documenti hanno la loro riga (blocco documentiPorta). Senza avvisi non compare.
     avvisi: function (b) {
       var admin = STATO.sessione.amministratore;
-      var titolo = b.titolo && b.titolo !== 'Avvisi' ? b.titolo : 'Avvisi e comunicazioni';
+      var titolo = b.titolo || 'Avvisi';
       var box = el('div');
-      var vaiCom = function () { apriScheda('comunicazioni', 0); };
-      function riga(testo) {
-        var sotto = el('small', { testo: testo });
-        if (!testo) { sotto.setAttribute('data-riga-com', '1'); sotto.textContent = rigaComunicazioni((STATO.contatori || {}).comunicazioni || 0); }
-        return el('button', { type: 'button', classe: 'porta', 'data-porta': 'comunicazioni', onclick: vaiCom }, [illPagina('comunicazioni'),
-          el('span', { classe: 'tx' }, [el('b', { testo: titolo }), sotto]), frecciaTonda()]);
-      }
-      box.appendChild(riga('Carico…'));
       Promise.all([STATO.documenti, STATO.inArrivo || Promise.resolve(null)]).then(function (r) {
         var tutti = avvisiDi(r[0]), arrivo = r[1];
         var cerca = STATO.avvisoDaMostrare; STATO.avvisoDaMostrare = null;
@@ -7194,10 +7337,9 @@
         var cercato = cerca ? tutti.filter(function (a) { return a.id === cerca; })[0] : null;
         if (cercato && !avvisoAttivo(cercato)) apriAvviso(cercato);            // link a un avviso che non è più in Home
         box.innerHTML = '';
-        if (!attivi.length && !admin && !festa.length) { box.appendChild(riga('')); applicaContatori(); return; }
+        if (!attivi.length && !admin && !festa.length) { applicaContatori(); return; }
         var card = el('section', { classe: 'riquadro oro' }, [
-          el('button', { type: 'button', classe: 'testa-porta', 'data-porta': 'comunicazioni', onclick: vaiCom }, [illPagina('comunicazioni'),
-            el('h3', { testo: titolo }), frecciaTonda()])
+          el('div', { classe: 'testa-avvisi' }, [illPagina('comunicazioni'), el('h3', { testo: titolo })])
         ]);
         if (admin) card.appendChild(el('div', { classe: 'admin-riga' }, [el('button', { type: 'button', classe: 'av-piu', testo: '+ Avviso / File', onclick: function () { apriPannello('avviso'); } })]));
         if (admin && arrivo && arrivo.length) {
@@ -7209,13 +7351,20 @@
         }
         if (festa.length) card.appendChild(avvisoFesta(festa));
         attivi.forEach(function (a) { card.appendChild(rigaAvviso(a, admin, cercato === a)); });
-        if (!attivi.length && !festa.length) card.appendChild(el('p', { classe: 'av-vuoto', testo: 'Nessun avviso in Home: le famiglie vedono solo la riga “Nessun avviso nuovo”.' }));
+        if (!attivi.length && !festa.length) card.appendChild(el('p', { classe: 'av-vuoto', testo: 'Nessun avviso: le famiglie non vedono questo riquadro.' }));
         box.appendChild(card);
         applicaContatori();
         segnaAvvisiVisti(attivi);
         if (cercato && avvisoAttivo(cercato)) setTimeout(function () { var n = $('avviso-' + cercato.id); if (n) n.scrollIntoView({ block: 'center' }); }, 50);
       });
       return box;
+    },
+    // v11.27 (n. 74): riga "Documenti" in Home, con il numero dei documenti nuovi
+    documentiPorta: function (b) {
+      var sotto = el('small', { 'data-riga-com': '1', testo: rigaComunicazioni((STATO.contatori || {}).comunicazioni || 0) });
+      var p = (STATO.dati.pagine || []).filter(function (x) { return x.id === 'comunicazioni'; })[0];
+      return el('button', { type: 'button', classe: 'porta', 'data-porta': 'comunicazioni', onclick: function () { vaiA('comunicazioni'); } }, [
+        illPagina('comunicazioni'), el('span', { classe: 'tx' }, [el('b', { testo: b.titolo || (p && p.titolo) || 'Documenti' }), sotto]), frecciaTonda()]);
     },
     // v10.28: Prossimi 7 giorni, sempre visibile: porta del Calendario; senza appuntamenti una riga sola
     prossimi: function (b) {
@@ -7240,7 +7389,9 @@
           righe.appendChild(el('div', { classe: 'prox-riga' + (g <= 1 ? ' urgente' : '') }, [
             el('span', { classe: 'quando', testo: quando }),
             e.colloquio ? el('span', { classe: 'cosa col-prox' }, e.nodi || [e.titolo]) : eCompleanno(e) ? el('span', { classe: 'cosa' }, [titoloEvento(e) + ' ', el('em', { testo: g === 0 ? '· oggi è il suo compleanno' : '· sarà il suo compleanno' })])
-              : el('span', { classe: 'cosa', testo: e.titolo }), e.ora ? el('span', { classe: 'ora', testo: e.ora }) : null
+              : el('span', { classe: 'cosa', testo: e.titolo }), e.ora ? el('span', { classe: 'ora', testo: e.ora }) : null,
+            (function () { var t = docEvento(e) ? trovaDoc(dati, docEvento(e)) : null;           // v11.27 (n. 74)
+              return t ? el('button', { type: 'button', classe: 'pdf', 'aria-label': 'Apri ' + t.f.titolo, onclick: function () { apriDocDi(t.f); } }, ['📎 PDF']) : null; })()
           ]));
         });
         box.appendChild(el('section', { classe: 'riquadro' }, [
@@ -8563,6 +8714,70 @@
         box.innerHTML = '';
         if (b.riserva) box.appendChild(RENDER.embed({ titolo: 'Elenco documenti', url: b.riserva, altezza: 560 }));
         else box.appendChild(el('div', { classe: 'vuoto', testo: 'Elenco non disponibile al momento.' }));
+      });
+      return box;
+    },
+    // v11.27 (n. 74): pagina Documenti — ricerca, un solo elenco per mese (Comunicazioni, Moduli, Verbali) con il colore del tipo,
+    // "Segna letti" piccolo, in fondo l'Archivio e, solo per Rossana, gli avvisi passati.
+    documentiTutti: function (b) {
+      var box = el('div');
+      box.appendChild(attesa('Carico i documenti…'));
+      STATO.documenti.then(function (dati) {
+        box.innerHTML = '';
+        STATO.datiDocumenti = dati || STATO.datiDocumenti;
+        var sezioni = b.sezioni || ['comunicazioni', 'moduli', 'verbali'], arch = b.archivio || 'archivio';
+        var nomi = { comunicazioni: 'Comunicazione', moduli: 'Modulo', verbali: 'Verbale', archivio: 'Archivio' };
+        var tutti = [], archivio = [];
+        sezioni.forEach(function (k) { (elencoSezione(dati, k) || []).forEach(function (f) { tutti.push({ f: f, k: k }); }); });
+        (elencoSezione(dati, arch) || []).forEach(function (f) { archivio.push({ f: f, k: arch }); });
+        var perData = function (x, y) { var a = x.f.data || '', c = y.f.data || ''; return a < c ? 1 : a > c ? -1 : 0; };
+        tutti.sort(perData); archivio.sort(perData);
+        if (!elencoSezione(dati, sezioni[0]) && b.riserva) { box.appendChild(RENDER.embed({ titolo: 'Elenco documenti', url: b.riserva, altezza: 560 })); return; }
+        var c = el('input', { classe: 'cerca', type: 'search', placeholder: 'Cerca', 'aria-label': 'Cerca tra i documenti' });
+        var tl = boxTuttiLetti(sezioni, 'comunicazioni'); tl.classList.add('compatto'); disegnaTuttiLetti(tl);
+        var lista = el('div');
+        box.appendChild(c); box.appendChild(tl); box.appendChild(lista);
+        function righe(dove, elenco, q) {
+          var mese = null, n = 0;
+          elenco.forEach(function (x) {
+            if (q && (x.f.titolo + ' ' + (x.f.nome || '')).toLowerCase().indexOf(q) < 0) return;
+            var p = x.f.data ? x.f.data.split('-') : null, m = p ? MESI[+p[1] - 1] + ' ' + p[0] : 'Senza data';
+            if (m !== mese) { dove.appendChild(el('div', { classe: 'mese', testo: m })); mese = m; }
+            dove.appendChild(rigaDocumento(x.f, nomi[x.k], x.k)); n++;
+          });
+          return n;
+        }
+        function altro(testo, quanti, apriFn) {
+          var corpo = el('div', { classe: 'nascosto' });
+          var giu = el('span', { classe: 'giu', 'aria-hidden': 'true' }); giu.innerHTML = SVG_GIU;
+          var bt = el('button', { type: 'button', classe: 'doc-altro', 'aria-expanded': 'false' }, [el('span', { classe: 'tx', testo: testo }), el('span', { classe: 'n', testo: String(quanti) }), giu]);
+          bt.addEventListener('click', function () {
+            var si = bt.getAttribute('aria-expanded') !== 'true';
+            bt.setAttribute('aria-expanded', String(si)); nascondi_(corpo, !si);
+            if (si && !corpo.firstChild) apriFn(corpo);
+          });
+          return [bt, corpo];
+        }
+        function disegna(filtro) {
+          lista.innerHTML = '';
+          var q = (filtro || '').toLowerCase().trim();
+          var n = righe(lista, tutti, q);
+          if (q) {                                                     // cercando, anche l'Archivio
+            var na = righe(lista, archivio, q);
+            if (!n && !na) lista.appendChild(el('div', { classe: 'vuoto', testo: 'Nessun documento trovato per "' + filtro + '".' }));
+            return;
+          }
+          if (!n) lista.appendChild(el('div', { classe: 'vuoto', testo: 'Nessun documento presente.' }));
+          if (archivio.length) altro('🗄️ Archivio', archivio.length, function (dove) { righe(dove, archivio, ''); }).forEach(function (x) { lista.appendChild(x); });
+          if (STATO.sessione.amministratore) {                          // gli avvisi passati li vede solo Rossana
+            var passati = (avvisiDi(dati) || []).filter(function (a) { return !avvisoAttivo(a); })
+              .sort(function (x, y) { return (x.creato || '') < (y.creato || '') ? 1 : -1; });
+            if (passati.length) altro('📢 Avvisi passati', passati.length, function (dove) { passati.forEach(function (a) { dove.appendChild(rigaAvvisoStorico(a)); }); })
+              .forEach(function (x) { lista.appendChild(x); });
+          }
+        }
+        c.addEventListener('input', function () { disegna(c.value); });
+        disegna('');
       });
       return box;
     },
