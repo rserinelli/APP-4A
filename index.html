@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- pagina 11.28 · 7 novembre 2026: pillole dorate in Documenti, avvisi passati via dalla Home (n. 75) -->
+<!-- pagina 11.29 · 7 novembre 2026: Segna letti toglie subito il pallino da tutte le pillole di Documenti (n. 75) -->
 <html lang="it">
 <head>
 <meta charset="utf-8">
@@ -2517,7 +2517,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '11.28', SCRIPT_NECESSARIO = '11.18';                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '11.29', SCRIPT_NECESSARIO = '11.18';                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -3082,6 +3082,7 @@
   }
   function aggiornaTuttiLetti() {
     Array.prototype.forEach.call(document.querySelectorAll('[data-tutti-letti]'), function (box) { if (box._sezioni) disegnaTuttiLetti(box); });
+    Array.prototype.forEach.call(document.querySelectorAll('.doc-pill'), function (p) { if (p._aggiorna) p._aggiorna(); });   // v11.29: pillole di Documenti
   }
   // Appuntamento nuovo = aggiunto in Google Calendar dopo l'ultima volta che questa email ha aperto il Calendario
   function eventoNuovo(e, dopo) { return !!(e.creato && dopo && e.creato > dopo); }
@@ -8759,11 +8760,18 @@
         if (!elenchi[STATO.docPill]) STATO.docPill = sezioni[0];
         var pill = el('div', { classe: 'doc-pill', role: 'tablist', 'aria-label': 'Tipo di documento' });
         PILL.forEach(function (x) {
-          var nNuovi = x[0] === arch ? 0 : elenchi[x[0]].filter(function (y) { return eNuovo(y.f); }).length;
-          var bt = el('button', { type: 'button', role: 'tab', 'data-pill': x[0], onclick: function () { STATO.docPill = x[0]; c.value = ''; disegna(''); } }, [x[1],
-            nNuovi ? el('span', { classe: 'conta', testo: nNuovi > 9 ? '9+' : String(nNuovi) }) : null]);
-          pill.appendChild(bt);
+          pill.appendChild(el('button', { type: 'button', role: 'tab', 'data-pill': x[0], onclick: function () { STATO.docPill = x[0]; c.value = ''; disegna(''); } }, [x[1]]));
         });
+        pill._aggiorna = function () {                                    // v11.29: pallino dei nuovi di ogni pillola, rifatto a ogni "visto" (anche Segna letti)
+          Array.prototype.forEach.call(pill.children, function (bt) {
+            var k = bt.getAttribute('data-pill'), n = k === arch ? 0 : elenchi[k].filter(function (y) { return eNuovo(y.f); }).length;
+            var b = bt.querySelector('.conta');
+            if (!n) { if (b) b.remove(); return; }
+            if (!b) { b = el('span', { classe: 'conta' }); bt.appendChild(b); }
+            b.textContent = n > 9 ? '9+' : String(n);
+          });
+        };
+        pill._aggiorna();
         var lista = el('div');
         box.appendChild(c); box.appendChild(pill); box.appendChild(tl); box.appendChild(lista);
         function righe(dove, elenco, q) {
