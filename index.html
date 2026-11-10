@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- pagina 12.0 · 10 novembre 2026: SONDAGGI, step 1 (n. 8). Release 12.0: pagina, script, contenuti e sw.js ripartono tutti da 12.0 -->
 <!-- pagina 11.29 · 7 novembre 2026: Segna letti toglie subito il pallino da tutte le pillole di Documenti (n. 75) -->
 <html lang="it">
 <head>
@@ -2092,6 +2093,262 @@
   .ver-chip.no { background: #fbe7e5; color: var(--danger); box-shadow: inset 0 0 0 2px var(--danger); }
   .ver-rifai { margin-top: 8px; padding: 9px 10px; border-radius: 10px; background: #fbe7e5; color: var(--danger); font-weight: 800; font-size: 14px; }
   @media (max-width: 360px) { .om-r { grid-template-columns: 24px 100px minmax(0, 1fr); gap: 6px; } .om-orari input { width: 46px; } .om-icone { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+
+  /* ---------- v12.0 (n. 8): SONDAGGI, step 1 — colori della scuola: #1c4587 blu, #78c5f1 azzurro, #d9f1fe azzurro chiaro,
+     #fff4d4 crema, #FDCA0D giallo (sul giallo testo blu). Verde solo per WhatsApp, rosso per errori, «−» e chi manca. ---------- */
+  .tile.larga { flex-direction: row; justify-content: flex-start; gap: 8px; padding: 6px 10px 6px 4px; border: 2px solid #FDCA0D; background: #fff4d4;
+    border-radius: 16px; font-size: 15px; font-weight: 900; text-align: left; color: #15243b; }
+  .tile.larga .ic img.ill, .tile.larga img.ill { width: 58px; height: 58px; margin: 0; }
+  .tile.larga .lbl { flex: 1; min-width: 0; line-height: 1.15; }
+  .griglia-larghe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-width: 560px; }
+  .griglia-larghe .tile.larga { min-height: 70px; }
+  .sd { color: #15243b; }
+  .sd-pills { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+  .sd-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 800;
+    background: #d9f1fe; color: #1c4587; line-height: 1.35; font-variant-numeric: tabular-nums; max-width: 100%; }
+  .sd-pill.crema { background: #fff4d4; }
+  .sd-pill.rosso { background: #fdf0ef; color: #a3302f; }
+  .sd-pill.grigio { background: #eef1f5; color: #4f5f72; }
+  .sd-pill.giallo { background: #FDCA0D; color: #1c4587; }
+  .sd-pill.scuro { background: #15243b; color: #fff; }
+  .sd-pill.lungo { white-space: normal; }
+  .sd-titolo { margin: 0 0 14px; font-size: 22px; font-weight: 900; line-height: 1.2; overflow-wrap: anywhere; }
+  .sd-indietro { display: inline-flex; align-items: center; gap: 2px; min-height: 40px; margin: -6px 0 4px; padding: 0 8px 0 0; border: 0; background: none;
+    color: #1c4587; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer; }
+  .sd-card { background: #fff; border: 1px solid #d6e4ef; border-radius: 14px; box-shadow: 0 1px 2px rgba(20,50,90,.06), 0 4px 16px rgba(20,50,90,.06); }
+  .sd-blocco { padding: 14px; margin-bottom: 10px; }
+  .sd-blocco > h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-size: 15.5px; font-weight: 900; }
+  .sd-blocco > h3 span { flex: 1; min-width: 0; }
+  .sd-lista { display: grid; gap: 8px; }
+  .sd-opz { position: relative; overflow: hidden; display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border: 2px solid #d6e4ef;
+    border-radius: 14px; background: #fff; color: #15243b; font: inherit; text-align: left; cursor: pointer; }
+  .sd-opz.on { border-color: #1c4587; background: #d9f1fe; }
+  .sd-opz.pieno { opacity: .45; }
+  .sd-opz .sd-barra { position: absolute; left: 0; top: 0; bottom: 0; transition: width .35s ease; }
+  .sd-opz > * { position: relative; }
+  .sd-opz .sd-barra { position: absolute; }
+  .sd-pall { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 2px solid #9aa8b8; display: grid; place-items: center; background: #fff; }
+  .sd-pall.quadro { border-radius: 6px; }
+  .sd-opz.on .sd-pall { border-color: #1c4587; background: #1c4587; }
+  .sd-opz .sd-tx { flex: 1; min-width: 0; }
+  .sd-opz .sd-tx b { display: block; font-size: 15.5px; font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+  .sd-opz .sd-tx small { display: block; font-size: 13px; color: #5a6b80; font-weight: 700; }
+  .sd-opz .sd-num { flex: none; text-align: right; line-height: 1.1; }
+  .sd-opz .sd-num b { display: block; font-size: 17px; font-weight: 900; font-variant-numeric: tabular-nums; }
+  .sd-opz .sd-num small { font-size: 11.5px; color: #4f5f72; font-weight: 800; }
+  .sd-nomi { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 2px 0; }
+  .sd-nomi span { padding: 2px 8px; border-radius: 8px; background: #f6f9fc; border: 1px solid #e1e9f1; font-size: 12.5px; font-weight: 800; }
+  .sd-nomi span.tu { background: #FDCA0D; color: #1c4587; border-color: #FDCA0D; }
+  .sd-nomi span small { font-size: 11px; color: #5a6b80; font-weight: 700; margin-left: 3px; }
+  .sd-foto-griglia { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .sd-foto-griglia > div { display: flex; flex-direction: column; }
+  .sd-foto-griglia > div > .sd-fotoopz { flex: 1; }
+  .sd-fotoopz { position: relative; display: flex; flex-direction: column; padding: 0; border: 3px solid #d6e4ef; border-radius: 14px; background: #fff;
+    color: #15243b; font: inherit; text-align: left; cursor: pointer; overflow: hidden; }
+  .sd-fotoopz.on { border-color: #FDCA0D; }
+  .sd-fotoopz.pieno { opacity: .45; }
+  .sd-fotoopz .sd-img { width: 100%; aspect-ratio: 1; background: #c4e7fb center / cover no-repeat; display: grid; place-items: center; color: #1c4587; }
+  .sd-fotoopz .sd-spunta { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; border-radius: 50%; background: #FDCA0D; color: #1c4587; display: grid; place-items: center; }
+  .sd-fotoopz .sd-ft { padding: 8px 10px 10px; }
+  .sd-fotoopz .sd-ft b { display: block; font-size: 14px; font-weight: 800; line-height: 1.2; overflow-wrap: anywhere; }
+  .sd-fotoopz .sd-ft small { font-size: 12.5px; font-weight: 800; color: #4f5f72; }
+  .sd-traccia { height: 10px; border-radius: 5px; background: #eef1f5; overflow: hidden; margin-top: 6px; }
+  .sd-traccia i { display: block; height: 100%; background: #78c5f1; border-radius: 5px; }
+  .sd-traccia i.primo { background: #FDCA0D; }
+  .sd-bottoni { display: flex; gap: 6px; }
+  .sd-bottoni button { flex: 1; min-width: 0; min-height: 58px; padding: 4px; border-radius: 12px; border: 2px solid #d6e4ef; background: #fff; color: #4f5f72;
+    font: inherit; font-size: 16px; font-weight: 900; cursor: pointer; line-height: 1.1; }
+  .sd-bottoni button small { display: block; font-size: 12px; font-weight: 800; opacity: .85; }
+  .sd-bottoni button.si.on { border-color: #1c4587; background: #1c4587; color: #fff; }
+  .sd-bottoni button.forse.on { border-color: #FDCA0D; background: #fff4d4; color: #1c4587; }
+  .sd-bottoni button.no.on { border-color: #9aa8b8; background: #eef1f5; color: #4f5f72; text-decoration: line-through; }
+  .sd-data { padding: 10px 0; border-top: 1px solid #e6eef5; }
+  .sd-data:first-of-type { border-top: 0; padding-top: 0; }
+  .sd-data > b { display: block; margin-bottom: 6px; font-size: 14.5px; }
+  .sd-conta-data { display: block; margin-top: 4px; font-size: 12.5px; font-weight: 800; color: #4f5f72; }
+  .sd-data .sd-nomi-data { display: block; margin-top: 2px; font-size: 12px; font-weight: 700; color: #1c4587; white-space: pre-line; }
+  .sd-manca { margin-top: 12px; padding: 12px 14px; border: 1.5px dashed #f2c9c4; border-radius: 14px; background: #fffafa; }
+  .sd-manca > div:first-child { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+  .sd-manca > div:first-child b { flex: 1; font-size: 14.5px; font-weight: 900; color: #a3302f; }
+  .sd-manca > div:first-child small { font-size: 12.5px; font-weight: 800; color: #a3302f; }
+  .sd-manca .sd-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+  .sd-manca .sd-chips span { padding: 3px 9px; border-radius: 8px; background: #fdf0ef; color: #a3302f; font-size: 13px; font-weight: 800; }
+  .sd-manca.solo { margin-top: 12px; }
+  .sd-tutti { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 10px 14px; border-radius: 14px; background: #d9f1fe; color: #1c4587; font-size: 15px; font-weight: 900; }
+  .sd-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 52px; padding: 0 16px; border-radius: 12px; background: #1c4587;
+    color: #fff; border: 0; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer; text-decoration: none; box-sizing: border-box; text-align: center; }
+  .sd-btn.ritira { background: #fff; color: #a3302f; border: 2px solid #f2c9c4; }
+  .sd-btn.spento, .sd-btn:disabled { background: #c9d6e2; color: #fff; cursor: default; }
+  .sd-btn.wa { background: #128c4b; }
+  .sd-btn.oro { background: #FDCA0D; color: #1c4587; font-weight: 900; }
+  .sd-btn.bianco { background: #fff; color: #1c4587; border: 2px solid #FDCA0D; }
+  .sd-btn2 { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 46px; padding: 0 14px; border-radius: 12px; background: #fff;
+    border: 1px solid #a6d8f5; color: #1c4587; font: inherit; font-size: 14.5px; font-weight: 800; cursor: pointer; width: 100%; box-sizing: border-box; text-decoration: none; }
+  .sd-btn2.rosso { color: #a3302f; border-color: #f2c9c4; }
+  .sd-azioni-giu { display: grid; gap: 8px; margin-top: 14px; }
+  .sd-chi { display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 12px; border-radius: 12px; background: #d9f1fe; color: #1c4587; }
+  .sd-chi .sd-av { flex: none; width: 34px; height: 34px; border-radius: 50%; background: #1c4587; color: #fff; display: grid; place-items: center; font-weight: 900; }
+  .sd-chi span:last-child { flex: 1; min-width: 0; }
+  .sd-chi b { display: block; font-size: 14.5px; }
+  .sd-chi small { font-size: 12.5px; font-weight: 700; }
+  .sd-chi.gia { background: #fff4d4; border: 2px solid #FDCA0D; }
+  .sd-soglia { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 10px 14px; border-radius: 14px; background: #fff4d4; color: #1c4587; }
+  .sd-soglia b { flex: 1; font-size: 14.5px; font-weight: 900; }
+  .sd-soglia span { padding: 3px 10px; border-radius: 999px; background: #1c4587; color: #fff; font-size: 13px; font-weight: 900; }
+  .sd-fatto { padding: 24px 16px 18px; text-align: center; margin-bottom: 12px; }
+  .sd-fatto .sd-tondo { display: inline-grid; place-items: center; width: 84px; height: 84px; border-radius: 50%; background: #1c4587; color: #fff; }
+  .sd-fatto h2 { margin: 14px 0 10px; font-size: 24px; font-weight: 900; }
+  .sd-fatto .sd-pills { justify-content: center; margin: 0; }
+  .sd-ris { padding: 14px; display: grid; gap: 12px; }
+  .sd-ris > b { font-size: 15px; }
+  .sd-riga-ris { padding: 0 4px; }
+  .sd-riga-ris.mio { margin: 0 -6px; padding: 10px 10px 12px; border: 3px solid #FDCA0D; border-radius: 14px; background: #fff4d4; }
+  .sd-riga-ris .sd-testa { display: flex; align-items: baseline; gap: 8px; }
+  .sd-riga-ris .sd-testa b:first-child { flex: 1; min-width: 0; font-size: 15px; font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+  .sd-riga-ris .sd-testa b:last-child { flex: none; font-size: 15px; font-weight: 900; font-variant-numeric: tabular-nums; }
+  .sd-riga-ris .sd-pills { margin-bottom: 4px; }
+  .sd-voce { display: block; width: 100%; box-sizing: border-box; padding: 13px 14px; margin-bottom: 10px; border: 1px solid #d6e4ef; border-radius: 14px; background: #fff;
+    color: #15243b; font: inherit; text-align: left; cursor: pointer; box-shadow: 0 1px 2px rgba(20,50,90,.06), 0 4px 16px rgba(20,50,90,.06); }
+  .sd-voce > b { display: block; font-size: 17px; font-weight: 900; line-height: 1.25; overflow-wrap: anywhere; }
+  .sd-voce .sd-prog { display: flex; align-items: center; gap: 8px; margin-top: 9px; }
+  .sd-voce .sd-prog span { flex: 1; height: 8px; border-radius: 4px; background: #eef1f5; overflow: hidden; }
+  .sd-voce .sd-prog span i { display: block; height: 100%; background: #1c4587; border-radius: 4px; }
+  .sd-voce .sd-prog small { flex: none; font-size: 12.5px; font-weight: 900; color: #4f5f72; }
+  .sd-voce > small { display: block; margin-top: 6px; font-size: 13px; font-weight: 800; color: #5a6b80; }
+  .sd-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 12px; }
+  .sd-tabs button { flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 8px 12px; border: 1px solid #d6e4ef; background: #fff;
+    color: #15243b; border-radius: 999px; font: inherit; font-weight: 800; font-size: 13.5px; cursor: pointer; }
+  .sd-tabs button.on { background: #FDCA0D; border-color: #FDCA0D; color: #1c4587; }
+  .sd-tabs button i { font-style: normal; min-width: 20px; height: 20px; padding: 0 5px; box-sizing: border-box; border-radius: 10px; background: rgba(21,36,59,.1);
+    font-size: 12px; display: inline-grid; place-items: center; }
+  .sd-tabs button.on i { background: rgba(255,255,255,.4); }
+  .sd-nuovo { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 52px; margin-bottom: 14px; border: 0; border-radius: 14px;
+    background: #FDCA0D; color: #1c4587; font: inherit; font-size: 16px; font-weight: 900; cursor: pointer; }
+  .sd-vuoto { padding: 22px 14px; text-align: center; color: #5a6b80; font-weight: 800; }
+  .sd-anello { display: flex; align-items: center; gap: 16px; padding: 14px 16px; margin-bottom: 12px; }
+  .sd-anello > span { flex: 1; min-width: 0; }
+  .sd-anello > span > b { display: block; font-size: 17px; font-weight: 900; }
+  .sd-anello button { margin-top: 8px; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px; border: 0; border-radius: 10px;
+    background: #fdf0ef; color: #a3302f; font: inherit; font-size: 14px; font-weight: 900; cursor: pointer; }
+  .sd-banner { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 8px 12px; border-radius: 12px; background: #fff4d4; color: #1c4587; font-size: 13.5px; font-weight: 900; }
+  .sd-mancante { padding: 10px 12px; margin-bottom: 8px; }
+  .sd-mancante > div:first-child { display: flex; align-items: center; gap: 8px; }
+  .sd-mancante > div:first-child > span { flex: 1; min-width: 0; }
+  .sd-mancante b { display: block; font-size: 15px; font-weight: 800; }
+  .sd-ico { flex: none; width: 44px; height: 44px; border-radius: 12px; border: 0; display: grid; place-items: center; cursor: pointer; text-decoration: none; }
+  .sd-ico.wa { background: #128c4b; color: #fff; }
+  .sd-ico.mano { background: #fff4d4; color: #1c4587; }
+  .sd-az { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .sd-az button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; min-height: 80px; padding: 4px; border: 1px solid #d6e4ef;
+    border-radius: 14px; background: #fff; color: #1c4587; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; line-height: 1.15; text-align: center; }
+  .sd-az button.rosso { color: #a3302f; }
+  .sd-giro .sd-prog2 { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .sd-giro .sd-prog2 b { flex: none; font-size: 15px; font-weight: 900; }
+  .sd-giro .sd-prog2 span { flex: 1; height: 6px; border-radius: 3px; background: #eef1f5; overflow: hidden; }
+  .sd-giro .sd-prog2 span i { display: block; height: 100%; background: #128c4b; }
+  .sd-dest { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .sd-dest .sd-av { flex: none; width: 40px; height: 40px; border-radius: 50%; background: #d9f1fe; color: #1c4587; display: grid; place-items: center; font-weight: 900; }
+  .sd-dest span:last-child { flex: 1; min-width: 0; }
+  .sd-dest b { display: block; font-size: 15.5px; }
+  .sd-dest small { font-size: 13px; color: #5a6b80; font-weight: 700; }
+  .sd-due { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; margin-top: 10px; }
+  .sd-err { margin: 8px 2px 0; font-size: 14px; font-weight: 800; color: #a3302f; }
+  /* Home */
+  .sd-home { padding: 12px; border: 2px solid #FDCA0D; }
+  .sd-home > div:first-child { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .sd-home > div:first-child .ill { width: 46px; height: 46px; }
+  .sd-home > div:first-child b { flex: 1; font-size: 17px; font-weight: 900; }
+  .sd-home-voce { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px; margin-top: 6px; border: 1px solid #fde59a; border-radius: 12px;
+    background: #fff4d4; color: #15243b; font: inherit; text-align: left; cursor: pointer; }
+  .sd-home-voce > span:first-child { flex: 1; min-width: 0; }
+  .sd-home-voce > span:first-child b { display: block; font-size: 15px; font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; margin-bottom: 5px; }
+  .sd-home-voce .sd-vai { flex: none; min-width: 64px; min-height: 38px; padding: 0 12px; border-radius: 10px; background: #fff; color: #1c4587; border: 1px solid #a6d8f5;
+    display: grid; place-items: center; font-size: 13.5px; font-weight: 900; box-sizing: border-box; }
+  .sd-home-voce .sd-vai.vota { background: #1c4587; color: #fff; border-color: #1c4587; }
+  /* la torta */
+  .sd-lbl { display: block; font-size: 11.5px; font-weight: 800; color: #4f5f72; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+  .sd-in { width: 100%; box-sizing: border-box; min-height: 46px; padding: 0 12px; border: 1.5px solid #a6d8f5; border-radius: 10px; font: inherit; font-size: 16px;
+    font-weight: 700; color: #15243b; background: #fff; }
+  .sd-in.grande { font-size: 18px; font-weight: 900; min-height: 52px; }
+  .sd-torta { margin-top: 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .sd-strato { min-width: 0; position: relative; border-radius: 16px; padding: 10px 12px 12px; background: #d9f1fe; color: #1c4587; box-shadow: 0 3px 0 rgba(20,50,90,.14); }
+  .sd-strato-testa { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .sd-strato-testa .sd-su { flex: none; display: flex; flex-direction: column; gap: 2px; }
+  .sd-strato-testa .sd-su button { width: 30px; height: 22px; border: 0; border-radius: 6px; background: rgba(255,255,255,.7); color: inherit; display: grid; place-items: center; cursor: pointer; padding: 0; }
+  .sd-strato-testa .sd-su button:disabled { opacity: .3; cursor: default; }
+  .sd-strato-testa > span:nth-child(2) { flex: 1; min-width: 0; }
+  .sd-strato-testa small { display: block; font-size: 11px; font-weight: 900; letter-spacing: .05em; text-transform: uppercase; opacity: .8; }
+  .sd-strato-testa input { width: 100%; box-sizing: border-box; min-height: 38px; padding: 0 8px; border: 1.5px solid rgba(20,50,90,.15); border-radius: 9px;
+    background: rgba(255,255,255,.85); font: inherit; font-size: 16px; font-weight: 800; color: #15243b; }
+  .sd-meno { flex: none; width: 32px; height: 32px; border-radius: 50%; border: 0; background: #d23c3c; color: #fff; font: inherit; font-size: 21px; font-weight: 900;
+    line-height: 1; cursor: pointer; display: grid; place-items: center; padding: 0; }
+  .sd-meno.piccolo { width: 28px; height: 28px; font-size: 18px; }
+  .sd-riga { display: flex; align-items: center; gap: 8px; }
+  .sd-riga + .sd-riga { margin-top: 6px; }
+  .sd-riga .sd-segno { flex: none; width: 20px; height: 20px; border: 2px solid currentColor; border-radius: 50%; background: #fff; box-sizing: border-box; }
+  .sd-riga .sd-segno.quadro { border-radius: 5px; }
+  .sd-riga .sd-fotobtn { flex: none; width: 52px; height: 52px; border-radius: 10px; border: 2px dashed currentColor; background: #fff center / cover no-repeat; color: inherit;
+    display: grid; place-items: center; cursor: pointer; padding: 0; }
+  .sd-riga .sd-fotobtn.piena { border-style: solid; }
+  .sd-riga input { flex: 1; min-width: 0; box-sizing: border-box; min-height: 42px; padding: 0 10px; border: 1.5px solid rgba(20,50,90,.15); border-radius: 10px;
+    font: inherit; font-size: 16px; font-weight: 700; color: #15243b; background: #fff; }
+  .sd-riga input[type=date] { flex: 3; } .sd-riga input[type=time] { flex: 2; }
+  .sd-agg { display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; margin-top: 6px; padding: 0 10px; border: 2px dashed rgba(20,50,90,.22); border-radius: 10px;
+    background: rgba(255,255,255,.55); color: inherit; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; }
+  .sd-interr { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 46px; margin-top: 6px; padding: 0 12px; border: 0; border-radius: 10px;
+    background: rgba(255,255,255,.75); color: inherit; font: inherit; font-size: 14.5px; font-weight: 800; cursor: pointer; text-align: left; }
+  .sd-interr > span:nth-child(2) { flex: 1; }
+  .sd-int { flex: none; width: 48px; height: 28px; border-radius: 14px; background: #c9d6e2; position: relative; }
+  .sd-int i { position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); transition: left .15s; }
+  .sd-int.on { background: #1c4587; } .sd-int.on i { left: 23px; }
+  .sd-max { display: flex; align-items: center; gap: 8px; margin-top: 6px; padding: 6px 10px; border-radius: 10px; background: rgba(255,255,255,.75); }
+  .sd-max b:first-child { flex: 1; font-size: 14px; }
+  .sd-max button { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid currentColor; background: #fff; color: inherit; font: inherit; font-size: 20px; font-weight: 900; cursor: pointer; padding: 0; }
+  .sd-max b:nth-child(3) { min-width: 54px; text-align: center; font-size: 15px; font-weight: 900; }
+  .sd-tags { display: flex; gap: 6px; }
+  .sd-tags span { flex: 1; min-height: 36px; border-radius: 10px; display: grid; place-items: center; font-size: 13px; font-weight: 900; background: #fff; border: 1.5px solid rgba(20,50,90,.15); }
+  .sd-sulle { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.7); font-size: 14px; font-weight: 800; }
+  .sd-piatto-vuoto { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 90px; border: 2.5px dashed #a6d8f5; border-radius: 16px;
+    background: rgba(255,255,255,.6); color: #1c4587; font-size: 14.5px; font-weight: 800; text-align: center; }
+  .sd-piatto { height: 14px; margin: 0 -6px; border-radius: 0 0 50% 50% / 0 0 100% 100%; background: #c9d6e2; }
+  .sd-h3 { margin: 22px 0 10px; font-size: 17px; font-weight: 800; }
+  .sd-pezzi { padding: 10px; border-radius: 16px; background: #fff; border: 1px solid #d6e4ef; }
+  .sd-pezzi-tit { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; color: #1c4587; font-size: 13px; font-weight: 900; letter-spacing: .03em; }
+  .sd-pezzi-tit.altro { margin-top: 14px; color: #4f5f72; }
+  .sd-pezzi-g { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .sd-pezzi-g.tre { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .sd-pezzo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 74px; padding: 6px 3px; border-radius: 14px;
+    border: 2px dashed #1c4587; background: #d9f1fe; color: #1c4587; font: inherit; font-size: 12px; font-weight: 900; line-height: 1.15; text-align: center; cursor: pointer;
+    box-shadow: 0 2px 0 rgba(20,50,90,.12); overflow-wrap: anywhere; }
+  .sd-pezzo.extra { border-style: solid; border-color: transparent; }
+  .sd-pezzo.usato { opacity: .35; box-shadow: none; cursor: default; }
+  .sd-tre { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .sd-due2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .sd-big { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 92px; border: 2px solid #d6e4ef; border-radius: 14px;
+    background: #fff; color: #15243b; font: inherit; font-size: 13.5px; font-weight: 900; cursor: pointer; padding: 8px 4px; text-align: center; }
+  .sd-big small { font-size: 11px; font-weight: 800; line-height: 1.2; }
+  .sd-big.on { border-color: #1c4587; background: #d9f1fe; color: #1c4587; }
+  .sd-big.on.crema { background: #fff4d4; }
+  .sd-chiude { padding: 12px 14px; display: flex; gap: 8px; }
+  .sd-chiude label { min-width: 0; }
+  .sd-chiude label:first-child { flex: 3; } .sd-chiude label:last-child { flex: 2; }
+  .sd-sw { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 54px; padding: 6px 2px; border: 0; border-top: 1px solid #e6eef5; background: none;
+    color: #15243b; font: inherit; font-size: 15px; font-weight: 800; text-align: left; cursor: pointer; }
+  .sd-sw:first-child { border-top: 0; }
+  .sd-sw > span:first-child { flex: 1; min-width: 0; }
+  /* anteprima a tutto schermo */
+  .sd-prev { position: fixed; inset: 0; z-index: 58; background: #eaf6fd; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .sd-prev-testa { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #FDCA0D; color: #1c4587; }
+  .sd-prev-testa b { flex: 1; font-size: 15px; font-weight: 900; letter-spacing: .04em; }
+  .sd-prev-testa button { min-height: 38px; padding: 0 10px; border: 1.5px solid #1c4587; border-radius: 10px; background: transparent; color: #1c4587; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
+  .sd-prev-corpo { max-width: 560px; margin: 0 auto; padding: 14px 16px 40px; box-sizing: border-box; }
+  .sd-prev-tasti { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  @media (max-width: 359px) {
+    .sd-prev-corpo { padding: 12px 12px 40px; }
+    .sd-pezzi-g { gap: 4px; } .sd-pezzo { font-size: 11px; min-height: 70px; }
+    .sd-az button { font-size: 12px; }
+    .tile.larga { font-size: 14px; padding: 6px 8px 6px 2px; } .tile.larga .ic img.ill, .tile.larga img.ill { width: 48px; height: 48px; }
+  }
 </style>
 </head>
 <body>
@@ -2517,7 +2774,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '11.29', SCRIPT_NECESSARIO = '11.18';                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.0', SCRIPT_NECESSARIO = '12.0';   // v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -2531,17 +2788,25 @@
     if (!c || !Array.isArray(c.pagine)) return c;
     c.pagine.forEach(function (p) {
       var bl = p.blocchi || [];
-      if (p.id === 'home' && !bl.some(function (b) { return b.tipo === 'documentiPorta'; })) {
-        var i = -1;
-        bl.forEach(function (b, j) { if (b.tipo === 'prossimi') i = j; });
-        if (i >= 0) bl.splice(i + 1, 0, { tipo: 'documentiPorta' });
+      if (p.id === 'home') {                                               // v12.0 (n. 8): niente riga Documenti (c'è il riquadro grande)
         bl.forEach(function (b) { if (b.tipo === 'avvisi' && (!b.titolo || b.titolo === 'Avvisi e comunicazioni')) b.titolo = 'Avvisi'; });
+        if (!bl.some(function (b) { return b.tipo === 'sondaggiHome'; })) {   // v12.0: riquadro dei sondaggi dopo saluto e colloqui
+          var k = 0;
+          bl.forEach(function (b, j) { if (b.tipo === 'saluto' || b.tipo === 'colloqui') k = j + 1; });
+          bl.splice(k, 0, { tipo: 'sondaggiHome' });
+        }
       }
+      if (p.id === 'comunicazioni' && (!p.ill || p.ill === 'megafono')) p.ill = 'documenti';   // v12.0: icona nuova di Rossana
       if (p.id === 'comunicazioni' && !bl.some(function (b) { return b.tipo === 'documentiTutti'; })) {
         p.titolo = 'Documenti'; p.breve = 'Documenti'; p.descrizione = '';
         p.blocchi = [{ tipo: 'documentiTutti', sezioni: ['comunicazioni', 'moduli', 'verbali'], archivio: 'archivio' }];
       }
     });
+    if (!c.pagine.some(function (p) { return p.id === 'sondaggi'; })) {   // v12.0 (n. 8): la pagina Sondaggi (non serve toccare Contenuti.gs)
+      var dopo = -1;
+      c.pagine.forEach(function (p, j) { if (p.id === 'comunicazioni') dopo = j; });
+      c.pagine.splice(dopo + 1, 0, { id: 'sondaggi', titolo: 'Sondaggi', breve: 'Sondaggi', ill: 'sondaggi', inHome: false, illTitolo: true, blocchi: [{ tipo: 'sondaggi' }] });
+    }
     return c;
   }
   function soloGuardare() { return !!(STATO.sessione && STATO.sessione.preside); }      // v11.24 (n. 71): il preside
@@ -2636,7 +2901,7 @@
   $('btnAggiorna').addEventListener('click', function () { chiudiMenu(); aggiornaTutto(); });
   // v11.7: un foglio aperto o un campo in cui si sta scrivendo: la pagina si ridisegna dopo, per non perdere niente
   function occupatoLoSchermo() {
-    if (document.querySelector('.velo-doc, .menu-file, .lb-lettore, .fs')) return true;   // v11.13: anche con la sorpresa del compleanno aperta
+    if (document.querySelector('.velo-doc, .menu-file, .lb-lettore, .fs, .sd-prev')) return true;   // v12.0: anche l'anteprima del sondaggio   // v11.13: anche con la sorpresa del compleanno aperta
     var a = document.activeElement;
     return !!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && $('contenuto').contains(a));
   }
@@ -2700,6 +2965,8 @@
     if (d === 'ricevimento') { vaiA('ricevimento'); return; }          // v11.12: dalle notifiche dei colloqui     // v11.2: con "Fondo cassa" già scelto
     var dc = d.match(/^doc-([\w-]{10,100})$/);                         // v10.27: .../#doc-<id> apre un file (Condividi della casella ⋯)
     if (dc) { apriDocDaLink(dc[1]); return; }
+    var sd = d.match(/^sondaggio-(sd_[\w-]+)$/);                         // v12.0 (n. 8): link del sondaggio su WhatsApp
+    if (sd) { apriSondaggio(sd[1]); return; }
     var m = d.match(/^avviso-(av_[\w-]+)$/);
     if (m) STATO.avvisoDaMostrare = m[1];
     // v10.14: .../#libro-mat-42 apre il libro su quella pagina
@@ -2707,6 +2974,11 @@
     if (lb) { STATO.libroDaAprire = { libro: lb[1], n: numDaEt(lb[2]) }; vaiA('libri'); }
   }
 
+  window.addEventListener('hashchange', function () {                  // v12.0: link #sondaggio-… con l'app già aperta
+    var h = (location.hash || '').replace(/^#/, '');
+    if (!h || !STATO.sessione || !STATO.dati) return;
+    DESTINAZIONE = h; vaiADestinazione();
+  });
   function el(tag, attr, figli) {
     var n = document.createElement(tag);
     if (attr) for (var k in attr) {
@@ -2735,6 +3007,7 @@
     nav.appendChild(el('div', { classe: 'menu-testa' }, [el('img', { classe: 'stemma', src: IMMAGINI.stemma, alt: '' }),
       el('span', { classe: 'tx' }, [el('b', { testo: tt.titolo }), el('small', { testo: tt.sotto })]), chiudi]));
     STATO.dati.pagine.forEach(function (p) {
+      if (p.id === 'sondaggi' && !STATO.sessione.amministratore && soloSenzaAlunno() && !STATO.sdInvitato) return;   // v12.0
       nav.appendChild(el('button', { classe: 'voce', 'data-id': p.id, onclick: function () { vaiA(p.id); chiudiMenu(); } }, [
         iconaPagina(p), el('span', { classe: 'tx', testo: p.titolo }), p.url ? svgSpan('esterno', SVG_ESTERNO) : null
       ]));
@@ -2798,6 +3071,8 @@
       else main.appendChild(el('div', { style: 'height:16px' }));
     }
     if (id === 'contabilita' && !ridisegno && soloSenzaAlunno() && STATO.schede['contabilita-0'] === undefined) STATO.schede['contabilita-0'] = SCHEDA_CLASSE;   // v11.2
+    if (id === 'sondaggi' && !ridisegno && !STATO.sdTieni) { STATO.sdAperto = null; STATO.sdEdit = null; STATO.sdFatto = null; STATO.sdComeFamiglia = false; }   // v12.0
+    if (id === 'sondaggi') { STATO.sdTieni = false; if (STATO.sdAperto || STATO.sdEdit) main.innerHTML = ''; }
     if (id === 'comunicazioni' && !ridisegno) STATO.docPill = 'comunicazioni';   // v11.28 (n. 75): si entra sempre su COMUNICAZIONI
     if (id === 'calendario' && !ridisegno) calendarioVisto();          // prima di disegnare: gli appuntamenti nuovi restano segnati NUOVO in questa visita
     if (id === 'divise' && !ridisegno) diviseViste();                  // lo stesso per le date delle divise
@@ -3132,11 +3407,14 @@
         divise: STATO.visti
           ? futuri(elencoDivise(dati) || []).filter(function (e) { return eventoNuovo(e, STATO.visti.divise); }).length
           : 0,
+        sondaggi: sdAdmin() ? 0 : (sondaggiDi(dati) || []).filter(sdDaVotare).length,      // v12.0 (n. 8): per Rossana niente bollino (come nella tela)
         ricevimento: (function (col) {                                    // v11.6: avvisi dei colloqui + richieste da confermare (maestra)
           if (!col) return 0;
           return avvisiColAttuali(col).length + attesaAttuali(col).length;   // v11.28 (n. 75): senza quelli superati
         })(colloquiDi(dati))
       };
+      var invitato = !!((sondaggiDi(dati) || []).length);                 // v12.0: i profili docente vedono Sondaggi nel menu solo se invitati
+      if (STATO.sdInvitato !== invitato) { STATO.sdInvitato = invitato; if (STATO.sessione && soloSenzaAlunno()) disegnaMenu(); }
       applicaContatori();
       aggiornaTuttiLetti();                                              // v11.15
     });
@@ -3567,15 +3845,39 @@
   }
   // Calendario, Contabilità e Comunicazioni hanno i loro riquadri in Home: nella griglia non ci vanno (anche con Contenuti.gs 10.16)
   var PORTE_HOME = { calendario: 1, contabilita: 1, comunicazioni: 1 };
+  // v12.0 (n. 8): griglia B — in cima due riquadri larghi Documenti e Sondaggi (con il bollino), sotto le sezioni di sempre
   function griglaHome() {
+    var tutto = el('div', { classe: 'pila', style: 'gap:8px' });
+    var larghe = el('div', { classe: 'griglia-larghe' });
+    var larga = function (id, ill, nome) {
+      return el('button', { type: 'button', classe: 'tile larga con-ill', 'data-id': id, onclick: function () { vaiA(id); } }, [imgIll(ill), el('span', { classe: 'lbl', testo: nome })]);
+    };
+    var com = STATO.dati.pagine.filter(function (p) { return p.id === 'comunicazioni'; })[0];
+    var doc = com ? larga('comunicazioni', 'documenti', com.breve || 'Documenti') : null;
+    var sond = larga('sondaggi', 'sondaggi', 'Sondaggi');
+    if (doc) larghe.appendChild(doc);
+    larghe.appendChild(sond);
+    // i profili docente vedono Sondaggi solo se sono invitati a un sondaggio (Votano anche le maestre); con lo script vecchio solo Rossana
+    if (!STATO.sessione.amministratore) {
+      sond.hidden = true; sond.style.display = 'none';
+      STATO.documenti.then(function (d) {
+        var l = sondaggiDi(d);
+        var si = l && (!soloSenzaAlunno() || l.length);
+        if (si) { sond.hidden = false; sond.style.display = ''; if (doc) doc.style.gridColumn = ''; }
+        else if (doc) doc.style.gridColumn = '1 / -1';
+        applicaContatori();
+      });
+    }
+    tutto.appendChild(larghe);
     var g = el('div', { classe: 'griglia-home' });
+    tutto.appendChild(g);
     STATO.dati.pagine.forEach(function (p) {
-      if (p.id === 'home' || p.inHome === false || PORTE_HOME[p.id]) return;
+      if (p.id === 'home' || p.inHome === false || PORTE_HOME[p.id] || p.id === 'sondaggi') return;
       g.appendChild(el('button', { classe: 'tile' + (nomeIll(p) ? ' con-ill' : ''), 'data-id': p.id, onclick: function () { vaiA(p.id); } }, [
         iconaPagina(p), el('span', { classe: 'lbl', testo: p.breve || p.titolo })
       ]));
     });
-    return g;
+    return tutto;
   }
   function titoliTesta() {
     var t = String(STATO.dati.titolo || ''), m = t.match(/^(.*?)\s+(\d{4}-\d{2})$/);
@@ -7178,6 +7480,953 @@
     disegna();
   }
 
+  // =====================================================================================================================
+  // v12.0 (n. 8): SONDAGGI, step 1 — tela «Sondaggi: proposta» approvata il 10/11/2026. Serve lo script 12.0.
+  // Rossana compone il sondaggio («la torta»), lo pubblica, lo manda su WhatsApp con il link #sondaggio-<id>; le famiglie votano
+  // nell'app (un voto per bambino, vale l'ultimo), con le barre in tempo reale. Tre livelli: pubblico, riservato, anonimo.
+  // Rossana segue i risultati (anello, chi manca, «Ricorda a tutti, una chat alla volta», testo per il gruppo, azioni).
+  // =====================================================================================================================
+  var SD_UNO = { una: 1, piu: 1, sino: 1, sisenon: 1 };
+  var SD_VAL = { sino: ['si', 'no'], sisenon: ['si', 'forse', 'no'] };
+  var SD_TXT = { si: 'Sì', forse: 'Se serve', no: 'No' };
+  var SD_NOMI = { una: 'Una scelta', piu: 'Più scelte', sino: 'Sì / No', sisenon: 'Sì · Se serve · No', date: 'Data e ora' };
+  var SD_LIV = {
+    pubblico: { e: '👤', n: 'PUBBLICO', pill: '👤 PUBBLICO · TUTTI VEDONO I VOTI', wa: '👤 Pubblico: il tuo voto lo vedono tutti', crema: false },
+    riservato: { e: '🔒', n: 'RISERVATO', pill: '🔒 RISERVATO · IL TUO VOTO LO VEDE SOLO LA RAPPRESENTANTE', wa: '🔒 Riservato: il tuo voto lo vede solo la rappresentante', crema: true },
+    anonimo: { e: '🕶️', n: 'ANONIMO', pill: '🕶️ ANONIMO · NESSUNO VEDE IL TUO VOTO', wa: '🕶️ Anonimo: il tuo voto non lo vede nessuno, nemmeno la rappresentante', crema: true }
+  };
+  var SVG_SD = {
+    spunta: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>',
+    clessidra: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10M7 21h10M8 3c0 5 8 5 8 9s-8 4-8 9M16 3c0 5-8 5-8 9s8 4 8 9"/></svg>',
+    lucchetto: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+    coppa: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg>',
+    indietro: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>',
+    avanti: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>',
+    piu: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+    su: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>',
+    giu: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
+    foto: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+    immagine: '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 8"/></svg>',
+    occhio: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12s3.5-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+    pubblica: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 13h17v7.5h-17z"/><path d="M7.5 13V4h9v9"/><path d="M10 8.6l1.7 1.7 3-3.2"/></svg>',
+    matita: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>',
+    orologio: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9 2.5h6"/></svg>',
+    chiudi: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+    riapri: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.7-1.5"/></svg>',
+    correggi: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>',
+    duplica: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>',
+    cestino: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>',
+    una: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="7" r="2.6"/><circle cx="6" cy="7" r=".9" fill="currentColor"/><circle cx="6" cy="17" r="2.6"/><path d="M11 7h9M11 17h9"/></svg>',
+    piuScelte: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="5" height="5" rx="1"/><path d="M4.7 7l1.2 1.2L7.5 6"/><rect x="3.5" y="14.5" width="5" height="5" rx="1"/><path d="M4.7 17l1.2 1.2L7.5 16"/><path d="M11 7h9M11 17h9"/></svg>',
+    sino: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12.5l3 3 5-6"/><path d="M15 9l6 6M21 9l-6 6"/></svg>',
+    sisenon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12.5l2.5 2.5 4-5"/><circle cx="12.5" cy="12" r="1.6" fill="currentColor"/><path d="M16.5 9l5 5M21.5 9l-5 5"/></svg>',
+    date: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13v3l2 1"/></svg>',
+    persona: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+    anonimo: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 6.1A9.8 9.8 0 0 1 12 6c5 0 9 6 9 6a15 15 0 0 1-2.6 3.1M6.6 7.6C4.4 9.2 3 12 3 12s4 6 9 6a8.6 8.6 0 0 0 4-1"/></svg>',
+    barre: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>',
+    giuTorta: '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"/><path d="M4 19.5h16"/></svg>'
+  };
+  SVG_SD.lucchettoGrande = SVG_SD.lucchetto.replace(/width="16" height="16"/, 'width="32" height="32"').replace('stroke-width="2.4"', 'stroke-width="2"');
+  function sdSvg(nome, classe) { var s = el('span', { classe: classe || null, 'aria-hidden': 'true', style: classe ? null : 'display:inline-grid;place-items:center' }); s.innerHTML = SVG_SD[nome]; return s; }
+  function sondaggiDi(dati) { return dati && Array.isArray(dati.sondaggi) ? dati.sondaggi : null; }
+  function sdTrova(dati, id) { return (sondaggiDi(dati) || []).filter(function (s) { return s.id === id; })[0] || null; }
+  function sdAdmin() { return adminVero(); }
+  function sdDaVotare(s) { return s.stato === 'aperto' && s.puoVotare && !s.mio; }
+
+  // ---------- date e conto alla rovescia ----------
+  function msChiude(iso) { var m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(String(iso || '')); return m ? new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]).getTime() : NaN; }
+  function sdRovescia(iso) {
+    var d = msChiude(iso) - Date.now();
+    if (isNaN(d)) return { t: '', urgente: false };
+    if (d <= 0) return { t: 'CHIUSO', urgente: false, passato: true };
+    var g = Math.floor(d / 864e5), h = Math.floor(d % 864e5 / 36e5), m = Math.floor(d % 36e5 / 6e4), sec = Math.floor(d % 6e4 / 1e3);
+    return { t: 'CHIUDE TRA ' + (g ? g + ' g ' + h + ' h ' + m + ' min' : h ? h + ' h ' + m + ' min ' + sec + ' s' : m + ' min ' + sec + ' s'), urgente: d < 864e5 };
+  }
+  function sdPillTempo(s) {
+    if (s.stato === 'chiuso') return el('span', { classe: 'sd-pill' }, [sdSvg('lucchetto'), 'CHIUSO · ' + sdGiornoCorto(s.chiusoIl || s.chiude)]);
+    if (s.stato === 'bozza') return el('span', { classe: 'sd-pill grigio', testo: 'BOZZA' });
+    var r = sdRovescia(s.chiude);
+    var p = el('span', { classe: 'sd-pill' + (r.urgente ? ' rosso' : ''), 'data-chiude': s.chiude }, [sdSvg('clessidra'), el('span', { testo: r.t })]);
+    return p;
+  }
+  function sdTicchetta() {
+    var nodi = document.querySelectorAll('[data-chiude]');
+    if (!nodi.length) return;
+    var scaduto = false;
+    Array.prototype.forEach.call(nodi, function (n) {
+      var r = sdRovescia(n.getAttribute('data-chiude'));
+      var t = n.querySelector('span:last-child'); if (t && t.textContent !== r.t) t.textContent = r.t;
+      n.classList.toggle('rosso', !!r.urgente);
+      if (r.passato) scaduto = true;
+    });
+    if (scaduto && !STATO.sdRiletto && STATO.sessione) { STATO.sdRiletto = true; setTimeout(function () { ricarica(); STATO.sdRiletto = false; }, 1500); }
+  }
+  setInterval(sdTicchetta, 1000);
+  function sdGiorni(iso) { var p = String(iso || '').slice(0, 10).split('-'); return p.length === 3 ? new Date(+p[0], +p[1] - 1, +p[2]) : null; }
+  function sdGiornoCorto(iso) { var d = sdGiorni(iso); return d ? d.getDate() + ' ' + MESI[d.getMonth()].slice(0, 3).toUpperCase() : ''; }
+  function sdQuando(iso) {
+    var d = sdGiorni(iso); if (!d) return '';
+    return GIORNI_LUNGHI[d.getDay()] + ' ' + d.getDate() + ' ' + MESI[d.getMonth()] + ' alle ' + String(iso).slice(11, 16).replace(/^0/, '');
+  }
+  function sdDataLabel(x) {
+    var d = sdGiorni(x.data); if (!d) return x.data || '';
+    return GIORNI_SETT[d.getDay()].toLowerCase() + ' ' + d.getDate() + ' ' + MESI[d.getMonth()].slice(0, 3) + (x.dalle ? ' · ' + x.dalle : '');
+  }
+  function sdQuandoVoto(iso) {
+    if (!iso) return '';
+    var d = new Date(iso); if (isNaN(d)) return '';
+    return GIORNI_LUNGHI[d.getDay()] + ' ' + d.getDate() + ' ' + MESI[d.getMonth()] + ' alle ' + d.getHours() + ':' + ('0' + d.getMinutes()).slice(-2);
+  }
+  function sdLink(s) { return URL_APP + '#sondaggio-' + s.id; }
+
+  // ---------- come si risponde: il modello di un sondaggio ----------
+  function sdModello(s) {
+    var uno = null, date = [], titDate = '';
+    (s.strati || []).forEach(function (x) {
+      if (SD_UNO[x.tipo]) uno = x;
+      if (x.tipo === 'date') { date = date.concat(x.date || []); if (!titDate) titDate = x.titolo || ''; }
+    });
+    if (!uno) return null;
+    var m = { tipo: uno.tipo, multi: uno.tipo === 'piu', max: uno.tipo === 'piu' ? (Number(uno.max) || 0) : 1 };
+    if (date.length) {
+      if (uno.tipo === 'una' || uno.tipo === 'piu') {
+        m.modo = 'lista';
+        m.voci = date.map(function (d) { return { k: d.id, nome: sdDataLabel(d) }; });
+        m.titolo = uno.titolo || titDate || (m.multi ? (m.max ? 'Scegli fino a ' + m.max + ' date' : 'Scegli le date') : 'Quale data preferite?');
+      } else {
+        m.modo = 'perData';
+        m.righe = date.map(function (d) { return { id: d.id, nome: sdDataLabel(d), voci: SD_VAL[uno.tipo].map(function (v) { return { k: d.id + ':' + v, v: v, t: SD_TXT[v] }; }) }; });
+        m.titolo = titDate || uno.titolo || 'Quando potete venire?';
+      }
+    } else if (uno.tipo === 'una' || uno.tipo === 'piu') {
+      m.voci = (uno.risposte || []).map(function (r) { return { k: r.id, nome: r.testo || '', sotto: r.sotto || '', foto: r.foto || '' }; });
+      m.modo = m.voci.some(function (v) { return v.foto; }) ? 'foto' : 'lista';
+      m.titolo = uno.titolo || (m.multi ? (m.max ? 'Scegli fino a ' + m.max + ' risposte' : 'Scegli una o più risposte') : 'Scegli una risposta');
+    } else {
+      m.modo = 'bottoni';
+      m.voci = SD_VAL[uno.tipo].map(function (v) { return { k: v, v: v, t: SD_TXT[v], nome: SD_TXT[v] }; });
+      m.titolo = uno.titolo || 'La tua risposta';
+    }
+    return m;
+  }
+  function sdTocca(m, sel, k) {
+    sel = (sel || []).slice();
+    var i = sel.indexOf(k);
+    if (m.modo === 'perData') {
+      var g = k.split(':')[0];
+      sel = sel.filter(function (x) { return x.split(':')[0] !== g; });
+      if (i < 0) sel.push(k);
+      return sel;
+    }
+    if (m.multi) { if (i >= 0) sel.splice(i, 1); else if (!m.max || sel.length < m.max) sel.push(k); return sel; }
+    return i >= 0 ? [] : [k];
+  }
+  function sdUguali(a, b) { a = (a || []).slice().sort(); b = (b || []).slice().sort(); return a.join('|') === b.join('|'); }
+  /** I conti con la scelta di adesso (le barre si muovono già toccando, prima di inviare). */
+  function sdConti(s, sel) {
+    if (!s.conti) return null;
+    var c = {}, k;
+    for (k in s.conti) c[k] = s.conti[k];
+    var nomi = {};
+    for (k in (s.nomi || {})) nomi[k] = (s.nomi[k] || []).slice();
+    var votanti = s.votati;
+    if (s.mio && s.mio.voto) {
+      s.mio.voto.forEach(function (x) { if (c[x] > 0) c[x]--; if (nomi[x] && s.io) { var j = nomi[x].indexOf(s.io.nome); if (j >= 0) nomi[x].splice(j, 1); } });
+      votanti--;
+      if (sel.length) votanti++;
+    } else if (!s.mio && sel.length) votanti++;
+    (sel || []).forEach(function (x) { c[x] = (c[x] || 0) + 1; });
+    return { c: c, nomi: s.nomi ? nomi : null, votanti: Math.max(votanti, 0) };
+  }
+  function pct(n, tot) { return tot ? Math.round(n / tot * 100) : 0; }
+  function sdChipNomi(lista, tu) {
+    var box = el('div', { classe: 'sd-nomi' });
+    if (tu) box.appendChild(el('span', { classe: 'tu', testo: tu }));
+    (lista || []).forEach(function (n) { box.appendChild(typeof n === 'string' ? el('span', { testo: n }) : el('span', {}, [n.t, n.s ? el('small', { testo: n.s }) : null])); });
+    return box;
+  }
+
+  // ---------- foto delle risposte ----------
+  STATO.sdFotoLocali = STATO.sdFotoLocali || {};
+  STATO.sdFotoLink = STATO.sdFotoLink || {};
+  function sdMettiFoto(box, sid, foto) {
+    if (!foto) return;
+    var metti = function (src, riprova) {
+      var img = el('img', { src: src, alt: '', style: 'width:100%;height:100%;object-fit:cover;display:block' });
+      img.addEventListener('error', function () { img.remove(); if (riprova) riprova(); });
+      box.innerHTML = ''; box.appendChild(img);
+    };
+    var dati = function () {
+      var x = sid ? { id: sid, foto: foto } : { foto: foto };
+      chiama('sondaggioFotoDati', x).then(function (r) {
+        if (r && r.dati) { var u = 'data:' + (r.mime || 'image/jpeg') + ';base64,' + r.dati; STATO.sdFotoLocali[foto] = u; metti(u); }
+      }).catch(function () {});
+    };
+    if (STATO.sdFotoLocali[foto]) { metti(STATO.sdFotoLocali[foto]); return; }
+    if (!sid) { dati(); return; }
+    var c = STATO.sdFotoLink[sid];
+    var usa = function (link) { if (link && link[foto]) metti(link[foto] + '=w1000', dati); else dati(); };
+    if (c && c.scade > Date.now()) { c.p.then(usa); return; }
+    var p = chiama('sondaggioFoto', { id: sid }).then(function (r) { return (r && r.link) || {}; }, function () { return {}; });
+    STATO.sdFotoLink[sid] = { p: p, scade: Date.now() + 30 * 60000 };
+    p.then(usa);
+  }
+  /** Foto dal telefono rimpicciolita (lato lungo ~1000 px, ~150 KB, JPEG) prima di caricarla. */
+  function sdRimpicciolisci(file) {
+    return new Promise(function (ok, no) {
+      var url = URL.createObjectURL(file), img = new Image();
+      img.onload = function () {
+        try {
+          var lato = 1000, w = img.naturalWidth, h = img.naturalHeight, f = Math.min(1, lato / Math.max(w, h));
+          var cv = document.createElement('canvas'); cv.width = Math.max(1, Math.round(w * f)); cv.height = Math.max(1, Math.round(h * f));
+          var cx = cv.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, cv.width, cv.height); cx.drawImage(img, 0, 0, cv.width, cv.height);
+          var q = 0.82, d = cv.toDataURL('image/jpeg', q);
+          while (d.length * 0.75 > 160 * 1024 && q > 0.4) { q -= 0.08; d = cv.toDataURL('image/jpeg', q); }
+          URL.revokeObjectURL(url); ok(d);
+        } catch (e) { no(e); }
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); no(new Error('Foto non leggibile')); };
+      img.src = url;
+    });
+  }
+
+  // ---------- dopo un'azione: i sondaggi aggiornati arrivano nella risposta ----------
+  function sdNuovi(r) {
+    if (!r || !Array.isArray(r.sondaggi)) return Promise.resolve();
+    return STATO.documenti.then(function (d) {
+      if (d && !d.errore) d.sondaggi = r.sondaggi;
+      aggiornaContatori();
+      if (STATO.pagina === 'sondaggi' || STATO.pagina === 'home') vaiA(STATO.pagina, true);
+    });
+  }
+  function sdAzione(azione, dati, bottone, fatto) {
+    if (VISTA.attiva) { toast('In Visualizza come non si cambia niente'); return Promise.resolve(); }
+    var testo = bottone ? bottone.textContent : '';
+    if (bottone) { bottone.disabled = true; }
+    STATO.colloquiInVolo = true;                                         // niente rilettura a metà azione
+    return chiama(azione, dati).then(function (r) {
+      STATO.colloquiInVolo = false;
+      if (bottone) bottone.disabled = false;
+      if (fatto) fatto(r);
+      return sdNuovi(r).then(function () { return r; });
+    }).catch(function (e) {
+      STATO.colloquiInVolo = false;
+      if (bottone) { bottone.disabled = false; bottone.textContent = testo; }
+      if (e.codice === 'SESSIONE') return;
+      toast(e.codice === 'AZIONE' ? 'Serve lo script 12.0 (Nuova versione)' : e.message);
+      throw e;
+    });
+  }
+  function apriSondaggio(id) {
+    STATO.sdAperto = id; STATO.sdEdit = null; STATO.sdFatto = null; STATO.sdTab = 0; STATO.sdComeFamiglia = false;
+    if (STATO.sdSel) delete STATO.sdSel[id];
+    STATO.sdTieni = true; vaiA('sondaggi');
+  }
+  function sdAllElenco() { STATO.sdAperto = null; STATO.sdEdit = null; STATO.sdFatto = null; STATO.sdTieni = true; vaiA('sondaggi'); }
+  function sdIndietro(testo, fai) { return el('button', { type: 'button', classe: 'sd-indietro', onclick: fai || sdAllElenco }, [sdSvg('indietro'), testo || 'Sondaggi']); }
+  function sdLivPill(s, corto) { var l = SD_LIV[s.livello] || SD_LIV.pubblico; return el('span', { classe: 'sd-pill lungo' + (l.crema ? ' crema' : ''), testo: corto ? l.e + ' ' + l.n : l.pill }); }
+
+  // ---------- il voto (famiglia, maestra; anche nell'anteprima e per «segna a mano») ----------
+  // ctx: { sel, setSel(arr), invia(voto, bottone), spento (Visualizza come), chi: { iniziale, nome, sotto }, soloScelte, testoBtn }
+  function sdVoto(s, ctx) {
+    var box = el('div', { classe: 'sd' });
+    var m = sdModello(s);
+    function disegna() {
+      box.innerHTML = '';
+      if (!m) { box.appendChild(el('p', { classe: 'sd-vuoto', testo: 'Sondaggio senza risposte' })); return; }
+      var sel = ctx.sel() || [];
+      var cc = sdConti(s, sel);
+      if (!ctx.soloScelte) {
+        if (ctx.chi) box.appendChild(el('div', { classe: 'sd-chi' }, [el('span', { classe: 'sd-av', testo: ctx.chi.iniziale }), el('span', {}, [el('b', { testo: ctx.chi.nome }), el('small', { testo: ctx.chi.sotto })])]));
+        if (s.mio) {
+          var tit = s.mio.mano ? 'La rappresentante ha segnato il voto per ' + (s.io ? s.io.nome : '') : s.mio.io ? 'Hai già votato in questo sondaggio' : (s.mio.da || 'La tua famiglia') + ' ha già votato per ' + (s.io ? s.io.nome : '');
+          box.appendChild(el('div', { classe: 'sd-chi gia' }, [el('span', { classe: 'sd-av', testo: s.mio.mano ? 'R' : (s.mio.da || '?').replace(/^(Mamma|Papà)\s+/i, '').charAt(0).toUpperCase() || '✓' }),
+            el('span', {}, [el('b', { testo: tit }), el('small', { testo: sdQuandoVoto(s.mio.quando) })])]));
+        }
+        box.appendChild(el('div', { classe: 'sd-pills' }, [sdPillTempo(s), sdLivPill(s)]));
+        box.appendChild(el('h2', { classe: 'sd-titolo', testo: s.titolo }));
+        if (!cc && s.stato === 'aperto') {
+          var serve = Math.ceil(s.totale / 2);
+          box.appendChild(el('div', { classe: 'sd-soglia' }, [sdSvg('lucchetto'), el('b', { testo: s.risultati === 'chiusura' ? 'Risultati alla chiusura' : 'Risultati da ' + serve + ' voti' }),
+            el('span', { testo: s.votati + ' su ' + s.totale })]));
+        }
+      }
+      var blocco = el('div', { classe: 'sd-card sd-blocco' });
+      var testa = el('h3', {}, [el('span', { testo: m.titolo })]);
+      if (m.multi && m.max) testa.appendChild(el('span', { classe: 'sd-pill' + (sel.length >= m.max ? ' giallo' : ''), style: 'flex:none', testo: sel.length + ' su ' + m.max }));
+      blocco.appendChild(testa);
+      var tocca = function (k) { return function () { if (ctx.spento) return; ctx.setSel(sdTocca(m, ctx.sel(), k)); disegna(); }; };
+      var pieno = m.multi && m.max && sel.length >= m.max;
+      if (m.modo === 'lista') {
+        var mx = 0; if (cc) m.voci.forEach(function (v) { mx = Math.max(mx, cc.c[v.k] || 0); });
+        var lista = el('div', { classe: 'sd-lista' });
+        m.voci.forEach(function (v) {
+          var on = sel.indexOf(v.k) >= 0, n = cc ? cc.c[v.k] || 0 : 0, p = cc ? pct(n, cc.votanti) : 0;
+          var b = el('button', { type: 'button', classe: 'sd-opz' + (on ? ' on' : '') + (pieno && !on ? ' pieno' : ''), 'data-k': v.k, onclick: tocca(v.k), 'aria-pressed': on ? 'true' : 'false' }, [
+            cc ? el('span', { classe: 'sd-barra', style: 'width:' + p + '%;background:' + (on ? 'rgba(28,69,135,.22)' : n === mx && n ? 'rgba(253,202,13,.38)' : 'rgba(120,197,241,.25)') }) : null,
+            el('span', { classe: 'sd-pall' + (m.multi ? ' quadro' : '') }, on ? [sdSvg('spunta')] : []),
+            el('span', { classe: 'sd-tx' }, [el('b', { testo: v.nome }), v.sotto ? el('small', { testo: v.sotto }) : null]),
+            cc ? el('span', { classe: 'sd-num' }, [el('b', { testo: p + '%' }), el('small', { testo: n + (n === 1 ? ' voto' : ' voti') })]) : null]);
+          var riga = el('div', {}, [b]);
+          if (cc && cc.nomi) { var nn = (cc.nomi[v.k] || []); if (nn.length || on) riga.appendChild(sdChipNomi(nn, on && s.io ? s.io.nome + ' · tu' : '')); }
+          lista.appendChild(riga);
+        });
+        blocco.appendChild(lista);
+      } else if (m.modo === 'foto') {
+        var g = el('div', { classe: 'sd-foto-griglia' });
+        m.voci.forEach(function (v) {
+          var on = sel.indexOf(v.k) >= 0, n = cc ? cc.c[v.k] || 0 : 0, p = cc ? pct(n, cc.votanti) : 0;
+          var imgBox = el('span', { classe: 'sd-img' }); imgBox.innerHTML = SVG_SD.immagine;
+          sdMettiFoto(imgBox, ctx.anteprima ? null : s.id, v.foto);
+          var b = el('button', { type: 'button', classe: 'sd-fotoopz' + (on ? ' on' : '') + (pieno && !on ? ' pieno' : ''), 'data-k': v.k, onclick: tocca(v.k), 'aria-pressed': on ? 'true' : 'false' }, [
+            imgBox, on ? sdSvg('spunta', 'sd-spunta') : null,
+            el('span', { classe: 'sd-ft' }, [v.nome ? el('b', { testo: v.nome }) : null, v.sotto ? el('small', { style: 'display:block', testo: v.sotto }) : null, cc ? el('small', { testo: p + '% · ' + n + (n === 1 ? ' voto' : ' voti') }) : null,
+              cc ? el('span', { classe: 'sd-traccia' }, [el('i', { style: 'width:' + p + '%' })]) : null])]);
+          var cella = el('div', {}, [b]);
+          if (cc && cc.nomi && ((cc.nomi[v.k] || []).length || on)) cella.appendChild(sdChipNomi(cc.nomi[v.k] || [], on && s.io ? s.io.nome + ' · tu' : ''));
+          g.appendChild(cella);
+        });
+        blocco.appendChild(g);
+      } else if (m.modo === 'bottoni') {
+        blocco.appendChild(sdBottoni(m.voci, sel, cc, tocca));
+        if (cc && cc.nomi) m.voci.forEach(function (v) { var nn = cc.nomi[v.k] || [], on = sel.indexOf(v.k) >= 0;
+          if (nn.length || on) blocco.appendChild(el('div', {}, [el('small', { style: 'display:block;margin-top:8px;font-size:12.5px;font-weight:900;color:#1c4587', testo: v.t }), sdChipNomi(nn, on && s.io ? s.io.nome + ' · tu' : '')])); });
+      } else {
+        m.righe.forEach(function (r) {
+          var d = el('div', { classe: 'sd-data' }, [el('b', { testo: r.nome }), sdBottoni(r.voci, sel, cc, tocca)]);
+          if (cc) {
+            if (cc.nomi) {
+              var righe = r.voci.map(function (v) { var nn = (cc.nomi[v.k] || []).slice(); if (sel.indexOf(v.k) >= 0 && s.io) nn.unshift(s.io.nome + ' · tu'); return nn.length ? v.t + ': ' + nn.join(', ') : ''; }).filter(Boolean);
+              if (righe.length) d.appendChild(el('span', { classe: 'sd-nomi-data', testo: righe.join('\n') }));
+            }
+          }
+          blocco.appendChild(d);
+        });
+      }
+      box.appendChild(blocco);
+      if (!ctx.soloScelte) box.appendChild(sdMancaBox(s, sel.length ? 1 : 0));
+      // il pulsante
+      var btn = null;
+      if (ctx.soloScelte) {
+        btn = el('button', { type: 'button', classe: 'sd-btn' + (sel.length ? '' : ' spento'), testo: ctx.testoBtn || 'Segna il voto' });
+        if (!sel.length) btn.disabled = true;
+      } else if (s.stato === 'aperto' && (s.puoVotare || ctx.spento)) {
+        var mio = s.mio && s.mio.voto;
+        var t = !s.mio ? 'Invia il voto' : !sel.length ? 'Ritira il voto' : sdUguali(sel, mio) ? 'Conferma voto' : 'Cambia voto';
+        var cls = 'sd-btn' + (!sel.length ? (s.mio ? ' ritira' : ' spento') : '');
+        btn = el('button', { type: 'button', classe: cls, testo: t });
+        if (!sel.length && !s.mio) btn.disabled = true;
+        if (ctx.spento) { btn.disabled = true; btn.classList.add('vista-off'); }
+      } else if (s.stato === 'aperto' && s.mio && !s.cambia) {
+        box.appendChild(el('div', { classe: 'sd-tutti' }, [sdSvg('spunta'), 'Voto inviato: in questo sondaggio non si cambia']));
+      }
+      if (btn) {
+        btn.addEventListener('click', function () { if (btn.disabled) return; ctx.invia((ctx.sel() || []).slice(), btn); });
+        box.appendChild(el('div', { style: 'margin-top:16px' }, [btn]));
+        if (ctx.spento) box.appendChild(el('p', { classe: 'vista-nota', style: 'margin-top:10px', testo: 'In Visualizza come non si cambia niente: il pulsante è quello che vede la famiglia.' }));
+      }
+    }
+    disegna();
+    return box;
+  }
+  function sdBottoni(voci, sel, cc, tocca) {
+    var tot = 0; if (cc) voci.forEach(function (v) { tot += cc.c[v.k] || 0; });
+    return el('div', { classe: 'sd-bottoni' }, voci.map(function (v) {
+      var on = sel.indexOf(v.k) >= 0, n = cc ? cc.c[v.k] || 0 : 0;
+      return el('button', { type: 'button', classe: v.v + (on ? ' on' : ''), 'data-k': v.k, onclick: tocca(v.k), 'aria-pressed': on ? 'true' : 'false' }, [v.t, cc ? el('small', { testo: pct(n, tot) + '% · ' + n }) : null]);
+    }));
+  }
+  /** Chi manca, come lo vede una famiglia: nomi (pubblico e anonimo) o solo il numero (riservato). */
+  function sdMancaBox(s, ioOra) {
+    var mancano = Math.max(0, s.mancano - (!s.mio && ioOra ? 1 : 0));
+    if (!mancano) return el('div', { classe: 'sd-tutti' }, [sdSvg('spunta'), 'Hanno votato tutti']);
+    var votati = s.totale - mancano;
+    var nomi = Array.isArray(s.manca) ? s.manca.filter(function (n) { return !(ioOra && !s.mio && s.io && n === s.io.nome); }) : null;
+    return el('div', { classe: 'sd-manca' }, [
+      el('div', {}, [el('b', { testo: nomi ? (s.stato === 'chiuso' ? 'Non hanno votato' : 'Non hanno ancora votato') : (mancano === 1 ? 'Manca ancora 1 risposta' : 'Mancano ancora ' + mancano + ' risposte') }),
+        el('small', { testo: votati + ' su ' + s.totale + ' hanno votato' })]),
+      nomi ? el('div', { classe: 'sd-chips' }, nomi.map(function (n) { return el('span', { testo: n }); })) : null]);
+  }
+
+  // ---------- risultati (dopo il voto, sondaggi chiusi, Rossana) ----------
+  // opz: { chiuso (pillole LA PIÙ VOTATA / PARI), nomiAdmin (chip con mamma / papà / a mano), mio }
+  function sdRisultati(s, opz) {
+    opz = opz || {};
+    var m = sdModello(s), card = el('div', { classe: 'sd-card sd-ris' });
+    if (!m || !s.conti) return card;
+    var c = s.conti, mio = (s.mio && s.mio.voto) || [];
+    var nomi = opz.nomiAdmin || s.nomi;
+    function chips(k) {
+      var l = (nomi && nomi[k]) || [];
+      if (!l.length) return null;
+      return sdChipNomi(l);
+    }
+    if (m.modo === 'perData') {
+      m.righe.forEach(function (r) {
+        var tot = 0, testi = []; r.voci.forEach(function (v) { tot += c[v.k] || 0; testi.push(v.t + ' ' + (c[v.k] || 0)); });
+        var mioK = r.voci.filter(function (v) { return mio.indexOf(v.k) >= 0; })[0];
+        var si = c[r.id + ':si'] || 0, fo = c[r.id + ':forse'] || 0;
+        var riga = el('div', { classe: 'sd-riga-ris' + (mioK ? ' mio' : '') }, [
+          mioK ? el('div', { classe: 'sd-pills' }, [el('span', { classe: 'sd-pill giallo' }, [sdSvg('spunta'), 'TU: ' + mioK.t.toUpperCase()])]) : null,
+          el('div', { classe: 'sd-testa' }, [el('b', { testo: r.nome })]), el('small', { classe: 'sd-conta-data', style: 'margin:2px 0 0', testo: testi.join(' · ') }),
+          el('div', { classe: 'sd-traccia', style: 'display:flex' }, [el('i', { style: 'width:' + pct(si, tot) + '%;background:#1c4587;border-radius:0' }), el('i', { style: 'width:' + pct(fo, tot) + '%;background:#FDCA0D;border-radius:0' })])]);
+        if (nomi) r.voci.forEach(function (v) { var l = (nomi[v.k] || []); if (l.length) riga.appendChild(el('div', {}, [el('small', { style: 'display:block;margin-top:6px;font-size:12px;font-weight:900;color:#1c4587', testo: v.t }), sdChipNomi(l)])); });
+        card.appendChild(riga);
+      });
+      return card;
+    }
+    var voci = m.voci, mx = 0, tot = 0;
+    voci.forEach(function (v) { mx = Math.max(mx, c[v.k] || 0); tot += c[v.k] || 0; });
+    var base = m.multi ? s.votati : tot;
+    var pari = voci.filter(function (v) { return (c[v.k] || 0) === mx; }).length > 1;
+    voci.forEach(function (v) {
+      var n = c[v.k] || 0, on = mio.indexOf(v.k) >= 0, primo = mx > 0 && n === mx;
+      var pills = [];
+      if (opz.chiuso && primo) pills.push(el('span', { classe: 'sd-pill scuro' }, [sdSvg('coppa'), pari ? 'PARI' : 'LA PIÙ VOTATA']));
+      else if (!opz.chiuso && primo && pari && s.votati) pills.push(el('span', { classe: 'sd-pill scuro', testo: 'PARI' }));
+      if (on) pills.push(el('span', { classe: 'sd-pill giallo' }, [sdSvg('spunta'), 'IL TUO VOTO']));
+      card.appendChild(el('div', { classe: 'sd-riga-ris' + (on ? ' mio' : '') }, [
+        pills.length ? el('div', { classe: 'sd-pills' }, pills) : null,
+        el('div', { classe: 'sd-testa' }, [el('b', { testo: v.nome || v.t || '' }), el('b', { testo: pct(n, base) + '% · ' + n })]),
+        el('div', { classe: 'sd-traccia' }, [el('i', { classe: primo ? 'primo' : '', style: 'width:' + (mx ? Math.round(n / mx * 100) : 0) + '%' })]),
+        chips(v.k)]));
+    });
+    return card;
+  }
+  /** I nomi per Rossana: «Luca» con sotto «mamma», «papà», «a mano» (dal dettaglio dei voti, mai negli anonimi). */
+  function sdNomiAdmin(s) {
+    var g = s.gestione; if (!g || !g.voti) return null;
+    var out = {};
+    g.voti.forEach(function (v) {
+      var chi = v.mano ? 'a mano' : /^mamma/i.test(v.da) ? 'mamma' : /^papà/i.test(v.da) ? 'papà' : '';
+      (v.voto || []).forEach(function (k) { (out[k] = out[k] || []).push({ t: v.nome, s: chi }); });
+    });
+    return out;
+  }
+
+  // ---------- testi per WhatsApp (li scrive la pagina) ----------
+  function sdTestoInvito(s) {
+    var l = SD_LIV[s.livello] || SD_LIV.pubblico;
+    return '🗳️ *Sondaggio della 4a*\n*' + s.titolo + '*\n' + l.wa + '\n⏰ Entro ' + sdQuando(s.chiude) + '\n\n👉 Vota qui, ci vuole un minuto:\n' + sdLink(s);
+  }
+  function sdTestoGruppo(s) {
+    var manca = s.gestione ? s.gestione.manca : [];
+    var corpo = s.livello === 'riservato'
+      ? (manca.length === 1 ? 'Manca ancora 1 risposta' : 'Mancano ancora ' + manca.length + ' risposte') + ': se non hai ancora risposto, ci vuole un minuto!'
+      : 'Mancano ancora i voti per: ' + manca.map(function (x) { return x.nome; }).join(', ');
+    return '⏰ *' + s.titolo + '*\n' + corpo + '\n\n👉 Vota nell’app, ci vuole un minuto:\n' + sdLink(s);
+  }
+  function sdTestoRisultati(s) {
+    var m = sdModello(s), c = s.conti || {}, righe = [];
+    if (m && m.modo === 'perData') {
+      m.righe.forEach(function (r) { righe.push('📅 ' + r.nome + '\n' + r.voci.map(function (v) { return v.t + ' ' + (c[v.k] || 0); }).join(' · ')); });
+    } else if (m) {
+      var tot = 0; m.voci.forEach(function (v) { tot += c[v.k] || 0; });
+      var base = m.multi ? s.votati : tot;
+      m.voci.slice().sort(function (a, b) { return (c[b.k] || 0) - (c[a.k] || 0); }).forEach(function (v, i) {
+        var n = c[v.k] || 0, bl = base ? Math.round(n / base * 10) : 0;
+        righe.push((i === 0 && n ? '🏆 ' : '') + (v.nome || v.t || 'Foto') + '\n' + '▰'.repeat(bl) + '▱'.repeat(10 - bl) + ' ' + n + (n === 1 ? ' voto' : ' voti'));
+      });
+    }
+    return (s.stato === 'chiuso' ? '🗳️ *Risultati del sondaggio*' : '🗳️ *Risultati fin qui*') + '\n*' + s.titolo + '*\nHanno votato ' + s.votati + ' su ' + s.totale + '. Grazie!\n\n' +
+      righe.join('\n\n') + '\n\n👉 ' + sdLink(s);
+  }
+  /** Foglio con il messaggio pronto (bolla di WhatsApp) e «Apri WhatsApp»: la chat la sceglie Rossana. */
+  function sdFoglioWa(titolo, testo, pulsante) {
+    var f = foglioFile([
+      el('h3', { testo: titolo }),
+      el('div', { classe: 'bolla-wa' }, [el('div', { testo: testo })]),
+      el('a', { classe: 'sd-btn wa', href: linkWhatsapp(testo), target: '_blank', rel: 'noopener' }, [iconaWa(20), pulsante || 'Condividi su WhatsApp']),
+      el('button', { type: 'button', classe: 'sd-btn2', style: 'margin-top:8px', testo: 'Copia il testo', onclick: function () { copia(testo, 'Testo copiato'); } }),
+      el('button', { type: 'button', classe: 'link-piccolo', testo: 'Chiudi', onclick: function () { f.chiudi(); } })]);
+    return f;
+  }
+
+  // ---------- Home: riquadro «1 sondaggio da votare» ----------
+  function sdBloccoHome() {
+    var box = el('div');
+    STATO.documenti.then(function (dati) {
+      var lista = (sondaggiDi(dati) || []).filter(function (s) { return s.stato === 'aperto'; });
+      box.innerHTML = '';
+      if (!lista.length) return;
+      var admin = sdAdmin();                                             // Rossana: i sondaggi aperti con «N su 18», tocca e segue i risultati
+      var da = admin ? [] : lista.filter(sdDaVotare);
+      lista.sort(function (a, b) { return (sdDaVotare(b) ? 1 : 0) - (sdDaVotare(a) ? 1 : 0) || msChiude(a.chiude) - msChiude(b.chiude); });
+      var card = el('section', { classe: 'sd-card sd-home sd' }, [el('div', {}, [imgIll('sondaggi'),
+        el('b', { testo: da.length ? (da.length === 1 ? '1 sondaggio da votare' : da.length + ' sondaggi da votare') : admin ? (lista.length === 1 ? '1 sondaggio aperto' : lista.length + ' sondaggi aperti') : 'Sondaggi' })])]);
+      lista.slice(0, 3).forEach(function (s) {
+        var vota = !admin && sdDaVotare(s);
+        card.appendChild(el('button', { type: 'button', classe: 'sd-home-voce', 'data-sondaggio': s.id, onclick: function () { apriSondaggio(s.id); } }, [
+          el('span', {}, [el('b', { testo: s.titolo }), el('span', { classe: 'sd-pills', style: 'margin:0' }, [sdPillTempo(s), admin ? el('span', { classe: 'sd-pill grigio', testo: s.votati + ' su ' + s.totale }) : null])]),
+          el('span', { classe: 'sd-vai' + (vota ? ' vota' : ''), testo: vota ? 'VOTA' : 'APRI' })]));
+      });
+      if (lista.length > 3) card.appendChild(el('button', { type: 'button', classe: 'link-piccolo', testo: 'Tutti i sondaggi', onclick: sdAllElenco }));
+      box.appendChild(card);
+    });
+    return box;
+  }
+
+  // ---------- la pagina Sondaggi: elenco, voto, risultati, gestione, torta ----------
+  function sdPagina() {
+    var box = el('div', { classe: 'sd' });
+    if (STATO.sdEdit) { box.appendChild(sdEditor()); return box; }
+    box.appendChild(el('p', { classe: 'sd-vuoto', testo: 'Carico…' }));
+    STATO.documenti.then(function (dati) {
+      box.innerHTML = '';
+      var lista = sondaggiDi(dati);
+      if (!lista) { box.appendChild(el('p', { classe: 'sd-vuoto', testo: sdAdmin() ? 'Per i sondaggi serve lo script 12.0: Gestisci deployment → Nuova versione.' : 'Nessun sondaggio' })); return; }
+      if (STATO.sdAperto) {
+        var s = sdTrova(dati, STATO.sdAperto);
+        if (!s) { box.appendChild(sdIndietro()); box.appendChild(el('p', { classe: 'sd-vuoto', testo: 'Sondaggio non trovato: forse è stato chiuso o cancellato.' })); return; }
+        if (sdAdmin() && s.stato === 'bozza') { STATO.sdEdit = sdEditDa(s); box.appendChild(sdEditor()); return; }
+        if (sdAdmin() && !STATO.sdComeFamiglia) box.appendChild(sdGestione(s, lista));
+        else box.appendChild(sdDettaglio(s, lista));
+        return;
+      }
+      box.appendChild(sdElenco(lista));
+    });
+    return box;
+  }
+  function sdElenco(lista) {
+    var admin = sdAdmin(), box = el('div');
+    if (admin) box.appendChild(el('button', { type: 'button', classe: 'sd-nuovo', onclick: function () { STATO.sdEdit = sdEditNuovo(); STATO.sdAperto = null; STATO.sdTieni = true; vaiA('sondaggi'); } }, [sdSvg('piu'), 'Nuovo sondaggio']));
+    var gruppi = { aperti: lista.filter(function (s) { return s.stato === 'aperto'; }), bozze: lista.filter(function (s) { return s.stato === 'bozza'; }), chiusi: lista.filter(function (s) { return s.stato === 'chiuso'; }) };
+    gruppi.aperti.sort(function (a, b) { return msChiude(a.chiude) - msChiude(b.chiude); });
+    gruppi.chiusi.sort(function (a, b) { return String(b.chiusoIl || b.chiude) < String(a.chiusoIl || a.chiude) ? -1 : 1; });
+    var tabs = admin ? [['Aperti', 'aperti'], ['Bozze', 'bozze', true], ['Chiusi', 'chiusi']] : [['Aperti', 'aperti'], ['Chiusi', 'chiusi']];
+    var scelta = STATO.sdLinguetta && tabs.some(function (t) { return t[1] === STATO.sdLinguetta; }) ? STATO.sdLinguetta : 'aperti';
+    box.appendChild(el('div', { classe: 'sd-tabs' }, tabs.map(function (t) {
+      return el('button', { type: 'button', classe: t[1] === scelta ? 'on' : '', 'data-tab': t[1], onclick: function () { STATO.sdLinguetta = t[1]; vaiA('sondaggi', true); } },
+        [t[2] ? sdSvg('lucchetto') : null, t[0], el('i', { testo: String(gruppi[t[1]].length) })]);
+    })));
+    var voci = gruppi[scelta];
+    if (!voci.length) box.appendChild(el('div', { classe: 'sd-card sd-vuoto', testo: scelta === 'aperti' ? 'Nessun sondaggio aperto' : scelta === 'bozze' ? 'Nessuna bozza' : 'Nessun sondaggio chiuso' }));
+    voci.forEach(function (s) {
+      var pills = [sdPillTempo(s), sdLivPill(s, true)];
+      if (!admin && s.mio && s.stato !== 'bozza') pills.push(el('span', { classe: 'sd-pill giallo', testo: '✓ VOTATO' }));
+      var q = s.totale ? Math.round(s.votati / s.totale * 100) : 0;
+      box.appendChild(el('button', { type: 'button', classe: 'sd-voce', 'data-sondaggio': s.id, onclick: function () { apriSondaggio(s.id); } }, [
+        el('span', { classe: 'sd-pills' }, pills), el('b', { testo: s.titolo || 'Senza domanda' }),
+        s.stato === 'bozza' ? el('small', { testo: 'Bozza · creata ' + sdQuandoVoto(s.creato) }) :
+          el('span', { classe: 'sd-prog' }, [el('span', {}, [el('i', { style: 'width:' + q + '%' })]), el('small', { testo: s.votati + ' su ' + s.totale })])]));
+    });
+    return box;
+  }
+  /** Famiglia (e maestra): il voto, «Voto inviato!» con i risultati, oppure il sondaggio chiuso. */
+  function sdDettaglio(s, lista) {
+    var box = el('div');
+    box.appendChild(sdIndietro(sdAdmin() ? 'I risultati' : 'Sondaggi', sdAdmin() ? function () { STATO.sdComeFamiglia = false; vaiA('sondaggi', true); } : null));
+    STATO.sdSel = STATO.sdSel || {};
+    if (STATO.sdFatto && STATO.sdFatto.id === s.id) { box.appendChild(sdFattoVista(s)); return box; }
+    if (s.stato === 'chiuso') { box.appendChild(sdChiusoVista(s, lista)); return box; }
+    if (STATO.sdSel[s.id] === undefined) STATO.sdSel[s.id] = (s.mio && s.mio.voto) ? s.mio.voto.slice() : [];
+    var ses = STATO.sessione || {}, ruolo = String(ses.ruolo || '').toLowerCase();
+    var nome = s.io && s.io.docente ? (ses.nome || s.io.nome) : ((ruolo === 'madre' ? 'Mamma ' : ruolo === 'padre' ? 'Papà ' : '') + (ses.nome || '')).trim();
+    var chi = s.io ? { iniziale: (ses.nome || s.io.nome || '?').charAt(0).toUpperCase(), nome: nome || s.io.nome,
+      sotto: s.io.docente ? 'vota per sé' : (ruolo === 'madre' ? 'mamma di ' : ruolo === 'padre' ? 'papà di ' : 'vota per ') + s.io.nome } : null;
+    box.appendChild(sdVoto(s, {
+      sel: function () { return STATO.sdSel[s.id]; }, setSel: function (x) { STATO.sdSel[s.id] = x; },
+      spento: !!VISTA.attiva, chi: chi,
+      invia: function (voto, bottone) {
+        var tipo = !s.mio ? 'inviato' : !voto.length ? 'ritirato' : sdUguali(voto, s.mio.voto) ? 'confermato' : 'cambiato';
+        bottone.textContent = 'Invio…';
+        sdAzione('sondaggioVota', { id: s.id, voto: voto }, bottone, function () { STATO.sdFatto = { id: s.id, tipo: tipo }; delete STATO.sdSel[s.id]; window.scrollTo(0, 0); }).catch(function () {});
+      }
+    }));
+    return box;
+  }
+  function sdFattoVista(s) {
+    var tipo = STATO.sdFatto.tipo, box = el('div');
+    var titolo = { inviato: 'Voto inviato!', cambiato: 'Voto cambiato!', confermato: 'Voto confermato!', ritirato: 'Voto ritirato' }[tipo];
+    var pills = [];
+    if (s.io) pills.push(el('span', { classe: 'sd-pill', testo: 'VALE PER ' + s.io.nome.toUpperCase() }));
+    pills.push(el('span', { classe: 'sd-pill', testo: tipo === 'ritirato' ? (s.io ? s.io.nome.toUpperCase() + ' NON HA PIÙ UN VOTO' : 'NESSUN VOTO') : 'ULTIMO VOTO: ' + String((s.mio && s.mio.da) || 'TU').toUpperCase() }));
+    if (s.cambia && s.stato === 'aperto') pills.push(el('span', { classe: 'sd-pill', testo: 'CAMBI FINO AL ' + sdGiornoCorto(s.chiude) }));
+    var tondo = el('span', { classe: 'sd-tondo' }); tondo.innerHTML = SVG_SD.spunta.replace(/width="14" height="14"/, 'width="46" height="46"').replace('stroke-width="3.4"', 'stroke-width="3"');
+    box.appendChild(el('div', { classe: 'sd-card sd-fatto' }, [tondo, el('h2', { testo: titolo }), el('div', { classe: 'sd-pills' }, pills)]));
+    if (s.conti) {
+      var r = sdRisultati(s);
+      r.insertBefore(el('b', { testo: 'Come sta andando · ' + s.votati + ' su ' + s.totale }), r.firstChild);
+      box.appendChild(r);
+    } else box.appendChild(el('div', { classe: 'sd-soglia' }, [sdSvg('lucchetto'), el('b', { testo: s.risultati === 'chiusura' ? 'Risultati alla chiusura' : 'Risultati da ' + Math.ceil(s.totale / 2) + ' voti' }), el('span', { testo: s.votati + ' su ' + s.totale })]));
+    box.appendChild(el('div', { classe: 'sd-azioni-giu' }, [
+      s.puoVotare ? el('button', { type: 'button', classe: 'sd-btn2', testo: tipo === 'ritirato' ? 'Vota di nuovo' : 'Cambia il voto', onclick: function () { STATO.sdFatto = null; vaiA('sondaggi', true); } }) : null,
+      el('button', { type: 'button', classe: 'sd-btn2', testo: 'Torna alla Home', onclick: function () { STATO.sdFatto = null; vaiA('home'); } }),
+      el('button', { type: 'button', classe: 'sd-btn2', testo: 'Sondaggi', onclick: sdAllElenco })]));
+    return box;
+  }
+  function sdChiusoVista(s, lista) {
+    var box = el('div');
+    box.appendChild(el('div', { classe: 'sd-pills' }, [sdPillTempo(s), sdLivPill(s, true), el('span', { classe: 'sd-pill grigio', testo: s.votati + ' SU ' + s.totale })]));
+    box.appendChild(el('h2', { classe: 'sd-titolo', testo: s.titolo }));
+    box.appendChild(sdRisultati(s, { chiuso: true }));
+    box.appendChild(sdMancaBox(s, 0));
+    var altri = (lista || []).filter(function (x) { return x.stato === 'chiuso' && x.id !== s.id; });
+    if (altri.length) {
+      box.appendChild(el('h3', { classe: 'sd-h3', testo: 'Sondaggi chiusi' }));
+      altri.forEach(function (x) { box.appendChild(el('button', { type: 'button', classe: 'sd-voce', onclick: function () { apriSondaggio(x.id); } }, [el('b', { style: 'font-size:15px', testo: x.titolo }), el('small', { testo: 'chiuso ' + sdGiornoCorto(x.chiusoIl || x.chiude).toLowerCase() })])); });
+    }
+    return box;
+  }
+
+  // ---------- Rossana: risultati, chi manca, azioni ----------
+  STATO.sdRicordati = STATO.sdRicordati || {};
+  function sdGestione(s, lista) {
+    var box = el('div'), g = s.gestione || { manca: [] };
+    box.appendChild(sdIndietro());
+    box.appendChild(el('div', { classe: 'sd-pills' }, [s.stato === 'chiuso' ? el('span', { classe: 'sd-pill' }, [sdSvg('lucchetto'), 'CHIUSO · RISULTATI DEFINITIVI']) : sdPillTempo(s), sdLivPill(s, true)]));
+    box.appendChild(el('h2', { classe: 'sd-titolo', testo: s.titolo }));
+    var circ = 2 * Math.PI * 42, manca = g.manca.length;
+    var anello = el('span'); anello.innerHTML = '<svg width="96" height="96" viewBox="0 0 100 100" role="img" aria-label="' + s.votati + ' su ' + s.totale + '"><circle cx="50" cy="50" r="42" fill="none" stroke="#eef1f5" stroke-width="12"/>' +
+      '<circle cx="50" cy="50" r="42" fill="none" stroke="#1c4587" stroke-width="12" stroke-linecap="round" stroke-dasharray="' + (circ * (s.totale ? s.votati / s.totale : 0)).toFixed(1) + ' ' + circ.toFixed(1) + '" transform="rotate(-90 50 50)"/>' +
+      '<text x="50" y="49" text-anchor="middle" font-family="Nunito, sans-serif" font-size="27" font-weight="900" fill="#15243b">' + s.votati + '</text><text x="50" y="68" text-anchor="middle" font-family="Nunito, sans-serif" font-size="13" font-weight="800" fill="#4f5f72">su ' + s.totale + '</text></svg>';
+    anello.style.flex = 'none'; anello.style.flex = '0 0 96px';
+    box.appendChild(el('div', { classe: 'sd-card sd-anello' }, [anello, el('span', {}, [el('b', { testo: 'hanno votato' }),
+      manca ? el('button', { type: 'button', onclick: function () { STATO.sdTab = 1; vaiA('sondaggi', true); } }, [manca === 1 ? 'Manca 1' : 'Mancano ' + manca, sdSvg('avanti')]) : null])]));
+    var tab = STATO.sdTab || 0;
+    box.appendChild(el('div', { classe: 'sd-tabs' }, ['Risultati', manca ? 'Chi manca' : 'Chi manca', 'Azioni'].map(function (n, i) {
+      return el('button', { type: 'button', classe: tab === i ? 'on' : '', 'data-tab': String(i), onclick: function () { STATO.sdTab = i; vaiA('sondaggi', true); } }, [n, i === 1 && manca ? el('i', { testo: String(manca) }) : null]);
+    })));
+    if (tab === 0) {
+      if (s.livello !== 'pubblico') box.appendChild(el('div', { classe: 'sd-banner' }, [sdSvg('lucchetto'), el('span', { testo: s.livello === 'riservato' ? 'Chi ha votato cosa lo vedi solo tu' : 'Voto crittografato: chi ha votato cosa non lo vede nessuno' })]));
+      box.appendChild(sdRisultati(s, { chiuso: s.stato === 'chiuso', nomiAdmin: sdNomiAdmin(s) }));
+      box.appendChild(el('div', { classe: 'sd-azioni-giu' }, [
+        el('button', { type: 'button', classe: 'sd-btn wa', onclick: function () { sdFoglioWa(s.stato === 'chiuso' ? 'Risultati su WhatsApp' : 'Risultati parziali su WhatsApp', sdTestoRisultati(s), 'Apri WhatsApp'); } },
+          [iconaWa(20), s.stato === 'chiuso' ? 'Risultati su WhatsApp' : 'Risultati parziali su WhatsApp']),
+        s.io && s.stato === 'aperto' && s.puoVotare ? el('button', { type: 'button', classe: 'sd-btn2', onclick: function () { STATO.sdComeFamiglia = true; vaiA('sondaggi', true); } }, ['🗳️ ' + (s.mio ? 'Il tuo voto per ' : 'Vota per ') + s.io.nome]) : null]));
+    } else if (tab === 1) box.appendChild(sdChiManca(s));
+    else box.appendChild(sdAzioniAdmin(s));
+    return box;
+  }
+  function sdChiManca(s) {
+    var box = el('div'), manca = s.gestione.manca, ric = STATO.sdRicordati[s.id] = STATO.sdRicordati[s.id] || {};
+    if (!manca.length) { box.appendChild(el('div', { classe: 'sd-tutti' }, [sdSvg('spunta'), 'Hanno votato tutti'])); return box; }
+    if (s.stato === 'aperto') {
+      box.appendChild(el('button', { type: 'button', classe: 'sd-btn wa', style: 'min-height:56px', 'data-giro': '1', onclick: function () { sdGiro(s, manca); } },
+        [iconaWa(20), 'Ricorda a tutti, una chat alla volta', el('span', { style: 'display:inline-grid;place-items:center;min-width:28px;height:28px;padding:0 6px;box-sizing:border-box;border-radius:14px;background:#fff;color:#128c4b;font-size:15px;font-weight:900', testo: String(manca.length) })]));
+      box.appendChild(el('button', { type: 'button', classe: 'sd-btn2', style: 'margin-top:8px', testo: 'Testo per il gruppo', onclick: function () { sdFoglioWa('Testo per il gruppo', sdTestoGruppo(s), 'Apri WhatsApp'); } }));
+    }
+    box.appendChild(el('div', { style: 'height:12px' }));
+    manca.forEach(function (x) {
+      var conNumero = x.genitori.filter(function (p) { return p.numero; });
+      box.appendChild(el('div', { classe: 'sd-card sd-mancante', 'data-k': x.k }, [el('div', {}, [
+        el('span', {}, [el('b', { testo: x.nome + (x.docente ? ' · maestra' : '') }), ric[x.k] ? el('span', { classe: 'sd-pill', style: 'margin-top:4px', testo: 'RICORDATO OGGI' }) : null]),
+        s.stato === 'aperto' && conNumero.length ? el('button', { type: 'button', classe: 'sd-ico wa', 'aria-label': 'Ricorda su WhatsApp', onclick: function () { sdGiro(s, [x]); } }, [iconaWa(20)]) : null,
+        s.stato === 'aperto' ? el('button', { type: 'button', classe: 'sd-ico mano', 'aria-label': 'Segna il voto a mano', onclick: function () { sdSegnaMano(s, x); } }, [sdSvg('matita')]) : null])]));
+    });
+    return box;
+  }
+  /** «Ricorda a tutti, una chat alla volta»: chat privata di ogni genitore, messaggio personale già scritto, Salta / Apri WhatsApp. */
+  function sdGiro(s, quali) {
+    var passi = [];
+    quali.forEach(function (x) { var visti = {}; x.genitori.forEach(function (p) { if (p.numero && !visti[p.numero]) { visti[p.numero] = 1; passi.push({ x: x, p: p }); } }); });   // stesso numero: un messaggio solo
+    var senza = quali.filter(function (x) { return !x.genitori.some(function (p) { return p.numero; }); }).map(function (x) { return x.nome; });
+    var corpo = el('div', { classe: 'sd-giro' }), f = foglioFile([corpo]), i = 0, aperti = 0;
+    var ric = STATO.sdRicordati[s.id] = STATO.sdRicordati[s.id] || {};
+    function passo() {
+      corpo.innerHTML = '';
+      if (i >= passi.length) {
+        corpo.appendChild(el('h3', { testo: aperti ? '✓ Fatto' : 'Nessun messaggio aperto' }));
+        if (aperti) corpo.appendChild(el('div', { classe: 'sd-tutti', style: 'margin:0 0 10px' }, [sdSvg('spunta'), aperti === 1 ? '1 messaggio aperto' : aperti + ' messaggi aperti']));
+        if (senza.length) corpo.appendChild(el('p', { testo: 'Senza numero nel foglio: ' + senza.join(', ') }));
+        corpo.appendChild(el('button', { type: 'button', classe: 'sd-btn', testo: 'Chiudi', onclick: function () { f.chiudi(); vaiA('sondaggi', true); } }));
+        return;
+      }
+      var q = passi[i];
+      corpo.appendChild(el('div', { classe: 'sd-prog2' }, [el('b', { testo: (i + 1) + ' di ' + passi.length }), el('span', {}, [el('i', { style: 'width:' + Math.round(i / passi.length * 100) + '%' })])]));
+      corpo.appendChild(el('div', { classe: 'sd-dest' }, [el('span', { classe: 'sd-av', testo: (q.p.nome || '?').charAt(0).toUpperCase() }),
+        el('span', {}, [el('b', { testo: (q.p.nome || 'Genitore') + ' · ' + q.x.nome }), el('small', { testo: '+' + q.p.numero })])]));
+      corpo.appendChild(el('div', { classe: 'bolla-wa' }, [el('div', { testo: q.p.testo })]));
+      var apri = el('a', { classe: 'sd-btn wa', href: linkWhatsapp(q.p.testo, q.p.numero), target: '_blank', rel: 'noopener', style: 'min-height:46px' }, [iconaWa(20), 'Apri WhatsApp']);
+      apri.addEventListener('click', function () { aperti++; ric[q.x.k] = true; setTimeout(function () { i++; passo(); }, 400); });
+      corpo.appendChild(el('div', { classe: 'sd-due' }, [el('button', { type: 'button', classe: 'sd-btn2', testo: passi.length > 1 ? 'Salta' : 'Annulla', onclick: function () { if (passi.length === 1) { f.chiudi(); return; } i++; passo(); } }), apri]));
+    }
+    passo();
+  }
+  /** Voto segnato a mano per chi risponde in chat o a voce. */
+  function sdSegnaMano(s, x) {
+    var sel = [], f;
+    var corpo = sdVoto(s, { soloScelte: true, testoBtn: 'Segna il voto per ' + x.nome, sel: function () { return sel; }, setSel: function (v) { sel = v; },
+      invia: function (voto, bottone) { sdAzione('sondaggioSegna', { id: s.id, chi: x.k, voto: voto }, bottone, function () { f.chiudi(); toast('✓ Voto segnato per ' + x.nome); }).catch(function () {}); } });
+    f = foglioFile([el('h3', { testo: 'Il voto di ' + x.nome }), corpo, el('button', { type: 'button', classe: 'link-piccolo', testo: 'Annulla', onclick: function () { f.chiudi(); } })]);
+  }
+  function sdChiedi(titolo, si, fai) {
+    var f = foglioFile([el('h3', { testo: titolo }),
+      el('button', { type: 'button', classe: 'sd-btn' + (/Cancella/.test(si) ? ' ritira' : ''), testo: si, onclick: function (e) { fai(e.currentTarget, f); } }),
+      el('button', { type: 'button', classe: 'link-piccolo', testo: 'Annulla', onclick: function () { f.chiudi(); } })]);
+  }
+  function sdAzioniAdmin(s) {
+    var az = [];
+    var bt = function (svg, testo, fai, rosso) { return el('button', { type: 'button', classe: rosso ? 'rosso' : '', 'data-azione': testo, onclick: fai }, [sdSvg(svg), testo]); };
+    if (s.stato === 'aperto') {
+      az.push(bt('chiudi', 'Chiudi ora', function () { sdChiedi('Chiudere adesso il sondaggio?', 'Sì, chiudi ora', function (b, f) { sdAzione('sondaggioChiudi', { id: s.id }, b, function () { f.chiudi(); STATO.sdTab = 0; toast('Sondaggio chiuso'); }).catch(function () {}); }); }));
+      az.push(bt('orologio', '+2 giorni', function (e) { sdAzione('sondaggioProroga', { id: s.id, giorni: 2 }, e.currentTarget, function (r) { toast('Chiude ' + sdQuando(r.chiude)); }).catch(function () {}); }));
+    } else az.push(bt('riapri', 'Riapri', function (e) { sdAzione('sondaggioRiapri', { id: s.id }, e.currentTarget, function (r) { toast('Riaperto: chiude ' + sdQuando(r.chiude)); }).catch(function () {}); }));
+    az.push(bt('correggi', 'Correggi il testo', function () { sdCorreggi(s); }));
+    az.push(bt('duplica', 'Duplica', function (e) { sdAzione('sondaggioDuplica', { id: s.id }, e.currentTarget, function (r) { toast('Copia salvata tra le bozze'); STATO.sdAperto = r.id; }).catch(function () {}); }));
+    az.push(el('button', { type: 'button', 'data-azione': 'Condividi', onclick: function () { sdFoglioWa('Condividi su WhatsApp', sdTestoInvito(s)); } }, [iconaWa(26), 'Condividi']));
+    az.push(bt('cestino', 'Cancella', function () { sdChiedi('Cancellare il sondaggio? Spariscono anche tutti i voti.', 'Cancella', function (b, f) { sdAzione('sondaggioCancella', { id: s.id }, b, function () { f.chiudi(); STATO.sdAperto = null; toast('Sondaggio cancellato'); }).catch(function () {}); }); }, true));
+    return el('div', { classe: 'sd-az' }, az);
+  }
+  /** Dopo la pubblicazione si corregge solo il testo (errori di battitura). */
+  function sdCorreggi(s) {
+    var d = JSON.parse(JSON.stringify({ titolo: s.titolo, strati: s.strati }));
+    var campi = [el('label', { style: 'display:block;margin-bottom:10px' }, [el('span', { classe: 'sd-lbl', testo: 'La domanda' }),
+      el('input', { classe: 'sd-in', type: 'text', value: d.titolo, oninput: function (e) { d.titolo = e.target.value; } })])];
+    d.strati.forEach(function (st) {
+      campi.push(el('label', { style: 'display:block;margin:10px 0 6px' }, [el('span', { classe: 'sd-lbl', testo: SD_NOMI[st.tipo] || st.tipo }),
+        el('input', { classe: 'sd-in', type: 'text', value: st.titolo || '', placeholder: 'Titolo', oninput: function (e) { st.titolo = e.target.value; } })]));
+      (st.risposte || []).forEach(function (r) {
+        campi.push(el('input', { classe: 'sd-in', style: 'margin-top:6px', type: 'text', value: r.testo || '', 'aria-label': 'Risposta', oninput: function (e) { r.testo = e.target.value; } }));
+      });
+    });
+    var salva = el('button', { type: 'button', classe: 'sd-btn', style: 'margin-top:14px', testo: 'Salva', onclick: function () {
+      sdAzione('sondaggioTesto', { id: s.id, dati: d }, salva, function () { f.chiudi(); toast('✓ Testo corretto'); }).catch(function () {}); } });
+    var f = foglioFile([el('h3', { testo: 'Correggi il testo' })].concat(campi).concat([salva, el('button', { type: 'button', classe: 'link-piccolo', testo: 'Annulla', onclick: function () { f.chiudi(); } })]));
+  }
+
+  // ---------- la torta: Rossana compone il sondaggio ----------
+  function sdId(pref) { return pref + Math.random().toString(36).slice(2, 9).replace(/[^a-z0-9]/g, 'x'); }
+  function sdChiudeBase() { var d = new Date(Date.now() + 3 * 864e5); return isoDi(d) + 'T18:00'; }
+  function sdEditNuovo() {
+    return { id: null, titolo: '', livello: 'pubblico', risultati: 'subito', chiude: sdChiudeBase(), cambia: true, maestre: false,
+      strati: [{ tipo: 'piu', titolo: '', max: 2, foto: false, risposte: [{ id: sdId('r'), testo: '' }, { id: sdId('r'), testo: '' }] }] };
+  }
+  function sdEditDa(s) {
+    return { id: s.id, titolo: s.titolo || '', livello: s.livello, risultati: s.risultati, chiude: s.chiude || sdChiudeBase(), cambia: s.cambia !== false, maestre: !!s.maestre,
+      strati: (s.strati || []).map(function (x) {
+        if (x.tipo === 'date') return { tipo: 'date', titolo: x.titolo || '', date: (x.date || []).map(function (d) { return { id: d.id, data: d.data, dalle: d.dalle || '' }; }) };
+        var o = { tipo: x.tipo, titolo: x.titolo || '' };
+        if (x.tipo === 'una' || x.tipo === 'piu') {
+          o.risposte = (x.risposte || []).map(function (r) { return { id: r.id, testo: r.testo || '', sotto: r.sotto || '', foto: r.foto || '' }; });
+          if (!o.risposte.length) o.risposte = [{ id: sdId('r'), testo: '' }, { id: sdId('r'), testo: '' }];
+          o.foto = o.risposte.some(function (r) { return r.foto; });
+          o.max = x.tipo === 'piu' ? (x.max || 0) : 0;
+        }
+        return o;
+      }) };
+  }
+  function sdDatiDaEdit(e) {
+    var haDate = e.strati.some(function (x) { return x.tipo === 'date'; });
+    return { titolo: e.titolo, livello: e.livello, risultati: e.risultati, chiude: e.chiude, cambia: e.cambia, maestre: e.maestre,
+      strati: e.strati.map(function (x) {
+        if (x.tipo === 'date') return { tipo: 'date', titolo: x.titolo, date: x.date.filter(function (d) { return d.data; }).map(function (d) { return { id: d.id, data: d.data, dalle: d.dalle || '' }; }) };
+        if (x.tipo === 'una' || x.tipo === 'piu') return { tipo: x.tipo, titolo: x.titolo, max: x.tipo === 'piu' ? (x.max || 0) : 0,
+          risposte: haDate ? [] : x.risposte.map(function (r) { return { id: r.id, testo: r.testo, sotto: r.sotto || '', foto: x.foto ? r.foto || '' : '' }; }) };
+        return { tipo: x.tipo, titolo: x.titolo };
+      }) };
+  }
+  function sdEditor() {
+    var e = STATO.sdEdit, box = el('div', { classe: 'sd' });
+    var ridisegna = function () { var n = sdEditor(); box.replaceWith(n); };
+    box.appendChild(sdIndietro('Sondaggi', function () { STATO.sdEdit = null; STATO.sdAperto = null; vaiA('sondaggi', true); }));
+    box.appendChild(el('div', { classe: 'sd-pills' }, [el('span', { classe: 'sd-pill grigio', testo: e.id ? 'BOZZA' : 'NUOVO SONDAGGIO' })]));
+    box.appendChild(el('label', { style: 'display:block' }, [el('span', { classe: 'sd-lbl', testo: 'La domanda' }),
+      el('input', { classe: 'sd-in grande', type: 'text', value: e.titolo, placeholder: 'Scrivi la domanda', 'data-campo': 'titolo', maxlength: '200', oninput: function (ev) { e.titolo = ev.target.value; } })]));
+    var haDate = e.strati.some(function (x) { return x.tipo === 'date'; });
+    var torta = el('div', { classe: 'sd-torta' });
+    e.strati.forEach(function (x, i) {
+      var st = el('div', { classe: 'sd-strato', 'data-strato': x.tipo });
+      var su = el('button', { type: 'button', 'aria-label': 'Sposta su', onclick: function () { var t = e.strati.splice(i, 1)[0]; e.strati.splice(i - 1, 0, t); ridisegna(); } }); su.innerHTML = SVG_SD.su; su.disabled = i === 0;
+      var giu = el('button', { type: 'button', 'aria-label': 'Sposta giù', onclick: function () { var t = e.strati.splice(i, 1)[0]; e.strati.splice(i + 1, 0, t); ridisegna(); } }); giu.innerHTML = SVG_SD.giu; giu.disabled = i === e.strati.length - 1;
+      var segna = { una: 'Scegli una risposta', piu: 'Scegli una o più risposte', sino: 'La tua risposta', sisenon: 'La tua risposta', date: 'Quando potete venire?' }[x.tipo];
+      st.appendChild(el('div', { classe: 'sd-strato-testa' }, [el('span', { classe: 'sd-su' }, [su, giu]),
+        el('span', {}, [el('small', { testo: SD_NOMI[x.tipo] }), el('input', { type: 'text', value: x.titolo || '', placeholder: segna, 'aria-label': 'Titolo', maxlength: '60', oninput: function (ev) { x.titolo = ev.target.value; } })]),
+        el('button', { type: 'button', classe: 'sd-meno', 'aria-label': 'Togli il pezzo', testo: '−', onclick: function () { e.strati.splice(i, 1); ridisegna(); } })]));
+      if (SD_UNO[x.tipo] && haDate) {
+        st.appendChild(el('div', { classe: 'sd-sulle' }, [sdSvg('date'), el('span', { testo: { una: 'Si sceglie una data', piu: 'Si scelgono più date', sino: 'Sì o No per ogni data', sisenon: 'Sì, Se serve o No per ogni data' }[x.tipo] })]));
+        if (x.tipo === 'piu') st.appendChild(sdMaxRiga(x, e.strati.filter(function (z) { return z.tipo === 'date'; }).reduce(function (n, z) { return n + z.date.length; }, 0), ridisegna));
+      } else if (x.tipo === 'una' || x.tipo === 'piu') {
+        x.risposte.forEach(function (r, j) {
+          var riga = el('div', { classe: 'sd-riga' });
+          if (x.foto) {
+            var fb = el('button', { type: 'button', classe: 'sd-fotobtn' + (r.foto ? ' piena' : ''), 'aria-label': 'Scegli la foto' });
+            if (r.foto) sdMettiFoto(fb, null, r.foto); else fb.innerHTML = SVG_SD.foto;
+            var input = el('input', { type: 'file', accept: 'image/*', style: 'display:none' });
+            fb.addEventListener('click', function () { input.click(); });
+            input.addEventListener('change', function () {
+              var file = input.files && input.files[0]; if (!file) return;
+              fb.innerHTML = '…';
+              sdRimpicciolisci(file).then(function (d) {
+                return chiama('sondaggioFotoCarica', { dati: d.split(',')[1], mime: 'image/jpeg' }).then(function (r2) { STATO.sdFotoLocali[r2.foto] = d; r.foto = r2.foto; ridisegna(); });
+              }).catch(function (err) { fb.innerHTML = SVG_SD.foto; if (err.codice !== 'SESSIONE') toast(err.codice === 'AZIONE' ? 'Serve lo script 12.0' : err.message || 'Foto non caricata'); });
+            });
+            riga.appendChild(fb); riga.appendChild(input);
+          } else riga.appendChild(el('span', { classe: 'sd-segno' + (x.tipo === 'piu' ? ' quadro' : '') }));
+          riga.appendChild(el('input', { type: 'text', value: r.testo, placeholder: 'Risposta ' + (j + 1), 'aria-label': 'Risposta ' + (j + 1), maxlength: '160', oninput: function (ev) { r.testo = ev.target.value; } }));
+          riga.appendChild(el('button', { type: 'button', classe: 'sd-meno piccolo', 'aria-label': 'Togli la risposta', testo: '−', onclick: function () { x.risposte.splice(j, 1); if (x.max > x.risposte.length) x.max = Math.max(1, x.risposte.length); ridisegna(); } }));
+          st.appendChild(riga);
+        });
+        st.appendChild(el('button', { type: 'button', classe: 'sd-agg', onclick: function () { x.risposte.push({ id: sdId('r'), testo: '' }); ridisegna(); } }, [sdSvg('piu'), 'Risposta']));
+        var int = el('span', { classe: 'sd-int' + (x.foto ? ' on' : '') }, [el('i')]);
+        st.appendChild(el('button', { type: 'button', classe: 'sd-interr', 'data-foto': '1', onclick: function () { x.foto = !x.foto; ridisegna(); } }, [sdSvg('foto'), el('span', { testo: 'Con le foto' }), int]));
+        if (x.tipo === 'piu') st.appendChild(sdMaxRiga(x, x.risposte.length, ridisegna));
+      } else if (x.tipo === 'sino' || x.tipo === 'sisenon') {
+        st.appendChild(el('div', { classe: 'sd-tags' }, SD_VAL[x.tipo].map(function (v) { return el('span', { testo: SD_TXT[v] }); })));
+      } else if (x.tipo === 'date') {
+        x.date.forEach(function (d, j) {
+          st.appendChild(el('div', { classe: 'sd-riga' }, [
+            el('input', { type: 'date', value: d.data || '', 'aria-label': 'Giorno', oninput: function (ev) { d.data = ev.target.value; }, onchange: function (ev) { d.data = ev.target.value; } }),
+            el('input', { type: 'time', value: d.dalle || '', 'aria-label': 'Ora', oninput: function (ev) { d.dalle = ev.target.value; }, onchange: function (ev) { d.dalle = ev.target.value; } }),
+            el('button', { type: 'button', classe: 'sd-meno piccolo', 'aria-label': 'Togli la data', testo: '−', onclick: function () { x.date.splice(j, 1); ridisegna(); } })]));
+        });
+        st.appendChild(el('button', { type: 'button', classe: 'sd-agg', onclick: function () { x.date.push({ id: sdId('d'), data: '', dalle: '' }); ridisegna(); } }, [sdSvg('piu'), 'Data e ora']));
+      }
+      torta.appendChild(st);
+    });
+    if (!e.strati.length) torta.appendChild(el('div', { classe: 'sd-piatto-vuoto' }, [sdSvg('giuTorta'), 'Tocca un pezzo qui sotto']));
+    torta.appendChild(el('div', { classe: 'sd-piatto' }));
+    box.appendChild(torta);
+    // i pezzi
+    var unoUsato = (e.strati.filter(function (x) { return SD_UNO[x.tipo]; })[0] || {}).tipo;
+    var dateUsate = haDate;
+    var metti = function (tipo) {
+      return function () {
+        if (tipo === 'date') { if (dateUsate) return; e.strati.push({ tipo: 'date', titolo: '', date: [{ id: sdId('d'), data: '', dalle: '' }, { id: sdId('d'), data: '', dalle: '' }] }); ridisegna(); return; }
+        if (unoUsato === tipo) return;
+        var i = -1; e.strati.forEach(function (x, j) { if (SD_UNO[x.tipo]) i = j; });
+        var vecchio = i >= 0 ? e.strati[i] : null;
+        var nuovo = { tipo: tipo, titolo: '' };
+        if (tipo === 'una' || tipo === 'piu') {
+          nuovo.risposte = vecchio && vecchio.risposte ? vecchio.risposte : [{ id: sdId('r'), testo: '' }, { id: sdId('r'), testo: '' }];
+          nuovo.foto = !!(vecchio && vecchio.foto); nuovo.max = tipo === 'piu' ? 2 : 0;
+        }
+        if (i >= 0) e.strati[i] = nuovo; else e.strati.push(nuovo);
+        ridisegna();
+      };
+    };
+    var pezzo = function (tipo, extra) { return el('button', { type: 'button', classe: 'sd-pezzo' + (extra ? ' extra' : '') + ((tipo === 'date' ? dateUsate : unoUsato === tipo) ? ' usato' : ''), 'data-pezzo': tipo, onclick: metti(tipo) },
+      [sdSvg(tipo === 'piu' ? 'piuScelte' : tipo), SD_NOMI[tipo]]); };
+    box.appendChild(el('h3', { classe: 'sd-h3', testo: 'I pezzi' }));
+    box.appendChild(el('div', { classe: 'sd-pezzi' }, [
+      el('div', { classe: 'sd-pezzi-tit' }, ['UNO SOLO']),
+      el('div', { classe: 'sd-pezzi-g' }, ['una', 'piu', 'sino', 'sisenon'].map(function (t) { return pezzo(t); })),
+      el('div', { classe: 'sd-pezzi-tit altro' }, ['QUANTI NE VUOI']),
+      el('div', { classe: 'sd-pezzi-g tre' }, [pezzo('date', true)])]));
+    // regole
+    box.appendChild(el('h3', { classe: 'sd-h3', testo: 'Chi vede chi ha votato cosa' }));
+    var liv = function (k, svg, n, sotto) {
+      return el('button', { type: 'button', classe: 'sd-big' + (e.livello === k ? ' on' + (k !== 'pubblico' ? ' crema' : '') : ''), 'data-livello': k, onclick: function () {
+        e.livello = k; if (k === 'pubblico' && e.risultati === 'meta') e.risultati = 'subito'; if (k !== 'pubblico' && e.risultati === 'subito') e.risultati = 'meta'; ridisegna(); } },
+        [sdSvg(svg), n, el('small', { testo: sotto })]);
+    };
+    box.appendChild(el('div', { classe: 'sd-tre' }, [liv('pubblico', 'persona', 'PUBBLICO', 'tutti vedono i voti'), liv('riservato', 'lucchettoGrande', 'RISERVATO', 'i voti li vedi solo tu'), liv('anonimo', 'anonimo', 'ANONIMO', 'nessuno vede i voti')]));
+    box.appendChild(el('h3', { classe: 'sd-h3', testo: 'I risultati si vedono' }));
+    var primo = e.livello === 'pubblico' ? 'subito' : 'meta';
+    box.appendChild(el('div', { classe: 'sd-due2' }, [
+      el('button', { type: 'button', classe: 'sd-big' + (e.risultati === primo ? ' on' : ''), 'data-risultati': primo, onclick: function () { e.risultati = primo; ridisegna(); } }, [sdSvg('barre'), primo === 'subito' ? 'SUBITO' : 'DAL 50% DEI VOTI']),
+      el('button', { type: 'button', classe: 'sd-big' + (e.risultati === 'chiusura' ? ' on' : ''), 'data-risultati': 'chiusura', onclick: function () { e.risultati = 'chiusura'; ridisegna(); } }, [sdSvg('lucchettoGrande'), 'ALLA CHIUSURA'])]));
+    box.appendChild(el('h3', { classe: 'sd-h3', testo: 'Chiude' }));
+    var giorno = el('input', { classe: 'sd-in', type: 'date', value: (e.chiude || '').slice(0, 10), 'data-campo': 'chiudeGiorno' });
+    var ora = el('input', { classe: 'sd-in', type: 'time', value: (e.chiude || '').slice(11, 16) || '18:00', 'data-campo': 'chiudeOra' });
+    var aggiornaChiude = function () { e.chiude = giorno.value ? giorno.value + 'T' + (ora.value || '18:00') : ''; };
+    giorno.addEventListener('input', aggiornaChiude); giorno.addEventListener('change', aggiornaChiude); ora.addEventListener('input', aggiornaChiude); ora.addEventListener('change', aggiornaChiude);
+    box.appendChild(el('div', { classe: 'sd-card sd-chiude' }, [el('label', {}, [el('span', { classe: 'sd-lbl', testo: 'Il giorno' }), giorno]), el('label', {}, [el('span', { classe: 'sd-lbl', testo: 'Alle' }), ora])]));
+    var sw = function (k, testo) { return el('button', { type: 'button', classe: 'sd-sw', 'data-sw': k, onclick: function () { e[k] = !e[k]; ridisegna(); } }, [el('span', { testo: testo }), el('span', { classe: 'sd-int' + (e[k] ? ' on' : '') }, [el('i')])]); };
+    box.appendChild(el('div', { classe: 'sd-card', style: 'padding:4px 14px;margin-top:12px' }, [sw('cambia', 'Si può cambiare il voto'), sw('maestre', 'Votano anche le maestre')]));
+    var err = el('p', { classe: 'sd-err', role: 'alert', hidden: 'hidden' });
+    var mostraErr = function (m) { err.textContent = m; err.hidden = false; err.scrollIntoView({ block: 'center' }); };
+    var bAnte = el('button', { type: 'button', classe: 'sd-btn bianco', 'data-anteprima': '1', onclick: function () { sdAnteprima(e); } }, [sdSvg('occhio'), 'Anteprima']);
+    var bPub = el('button', { type: 'button', classe: 'sd-btn', 'data-pubblica': '1' }, [sdSvg('pubblica'), 'Pubblica']);
+    var bBozza = el('button', { type: 'button', classe: 'sd-btn2', testo: 'Salva la bozza' });
+    bPub.addEventListener('click', function () {
+      err.hidden = true; aggiornaChiude();
+      sdAzione('sondaggioSalva', { id: e.id || '', dati: sdDatiDaEdit(e), pubblica: true }, bPub, function (r) {
+        STATO.sdEdit = null; STATO.sdAperto = r.id; STATO.sdTab = 0; STATO.sdPubblicato = r.id;
+      }).then(function (r) {
+        if (!r) return;
+        STATO.documenti.then(function (d) { var s = sdTrova(d, r.id); if (s) sdFoglioPubblicato(s); });
+      }).catch(function (x) { if (x && x.message) mostraErr(x.message); });
+    });
+    bBozza.addEventListener('click', function () {
+      err.hidden = true; aggiornaChiude();
+      sdAzione('sondaggioSalva', { id: e.id || '', dati: sdDatiDaEdit(e) }, bBozza, function (r) { e.id = r.id; STATO.sdAperto = r.id; toast('✓ Bozza salvata'); }).catch(function (x) { if (x && x.message) mostraErr(x.message); });
+    });
+    box.appendChild(err);
+    box.appendChild(el('div', { classe: 'sd-azioni-giu', style: 'margin-top:18px' }, [bAnte, bPub, bBozza,
+      e.id ? el('button', { type: 'button', classe: 'link-piccolo', style: 'color:#a3302f', testo: 'Cancella la bozza', onclick: function () {
+        sdChiedi('Cancellare la bozza?', 'Cancella', function (b, f) { sdAzione('sondaggioCancella', { id: e.id }, b, function () { f.chiudi(); STATO.sdEdit = null; STATO.sdAperto = null; }).catch(function () {}); }); } }) : null]));
+    return box;
+  }
+  function sdMaxRiga(x, quante, ridisegna) {
+    quante = Math.max(quante, 1);
+    var max = Math.min(x.max || quante, quante);
+    return el('div', { classe: 'sd-max' }, [el('b', { testo: 'Al massimo' }),
+      el('button', { type: 'button', 'aria-label': 'Una in meno', testo: '−', onclick: function () { x.max = Math.max(1, max - 1); ridisegna(); } }),
+      el('b', { testo: max + ' su ' + quante }),
+      el('button', { type: 'button', 'aria-label': 'Una in più', testo: '+', onclick: function () { x.max = Math.min(quante, max + 1); ridisegna(); } })]);
+  }
+  function sdFoglioPubblicato(s) {
+    var testo = sdTestoInvito(s);
+    var tondo = el('span', { style: 'flex:none;width:44px;height:44px;border-radius:50%;background:#1c4587;color:#fff;display:grid;place-items:center' }); tondo.innerHTML = SVG_SD.spunta.replace(/width="14" height="14"/, 'width="24" height="24"');
+    var f = foglioFile([
+      el('div', { style: 'display:flex;align-items:center;gap:10px;margin-bottom:12px' }, [tondo, el('h3', { style: 'margin:0', testo: 'Pubblicato!' })]),
+      el('div', { classe: 'bolla-wa' }, [el('div', { testo: testo })]),
+      el('a', { classe: 'sd-btn wa', href: linkWhatsapp(testo), target: '_blank', rel: 'noopener', 'data-wa': '1' }, [iconaWa(20), 'Condividi su WhatsApp']),
+      el('button', { type: 'button', classe: 'link-piccolo', testo: 'Chiudi', onclick: function () { f.chiudi(); } })]);
+  }
+
+  // ---------- Anteprima: il sondaggio come lo vede una famiglia, con una classe finta ----------
+  var SD_FINTI = ['Adele', 'Anna', 'Emma', 'Francesco C.', 'Giulia', 'Maya', 'Pietro', 'Andrea', 'Edoardo', 'Bianca', 'Agnese', 'Eleonora', 'Sofia', 'Leo', 'Marco', 'Francesco M.', 'Francesco Z.'];
+  function sdFinto(e, st) {
+    var dati = sdDatiDaEdit(e);
+    var s = { id: 'anteprima', stato: st.chiuso ? 'chiuso' : 'aperto', titolo: dati.titolo || 'La tua domanda', strati: JSON.parse(JSON.stringify(dati.strati)), livello: dati.livello, risultati: dati.risultati,
+      cambia: dati.cambia, chiude: dati.chiude || sdChiudeBase(), chiusoIl: st.chiuso ? isoDi(new Date()) + 'T18:00' : '', totale: 18, io: { k: 'a:luca', nome: 'Luca', docente: false } };
+    // le risposte vuote nell'anteprima si vedono «Risposta 1», le date senza giorno spariscono
+    s.strati.forEach(function (x) { (x.risposte || []).forEach(function (r, j) { if (!r.testo && !r.foto) r.testo = 'Risposta ' + (j + 1); });
+      if (x.tipo === 'date' && !x.date.length) x.date = (e.strati.filter(function (z) { return z.tipo === 'date'; })[0] || { date: [] }).date.map(function (d, j) { return { id: d.id, data: isoDi(new Date(Date.now() + (7 + j) * 864e5)), dalle: d.dalle }; }); });
+    var m = sdModello(s);
+    var nGia = s.livello === 'pubblico' ? 11 : 8, votanti = SD_FINTI.slice(0, nGia);
+    var conti = {}, nomi = {};
+    var tutteK = m ? (m.modo === 'perData' ? [].concat.apply([], m.righe.map(function (r) { return r.voci.map(function (v) { return v.k; }); })) : m.voci.map(function (v) { return v.k; })) : [];
+    tutteK.forEach(function (k) { conti[k] = 0; nomi[k] = []; });
+    if (m) votanti.forEach(function (nome, j) {
+      var voto = [];
+      if (m.modo === 'perData') m.righe.forEach(function (r, i) { var q = r.voci[(j + i * 2) % 5 < 3 ? 0 : (j + i * 2) % 5 === 3 && r.voci.length === 3 ? 1 : r.voci.length - 1]; voto.push(q.k); });
+      else { var n = m.voci.length, a = [0, 1, 0, 2, 1, 0, 3, 1, 0, 2, 4][j % 11] % n; voto.push(m.voci[a].k); if (m.multi && (m.max || n) > 1 && j % 4 === 0 && n > 1) voto.push(m.voci[(a + 1) % n].k); }
+      voto.forEach(function (k) { conti[k]++; nomi[k].push(nome); });
+    });
+    var mio = st.inviato && st.voto.length ? { voto: st.voto.slice(), da: 'Mamma Elena', io: true, quando: new Date().toISOString() } : null;
+    if (mio) mio.voto.forEach(function (k) { conti[k] = (conti[k] || 0) + 1; nomi[k] = (nomi[k] || []).concat(['Luca']); });
+    s.votati = nGia + (mio ? 1 : 0); s.mancano = 18 - s.votati;
+    s.manca = s.livello === 'riservato' ? null : SD_FINTI.slice(nGia).concat(mio ? [] : ['Luca']);
+    var vede = st.chiuso || s.risultati === 'subito' || (s.risultati === 'meta' && s.votati * 2 >= 18);
+    s.conti = vede ? conti : null; s.nomi = vede && s.livello === 'pubblico' ? nomi : null;
+    s.mio = mio; s.puoVotare = !st.chiuso && (s.cambia || !mio);
+    return s;
+  }
+  function sdAnteprima(e) {
+    var st = { sel: [], inviato: false, voto: [], chiuso: false, fatto: null };
+    var corpo = el('div', { classe: 'sd-prev-corpo sd' });
+    var chiudi = function () { velo.remove(); document.removeEventListener('keydown', tasti); };
+    var tasti = function (ev) { if (ev.key === 'Escape') chiudi(); };
+    var ricomincia = el('button', { type: 'button', testo: 'Ricomincia', onclick: function () { st = { sel: [], inviato: false, voto: [], chiuso: false, fatto: null }; disegna(); } });
+    var x = el('button', { type: 'button', 'aria-label': 'Chiudi l’anteprima', style: 'width:38px;padding:0', testo: '✕', onclick: chiudi });
+    var velo = el('div', { classe: 'sd-prev', role: 'dialog', 'aria-label': 'Anteprima' }, [el('div', { classe: 'sd-prev-testa' }, [sdSvg('occhio'), el('b', { testo: 'ANTEPRIMA' }), ricomincia, x]), corpo]);
+    function disegna() {
+      corpo.innerHTML = '';
+      var s = sdFinto(e, st);
+      corpo.appendChild(el('div', { classe: 'sd-prev-tasti' }, [
+        el('button', { type: 'button', classe: 'sd-pill' + (!st.chiuso ? ' giallo' : ''), style: 'border:0;min-height:34px;cursor:pointer', testo: 'APERTO', onclick: function () { st.chiuso = false; disegna(); } }),
+        el('button', { type: 'button', classe: 'sd-pill' + (st.chiuso ? ' giallo' : ''), style: 'border:0;min-height:34px;cursor:pointer', testo: 'CHIUSO', onclick: function () { st.chiuso = true; st.fatto = null; disegna(); } })]));
+      if (st.chiuso) { corpo.appendChild(sdChiusoVista(s, [])); return; }
+      if (st.fatto) {
+        var salva = STATO.sdFatto; STATO.sdFatto = { id: s.id, tipo: st.fatto };
+        var v = sdFattoVista(s); STATO.sdFatto = salva;
+        v.querySelectorAll('.sd-azioni-giu').forEach(function (n) { n.remove(); });
+        corpo.appendChild(v);
+        corpo.appendChild(el('div', { classe: 'sd-azioni-giu' }, [el('button', { type: 'button', classe: 'sd-btn2', testo: 'Cambia il voto', onclick: function () { st.fatto = null; disegna(); } })]));
+        return;
+      }
+      corpo.appendChild(sdVoto(s, { anteprima: true, chi: { iniziale: 'E', nome: 'Mamma Elena', sotto: 'mamma di Luca' },
+        sel: function () { return st.sel; }, setSel: function (v) { st.sel = v; },
+        invia: function (voto) { st.fatto = !st.inviato ? 'inviato' : !voto.length ? 'ritirato' : sdUguali(voto, st.voto) ? 'confermato' : 'cambiato'; st.inviato = voto.length > 0; st.voto = voto.slice(); velo.scrollTop = 0; disegna(); } }));
+    }
+    disegna();
+    document.addEventListener('keydown', tasti);
+    document.body.appendChild(velo);
+  }
+
   var RENDER = {
     // v10.14: libri
     libri: function (b) { return bloccoLibri(b); },
@@ -7359,7 +8608,7 @@
         box.innerHTML = '';
         if (!attivi.length && !admin && !festa.length) { applicaContatori(); return; }
         var card = el('section', { classe: 'riquadro oro' }, [
-          el('div', { classe: 'testa-avvisi' }, [illPagina('comunicazioni'), el('h3', { testo: titolo })])
+          el('div', { classe: 'testa-avvisi' }, [imgIll('megafono'), el('h3', { testo: titolo })])   // v12.0: Documenti ha documenti.webp, gli avvisi il megafono
         ]);
         if (admin) card.appendChild(el('div', { classe: 'admin-riga' }, [el('button', { type: 'button', classe: 'av-piu', testo: '+ Avviso / File', onclick: function () { apriPannello('avviso'); } })]));
         if (admin && arrivo && arrivo.length) {
@@ -7380,7 +8629,11 @@
       return box;
     },
     // v11.27 (n. 74): riga "Documenti" in Home, con il numero dei documenti nuovi
-    documentiPorta: function (b) {
+    sondaggi: function () { return sdPagina(); },                       // v12.0 (n. 8)
+    sondaggiHome: function () { return sdBloccoHome(); },               // v12.0 (n. 8): «1 sondaggio da votare»
+    // v12.0 (n. 8): la riga «Documenti» in Home non c'è più: c'è il riquadro grande Documenti in cima alla griglia
+    documentiPorta: function () { return el('div', { classe: 'nascosto' }); },
+    documentiPortaVecchia: function (b) {
       var sotto = el('small', { 'data-riga-com': '1', testo: rigaComunicazioni((STATO.contatori || {}).comunicazioni || 0) });
       var p = (STATO.dati.pagine || []).filter(function (x) { return x.id === 'comunicazioni'; })[0];
       return el('button', { type: 'button', classe: 'porta', 'data-porta': 'comunicazioni', onclick: function () { vaiA('comunicazioni'); } }, [
