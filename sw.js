@@ -1,8 +1,8 @@
-// APP "4a primaria" — service worker (v11.12; prima v10.16). v11.12: mostra le notifiche dei colloqui (Firebase) e al tocco apre Ricevimento o la videochiamata.
+// APP "4a primaria" — service worker (v12.2: cambiano il numero e la copia salvata; le notifiche dei sondaggi programmati aprono il messaggio pronto; prima v11.12 e v10.16). v11.12: mostra le notifiche dei colloqui (Firebase) e al tocco apre Ricevimento o la videochiamata.
 // Serve a far installare l'app su Android ("Scarica l'app")
 // e ad aprire la pagina anche con poca connessione. Strategia: prima la rete, la copia salvata solo se manca internet.
 // I dati (script Google) e il video NON passano di qui: arrivano sempre dalla rete.
-const CACHE = 'app4a-v11.12';
+const CACHE = 'app4a-v12.2';
 const FILE = ['./', 'index.html', 'manifest.webmanifest', 'icona-192.png', 'icona-512.png', 'icona-180.png'];
 
 self.addEventListener('install', e => {
