@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- pagina 12.3 · 11 novembre 2026: bordo dorato anche su Avvisi, Fondo cassa e Prossimi 7 giorni in Home (script e sw.js restano 12.2) -->
 <!-- pagina 12.2 · 10 novembre 2026: SONDAGGI, step 2 (n. 8): più domande nello stesso sondaggio, Quanti siete, Stelle, Testo libero (Nascondi), proposte delle famiglie, sondaggi programmati; bordo dorato su tutti i riquadri della Home -->
 <!-- pagina 12.1 · 10 novembre 2026 (mai installata da sola, è dentro la 12.2): Rossana toglie e rimette le fasce dei colloqui della maestra (✏️ Modifica in Ricevimento), come la maestra -->
 <!-- pagina 12.0 · 10 novembre 2026: SONDAGGI, step 1 (n. 8). Release 12.0: pagina, script, contenuti e sw.js ripartono tutti da 12.0 -->
@@ -2105,6 +2106,8 @@
   .griglia-larghe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-width: 560px; }
   .griglia-larghe .tile.larga { min-height: 70px; }
   .griglia-home .tile, .griglia-home .tile:hover { border: 2px solid #FDCA0D; }   /* v12.2: bordo dorato come Documenti e Sondaggi */
+  /* v12.3: bordo dorato anche su Avvisi, Fondo cassa (tutte le varianti, anche la rosa) e Prossimi 7 giorni, come Sondaggi */
+  .riquadro.oro, .cassa2, .cassa2.rosa, button.cassa2:hover, a.cassa2:hover, .porta[data-porta="calendario"], .porta[data-porta="calendario"]:hover, .riquadro.prox { border: 2px solid #FDCA0D; }
   .sd { color: #15243b; }
   .sd-pills { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
   .sd-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 800;
@@ -2836,7 +2839,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.2', SCRIPT_NECESSARIO = '12.2';   // v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.3', SCRIPT_NECESSARIO = '12.2';   // v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -9113,7 +9116,7 @@
               return t ? el('button', { type: 'button', classe: 'pdf', 'aria-label': 'Apri ' + t.f.titolo, onclick: function () { apriDocDi(t.f); } }, ['📎 PDF']) : null; })()
           ]));
         });
-        box.appendChild(el('section', { classe: 'riquadro' }, [
+        box.appendChild(el('section', { classe: 'riquadro prox' }, [
           el('button', { type: 'button', classe: 'testa-porta', 'data-porta': 'calendario', onclick: vaiCal }, [illPagina('calendario'), el('h3', { testo: titolo }), frecciaTonda()]),
           righe]));
         applicaContatori();
