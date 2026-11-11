@@ -2408,6 +2408,66 @@
   .sd-sulle.piccolo { margin-top: 6px; font-size: 13px; }
   .sd-esce { padding: 0 0 10px; }
   .sd-esce .sd-chiude label:first-child { flex: 3; } .sd-esce .sd-chiude label:last-child { flex: 2; }
+  /* ---------- v12.4: STELLE A OGNI RISPOSTA ---------- */
+  .sd-pezzo.larga { grid-column: 1 / -1; flex-direction: row; min-height: 52px; font-size: 14px; }
+  .sd-pezzo.larga.usato { opacity: 1; background: #FDCA0D; color: #1c4587; }
+  .sd-pt-lista { display: grid; gap: 10px; }
+  .sd-pt { padding: 10px 10px 4px; border: 1px solid #d6e4ef; border-radius: 14px; background: #fff; box-shadow: 0 1px 2px rgba(20,50,90,.06); }
+  .sd-pt.mio { border: 2px solid #FDCA0D; background: #fffbea; }
+  .sd-pt.nuova { border: 2px solid #1c4587; }
+  .sd-pt-testa { display: flex; gap: 10px; align-items: flex-start; }
+  .sd-pt-foto { flex: none; width: 64px; height: 64px; border-radius: 10px; overflow: hidden; background: #d9f1fe; color: #1c4587; display: grid; place-items: center; }
+  .sd-pt-foto svg { width: 28px; height: 28px; }
+  .sd-pt-tx { flex: 1; min-width: 0; }
+  .sd-pt-tx b { display: block; font-size: 15.5px; font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+  .sd-pt-tx small { display: block; font-size: 13px; color: #5a6b80; font-weight: 700; }
+  .sd-pt-tx .sd-pill-prop { margin: 0 0 4px; }
+  .sd-pill-prop.nuova { background: #1c4587; color: #fff; }
+  .sd-pill-prop.tua { background: #FDCA0D; }
+  .sd-pt-tot { flex: none; text-align: right; line-height: 1.1; }
+  .sd-pt-tot b { display: flex; align-items: center; justify-content: flex-end; gap: 3px; font-size: 17px; font-weight: 900; font-variant-numeric: tabular-nums; }
+  .sd-pt-tot small { font-size: 11.5px; color: #4f5f72; font-weight: 800; white-space: nowrap; }
+  .sd-st-mini { display: inline-grid; place-items: center; color: #FDCA0D; }
+  .sd-st-mini svg { width: 16px; height: 16px; }
+  .sd-pt-stelle { display: flex; align-items: center; margin-top: 2px; }
+  .sd-pt-stelle button { flex: none; width: 44px; height: 44px; padding: 0; border: 0; background: none; display: grid; place-items: center; cursor: pointer; color: #9aa8b8; }
+  .sd-pt-stelle button.on { color: #FDCA0D; }
+  .sd-pt-stelle button svg { width: 32px; height: 32px; }
+  .sd-pt-stelle > b { flex: 1; text-align: right; padding-right: 4px; font-size: 13px; font-weight: 900; color: #1c4587; white-space: nowrap; }
+  .sd-pt-finte { display: flex; gap: 2px; margin: 6px 0 0 4px; color: #b7c3cf; }
+  .sd-pt-finte svg { width: 20px; height: 20px; }
+  .sd-riga-pt { padding: 8px; border: 1px solid #d6e4ef; border-radius: 12px; background: #f9fcfe; }
+  .sd-riga-pt + .sd-riga-pt { margin-top: 8px; }
+  .sd-sotto-in { display: block; width: 100%; box-sizing: border-box; min-height: 40px; margin-top: 6px; padding: 0 12px; border: 1.5px dashed #a6d8f5; border-radius: 10px; background: #fff;
+    font: inherit; font-size: 14px; font-weight: 700; color: #5a6b80; }
+  .sd-cl { padding: 0 4px; }
+  .sd-cl.mio { margin: 0 -6px; padding: 10px 10px 12px; border: 3px solid #FDCA0D; border-radius: 14px; background: #fff4d4; }
+  .sd-cl-testa { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+  .sd-cl-testa > b:first-child { flex: 1; min-width: 0; font-size: 15px; font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+  .sd-cl-testa > b:last-child { flex: none; display: flex; align-items: center; gap: 3px; font-size: 16px; font-weight: 900; font-variant-numeric: tabular-nums; }
+  .sd-cl-sotto { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; font-size: 12px; font-weight: 800; color: #4f5f72; }
+  .sd-ris-pt { display: grid; gap: 14px; }
+  .sd-sel { min-width: 0; box-sizing: border-box; min-height: 46px; padding: 0 8px; border: 1.5px solid #a6d8f5; border-radius: 10px; font: inherit; font-size: 15.5px; font-weight: 800; color: #15243b; background: #fff; }
+  .sd-quando { display: flex; gap: 8px; }
+  .sd-quando .sd-sel:first-child { flex: 3; } .sd-quando .sd-sel:last-child { flex: 2; }
+  .sd-np { display: flex; align-items: center; gap: 10px; padding: 10px; border: 2px solid #FDCA0D; border-radius: 12px; background: #fff4d4; }
+  .sd-np + .sd-np { margin-top: 8px; }
+  .sd-np > span { flex: 1; min-width: 0; }
+  .sd-np b { display: block; font-size: 15.5px; font-weight: 900; overflow-wrap: anywhere; }
+  .sd-np small { font-size: 12.5px; font-weight: 800; color: #1c4587; }
+  .sd-tit-ico { display: flex; align-items: center; gap: 6px; margin: 14px 0 6px; font-size: 14.5px; font-weight: 900; }
+  .sd-ora-wa { flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 74px; padding: 0 8px; box-sizing: border-box;
+    border-radius: 12px; border: 2px solid #25d366; background: #fff; color: #128c4b; line-height: 1.1; }
+  .sd-ora-wa b { font-size: 15px; font-weight: 900; }
+  .sd-prog-tondo { display: inline-grid; place-items: center; width: 76px; height: 76px; border-radius: 50%; background: #FDCA0D; color: #1c4587; }
+  .sd-prog-tondo svg { width: 40px; height: 40px; }
+  .sd-esce-card { display: flex; align-items: center; gap: 10px; padding: 14px; border-radius: 14px; background: #fff4d4; border: 2px solid #FDCA0D; color: #1c4587; }
+  .sd-esce-card > span:last-child { flex: 1; min-width: 0; }
+  .sd-esce-card b { display: block; font-size: 15.5px; font-weight: 900; color: #15243b; overflow-wrap: anywhere; }
+  @media (max-width: 359px) {
+    .sd-pt-stelle button { width: 40px; height: 44px; } .sd-pt-stelle button svg { width: 28px; height: 28px; }
+    .sd-pt-foto { width: 52px; height: 52px; }
+  }
   @media (max-width: 359px) {
     .sd-prev-corpo { padding: 12px 12px 40px; }
     .sd-pezzi-g { gap: 4px; } .sd-pezzo { font-size: 11px; min-height: 70px; }
@@ -2839,7 +2899,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.3', SCRIPT_NECESSARIO = '12.2';   // v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.4', SCRIPT_NECESSARIO = '12.4';   // v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -3030,6 +3090,8 @@
     if (d === 'ricevimento') { vaiA('ricevimento'); return; }          // v11.12: dalle notifiche dei colloqui     // v11.2: con "Fondo cassa" già scelto
     var dc = d.match(/^doc-([\w-]{10,100})$/);                         // v10.27: .../#doc-<id> apre un file (Condividi della casella ⋯)
     if (dc) { apriDocDaLink(dc[1]); return; }
+    var np = d.match(/^proposta-(sd_[\w-]+)$/);                         // v12.4: notifica «💡 Nuova proposta»
+    if (np) { STATO.sdNuovaProp = np[1]; apriSondaggio(np[1]); return; }
     var cd = d.match(/^condividi-(sd_[\w-]+)$/);                         // v12.2: notifica del sondaggio programmato appena uscito
     if (cd) { STATO.sdCondividi = cd[1]; apriSondaggio(cd[1]); return; }
     var sd = d.match(/^sondaggio-(sd_[\w-]+)$/);                         // v12.0 (n. 8): link del sondaggio su WhatsApp
@@ -7578,13 +7640,14 @@
   // nell'app (un voto per bambino, vale l'ultimo), con le barre in tempo reale. Tre livelli: pubblico, riservato, anonimo.
   // Rossana segue i risultati (anello, chi manca, «Ricorda a tutti, una chat alla volta», testo per il gruppo, azioni).
   // =====================================================================================================================
-  var SD_UNO = { una: 1, piu: 1, sino: 1, sisenon: 1 };
-  var SD_VAL = { sino: ['si', 'no'], sisenon: ['si', 'forse', 'no'] };
+  var SD_UNO = { una: 1, piu: 1, sino: 1, sisenon: 1, punti: 1 };   // v12.4: punti = stelle a ogni risposta
+  var SD_VAL = { sino: ['si', 'no'], sisenon: ['si', 'forse', 'no'], punti: ['1', '2', '3', '4', '5'] };
   var SD_TXT = { si: 'Sì', forse: 'Se serve', no: 'No' };
   var SD_NOMI = { una: 'Una scelta', piu: 'Più scelte', sino: 'Sì / No', sisenon: 'Sì · Se serve · No', date: 'Data e ora',
-    quanti: 'Quanti siete', stelle: 'Stelle', testo: 'Testo libero', proposte: 'Proposte delle famiglie' };   // v12.2: i pezzi dello step 2
+    quanti: 'Quanti siete', stelle: 'Stelle (gradimento)', testo: 'Testo libero', proposte: 'Proposte delle famiglie', punti: 'Stelle a ogni risposta' };   // v12.2: i pezzi dello step 2; v12.4: punti
   var SD_ALTRI = { quanti: 1, stelle: 1, testo: 1, proposte: 1 };
   function sdStep2() { return versioneMaggiore(STATO.versioneScript || '', '12.2'); }   // v12.2: i pezzi nuovi solo con lo script 12.2
+  function sdStep4() { return versioneMaggiore(STATO.versioneScript || '', '12.4'); }   // v12.4: stelle a ogni risposta, orari 8–21, Cambia la chiusura
   var SD_LIV = {
     pubblico: { e: '👤', n: 'PUBBLICO', pill: '👤 PUBBLICO · TUTTI VEDONO I VOTI', wa: '👤 Pubblico: il tuo voto lo vedono tutti', crema: false },
     riservato: { e: '🔒', n: 'RISERVATO', pill: '🔒 RISERVATO · IL TUO VOTO LO VEDE SOLO LA RAPPRESENTANTE', wa: '🔒 Riservato: il tuo voto lo vede solo la rappresentante', crema: true },
@@ -7628,6 +7691,9 @@
   SVG_SD.testo = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H10l-4.5 3.5V16H4z"/><path d="M8 9h8M8 12.5h5"/></svg>';
   SVG_SD.proposte = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3"/></svg>';
   SVG_SD.campana = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>';
+  SVG_SD.punti = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.8z"/></svg>';   // v12.4
+  SVG_SD.mano = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11M12 10.5V9a1.5 1.5 0 0 1 3 0v2M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7L4 15a1.5 1.5 0 0 1 2.4-1.8L9 15"/></svg>';
+  SVG_SD.lampadina = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1c4587" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>';
   SVG_SD.lucchettoGrande = SVG_SD.lucchetto.replace(/width="16" height="16"/, 'width="32" height="32"').replace('stroke-width="2.4"', 'stroke-width="2"');
   function sdSvg(nome, classe) { var s = el('span', { classe: classe || null, 'aria-hidden': 'true', style: classe ? null : 'display:inline-grid;place-items:center' }); s.innerHTML = SVG_SD[nome]; return s; }
   function sondaggiDi(dati) { return dati && Array.isArray(dati.sondaggi) ? dati.sondaggi : null; }
@@ -7673,6 +7739,8 @@
     var d = sdGiorni(iso); if (!d) return '';
     return GIORNI_LUNGHI[d.getDay()] + ' ' + d.getDate() + ' ' + MESI[d.getMonth()] + ' alle ' + String(iso).slice(11, 16).replace(/^0/, '');
   }
+  /** v12.4: «gio 12 nov alle 8:00». */
+  function sdQuandoBreve(iso) { var d = sdGiorni(iso); return d ? GIORNI_SETT[d.getDay()].toLowerCase().slice(0, 3) + ' ' + d.getDate() + ' ' + MESI[d.getMonth()].slice(0, 3) + ' alle ' + String(iso).slice(11, 16).replace(/^0/, '') : ''; }
   function sdDataLabel(x) {
     var d = sdGiorni(x.data); if (!d) return x.data || '';
     return GIORNI_SETT[d.getDay()].toLowerCase() + ' ' + d.getDate() + ' ' + MESI[d.getMonth()].slice(0, 3) + (x.dalle ? ' · ' + x.dalle : '');
@@ -7683,6 +7751,35 @@
     return GIORNI_LUNGHI[d.getDay()] + ' ' + d.getDate() + ' ' + MESI[d.getMonth()] + ' alle ' + d.getHours() + ':' + ('0' + d.getMinutes()).slice(-2);
   }
   function sdLink(s) { return URL_APP + '#sondaggio-' + s.id; }
+  // v12.4: chiusure e uscite solo tra le 8:00 e le 21:00, ogni 5 minuti (giorno + ora a tendina, gli orari di notte non ci sono)
+  var SD_ORE = (function () { var o = []; for (var m = 8 * 60; m <= 21 * 60; m += 5) o.push(('0' + Math.floor(m / 60)).slice(-2) + ':' + ('0' + m % 60).slice(-2)); return o; })();
+  function sdInFascia(iso) {
+    var m = /T(\d{2}):(\d{2})$/.exec(String(iso || '')); if (!m) return iso;
+    var min = +m[1] * 60 + +m[2]; min = Math.ceil(min / 5) * 5;
+    if (min < 480) min = 480; if (min > 1260) min = 1260;
+    return String(iso).slice(0, 11) + ('0' + Math.floor(min / 60)).slice(-2) + ':' + ('0' + min % 60).slice(-2);
+  }
+  /** Giorno e ora a tendina; cambia(iso) a ogni scelta. campo = prefisso di data-campo (chiude, esce). */
+  function sdCampoQuando(iso, cambia, campo) {
+    iso = sdInFascia(iso);
+    var gg = el('select', { classe: 'sd-sel', 'aria-label': 'Giorno', 'data-campo': campo + 'Giorno' });
+    var oo = el('select', { classe: 'sd-sel', 'aria-label': 'Ora', 'data-campo': campo + 'Ora' });
+    var oggi = new Date(); oggi.setHours(12, 0, 0, 0);
+    var giorni = [];
+    for (var i = 0; i < 62; i++) { var d = new Date(oggi.getTime() + i * 864e5); giorni.push(isoDi(d)); }
+    var v = String(iso || '').slice(0, 10);
+    if (v && giorni.indexOf(v) < 0) giorni.unshift(v);
+    giorni.forEach(function (g, i) {
+      var d = sdGiorni(g), j = giorni.indexOf(isoDi(oggi));
+      var pre = g === isoDi(oggi) ? 'oggi, ' : g === isoDi(new Date(oggi.getTime() + 864e5)) ? 'domani, ' : '';
+      gg.appendChild(el('option', { value: g, testo: pre + GIORNI_SETT[d.getDay()].toLowerCase().slice(0, 3) + ' ' + d.getDate() + ' ' + MESI[d.getMonth()].slice(0, 3) }));
+    });
+    SD_ORE.forEach(function (o) { oo.appendChild(el('option', { value: o, testo: o.replace(/^0/, '') })); });
+    gg.value = v || giorni[0]; oo.value = String(iso || '').slice(11, 16) || '18:00';
+    var su = function () { cambia(gg.value + 'T' + oo.value); };
+    gg.addEventListener('change', su); oo.addEventListener('change', su);
+    return el('div', { classe: 'sd-quando' }, [gg, oo]);
+  }
 
   // ---------- come si risponde: il modello di un sondaggio ----------
   // v12.2 (step 2): le domande del sondaggio, nell'ordine della torta: la domanda a scelta (con le date e le proposte delle famiglie),
@@ -7713,6 +7810,14 @@
     var prop = sdStrato(s, 'proposte') && Array.isArray(s.proposte) ? s.proposte : [];
     var m = { tipo: uno.tipo, multi: uno.tipo === 'piu', max: uno.tipo === 'piu' ? (Number(uno.max) || 0) : 1 };
     var scelta = uno.tipo === 'una' || uno.tipo === 'piu';
+    if (uno.tipo === 'punti') {                                          // v12.4: da 0 a 5 stelle a ogni risposta, in ordine casuale per famiglia
+      m.modo = 'punti';
+      m.voci = sdMescola((uno.risposte || []).map(function (r) { return { k: r.id, nome: r.testo || '', sotto: r.sotto || '', foto: r.foto || '' }; })
+        .concat(prop.filter(function (p) { return !p.data; }).map(function (p) { return { k: p.id, nome: p.testo, sotto: '', foto: '', prop: p }; })), s.id + '|' + (s.io ? s.io.k : ''));
+      m.titolo = uno.titolo || 'Date da 0 a 5 stelle a ogni idea';
+      m.proponi = sdStrato(s, 'proposte') ? 'testo' : '';
+      return m;
+    }
     if (date.length) {
       date = date.concat(prop.filter(function (p) { return p.data; }).map(function (p) { return { id: p.id, data: p.data, dalle: p.dalle, prop: p }; }));
       if (scelta) {
@@ -7739,6 +7844,26 @@
     }
     return m;
   }
+  /** v12.4: ordine casuale ma fisso per quella famiglia (la prima della lista non è avvantaggiata). */
+  function sdMescola(lista, seme) {
+    var h = 2166136261; for (var i = 0; i < seme.length; i++) { h ^= seme.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+    var a = lista.slice(), rnd = function () { h ^= h << 13; h >>>= 0; h ^= h >>> 17; h ^= h << 5; h >>>= 0; return h / 4294967296; };
+    for (var j = a.length - 1; j > 0; j--) { var x = Math.floor(rnd() * (j + 1)), t = a[j]; a[j] = a[x]; a[x] = t; }
+    return a;
+  }
+  /** v12.4: le stelle di una risposta { tot, cinque, fam } dai conti (chiavi "<risposta>:<1-5>"). */
+  function sdPunti(c, k) {
+    var o = { tot: 0, cinque: 0, fam: 0 };
+    for (var v = 1; v <= 5; v++) { var n = (c && c[k + ':' + v]) || 0; o.tot += v * n; o.fam += n; if (v === 5) o.cinque = n; }
+    return o;
+  }
+  /** v12.4: le stelle date a una risposta nella selezione (0 = nessuna). */
+  function sdMie(sel, k) { var x = (sel || []).filter(function (z) { return String(z).indexOf(k + ':') === 0; })[0]; return x ? +String(x).split(':')[1] : 0; }
+  /** v12.4: proposte arrivate dopo il voto di questa famiglia e non ancora votate. */
+  function sdIdeeNuove(s, sel) {
+    if (!s.mio || !Array.isArray(s.proposte)) return [];
+    return s.proposte.filter(function (p) { return p.ok && !p.mia && p.quando && s.mio.quando && p.quando > s.mio.quando && !sdMie(sel, p.id); });
+  }
   /** Le domande da mostrare: [{ tipo: 'uno' | 'quanti' | 'stelle' | 'testo', titolo, m | st }]. */
   function sdDomande(s) {
     var out = [], m = sdModello(s), messo = false;
@@ -7763,14 +7888,15 @@
   /** Tiene nella selezione solo le scelte che ci sono ancora (una proposta tolta sparisce anche da qui). */
   function sdPulisci(s, sel) {
     var m = sdModello(s), ok = {};
-    if (m) (m.modo === 'perData' ? [].concat.apply([], m.righe.map(function (r) { return r.voci; })) : m.voci).forEach(function (v) { ok[v.k] = 1; });
+    if (m) (m.modo === 'perData' ? [].concat.apply([], m.righe.map(function (r) { return r.voci; })) : m.voci).forEach(function (v) {
+      if (m.modo === 'punti') SD_VAL.punti.forEach(function (n) { ok[v.k + ':' + n] = 1; }); else ok[v.k] = 1; });   // v12.4
     return (sel || []).filter(function (k) { return !sdEScelta(k) || ok[k]; });
   }
   function sdTocca(m, sel, k) {
     var altri = (sel || []).filter(function (x) { return !sdEScelta(x); });
     var sc = (sel || []).filter(sdEScelta);
     var i = sc.indexOf(k);
-    if (m.modo === 'perData') {
+    if (m.modo === 'perData' || m.modo === 'punti') {                    // v12.4: anche le stelle (una per risposta; la stessa di nuovo = 0)
       var g = k.split(':')[0];
       sc = sc.filter(function (x) { return x.split(':')[0] !== g; });
       if (i < 0) sc.push(k);
@@ -7818,7 +7944,7 @@
   /** v12.2: la pillola di una proposta delle famiglie. */
   function sdPillProp(p) {
     if (!p) return null;
-    return el('span', { classe: 'sd-pill-prop' + (p.ok ? '' : ' attesa'), testo: !p.ok ? 'IN ATTESA DI APPROVAZIONE' : p.mia ? 'PROPOSTA TUA' : 'PROPOSTA' + (p.da ? ' DA ' + p.da.toUpperCase() : '') });
+    return el('span', { classe: 'sd-pill-prop' + (p.ok ? '' : ' attesa'), testo: !p.ok ? 'IN ATTESA DI APPROVAZIONE' : p.mia ? 'PROPOSTA TUA' : 'PROPOSTA DA ' + (p.da ? p.da.toUpperCase() : 'UNA FAMIGLIA') });   // v12.4: «da una famiglia»
   }
   /** v12.2: i commenti del Testo libero (Rossana: con Nascondi / Mostra). */
   function sdCommentiBox(s, admin) {
@@ -7857,7 +7983,7 @@
       });
       box.appendChild(el('div', { classe: 'sd-proponi-riga' + (data ? ' data' : '') }, campi.concat([ok])));
       box.appendChild(err);
-      box.appendChild(el('p', { classe: 'sd-nota', testo: 'La vedono tutti dopo che la approva la rappresentante.' }));
+      if ((sdStrato(s, 'proposte') || {}).approvo !== false) box.appendChild(el('p', { classe: 'sd-nota', testo: 'La vedono tutti dopo che la approva la rappresentante.' }));   // v12.4: solo se approva Rossana
       campi[0].focus();
     });
     return box;
@@ -7898,8 +8024,10 @@
         if (ctx.chi) box.appendChild(el('div', { classe: 'sd-chi' }, [el('span', { classe: 'sd-av', testo: ctx.chi.iniziale }), el('span', {}, [el('b', { testo: ctx.chi.nome }), el('small', { testo: ctx.chi.sotto })])]));
         if (s.mio) {
           var tit = s.mio.mano ? 'La rappresentante ha segnato il voto per ' + (s.io ? s.io.nome : '') : s.mio.io ? 'Hai già votato in questo sondaggio' : (s.mio.da || 'La tua famiglia') + ' ha già votato per ' + (s.io ? s.io.nome : '');
+          var idee = sdIdeeNuove(s, sel);                                  // v12.4: proposte arrivate dopo il voto
           box.appendChild(el('div', { classe: 'sd-chi gia' }, [el('span', { classe: 'sd-av', testo: s.mio.mano ? 'R' : (s.mio.da || '?').replace(/^(Mamma|Papà)\s+/i, '').charAt(0).toUpperCase() || '✓' }),
-            el('span', {}, [el('b', { testo: tit }), el('small', { testo: sdQuandoVoto(s.mio.quando) })])]));
+            el('span', {}, [el('b', { testo: tit }), el('small', { testo: sdQuandoVoto(s.mio.quando) })]),
+            idee.length ? el('span', { classe: 'sd-pill', style: 'flex:none;background:#1c4587;color:#fff', testo: idee.length === 1 ? '1 IDEA NUOVA' : idee.length + ' IDEE NUOVE' }) : null]));
         }
         box.appendChild(el('div', { classe: 'sd-pills' }, [sdPillTempo(s), sdLivPill(s)]));
         box.appendChild(el('h2', { classe: 'sd-titolo', testo: s.titolo }));
@@ -7977,7 +8105,29 @@
       return el('button', { type: 'button', classe: 'sd-togli', 'data-togli': p.id, onclick: function (e) { ctx.togliProposta(p.id, e.currentTarget); } },
         [el('span', { classe: 'sd-meno mini', testo: '−' }), 'Togli la mia proposta']);
     };
-    if (m.modo === 'lista') {
+    if (m.modo === 'punti') {                                          // v12.4: stelle a ogni risposta
+      var nuove = sdIdeeNuove(s, sel).map(function (p) { return p.id; });
+      var lp = el('div', { classe: 'sd-pt-lista' });
+      m.voci.forEach(function (v) {
+        var mie = sdMie(sc, v.k), pt = cc ? sdPunti(cc.c, v.k) : null, nuova = nuove.indexOf(v.k) >= 0;
+        var foto = null;
+        if (v.foto) { foto = el('span', { classe: 'sd-pt-foto', role: 'img', 'aria-label': 'Foto della risposta' }); foto.innerHTML = SVG_SD.immagine; sdMettiFoto(foto, ctx.anteprima ? null : s.id, v.foto); }
+        var pill = v.prop ? (nuova ? el('span', { classe: 'sd-pill-prop nuova', testo: 'NUOVA' }) : v.prop.mia && v.prop.ok ? el('span', { classe: 'sd-pill-prop tua', testo: 'LA TUA PROPOSTA' }) : sdPillProp(v.prop)) : null;
+        var stelle = el('div', { classe: 'sd-pt-stelle' });
+        [1, 2, 3, 4, 5].forEach(function (n) {
+          var b = el('button', { type: 'button', classe: n <= mie ? 'on' : '', 'data-k': v.k + ':' + n, 'aria-label': v.nome + ': ' + n + (n === 1 ? ' stella' : ' stelle'), 'aria-pressed': mie === n ? 'true' : 'false', onclick: tocca(v.k + ':' + n) });
+          b.innerHTML = SVG_SD[n <= mie ? 'stellaPiena' : 'stella']; stelle.appendChild(b);
+        });
+        stelle.appendChild(el('b', { testo: mie ? 'TU: ' + mie : '' }));
+        var card = el('div', { classe: 'sd-pt' + (mie ? ' mio' : '') + (nuova ? ' nuova' : ''), 'data-risposta': v.k }, [
+          el('div', { classe: 'sd-pt-testa' }, [foto, el('span', { classe: 'sd-pt-tx' }, [pill, el('b', { testo: v.nome }), v.sotto ? el('small', { testo: v.sotto }) : null]),
+            pt ? el('span', { classe: 'sd-pt-tot' }, [el('b', {}, [sdSvg('stellaPiena', 'sd-st-mini'), String(pt.tot)]), el('small', { testo: '5★ × ' + pt.cinque })]) : null]),
+          stelle]);
+        var tg = togli(v.prop); if (tg) card.appendChild(tg);
+        lp.appendChild(card);
+      });
+      blocco.appendChild(lp);
+    } else if (m.modo === 'lista') {
       var mx = 0; if (cc) m.voci.forEach(function (v) { mx = Math.max(mx, cc.c[v.k] || 0); });
       var lista = el('div', { classe: 'sd-lista' });
       m.voci.forEach(function (v) {
@@ -8168,6 +8318,7 @@
   function sdRisScelta(card, s, m, opz, mio) {
     var c = s.conti;
     var nomi = opz.nomiAdmin || s.nomi;
+    if (m.modo === 'punti') { card.appendChild(sdClassifica(s, m, opz, mio, nomi)); return; }   // v12.4
     function chips(k) {
       var l = (nomi && nomi[k]) || [];
       if (!l.length) return null;
@@ -8208,6 +8359,31 @@
         chips(v.k)]));
     });
   }
+  /** v12.4: le risposte a stelle in classifica (più stelle in tutto; a pari stelle più 5★). */
+  function sdOrdinePunti(s, m) {
+    return m.voci.map(function (v) { return { v: v, p: sdPunti(s.conti, v.k) }; }).sort(function (a, b) { return b.p.tot - a.p.tot || b.p.cinque - a.p.cinque; });
+  }
+  function sdClassifica(s, m, opz, mio, nomi) {
+    var box = el('div', { classe: 'sd-ris-pt' }), l = sdOrdinePunti(s, m), mx = l.length ? l[0].p.tot || 1 : 1;
+    var spareggio = l.length > 1 && l[0].p.tot && l[0].p.tot === l[1].p.tot && l[0].p.cinque > l[1].p.cinque;
+    var pari = l.length > 1 && l[0].p.tot && l[0].p.tot === l[1].p.tot && l[0].p.cinque === l[1].p.cinque;
+    l.forEach(function (x, i) {
+      var mie = sdMie(mio, x.v.k), primo = i === 0 && x.p.tot > 0, pills = [];
+      if (primo) pills.push(el('span', { classe: 'sd-pill scuro' }, [sdSvg('coppa'), pari ? 'PARI' : opz.chiuso ? 'LA PIÙ AMATA' : 'IN TESTA']));
+      if (primo && spareggio) pills.push(el('span', { classe: 'sd-pill crema', testo: 'PARI DI STELLE · VINCE CON PIÙ 5★' }));
+      if (mie) pills.push(el('span', { classe: 'sd-pill giallo' }, ['TU: ' + mie + (mie === 1 ? ' STELLA' : ' STELLE')]));
+      if (x.v.prop) pills.push(sdPillProp(x.v.prop));
+      var chi = [];
+      if (nomi) for (var n = 5; n >= 1; n--) (nomi[x.v.k + ':' + n] || []).forEach(function (z) { chi.push(typeof z === 'string' ? { t: z, s: n + '★' } : { t: z.t, s: n + '★' + (z.s ? ' · ' + z.s : '') }); });
+      box.appendChild(el('div', { classe: 'sd-cl' + (mie ? ' mio' : ''), 'data-classifica': x.v.k }, [
+        pills.length ? el('div', { classe: 'sd-pills', style: 'margin-bottom:4px' }, pills) : null,
+        el('div', { classe: 'sd-cl-testa' }, [el('b', { testo: x.v.nome || 'Foto' }), el('b', {}, [sdSvg('stellaPiena', 'sd-st-mini'), String(x.p.tot)])]),
+        el('div', { classe: 'sd-traccia' }, [el('i', { classe: i === 0 ? 'primo' : '', style: 'width:' + Math.round(x.p.tot / mx * 100) + '%' })]),
+        el('div', { classe: 'sd-cl-sotto' }, [el('span', { testo: '5★ × ' + x.p.cinque }), el('span', { testo: 'da ' + x.p.fam + (x.p.fam === 1 ? ' famiglia' : ' famiglie') })]),
+        chi.length ? sdChipNomi(chi) : null]));
+    });
+    return box;
+  }
   /** I nomi per Rossana: «Luca» con sotto «mamma», «papà», «a mano» (dal dettaglio dei voti, mai negli anonimi). */
   function sdNomiAdmin(s) {
     var g = s.gestione; if (!g || !g.voti) return null;
@@ -8222,7 +8398,8 @@
   // ---------- testi per WhatsApp (li scrive la pagina) ----------
   function sdTestoInvito(s) {
     var l = SD_LIV[s.livello] || SD_LIV.pubblico;
-    return '🗳️ *Sondaggio della 4a*\n*' + s.titolo + '*\n' + l.wa + '\n⏰ Entro ' + sdQuando(s.chiude) + '\n\n👉 Vota qui, ci vuole un minuto:\n' + sdLink(s);
+    var u = (s.strati || []).filter(function (x) { return SD_UNO[x.tipo]; })[0];
+    return '🗳️ *Sondaggio della 4a*\n*' + s.titolo + '*\n' + (u && u.tipo === 'punti' ? '⭐ Date da 0 a 5 stelle a ogni idea\n' : '') + l.wa + '\n⏰ Entro ' + sdQuando(s.chiude) + '\n\n👉 Vota qui, ci vuole un minuto:\n' + sdLink(s);
   }
   function sdTestoGruppo(s) {
     var manca = s.gestione ? s.gestione.manca : [];
@@ -8237,7 +8414,11 @@
       var pre = dom.length > 1 ? '*' + (i + 1) + '. ' + q.titolo + '*\n' : '';
       if (q.tipo === 'uno') {
         var m = q.m;
-        if (m.modo === 'perData') {
+        if (m.modo === 'punti') {                                       // v12.4: 🏆 Buono per la libreria ⭐ 45 · 5★×6
+          righe.push(pre + sdOrdinePunti(s, m).map(function (x, j) {
+            return (j === 0 && x.p.tot ? '🏆 ' : '') + (x.v.nome || 'Foto') + ' ⭐ ' + x.p.tot + ' · 5★×' + x.p.cinque;
+          }).join('\n'));
+        } else if (m.modo === 'perData') {
           righe.push(pre + m.righe.map(function (r) { return '📅 ' + r.nome + '\n' + r.voci.map(function (v) { return v.t + ' ' + (c[v.k] || 0); }).join(' · '); }).join('\n\n'));
         } else {
           var tot = 0; m.voci.forEach(function (v) { tot += c[v.k] || 0; });
@@ -8278,7 +8459,7 @@
       if (!lista.length) return;
       var admin = sdAdmin();                                             // Rossana: i sondaggi aperti con «N su 18», tocca e segue i risultati
       var da = admin ? [] : lista.filter(sdDaVotare);
-      var prima = function (x) { return admin ? ((x.daApprovare || sdUscitoDaPoco(x)) ? 1 : 0) : (sdDaVotare(x) ? 1 : 0); };   // v12.2: per Rossana prima le proposte da approvare e gli usciti
+      var prima = function (x) { return admin ? ((x.daApprovare || x.nuove || sdUscitoDaPoco(x)) ? 1 : 0) : (sdDaVotare(x) ? 1 : 0); };   // v12.2: per Rossana prima le proposte da approvare e gli usciti
       lista.sort(function (a, b) { return prima(b) - prima(a) || msChiude(a.chiude) - msChiude(b.chiude); });
       var card = el('section', { classe: 'sd-card sd-home sd' }, [el('div', {}, [imgIll('sondaggi'),
         el('b', { testo: da.length ? (da.length === 1 ? '1 sondaggio da votare' : da.length + ' sondaggi da votare') : admin ? (lista.length === 1 ? '1 sondaggio aperto' : lista.length + ' sondaggi aperti') : 'Sondaggi' })])]);
@@ -8287,6 +8468,7 @@
         card.appendChild(el('button', { type: 'button', classe: 'sd-home-voce', 'data-sondaggio': s.id, onclick: function () { apriSondaggio(s.id); } }, [
           el('span', {}, [el('b', { testo: s.titolo }), el('span', { classe: 'sd-pills', style: 'margin:0' }, [sdPillTempo(s), admin ? el('span', { classe: 'sd-pill grigio', testo: s.votati + ' su ' + s.totale }) : null,
             admin && s.daApprovare ? el('span', { classe: 'sd-pill giallo', testo: s.daApprovare === 1 ? '1 PROPOSTA DA APPROVARE' : s.daApprovare + ' PROPOSTE DA APPROVARE' }) : null,   // v12.2
+            admin && s.nuove ? el('span', { classe: 'sd-pill giallo', testo: s.nuove === 1 ? '💡 1 PROPOSTA NUOVA' : '💡 ' + s.nuove + ' PROPOSTE NUOVE' }) : null,   // v12.4
             admin && sdUscitoDaPoco(s) ? el('span', { classe: 'sd-pill crema', testo: 'USCITO ALLE ' + String(s.esce).slice(11, 16) + ' · DA MANDARE' }) : null])]),
           el('span', { classe: 'sd-vai' + (vota ? ' vota' : ''), testo: vota ? 'VOTA' : 'APRI' })]));
       });
@@ -8307,7 +8489,18 @@
       if (!lista) { box.appendChild(el('p', { classe: 'sd-vuoto', testo: sdAdmin() ? 'Per i sondaggi serve lo script 12.2: Gestisci deployment → Nuova versione.' : 'Nessun sondaggio' })); return; }
       if (STATO.sdAperto) {
         var s = sdTrova(dati, STATO.sdAperto);
-        if (!s) { box.appendChild(sdIndietro()); box.appendChild(el('p', { classe: 'sd-vuoto', testo: 'Sondaggio non trovato: forse è stato chiuso o cancellato.' })); return; }
+        if (!s) {
+          box.appendChild(sdIndietro());
+          var vuoto = el('p', { classe: 'sd-vuoto', testo: 'Carico…' }); box.appendChild(vuoto);
+          var cerca = STATO.sdAperto;                                     // v12.4: un programmato non ancora uscito dice quando esce
+          (sdStep4() ? chiama('sondaggioQuando', { id: cerca }) : Promise.resolve({})).then(function (q) {
+            if (q && q.esce) {
+              var ic = el('span'); ic.innerHTML = SVG_SD.orologio;
+              vuoto.replaceWith(el('div', { classe: 'sd-esce-card', 'data-esce': q.esce }, [ic, el('span', {}, [el('b', { testo: q.titolo || 'Sondaggio' }), 'Esce ' + sdQuandoBreve(q.esce)])]));
+            } else vuoto.textContent = 'Sondaggio non trovato: forse è stato chiuso o cancellato.';
+          }).catch(function () { vuoto.textContent = 'Sondaggio non trovato: forse è stato chiuso o cancellato.'; });
+          return;
+        }
         if (sdAdmin() && (s.stato === 'bozza' || s.stato === 'programmato')) { STATO.sdEdit = sdEditDa(s); box.appendChild(sdEditor()); return; }   // v12.2: anche i programmati
         if (sdAdmin() && !STATO.sdComeFamiglia) box.appendChild(sdGestione(s, lista));
         else box.appendChild(sdDettaglio(s, lista));
@@ -8363,7 +8556,7 @@
       proponi: function (x, bottone) {                                    // v12.2: proposta delle famiglie, scelta subito se c'è posto
         return sdAzione('sondaggioProponi', Object.assign({ id: s.id }, x), bottone, function (r) {
           var m = sdModello(s);
-          if (r.proposta && m && m.modo !== 'perData') STATO.sdSel[s.id] = sdTocca(m, STATO.sdSel[s.id] || [], r.proposta);
+          if (r.proposta && m && m.modo !== 'perData' && m.modo !== 'punti') STATO.sdSel[s.id] = sdTocca(m, STATO.sdSel[s.id] || [], r.proposta);   // v12.4: con le stelle si sceglie quante
           toast(r.approvata ? '✓ Proposta aggiunta' : '✓ Proposta mandata: la vedono tutti dopo che la approva la rappresentante');
         });
       },
@@ -8423,6 +8616,9 @@
     if (sdUscitoDaPoco(s)) box.appendChild(el('div', { classe: 'sd-banner uscito' }, [sdSvg('campana'), el('span', { testo: 'Uscito da solo alle ' + String(s.esce).slice(11, 16) + ': mandalo nel gruppo' }),
       el('button', { type: 'button', classe: 'sd-mini wa', 'data-manda': '1', onclick: function () { sdFoglioPubblicato(s); } }, [iconaWa(16), 'Manda'])]));   // v12.2
     if (STATO.sdCondividi === s.id) { STATO.sdCondividi = null; setTimeout(function () { sdFoglioPubblicato(s); }, 50); }   // v12.2: dalla notifica
+    if (s.nuove && s.stato === 'aperto') box.appendChild(el('div', { classe: 'sd-banner uscito' }, [sdSvg('proposte'), el('span', { testo: s.nuove === 1 ? '1 proposta nuova' : s.nuove + ' proposte nuove' }),
+      el('button', { type: 'button', classe: 'sd-mini wa', 'data-avvisa': '1', onclick: function () { sdFoglioNuovaProposta(s); } }, [iconaWa(16), 'Avvisa il gruppo'])]));   // v12.4
+    if (STATO.sdNuovaProp === s.id) { STATO.sdNuovaProp = null; setTimeout(function () { sdFoglioNuovaProposta(s); }, 50); }   // v12.4: dalla notifica
     var circ = 2 * Math.PI * 42, manca = g.manca.length;
     var anello = el('span'); anello.innerHTML = '<svg width="96" height="96" viewBox="0 0 100 100" role="img" aria-label="' + s.votati + ' su ' + s.totale + '"><circle cx="50" cy="50" r="42" fill="none" stroke="#eef1f5" stroke-width="12"/>' +
       '<circle cx="50" cy="50" r="42" fill="none" stroke="#1c4587" stroke-width="12" stroke-linecap="round" stroke-dasharray="' + (circ * (s.totale ? s.votati / s.totale : 0)).toFixed(1) + ' ' + circ.toFixed(1) + '" transform="rotate(-90 50 50)"/>' +
@@ -8450,12 +8646,13 @@
   function sdProposteAdmin(s) {
     var l = s.proposte.slice().sort(function (a, b) { return (a.ok ? 1 : 0) - (b.ok ? 1 : 0); }), att = l.filter(function (p) { return !p.ok; }).length;
     var card = el('div', { classe: 'sd-card sd-prop-admin' }, [el('b', { testo: att ? (att === 1 ? '1 proposta da approvare' : att + ' proposte da approvare') : 'Proposte delle famiglie' })]);
+    if (!s.approvo && !att) card.style.borderColor = '#d6e4ef';                // v12.4: senza approvazione è solo l'elenco
     l.forEach(function (p) {
       var togli = el('button', { type: 'button', classe: 'sd-meno piccolo', 'aria-label': 'Togli la proposta', 'data-togli': p.id, testo: '−', onclick: function () {
         sdChiedi('Togliere la proposta «' + sdEtichettaProp(p) + '»? Sparisce anche dai voti di chi l’aveva scelta.', 'Togli la proposta', function (b, f) {
           sdAzione('sondaggioTogliProposta', { id: s.id, proposta: p.id }, b, function () { f.chiudi(); toast('Proposta tolta'); }).catch(function () {}); }); } });
       card.appendChild(el('div', { classe: 'sd-prop-riga' + (p.ok ? '' : ' attesa'), 'data-proposta': p.id }, [
-        el('span', {}, [el('b', { testo: sdEtichettaProp(p) }), el('small', { testo: (p.ok ? 'Approvata' : 'In attesa') + (p.da ? ' · proposta da ' + p.da : '') })]),
+        el('span', {}, [el('b', { testo: sdEtichettaProp(p) }), el('small', { testo: (p.ok ? (s.approvo || !p.ok ? 'Approvata' : 'Visibile a tutti') : 'In attesa') + (p.da ? ' · proposta da ' + p.da : '') })]),
         !p.ok && s.stato !== 'chiuso' ? el('button', { type: 'button', classe: 'sd-mini', 'data-approva': p.id, testo: 'Approva', onclick: function (e) {
           sdAzione('sondaggioApprova', { id: s.id, proposta: p.id }, e.currentTarget, function () { toast('✓ Approvata: ora la vedono tutti'); }).catch(function () {}); } }) : null,
         togli]));
@@ -8524,13 +8721,77 @@
     var bt = function (svg, testo, fai, rosso) { return el('button', { type: 'button', classe: rosso ? 'rosso' : '', 'data-azione': testo, onclick: fai }, [sdSvg(svg), testo]); };
     if (s.stato === 'aperto') {
       az.push(bt('chiudi', 'Chiudi ora', function () { sdChiedi('Chiudere adesso il sondaggio?', 'Sì, chiudi ora', function (b, f) { sdAzione('sondaggioChiudi', { id: s.id }, b, function () { f.chiudi(); STATO.sdTab = 0; toast('Sondaggio chiuso'); }).catch(function () {}); }); }));
-      az.push(bt('orologio', '+2 giorni', function (e) { sdAzione('sondaggioProroga', { id: s.id, giorni: 2 }, e.currentTarget, function (r) { toast('Chiude ' + sdQuando(r.chiude)); }).catch(function () {}); }));
-    } else az.push(bt('riapri', 'Riapri', function (e) { sdAzione('sondaggioRiapri', { id: s.id }, e.currentTarget, function (r) { toast('Riaperto: chiude ' + sdQuando(r.chiude)); }).catch(function () {}); }));
+      if (sdStep4()) az.push(bt('orologio', 'Cambia la chiusura', function () { sdFoglioChiusura(s, false); }));   // v12.4: giorno e ora, al posto di +2 giorni
+      else az.push(bt('orologio', '+2 giorni', function (e) { sdAzione('sondaggioProroga', { id: s.id, giorni: 2 }, e.currentTarget, function (r) { toast('Chiude ' + sdQuando(r.chiude)); }).catch(function () {}); }));
+    } else if (sdStep4()) az.push(bt('riapri', 'Riapri', function () { sdFoglioChiusura(s, true); }));   // v12.4: si sceglie quando chiude
+    else az.push(bt('riapri', 'Riapri', function (e) { sdAzione('sondaggioRiapri', { id: s.id }, e.currentTarget, function (r) { toast('Riaperto: chiude ' + sdQuando(r.chiude)); }).catch(function () {}); }));
     az.push(bt('correggi', 'Correggi il testo', function () { sdCorreggi(s); }));
     az.push(bt('duplica', 'Duplica', function (e) { sdAzione('sondaggioDuplica', { id: s.id }, e.currentTarget, function (r) { toast('Copia salvata tra le bozze'); STATO.sdAperto = r.id; }).catch(function () {}); }));
     az.push(el('button', { type: 'button', 'data-azione': 'Condividi', onclick: function () { sdFoglioWa('Condividi su WhatsApp', sdTestoInvito(s)); } }, [iconaWa(26), 'Condividi']));
     az.push(bt('cestino', 'Cancella', function () { sdChiedi('Cancellare il sondaggio? Spariscono anche tutti i voti.', 'Cancella', function (b, f) { sdAzione('sondaggioCancella', { id: s.id }, b, function () { f.chiudi(); STATO.sdAperto = null; toast('Sondaggio cancellato'); }).catch(function () {}); }); }, true));
     return el('div', { classe: 'sd-az' }, az);
+  }
+  /** v12.4: «⏰ Cambia la chiusura» (e Riapri): giorno e ora liberi tra le 8:00 e le 21:00. */
+  function sdFoglioChiusura(s, riapri) {
+    var base = riapri || msChiude(s.chiude) < Date.now() ? sdInFascia(isoDi(new Date(Date.now() + 2 * 864e5)) + 'T' + (String(s.chiude).slice(11, 16) || '18:00')) : s.chiude;
+    var scelta = sdInFascia(base);
+    var ic = el('span'); ic.innerHTML = SVG_SD.orologio;
+    var salva = el('button', { type: 'button', classe: 'sd-btn', style: 'margin-top:14px', 'data-salva-chiusura': '1', testo: riapri ? 'Riapri' : 'Salva' });
+    var err = el('p', { classe: 'sd-err', role: 'alert', hidden: 'hidden' });
+    salva.addEventListener('click', function () {
+      err.hidden = true;
+      sdAzione('sondaggioChiusura', { id: s.id, chiude: scelta }, salva, function (r) { f.chiudi(); toast((riapri ? 'Riaperto: chiude ' : 'Chiude ') + sdQuando(r.chiude)); }).catch(function (x) { if (x && x.message) { err.textContent = x.message; err.hidden = false; } });
+    });
+    var f = foglioFile([el('h3', { classe: 'sd-tit-ico', style: 'margin-top:0' }, [ic, riapri ? 'Riapri: chiude' : 'Chiude']),
+      sdCampoQuando(scelta, function (v) { scelta = v; }, 'chiusura'), err, salva,
+      el('button', { type: 'button', classe: 'link-piccolo', testo: 'Annulla', onclick: function () { f.chiudi(); } })]);
+  }
+  /** v12.4: foglio «💡 Nuova proposta»: la proposta (o le proposte arrivate di seguito), il «−», ⏰ Chiude libero e il messaggio per il gruppo. */
+  function sdTestoNuovaProposta(s, lista, chiude, allungato) {
+    var pub = s.livello === 'pubblico';
+    var righe = lista.map(function (p) { return '⭐ *' + sdEtichettaProp(p) + '*' + (pub && p.da ? '\nproposta dalla famiglia di ' + p.da : ''); }).join('\n');
+    var uno = (s.strati || []).filter(function (x) { return SD_UNO[x.tipo]; })[0];
+    var come = uno && uno.tipo === 'punti' ? 'date le stelle anche a ' + (lista.length === 1 ? 'questa' : 'queste') : 'votate anche ' + (lista.length === 1 ? 'questa' : 'queste');
+    return '💡 *' + s.titolo + '*: ' + (lista.length === 1 ? 'c’è una nuova proposta!' : 'ci sono ' + lista.length + ' nuove proposte!') + '\n\n' + righe +
+      '\n\nSe avete già votato, il vostro voto resta valido: toccate *Cambia voto* e ' + come + '.\n\n⏰ ' +
+      (allungato ? 'Per lasciarvi il tempo, il sondaggio resta aperto più a lungo: chiude *' + sdQuando(chiude) + '*.' : 'Il sondaggio chiude *' + sdQuando(chiude) + '*.') +
+      '\n\n👉 ' + sdLink(s) + '\n\nGrazie! 😊\nRossana';
+  }
+  function sdFoglioNuovaProposta(s) {
+    var tutte = (s.proposte || []).filter(function (p) { return p.ok && !p.mia; }).sort(function (a, b) { return a.quando < b.quando ? -1 : 1; });
+    var lista = tutte.filter(function (p) { return p.quando > (s.annunciate || ''); });
+    if (!lista.length && tutte.length) lista = tutte.slice(-1);
+    if (!lista.length) { toast('Nessuna proposta nuova'); return; }
+    var prima = s.chiude, chiude = s.chiude, fino = lista.map(function (p) { return p.quando; }).sort().pop();
+    var corpo = el('div'), bolla = el('div'), wa = el('a', { classe: 'sd-btn wa', target: '_blank', rel: 'noopener', 'data-wa': '1' }, [iconaWa(20), 'Condividi su WhatsApp']);
+    var pillPrima = el('span', { classe: 'sd-pill', style: 'margin-top:8px;display:none', 'data-prima': '1' });   // display: la pillola ignora [hidden]
+    var err = el('p', { classe: 'sd-err', role: 'alert', hidden: 'hidden' });
+    var scrivi = function () {
+      var testo = sdTestoNuovaProposta(s, lista, chiude, chiude !== prima);
+      bolla.textContent = testo; wa.href = linkWhatsapp(testo);
+      pillPrima.style.display = chiude === prima ? 'none' : ''; pillPrima.textContent = 'PRIMA: ' + sdQuandoBreve(prima).toUpperCase();
+    };
+    wa.addEventListener('click', function () { chiama('sondaggioAnnunciato', { id: s.id, fino: fino }).then(sdNuovi).catch(function () {}); });
+    lista.forEach(function (p) {
+      corpo.appendChild(el('div', { classe: 'sd-np', 'data-proposta': p.id }, [el('span', {}, [el('b', { testo: sdEtichettaProp(p) }),
+        el('small', { testo: s.livello === 'pubblico' && p.da ? 'proposta dalla famiglia di ' + p.da : 'proposta da una famiglia' })]),
+        el('button', { type: 'button', classe: 'sd-meno', 'aria-label': 'Togli la proposta', testo: '−', onclick: function () {
+          f.chiudi();
+          sdChiedi('Togliere la proposta «' + sdEtichettaProp(p) + '»? Sparisce anche dai voti di chi l’aveva scelta.', 'Togli la proposta', function (b, g) {
+            sdAzione('sondaggioTogliProposta', { id: s.id, proposta: p.id }, b, function () { g.chiudi(); toast('Proposta tolta'); }).catch(function () {}); }); } })]));
+    });
+    var ic = el('span'); ic.innerHTML = SVG_SD.orologio.replace(/width="26" height="26"/, 'width="18" height="18"');
+    var campo = sdCampoQuando(chiude, function (v) {
+      err.hidden = true;
+      sdAzione('sondaggioChiusura', { id: s.id, chiude: v }, null, function (r) { chiude = r.chiude; s.chiude = r.chiude; scrivi(); toast('Chiude ' + sdQuando(r.chiude)); })
+        .catch(function (x) { if (x && x.message) { err.textContent = x.message; err.hidden = false; } });
+    }, 'nuovaChiude');
+    var luce = el('span'); luce.innerHTML = SVG_SD.lampadina;
+    var f = foglioFile([el('h3', { classe: 'sd-tit-ico', style: 'margin-top:0;font-size:20px' }, [luce, lista.length === 1 ? 'Nuova proposta' : 'Nuove proposte']), corpo,
+      el('b', { classe: 'sd-tit-ico' }, [ic, 'Chiude']), campo, pillPrima, err,
+      el('div', { classe: 'bolla-wa', style: 'margin-top:14px' }, [bolla]), wa,
+      el('button', { type: 'button', classe: 'link-piccolo', testo: 'Chiudi', onclick: function () { f.chiudi(); } })]);
+    scrivi();
   }
   /** Dopo la pubblicazione si corregge solo il testo (errori di battitura). */
   function sdCorreggi(s) {
@@ -8547,6 +8808,7 @@
       });
       (st.risposte || []).forEach(function (r) {
         campi.push(el('input', { classe: 'sd-in', style: 'margin-top:6px', type: 'text', value: r.testo || '', 'aria-label': 'Risposta', oninput: function (e) { r.testo = e.target.value; } }));
+        if (st.tipo === 'punti') campi.push(el('input', { classe: 'sd-sotto-in', type: 'text', value: r.sotto || '', placeholder: 'riga piccola (facoltativa)', 'aria-label': 'Riga piccola', oninput: function (e) { r.sotto = e.target.value; } }));   // v12.4
       });
     });
     var salva = el('button', { type: 'button', classe: 'sd-btn', style: 'margin-top:14px', testo: 'Salva', onclick: function () {
@@ -8570,7 +8832,8 @@
         if (x.tipo === 'date') return { tipo: 'date', titolo: x.titolo || '', date: (x.date || []).map(function (d) { return { id: d.id, data: d.data, dalle: d.dalle || '' }; }) };
         if (x.tipo === 'quanti') return { tipo: 'quanti', titolo: x.titolo || '', voci: (x.voci || []).map(function (v) { return { id: v.id, nome: v.nome || '' }; }) };   // v12.2
         var o = { tipo: x.tipo, titolo: x.titolo || '' };
-        if (x.tipo === 'una' || x.tipo === 'piu') {
+        if (x.tipo === 'proposte') o.approvo = x.approvo !== false;   // v12.4 (senza il campo, come la 12.2: approva Rossana)
+        if (x.tipo === 'una' || x.tipo === 'piu' || x.tipo === 'punti') {
           o.risposte = (x.risposte || []).map(function (r) { return { id: r.id, testo: r.testo || '', sotto: r.sotto || '', foto: r.foto || '' }; });
           if (!o.risposte.length) o.risposte = [{ id: sdId('r'), testo: '' }, { id: sdId('r'), testo: '' }];
           o.foto = o.risposte.some(function (r) { return r.foto; });
@@ -8585,8 +8848,9 @@
       strati: e.strati.map(function (x) {
         if (x.tipo === 'quanti') return { tipo: 'quanti', titolo: x.titolo, voci: x.voci.map(function (v) { return { id: v.id, nome: v.nome }; }) };   // v12.2
         if (x.tipo === 'date') return { tipo: 'date', titolo: x.titolo, date: x.date.filter(function (d) { return d.data; }).map(function (d) { return { id: d.id, data: d.data, dalle: d.dalle || '' }; }) };
-        if (x.tipo === 'una' || x.tipo === 'piu') return { tipo: x.tipo, titolo: x.titolo, max: x.tipo === 'piu' ? (x.max || 0) : 0,
-          risposte: haDate ? [] : x.risposte.map(function (r) { return { id: r.id, testo: r.testo, sotto: r.sotto || '', foto: x.foto ? r.foto || '' : '' }; }) };
+        if (x.tipo === 'una' || x.tipo === 'piu' || x.tipo === 'punti') return { tipo: x.tipo, titolo: x.titolo, max: x.tipo === 'piu' ? (x.max || 0) : 0,
+          risposte: haDate && x.tipo !== 'punti' ? [] : x.risposte.map(function (r) { return { id: r.id, testo: r.testo, sotto: r.sotto || '', foto: x.foto ? r.foto || '' : '' }; }) };
+        if (x.tipo === 'proposte') return { tipo: 'proposte', titolo: x.titolo, approvo: !!x.approvo };   // v12.4
         return { tipo: x.tipo, titolo: x.titolo };
       }) };
   }
@@ -8603,7 +8867,7 @@
       var st = el('div', { classe: 'sd-strato', 'data-strato': x.tipo });
       var su = el('button', { type: 'button', 'aria-label': 'Sposta su', onclick: function () { var t = e.strati.splice(i, 1)[0]; e.strati.splice(i - 1, 0, t); ridisegna(); } }); su.innerHTML = SVG_SD.su; su.disabled = i === 0;
       var giu = el('button', { type: 'button', 'aria-label': 'Sposta giù', onclick: function () { var t = e.strati.splice(i, 1)[0]; e.strati.splice(i + 1, 0, t); ridisegna(); } }); giu.innerHTML = SVG_SD.giu; giu.disabled = i === e.strati.length - 1;
-      var segna = { una: 'Scegli una risposta', piu: 'Scegli una o più risposte', sino: 'La tua risposta', sisenon: 'La tua risposta', date: 'Quando potete venire?',
+      var segna = { punti: 'Date da 0 a 5 stelle a ogni idea', una: 'Scegli una risposta', piu: 'Scegli una o più risposte', sino: 'La tua risposta', sisenon: 'La tua risposta', date: 'Quando potete venire?',
         quanti: 'Quanti siete?', stelle: 'Quante stelle?', testo: 'Vuoi aggiungere qualcosa?' }[x.tipo];
       // v12.2: con le date il pezzo UNO SOLO non ha titolo (vale quello di Data e ora); le Proposte non sono una domanda
       var senzaTitolo = (SD_UNO[x.tipo] && haDate) || x.tipo === 'proposte';
@@ -8613,7 +8877,7 @@
       if (SD_UNO[x.tipo] && haDate) {
         st.appendChild(el('div', { classe: 'sd-sulle' }, [sdSvg('date'), el('span', { testo: { una: 'Si sceglie una data', piu: 'Si scelgono più date', sino: 'Sì o No per ogni data', sisenon: 'Sì, Se serve o No per ogni data' }[x.tipo] })]));
         if (x.tipo === 'piu') st.appendChild(sdMaxRiga(x, e.strati.filter(function (z) { return z.tipo === 'date'; }).reduce(function (n, z) { return n + z.date.length; }, 0), ridisegna));
-      } else if (x.tipo === 'una' || x.tipo === 'piu') {
+      } else if (x.tipo === 'una' || x.tipo === 'piu' || x.tipo === 'punti') {
         x.risposte.forEach(function (r, j) {
           var riga = el('div', { classe: 'sd-riga' });
           if (x.foto) {
@@ -8629,10 +8893,14 @@
               }).catch(function (err) { fb.innerHTML = SVG_SD.foto; if (err.codice !== 'SESSIONE') toast(err.codice === 'AZIONE' ? 'Serve lo script 12.0' : err.message || 'Foto non caricata'); });
             });
             riga.appendChild(fb); riga.appendChild(input);
-          } else riga.appendChild(el('span', { classe: 'sd-segno' + (x.tipo === 'piu' ? ' quadro' : '') }));
+          } else if (x.tipo !== 'punti') riga.appendChild(el('span', { classe: 'sd-segno' + (x.tipo === 'piu' ? ' quadro' : '') }));
           riga.appendChild(el('input', { type: 'text', value: r.testo, placeholder: 'Risposta ' + (j + 1), 'aria-label': 'Risposta ' + (j + 1), maxlength: '160', oninput: function (ev) { r.testo = ev.target.value; } }));
           riga.appendChild(el('button', { type: 'button', classe: 'sd-meno piccolo', 'aria-label': 'Togli la risposta', testo: '−', onclick: function () { x.risposte.splice(j, 1); if (x.max > x.risposte.length) x.max = Math.max(1, x.risposte.length); ridisegna(); } }));
-          st.appendChild(riga);
+          if (x.tipo === 'punti') {                                         // v12.4: riga piccola facoltativa e le 5 stelle disegnate
+            var fte = el('div', { classe: 'sd-pt-finte', 'aria-hidden': 'true' }); fte.innerHTML = SVG_SD.stella.repeat(5);
+            st.appendChild(el('div', { classe: 'sd-riga-pt' }, [riga,
+              el('input', { classe: 'sd-sotto-in', type: 'text', value: r.sotto || '', placeholder: 'riga piccola (facoltativa)', 'aria-label': 'Riga piccola sotto la risposta ' + (j + 1), maxlength: '160', oninput: function (ev) { r.sotto = ev.target.value; } }), fte]));
+          } else st.appendChild(riga);
         });
         st.appendChild(el('button', { type: 'button', classe: 'sd-agg', onclick: function () { x.risposte.push({ id: sdId('r'), testo: '' }); ridisegna(); } }, [sdSvg('piu'), 'Risposta']));
         var int = el('span', { classe: 'sd-int' + (x.foto ? ' on' : '') }, [el('i')]);
@@ -8665,10 +8933,12 @@
         st.appendChild(el('div', { classe: 'sd-ta finta', testo: 'Qui le famiglie scrivono (facoltativo, fino a 300 lettere)' }));
       } else if (x.tipo === 'proposte') {
         var u = e.strati.filter(function (z) { return SD_UNO[z.tipo]; })[0];
-        var va = u && (u.tipo === 'una' || u.tipo === 'piu' || haDate);
+        var va = u && (u.tipo === 'una' || u.tipo === 'piu' || u.tipo === 'punti' || haDate);
         st.appendChild(el('div', { classe: 'sd-agg finto' }, [sdSvg('piu'), haDate ? 'Proponi un’altra data' : 'Proponi un’idea']));
-        st.appendChild(va ? el('p', { classe: 'sd-nota', testo: 'Le proposte le vedono tutti dopo che le approvi.' })
-          : el('p', { classe: 'sd-err', role: 'alert', testo: 'Va con Una scelta, Più scelte o Data e ora' }));
+        if (!va) st.appendChild(el('p', { classe: 'sd-err', role: 'alert', testo: 'Va con Una scelta, Più scelte, Stelle a ogni risposta o Data e ora' }));
+        if (sdStep4()) st.appendChild(el('button', { type: 'button', classe: 'sd-sw', 'data-sw': 'approvo', style: 'border-top:1px solid #e6eef5;margin-top:8px', onclick: function () { x.approvo = !x.approvo; ridisegna(); } },
+          [el('span', { testo: '✋ Approvo io le proposte' }), el('span', { classe: 'sd-int' + (x.approvo ? ' on' : '') }, [el('i')])]));   // v12.4: spento di base
+        else st.appendChild(el('p', { classe: 'sd-nota', testo: 'Le proposte le vedono tutti dopo che le approvi.' }));
       }
       torta.appendChild(st);
     });
@@ -8683,6 +8953,7 @@
         if (SD_ALTRI[tipo]) {                                             // v12.2: un pezzo per tipo
           if (e.strati.some(function (x) { return x.tipo === tipo; })) return;
           var n = { tipo: tipo, titolo: '' };
+          if (tipo === 'proposte') n.approvo = false;                        // v12.4: di base la proposta vale subito
           if (tipo === 'quanti') n.voci = [{ id: sdId('q'), nome: 'Adulti' }, { id: sdId('q'), nome: 'Bambini' }];
           e.strati.push(n); ridisegna(); return;
         }
@@ -8691,23 +8962,26 @@
         var i = -1; e.strati.forEach(function (x, j) { if (SD_UNO[x.tipo]) i = j; });
         var vecchio = i >= 0 ? e.strati[i] : null;
         var nuovo = { tipo: tipo, titolo: '' };
-        if (tipo === 'una' || tipo === 'piu') {
+        if (tipo === 'una' || tipo === 'piu' || tipo === 'punti') {
           nuovo.risposte = vecchio && vecchio.risposte ? vecchio.risposte : [{ id: sdId('r'), testo: '' }, { id: sdId('r'), testo: '' }];
           nuovo.foto = !!(vecchio && vecchio.foto); nuovo.max = tipo === 'piu' ? 2 : 0;
         }
         if (i >= 0) e.strati[i] = nuovo; else e.strati.push(nuovo);
+        if (tipo === 'punti') e.strati = e.strati.filter(function (z) { return z.tipo !== 'date'; });   // v12.4: con le stelle Data e ora non c'è
         ridisegna();
       };
     };
+    var pezzoNascosto = function (tipo) { return tipo === 'date' && unoUsato === 'punti'; };   // v12.4
     var usato = function (tipo) { return tipo === 'date' ? dateUsate : SD_ALTRI[tipo] ? e.strati.some(function (x) { return x.tipo === tipo; }) : unoUsato === tipo; };
     var pezzo = function (tipo, extra) { return el('button', { type: 'button', classe: 'sd-pezzo' + (extra ? ' extra' : '') + (usato(tipo) ? ' usato' : ''), 'data-pezzo': tipo, onclick: metti(tipo) },
       [sdSvg(tipo === 'piu' ? 'piuScelte' : tipo), SD_NOMI[tipo]]); };
     box.appendChild(el('h3', { classe: 'sd-h3', testo: 'I pezzi' }));
     box.appendChild(el('div', { classe: 'sd-pezzi' }, [
       el('div', { classe: 'sd-pezzi-tit' }, ['UNO SOLO']),
-      el('div', { classe: 'sd-pezzi-g' }, ['una', 'piu', 'sino', 'sisenon'].map(function (t) { return pezzo(t); })),
+      el('div', { classe: 'sd-pezzi-g' }, ['una', 'piu', 'sino', 'sisenon'].map(function (t) { return pezzo(t); })
+        .concat(sdStep4() ? [el('button', { type: 'button', classe: 'sd-pezzo larga' + (usato('punti') ? ' usato' : ''), 'data-pezzo': 'punti', onclick: metti('punti') }, [sdSvg('punti'), 'Stelle a ogni risposta'])] : [])),   // v12.4
       el('div', { classe: 'sd-pezzi-tit altro' }, ['QUANTI NE VUOI']),
-      el('div', { classe: 'sd-pezzi-g tre' }, ['date'].concat(sdStep2() ? ['quanti', 'stelle', 'testo', 'proposte'] : []).map(function (t) { return pezzo(t, true); }))]));   // v12.2
+      el('div', { classe: 'sd-pezzi-g tre' }, ['date'].concat(sdStep2() ? ['quanti', 'stelle', 'testo', 'proposte'] : []).filter(function (t) { return !pezzoNascosto(t); }).map(function (t) { return pezzo(t, true); }))]));   // v12.2; v12.4 senza Data e ora con le stelle
     // regole
     box.appendChild(el('h3', { classe: 'sd-h3', testo: 'Chi vede chi ha votato cosa' }));
     var liv = function (k, svg, n, sotto) {
@@ -8722,20 +8996,15 @@
       el('button', { type: 'button', classe: 'sd-big' + (e.risultati === primo ? ' on' : ''), 'data-risultati': primo, onclick: function () { e.risultati = primo; ridisegna(); } }, [sdSvg('barre'), primo === 'subito' ? 'SUBITO' : 'DAL 50% DEI VOTI']),
       el('button', { type: 'button', classe: 'sd-big' + (e.risultati === 'chiusura' ? ' on' : ''), 'data-risultati': 'chiusura', onclick: function () { e.risultati = 'chiusura'; ridisegna(); } }, [sdSvg('lucchettoGrande'), 'ALLA CHIUSURA'])]));
     box.appendChild(el('h3', { classe: 'sd-h3', testo: 'Chiude' }));
-    var giorno = el('input', { classe: 'sd-in', type: 'date', value: (e.chiude || '').slice(0, 10), 'data-campo': 'chiudeGiorno' });
-    var ora = el('input', { classe: 'sd-in', type: 'time', value: (e.chiude || '').slice(11, 16) || '18:00', 'data-campo': 'chiudeOra' });
-    var aggiornaChiude = function () { e.chiude = giorno.value ? giorno.value + 'T' + (ora.value || '18:00') : ''; };
-    giorno.addEventListener('input', aggiornaChiude); giorno.addEventListener('change', aggiornaChiude); ora.addEventListener('input', aggiornaChiude); ora.addEventListener('change', aggiornaChiude);
-    box.appendChild(el('div', { classe: 'sd-card sd-chiude' }, [el('label', {}, [el('span', { classe: 'sd-lbl', testo: 'Il giorno' }), giorno]), el('label', {}, [el('span', { classe: 'sd-lbl', testo: 'Alle' }), ora])]));
+    e.chiude = sdInFascia(e.chiude || sdChiudeBase());                    // v12.4: giorno e ora a tendina, solo tra le 8:00 e le 21:00
+    var aggiornaChiude = function () {};
+    box.appendChild(el('div', { classe: 'sd-card', style: 'padding:12px 14px' }, [sdCampoQuando(e.chiude, function (v) { e.chiude = v; }, 'chiude')]));
     var sw = function (k, testo) { return el('button', { type: 'button', classe: 'sd-sw', 'data-sw': k, onclick: function () { e[k] = !e[k]; ridisegna(); } }, [el('span', { testo: testo }), el('span', { classe: 'sd-int' + (e[k] ? ' on' : '') }, [el('i')])]); };
     var esce = null;
     if (sdStep2()) {                                                    // v12.2: sondaggi programmati
-      var eg = el('input', { classe: 'sd-in', type: 'date', value: (e.esce || '').slice(0, 10), 'data-campo': 'esceGiorno', 'aria-label': 'Giorno di uscita' });
-      var eo = el('input', { classe: 'sd-in', type: 'time', value: (e.esce || '').slice(11, 16) || '08:00', 'data-campo': 'esceOra', 'aria-label': 'Ora di uscita' });
-      var ae = function () { e.esce = eg.value ? eg.value + 'T' + (eo.value || '08:00') : ''; };
-      [eg, eo].forEach(function (x) { x.addEventListener('input', ae); x.addEventListener('change', ae); });
-      esce = e.programma ? el('div', { classe: 'sd-esce' }, [el('div', { classe: 'sd-chiude', style: 'padding:0' }, [el('label', {}, [eg]), el('label', {}, [eo])]),
-        el('p', { classe: 'sd-nota', testo: 'All’ora scelta il sondaggio esce da solo e ti arriva la notifica con il messaggio pronto per WhatsApp (o la mail, se sul telefono non hai le notifiche).' })]) : null;
+      e.esce = sdInFascia(e.esce || sdEsceBase());                       // v12.4: anche l'uscita tra le 8:00 e le 21:00
+      esce = e.programma ? el('div', { classe: 'sd-esce' }, [sdCampoQuando(e.esce, function (v) { e.esce = v; }, 'esce'),
+        el('div', { classe: 'sd-banner', style: 'margin:8px 0 0' }, [sdSvg('campana'), el('span', { testo: String(e.esce).slice(11, 16).replace(/^0/, '') + ' · notifica con il messaggio pronto' })])]) : null;
     }
     box.appendChild(el('div', { classe: 'sd-card', style: 'padding:4px 14px;margin-top:12px' }, [sw('cambia', 'Si può cambiare il voto'), sw('maestre', 'Votano anche le maestre'),
       sdStep2() ? sw('programma', 'Esce più tardi') : null, esce]));
@@ -8774,11 +9043,18 @@
   }
   /** v12.2: «Programmato!» con il messaggio che arriverà all'ora di uscita. */
   function sdFoglioProgrammato(s) {
-    var tondo = el('span', { style: 'flex:none;width:44px;height:44px;border-radius:50%;background:#FDCA0D;color:#1c4587;display:grid;place-items:center' }); tondo.innerHTML = SVG_SD.orologio;
+    // v12.4: Condividi su WhatsApp subito, con l'ora da scegliere nei messaggi programmati di WhatsApp (uscita + 2 minuti)
+    var testo = sdTestoInvito(s), tondo = el('span', { classe: 'sd-prog-tondo' }); tondo.innerHTML = SVG_SD.orologio;
+    var e = String(s.esce || ''), min = +e.slice(11, 13) * 60 + +e.slice(14, 16) + 2, piu2 = Math.floor(min / 60) + ':' + ('0' + min % 60).slice(-2);
+    var mano = el('span'); mano.innerHTML = SVG_SD.mano;
     var f = foglioFile([
-      el('div', { style: 'display:flex;align-items:center;gap:10px;margin-bottom:12px' }, [tondo, el('h3', { style: 'margin:0', testo: 'Programmato!' })]),
-      el('div', { classe: 'sd-banner' }, [sdSvg('campana'), el('span', { testo: 'Esce ' + sdQuando(s.esce) + ': ti arriva la notifica con questo messaggio, tocchi e scegli il gruppo.' })]),
-      el('div', { classe: 'bolla-wa' }, [el('div', { testo: sdTestoInvito(s) })]),
+      el('div', { style: 'text-align:center;margin-bottom:12px' }, [tondo, el('h3', { style: 'margin:10px 0 8px', testo: 'Programmato!' }),
+        el('span', { classe: 'sd-pill', style: 'background:#1c4587;color:#fff;font-size:12.5px;padding:5px 12px', testo: 'ESCE ' + sdQuandoBreve(e).toUpperCase() })]),
+      el('div', { classe: 'bolla-wa' }, [el('div', { testo: testo })]),
+      el('div', { style: 'display:flex;gap:8px;align-items:stretch' }, [
+        el('a', { classe: 'sd-btn wa', style: 'flex:1;min-width:0', href: linkWhatsapp(testo), target: '_blank', rel: 'noopener', 'data-wa': '1' }, [iconaWa(20), 'Condividi su WhatsApp']),
+        el('span', { classe: 'sd-ora-wa', 'data-ora-wa': piu2, 'aria-label': 'In WhatsApp programmalo alle ' + piu2 }, [mano, el('b', { testo: piu2 })])]),
+      el('div', { classe: 'sd-banner', style: 'margin-top:10px' }, [sdSvg('campana'), el('span', { testo: e.slice(11, 16).replace(/^0/, '') + ' · notifica con il messaggio pronto' })]),
       el('button', { type: 'button', classe: 'link-piccolo', testo: 'Chiudi', onclick: function () { f.chiudi(); } })]);
   }
   function sdFoglioPubblicato(s) {
@@ -8795,17 +9071,18 @@
   var SD_FINTI = ['Adele', 'Anna', 'Emma', 'Francesco C.', 'Giulia', 'Maya', 'Pietro', 'Andrea', 'Edoardo', 'Bianca', 'Agnese', 'Eleonora', 'Sofia', 'Leo', 'Marco', 'Francesco M.', 'Francesco Z.'];
   function sdFinto(e, st) {
     var dati = sdDatiDaEdit(e);
-    var s = { id: 'anteprima', stato: st.chiuso ? 'chiuso' : 'aperto', titolo: dati.titolo || 'La tua domanda', strati: JSON.parse(JSON.stringify(dati.strati)), livello: dati.livello, risultati: dati.risultati,
+    var s = { approvo: dati.strati.some(function (z) { return z.tipo === 'proposte' && z.approvo; }), id: 'anteprima', stato: st.chiuso ? 'chiuso' : 'aperto', titolo: dati.titolo || 'La tua domanda', strati: JSON.parse(JSON.stringify(dati.strati)), livello: dati.livello, risultati: dati.risultati,
       cambia: dati.cambia, chiude: dati.chiude || sdChiudeBase(), chiusoIl: st.chiuso ? isoDi(new Date()) + 'T18:00' : '', totale: 18, io: { k: 'a:luca', nome: 'Luca', docente: false } };
     // le risposte vuote nell'anteprima si vedono «Risposta 1», le date senza giorno spariscono, le righe senza nome «Riga 1»
     s.strati.forEach(function (x) { (x.risposte || []).forEach(function (r, j) { if (!r.testo && !r.foto) r.testo = 'Risposta ' + (j + 1); });
       (x.voci || []).forEach(function (v, j) { if (!v.nome) v.nome = 'Riga ' + (j + 1); });
       if (x.tipo === 'date' && !x.date.length) x.date = (e.strati.filter(function (z) { return z.tipo === 'date'; })[0] || { date: [] }).date.map(function (d, j) { return { id: d.id, data: isoDi(new Date(Date.now() + (7 + j) * 864e5)), dalle: d.dalle }; }); });
-    s.proposte = (st.proposte || []).map(function (p) { return Object.assign({ ok: false, mia: true, puoTogliere: !st.chiuso, da: '' }, p); });   // v12.2: le proposte fatte nell'anteprima
+    s.proposte = (st.proposte || []).map(function (p) { return Object.assign({ ok: !s.approvo, mia: true, puoTogliere: !st.chiuso, da: '' }, p); });   // v12.4: senza approvazione vale subito   // v12.2: le proposte fatte nell'anteprima
     var m = sdModello(s), q = sdStrato(s, 'quanti'), stl = sdStrato(s, 'stelle'), tx = sdStrato(s, 'testo');
     var nGia = s.livello === 'pubblico' ? 11 : 8, votanti = SD_FINTI.slice(0, nGia);
     var conti = {}, nomi = {}, commenti = [];
-    var tutteK = m ? (m.modo === 'perData' ? [].concat.apply([], m.righe.map(function (r) { return r.voci.map(function (v) { return v.k; }); })) : m.voci.map(function (v) { return v.k; })) : [];
+    var tutteK = m ? (m.modo === 'perData' ? [].concat.apply([], m.righe.map(function (r) { return r.voci.map(function (v) { return v.k; }); }))
+      : m.modo === 'punti' ? [].concat.apply([], m.voci.map(function (v) { return SD_VAL.punti.map(function (n) { return v.k + ':' + n; }); })) : m.voci.map(function (v) { return v.k; })) : [];   // v12.4
     tutteK.forEach(function (k) { conti[k] = 0; nomi[k] = []; });
     if (q) q.voci.forEach(function (v) { conti['n:' + v.id] = 0; });
     if (stl) [1, 2, 3, 4, 5].forEach(function (i) { conti['s:' + i] = 0; });
@@ -8813,6 +9090,7 @@
     votanti.forEach(function (nome, j) {
       var voto = [];
       if (m && m.modo === 'perData') m.righe.forEach(function (r, i) { if (r.prop) return; var w = r.voci[(j + i * 2) % 5 < 3 ? 0 : (j + i * 2) % 5 === 3 && r.voci.length === 3 ? 1 : r.voci.length - 1]; voto.push(w.k); });
+      else if (m && m.modo === 'punti') m.voci.forEach(function (v, i) { if (v.prop) return; var x = [5, 4, 0, 3, 5, 2, 4, 0, 5, 1, 3][(j * 3 + i * 5) % 11]; if (x) voto.push(v.k + ':' + x); });   // v12.4
       else if (m) { var vv = m.voci.filter(function (v) { return !v.prop; }), n = vv.length; if (n) { var a = [0, 1, 0, 2, 1, 0, 3, 1, 0, 2, 4][j % 11] % n; voto.push(vv[a].k); if (m.multi && (m.max || n) > 1 && j % 4 === 0 && n > 1) voto.push(vv[(a + 1) % n].k); } }
       if (q) q.voci.forEach(function (v, i) { var x = i === 0 ? 1 + j % 2 : j % 3; if (x) voto.push('n:' + v.id + ':' + x); });
       if (stl) voto.push('s:' + [5, 4, 4, 3, 5, 4, 2, 5, 4, 4, 3][j % 11]);
@@ -8865,7 +9143,7 @@
           var id = 'pp' + (st.proposte.length + 1);
           st.proposte.push({ id: id, testo: String(x.testo || '').trim(), data: x.data || '', dalle: x.dalle || '' });
           var m = sdModello(sdFinto(e, st));
-          if (m && m.modo !== 'perData') st.sel = sdTocca(m, st.sel, id);
+          if (m && m.modo !== 'perData' && m.modo !== 'punti') st.sel = sdTocca(m, st.sel, id);
           disegna(); return Promise.resolve();
         },
         togliProposta: function (pid) { st.proposte = (st.proposte || []).filter(function (p) { return p.id !== pid; }); st.sel = st.sel.filter(function (k) { return k !== pid && k.indexOf(pid + ':') !== 0; }); disegna(); },
