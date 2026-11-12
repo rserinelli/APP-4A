@@ -2116,6 +2116,9 @@
   .ga-ruoli { display: flex; gap: 6px; padding: 0 12px 10px; }
   .ga-ruoli button, .ga-ruoli span { padding: 5px 12px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--card); color: var(--muted); font: inherit; font-size: 15px; font-weight: 800; line-height: 1.2; }
   .ga-ruoli button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: #fff; }
+  .ga-sd { padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--card); color: var(--muted); font: inherit; font-size: 15px; font-weight: 800; line-height: 1.2; }   /* v12.14 */
+  .ga-sd[aria-pressed="true"] { border-color: #1c4587; background: #1c4587; color: #fff; }
+  .ga-sd-segno { margin-left: 4px; font-size: 15px; }
   .ga-ruoli span.fisso { border-color: var(--oro); background: var(--accent-soft); color: var(--accent); }
   .ver-righe { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
   .ver-chip { display: grid; justify-items: center; gap: 2px; padding: 10px 6px; border-radius: 12px; font-weight: 900; }
@@ -2985,7 +2988,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.13', SCRIPT_NECESSARIO = '12.9';   // v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.14', SCRIPT_NECESSARIO = '12.10';   // v12.14: vice rappresentante che gestisce i sondaggi (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -3026,7 +3029,8 @@
     STATO.versioneScript = r.versione || '';                                            // v11.24: dallo script 11.16
     STATO.sessione = { email: r.utente.email, amministratore: !!r.utente.admin, alunni: r.utente.alunni || [],
       chiave: r.utente.chiave || r.utente.email, mail: r.utente.mail === undefined ? r.utente.email : r.utente.mail, telefono: r.utente.telefono || '',
-      primoIngresso: !!r.utente.primoIngresso, nome: r.utente.nome || '', nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '', preside: !!r.utente.preside };   // v11.5: firma della mail del colloquio   // v10.28: nome = primo nome del genitore (saluto del profilo docente); v10.15: password appena ricevuta dalla rappresentante → si apre il profilo
+      primoIngresso: !!r.utente.primoIngresso, nome: r.utente.nome || '', nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '', preside: !!r.utente.preside, sondaggi: !!r.utente.sondaggi };
+    STATO.sdVice = !!r.utente.viceSondaggi;                                                   // v12.14: Rossana sa se c'è una vice   // v12.14: sondaggi = la vice che li gestisce   // v11.5: firma della mail del colloquio   // v10.28: nome = primo nome del genitore (saluto del profilo docente); v10.15: password appena ricevuta dalla rappresentante → si apre il profilo
     STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null;
     var d = caricaDati(false);
     STATO.documenti = d.documenti; STATO.miei = d.miei; STATO.inArrivo = d.inArrivo;
@@ -8761,7 +8765,7 @@
   function sdStep9() { return versioneMaggiore(STATO.versioneScript || '', '12.9'); }   // v12.9: foto nelle proposte delle famiglie   // v12.4: stelle a ogni risposta, orari 8–21, Cambia la chiusura
   var SD_LIV = {
     pubblico: { e: '👤', n: 'PUBBLICO', pill: '👤 PUBBLICO · TUTTI VEDONO I VOTI', wa: '👤 Pubblico: il tuo voto lo vedono tutti', crema: false },
-    riservato: { e: '🔒', n: 'RISERVATO', pill: '🔒 RISERVATO · IL TUO VOTO LO VEDE SOLO LA RAPPRESENTANTE', wa: '🔒 Riservato: il tuo voto lo vede solo la rappresentante', crema: true },
+    riservato: { e: '🔒', n: 'RISERVATO', pill: '🔒 RISERVATO · IL TUO VOTO LO VEDONO SOLO LE RAPPRESENTANTI', wa: '🔒 Riservato: il tuo voto lo vedono solo le rappresentanti', crema: true },   // v12.14
     anonimo: { e: '🕶️', n: 'ANONIMO', pill: '🕶️ ANONIMO · NESSUNO VEDE IL TUO VOTO', wa: '🕶️ Anonimo: il tuo voto è crittografato. Non lo può vedere nessuno.', crema: true }
   };
   var SVG_SD = {
@@ -8809,7 +8813,10 @@
   function sdSvg(nome, classe) { var s = el('span', { classe: classe || null, 'aria-hidden': 'true', style: classe ? null : 'display:inline-grid;place-items:center' }); s.innerHTML = SVG_SD[nome]; return s; }
   function sondaggiDi(dati) { return dati && Array.isArray(dati.sondaggi) ? dati.sondaggi : null; }
   function sdTrova(dati, id) { return (sondaggiDi(dati) || []).filter(function (s) { return s.id === id; })[0] || null; }
-  function sdAdmin() { return adminVero(); }
+  function sdAdmin() { return adminVero() || sdVice(); }                               // v12.14: anche la vice dei sondaggi
+  function sdVice() { return !!(STATO.sessione && STATO.sessione.sondaggi && !STATO.sessione.amministratore && !STATO.sessione.vista && !VISTA.attiva); }
+  /** v12.14: la firma dei messaggi dei sondaggi: «Rossana» o il nome della vice. */
+  function sdFirma() { if (!sdVice()) return 'Rossana'; var n = String(STATO.sessione.nomeIntero || STATO.sessione.nome || '').trim().split(/\s+/)[0]; return n || 'Rossana'; }
   function sdDaVotare(s) { return s.stato === 'aperto' && !s.mio && (s.puoVotare || (VISTA.attiva && !!s.io)); }   // v12.9: in Visualizza come conta come per la persona mostrata
   /** v12.2: un programmato uscito da solo nelle ultime 24 ore (Rossana lo deve ancora mandare su WhatsApp). */
   function sdUscitoDaPoco(s) { var t = Date.parse(s.pubblicato || ''); return !!s.esce && s.stato === 'aperto' && !isNaN(t) && Date.now() - t < 864e5; }
@@ -9072,9 +9079,9 @@
       var chi = c.mio ? (s.io ? s.io.nome + ' · tu' : 'tu') : c.nome;
       box.appendChild(el('div', { classe: 'sd-commento' + (c.nascosto ? ' nascosto' : '') + (c.mio ? ' mio' : ''), 'data-commento': c.id }, [
         el('span', {}, [el('span', { testo: '«' + c.testo + '»' }), chi ? el('small', { testo: chi }) : null,
-          c.nascosto ? el('small', { classe: 'sd-nasc', testo: 'NASCOSTO · lo vedi solo tu' }) : null]),
+          c.nascosto ? el('small', { classe: 'sd-nasc', testo: sdVice() || STATO.sdVice ? 'NASCOSTO · solo rappresentanti' : 'NASCOSTO · lo vedi solo tu' }) : null]),
         admin ? el('button', { type: 'button', classe: 'sd-mini', testo: c.nascosto ? 'Mostra' : 'Nascondi', onclick: function (e) {
-          sdAzione('sondaggioNascondi', { id: s.id, commento: c.id, nascosto: !c.nascosto }, e.currentTarget, function () { toast(c.nascosto ? 'Il commento si vede di nuovo' : 'Commento nascosto: lo vedi solo tu'); }).catch(function () {}); } }) : null]));
+          sdAzione('sondaggioNascondi', { id: s.id, commento: c.id, nascosto: !c.nascosto }, e.currentTarget, function () { toast(c.nascosto ? 'Il commento si vede di nuovo' : (STATO.sdVice || sdVice() ? 'Commento nascosto: lo vedono solo le rappresentanti' : 'Commento nascosto: lo vedi solo tu')); }).catch(function () {}); } }) : null]));
     });
     return box;
   }
@@ -9943,7 +9950,7 @@
       return el('button', { type: 'button', classe: tab === i ? 'on' : '', 'data-tab': String(i), onclick: function () { STATO.sdTab = i; vaiA('sondaggi', true); } }, [n, i === 1 && manca ? el('i', { testo: String(manca) }) : null]);
     })));
     if (tab === 0) {
-      if (s.livello !== 'pubblico') box.appendChild(el('div', { classe: 'sd-banner' }, [sdSvg('lucchetto'), el('span', { testo: s.livello === 'riservato' ? 'Chi ha votato cosa lo vedi solo tu' : 'Voto crittografato: chi ha votato cosa non lo vede nessuno' })]));
+      if (s.livello !== 'pubblico') box.appendChild(el('div', { classe: 'sd-banner' }, [sdSvg('lucchetto'), el('span', { testo: s.livello === 'riservato' ? (STATO.sdVice || sdVice() ? 'Chi ha votato cosa lo vedono solo le rappresentanti' : 'Chi ha votato cosa lo vedi solo tu') : 'Voto crittografato: chi ha votato cosa non lo vede nessuno' })]));
       if (Array.isArray(s.proposte) && s.proposte.length) box.appendChild(sdProposteAdmin(s));   // v12.2
       box.appendChild(sdRisultati(s, { chiuso: s.stato === 'chiuso', nomiAdmin: sdNomiAdmin(s), admin: true }));
       box.appendChild(el('div', { classe: 'sd-azioni-giu' }, [
@@ -9977,8 +9984,8 @@
     var box = el('div'), manca = s.gestione.manca, ric = STATO.sdRicordati[s.id] = STATO.sdRicordati[s.id] || {};
     if (!manca.length) { box.appendChild(el('div', { classe: 'sd-tutti' }, [sdSvg('spunta'), 'Hanno votato tutti'])); return box; }
     if (s.stato === 'aperto') {
-      box.appendChild(el('button', { type: 'button', classe: 'sd-btn wa', style: 'min-height:56px', 'data-giro': '1', onclick: function () { sdGiro(s, manca); } },
-        [iconaWa(20), 'Ricorda a tutti, una chat alla volta', el('span', { style: 'display:inline-grid;place-items:center;min-width:28px;height:28px;padding:0 6px;box-sizing:border-box;border-radius:14px;background:#fff;color:#128c4b;font-size:15px;font-weight:900', testo: String(manca.length) })]));
+      box.appendChild(el('button', { type: 'button', classe: 'sd-btn wa', style: 'min-height:56px;white-space:normal;line-height:1.25', 'data-giro': '1', onclick: function () { sdGiro(s, manca); } },
+        [iconaWa(20), 'Ricorda a tutti, una chat alla volta', el('span', { style: 'display:inline-grid;place-items:center;min-width:28px;height:28px;padding:0 6px;box-sizing:border-box;border-radius:14px;background:#fff;color:#128c4b;font-size:15px;font-weight:900;flex:none', testo: String(manca.length) })]));   // v12.14: a 320 px va a capo (prima usciva di 2 px)
       box.appendChild(el('button', { type: 'button', classe: 'sd-btn2', style: 'margin-top:8px', testo: 'Testo per il gruppo', onclick: function () { sdFoglioWa('Testo per il gruppo', sdTestoGruppo(s), 'Apri WhatsApp'); } }));
     }
     box.appendChild(el('div', { style: 'height:12px' }));
@@ -10069,7 +10076,7 @@
     return '💡 *' + s.titolo + '*: ' + (lista.length === 1 ? 'c’è una nuova proposta!' : 'ci sono ' + lista.length + ' nuove proposte!') + '\n\n' + righe +
       '\n\nSe avete già votato, il vostro voto resta valido: toccate *Cambia voto* e ' + come + '.\n\n⏰ ' +
       (allungato ? 'Per lasciarvi il tempo, il sondaggio resta aperto più a lungo: chiude *' + sdQuando(chiude) + '*.' : 'Il sondaggio chiude *' + sdQuando(chiude) + '*.') +
-      '\n\n👉 ' + sdLink(s) + '\n\nGrazie! 😊\nRossana';
+      '\n\n👉 ' + sdLink(s) + '\n\nGrazie! 😊\n' + sdFirma();   // v12.14
   }
   function sdFoglioNuovaProposta(s) {
     var tutte = (s.proposte || []).filter(function (p) { return p.ok && !p.mia; }).sort(function (a, b) { return a.quando < b.quando ? -1 : 1; });
@@ -11592,12 +11599,21 @@
           });
           return box;
         }
+        function viceSondaggi(p) {                                                       // v12.14: un tocco = gestisce i sondaggi come Rossana
+          return el('button', { type: 'button', classe: 'ga-sd', 'aria-pressed': String(!!p.sondaggi), testo: p.sondaggi ? '🗳️ Gestisce i sondaggi ✓' : '🗳️ Gestisce i sondaggi', onclick: function (ev) {
+            var b = ev.currentTarget, nuovo = !p.sondaggi; b.disabled = true;
+            chiama('ruoloSondaggi', { email: p.chiave, attivo: nuovo }).then(function (x) {
+              g.alunni.forEach(function (a) { a.persone.forEach(function (q) { if (q.chiave === p.chiave) q.sondaggi = !!x.sondaggi; }); });
+              toast(x.sondaggi ? '🗳️ ' + nomePersona(p) + ' gestisce i sondaggi' : '🗳️ ' + nomePersona(p) + ': solo genitore'); disegnaElenco();
+            }).catch(function (e) { b.disabled = false; if (e.codice !== 'SESSIONE') toast(e.codice === 'AZIONE' ? 'Serve lo script 12.10' : e.message); });
+          } });
+        }
         function rigaPersona(p, nome) {
           var io = p.chiave === STATO.sessione.chiave, id = nome + '|' + p.chiave, aperto = aperta === id;
           var riga = el('div', { classe: 'ga-persona' + (aperto ? ' aperta' : '') });
           var freccia = svgSpan('giu', '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>');
           riga.appendChild(el('button', { type: 'button', classe: 'ga-pers', 'aria-expanded': aperto ? 'true' : 'false', onclick: function () { aperta = aperto ? '' : id; disegnaElenco(); } }, [
-            el('span', { classe: 'tx' }, [el('span', { classe: 'nome-r' }, [el('b', { testo: nomePersona(p) }), pill(p, io)]), el('small', { testo: contatto(p) })]),
+            el('span', { classe: 'tx' }, [el('span', { classe: 'nome-r' }, [el('b', { testo: nomePersona(p) }), pill(p, io), p.sondaggi ? el('span', { classe: 'ga-sd-segno', 'aria-label': 'Gestisce i sondaggi', testo: '🗳️' }) : null]), el('small', { testo: contatto(p) })]),
             freccia]));
           if (p.scuola) riga.appendChild(ruoliScuola(p));                          // v11.24 (n. 71): maestra / preside / maestro comune
           if (p.stato !== 'dentro' && !io) riga.appendChild(pulsantiInvio(p));
@@ -11608,6 +11624,7 @@
             d.appendChild(el('div', null, [el('span', { classe: 'ga-lbl', testo: 'WhatsApp' }), p.telefono ? p.telefono + (p.doppio ? ' · anche su un’altra email' : '') : el('span', { classe: 'manca', testo: 'nessun numero nel foglio: solo email' })]));
             d.appendChild(el('div', null, [el('span', { classe: 'ga-lbl', testo: 'Password' }), testoPassword(p, io), p.password && !io ? ' ' : null, p.password && !io ? el('span', { classe: 'mono ga-pw', testo: p.password }) : null]));
             if (p.info) d.appendChild(el('div', null, [el('span', { classe: 'ga-lbl', testo: 'Uso dell’app' }), p.info]));
+            if (!p.scuola && !io && p.sondaggi !== undefined) d.appendChild(el('div', null, [el('span', { classe: 'ga-lbl', testo: 'Sondaggi' }), viceSondaggi(p)]));   // v12.14
             if (p.attiva && !io) d.appendChild(el('div', null, [el('button', { type: 'button', classe: 'ga-em grigio', testo: '↻ Reimposta la password', onclick: function () { reimposta(p, nome); } })]));
             riga.appendChild(d);
           }
