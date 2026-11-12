@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- pagina 12.13 · 12 novembre 2026: SONDAGGI — chi ha già votato, riaprendo un sondaggio aperto, trova subito «Come sta andando» (la classifica, nei pubblici con i nomi) e chi manca, con «Cambia il mio voto» sotto; la schermata del voto si apre solo toccando quel pulsante (e «Torna ai risultati» per uscire senza cambiare). Anche in Visualizza come. -->
 <!-- pagina 12.10 · 12 novembre 2026: il numero rosso di Documenti e Sondaggi sta dentro il riquadro, nell'angolo in alto a destra, come negli altri riquadri della griglia (prima era sul bordo, a metà altezza). Solo grafica: script 12.9, contenuti e sw.js invariati -->
 <!-- pagina 12.8 · 12 novembre 2026: il profilo docente (maestra, preside, maestro comune) non vede più Versamenti della classe, Rendiconto di classe e Ricevute: nella linguetta «Classe e ricevute» un riquadro come quello di «Il tuo fondo cassa» (Profilo docente · Riservato alle famiglie); niente bollino delle ricevute; Contabilità si apre su «Il tuo fondo cassa». Script, contenuti e sw.js invariati -->
 <!-- pagina 12.7 · 12 novembre 2026: tolti gli «Avvisi dei colloqui» (Ok, visto) dalla Home e da Ricevimento e dal bollino di Ricevimento (non li toccava nessuno e allungavano le pagine); restano notifiche, richieste da confermare della maestra e campanella di Rossana. Pallino del colloquio sul riquadro Ricevimento della Home: arancione ⏳ in attesa, verde acqua con la scuola confermato a scuola, viola con la videocamera confermato online (il prossimo colloquio della famiglia, finché non è passato). Script, contenuti e sw.js invariati -->
@@ -2984,7 +2985,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.12', SCRIPT_NECESSARIO = '12.9';   // v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.13', SCRIPT_NECESSARIO = '12.9';   // v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -3284,7 +3285,7 @@
       if (p.descrizione) main.appendChild(el('p', { classe: 'pagina-desc', testo: p.descrizione }));
       else main.appendChild(el('div', { style: 'height:16px' }));
     }
-    if (id === 'sondaggi' && !ridisegno && !STATO.sdTieni) { STATO.sdAperto = null; STATO.sdEdit = null; STATO.sdFatto = null; STATO.sdComeFamiglia = false; }   // v12.0
+    if (id === 'sondaggi' && !ridisegno && !STATO.sdTieni) { STATO.sdAperto = null; STATO.sdEdit = null; STATO.sdFatto = null; STATO.sdComeFamiglia = false; STATO.sdCambia = null; }   // v12.0; v12.13: sdCambia
     if (id === 'sondaggi') { STATO.sdTieni = false; if (STATO.sdAperto || STATO.sdEdit) main.innerHTML = ''; }
     if (id === 'comunicazioni' && !ridisegno) STATO.docPill = 'comunicazioni';   // v11.28 (n. 75): si entra sempre su COMUNICAZIONI
     if (id === 'calendario' && !ridisegno) calendarioVisto();          // prima di disegnare: gli appuntamenti nuovi restano segnati NUOVO in questa visita
@@ -9386,11 +9387,11 @@
     });
   }
   function apriSondaggio(id) {
-    STATO.sdAperto = id; STATO.sdEdit = null; STATO.sdFatto = null; STATO.sdTab = 0; STATO.sdComeFamiglia = false;
+    STATO.sdAperto = id; STATO.sdEdit = null; STATO.sdFatto = null; STATO.sdTab = 0; STATO.sdComeFamiglia = false; STATO.sdCambia = null;   // v12.13
     if (STATO.sdSel) delete STATO.sdSel[id];
     STATO.sdTieni = true; vaiA('sondaggi');
   }
-  function sdAllElenco() { STATO.sdAperto = null; STATO.sdEdit = null; STATO.sdFatto = null; STATO.sdTieni = true; vaiA('sondaggi'); }
+  function sdAllElenco() { STATO.sdAperto = null; STATO.sdEdit = null; STATO.sdFatto = null; STATO.sdCambia = null; STATO.sdTieni = true; vaiA('sondaggi'); }
   function sdIndietro(testo, fai) { return el('button', { type: 'button', classe: 'sd-indietro', onclick: fai || sdAllElenco }, [sdSvg('indietro'), testo || 'Sondaggi']); }
   function sdLivPill(s, corto) { var l = SD_LIV[s.livello] || SD_LIV.pubblico; return el('span', { classe: 'sd-pill lungo' + (l.crema ? ' crema' : ''), testo: corto ? l.e + ' ' + l.n : l.pill }); }
 
@@ -9826,6 +9827,7 @@
     STATO.sdSel = STATO.sdSel || {};
     if (STATO.sdFatto && STATO.sdFatto.id === s.id) { box.appendChild(sdFattoVista(s)); return box; }
     if (s.stato === 'chiuso') { box.appendChild(sdChiusoVista(s, lista)); return box; }
+    if (s.stato === 'aperto' && s.mio && STATO.sdCambia !== s.id) { box.appendChild(sdGiaVotatoVista(s)); return box; }   // v12.13: prima i risultati
     if (STATO.sdSel[s.id] === undefined) STATO.sdSel[s.id] = (s.mio && s.mio.voto) ? s.mio.voto.slice() : [];
     var ses = STATO.sessione || {}, ruolo = String(ses.ruolo || '').toLowerCase();
     var nome = s.io && s.io.docente ? (ses.nome || s.io.nome) : ((ruolo === 'madre' ? 'Mamma ' : ruolo === 'padre' ? 'Papà ' : '') + (ses.nome || '')).trim();
@@ -9850,9 +9852,36 @@
       invia: function (voto, bottone) {
         var tipo = !s.mio ? 'inviato' : !voto.length ? 'ritirato' : sdUguali(voto, s.mio.voto) ? 'confermato' : 'cambiato';
         bottone.textContent = 'Invio…';
-        sdAzione('sondaggioVota', { id: s.id, voto: voto }, bottone, function () { STATO.sdFatto = { id: s.id, tipo: tipo }; delete STATO.sdSel[s.id]; window.scrollTo(0, 0); }).catch(function () {});
+        sdAzione('sondaggioVota', { id: s.id, voto: voto }, bottone, function () { STATO.sdFatto = { id: s.id, tipo: tipo }; STATO.sdCambia = null; delete STATO.sdSel[s.id]; window.scrollTo(0, 0); }).catch(function () {});
       }
     }));
+    if (s.mio && s.stato === 'aperto')                                    // v12.13: si esce dal cambio senza cambiare
+      box.appendChild(el('div', { classe: 'sd-azioni-giu' }, [el('button', { type: 'button', classe: 'sd-btn2', 'data-azione': 'torna-risultati', testo: 'Torna ai risultati',
+        onclick: function () { STATO.sdCambia = null; delete STATO.sdSel[s.id]; vaiA('sondaggi', true); window.scrollTo(0, 0); } })]));
+    return box;
+  }
+  /** v12.13: chi ha già votato (sondaggio aperto) trova subito come sta andando; il voto si riapre con «Cambia il mio voto». */
+  function sdGiaVotatoVista(s) {
+    var box = el('div', { classe: 'sd sd-gia-votato' });
+    var tit = s.mio.mano ? 'La rappresentante ha segnato il voto per ' + (s.io ? s.io.nome : '') : s.mio.io ? 'Hai già votato in questo sondaggio' : (s.mio.da || 'La tua famiglia') + ' ha già votato per ' + (s.io ? s.io.nome : '');
+    var idee = s.mio.voto ? sdIdeeNuove(s, s.mio.voto.slice()) : [];
+    box.appendChild(el('div', { classe: 'sd-chi gia' }, [el('span', { classe: 'sd-av', testo: s.mio.mano ? 'R' : (s.mio.da || '?').replace(/^(Mamma|Papà)\s+/i, '').charAt(0).toUpperCase() || '✓' }),
+      el('span', {}, [el('b', { testo: tit }), el('small', { testo: sdQuandoVoto(s.mio.quando) })]),
+      idee.length ? el('span', { classe: 'sd-pill', style: 'flex:none;background:#1c4587;color:#fff', testo: idee.length === 1 ? '1 IDEA NUOVA' : idee.length + ' IDEE NUOVE' }) : null]));
+    box.appendChild(el('div', { classe: 'sd-pills' }, [sdPillTempo(s), sdLivPill(s)]));
+    box.appendChild(el('h2', { classe: 'sd-titolo', testo: s.titolo }));
+    if (s.conti) {
+      var r = sdRisultati(s);
+      r.insertBefore(el('b', { testo: 'Come sta andando · ' + s.votati + ' su ' + s.totale }), r.firstChild);
+      box.appendChild(r);
+    } else box.appendChild(el('div', { classe: 'sd-soglia' }, [sdSvg('lucchetto'), el('b', { testo: s.risultati === 'chiusura' ? 'Risultati alla chiusura' : 'Risultati da ' + Math.ceil(s.totale / 2) + ' voti' }), el('span', { testo: s.votati + ' su ' + s.totale })]));
+    box.appendChild(sdMancaBox(s, 0));
+    if (s.cambia && (s.puoVotare || VISTA.attiva)) {
+      var b = el('button', { type: 'button', classe: 'sd-btn' + (VISTA.attiva ? ' vista-off' : ''), 'data-azione': 'cambia-voto', testo: idee.length ? 'Vota anche le idee nuove' : 'Cambia il mio voto',
+        onclick: function () { STATO.sdCambia = s.id; vaiA('sondaggi', true); window.scrollTo(0, 0); } });
+      box.appendChild(el('div', { style: 'margin-top:16px' }, [b]));
+      if (VISTA.attiva) box.appendChild(el('p', { classe: 'vista-nota', style: 'margin-top:10px', testo: 'In Visualizza come puoi aprire la schermata del voto, ma non si cambia niente.' }));
+    } else if (!s.cambia) box.appendChild(el('div', { classe: 'sd-tutti' }, [sdSvg('spunta'), 'Voto inviato: in questo sondaggio non si cambia']));
     return box;
   }
   function sdFattoVista(s) {
@@ -9870,7 +9899,7 @@
       box.appendChild(r);
     } else box.appendChild(el('div', { classe: 'sd-soglia' }, [sdSvg('lucchetto'), el('b', { testo: s.risultati === 'chiusura' ? 'Risultati alla chiusura' : 'Risultati da ' + Math.ceil(s.totale / 2) + ' voti' }), el('span', { testo: s.votati + ' su ' + s.totale })]));
     box.appendChild(el('div', { classe: 'sd-azioni-giu' }, [
-      s.puoVotare ? el('button', { type: 'button', classe: 'sd-btn2', testo: tipo === 'ritirato' ? 'Vota di nuovo' : 'Cambia il voto', onclick: function () { STATO.sdFatto = null; vaiA('sondaggi', true); } }) : null,
+      s.puoVotare ? el('button', { type: 'button', classe: 'sd-btn2', testo: tipo === 'ritirato' ? 'Vota di nuovo' : 'Cambia il voto', onclick: function () { STATO.sdFatto = null; STATO.sdCambia = s.id; vaiA('sondaggi', true); } }) : null,
       el('button', { type: 'button', classe: 'sd-btn2', testo: 'Torna alla Home', onclick: function () { STATO.sdFatto = null; vaiA('home'); } }),
       el('button', { type: 'button', classe: 'sd-btn2', testo: 'Sondaggi', onclick: sdAllElenco })]));
     return box;
