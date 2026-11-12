@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- pagina 12.10 · 12 novembre 2026: il numero rosso di Documenti e Sondaggi sta dentro il riquadro, nell'angolo in alto a destra, come negli altri riquadri della griglia (prima era sul bordo, a metà altezza). Solo grafica: script 12.9, contenuti e sw.js invariati -->
 <!-- pagina 12.8 · 12 novembre 2026: il profilo docente (maestra, preside, maestro comune) non vede più Versamenti della classe, Rendiconto di classe e Ricevute: nella linguetta «Classe e ricevute» un riquadro come quello di «Il tuo fondo cassa» (Profilo docente · Riservato alle famiglie); niente bollino delle ricevute; Contabilità si apre su «Il tuo fondo cassa». Script, contenuti e sw.js invariati -->
 <!-- pagina 12.7 · 12 novembre 2026: tolti gli «Avvisi dei colloqui» (Ok, visto) dalla Home e da Ricevimento e dal bollino di Ricevimento (non li toccava nessuno e allungavano le pagine); restano notifiche, richieste da confermare della maestra e campanella di Rossana. Pallino del colloquio sul riquadro Ricevimento della Home: arancione ⏳ in attesa, verde acqua con la scuola confermato a scuola, viola con la videocamera confermato online (il prossimo colloquio della famiglia, finché non è passato). Script, contenuti e sw.js invariati -->
 <!-- pagina 12.9 · 12 novembre 2026: SONDAGGI — la maestra principale (anche in Visualizza come) vede sempre il riquadro Sondaggi e la voce nel menu (dentro solo i sondaggi a cui è invitata); nei sondaggi con le foto le famiglie aggiungono una foto alla loro proposta (serve lo script 12.9); sul riquadro Sondaggi il numero rosso dei sondaggi ancora da votare anche per Rossana e in Visualizza come, al centro a destra -->
@@ -2113,7 +2114,7 @@
   .tile.larga .lbl { flex: 1; min-width: 0; line-height: 1.15; }
   .griglia-larghe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-width: 560px; }
   .griglia-larghe .tile.larga { min-height: 70px; }
-  .tile.larga .conta { top: 50%; right: -11px; transform: translateY(-50%); min-width: 26px; height: 26px; font-size: 14px; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); }   /* v12.9: il numero rosso al centro a destra, sul bordo */
+  .tile.larga .conta { top: 3px; right: 14px; }   /* v12.10: il numero rosso dentro il riquadro, in alto, col bordo destro in colonna con le frecce blu di Fondo cassa e Prossimi 7 giorni (padding 14px della .porta); prima sul bordo, a metà altezza */
   .tile.larga .lbl { padding-right: 8px; }
   .griglia-home .tile, .griglia-home .tile:hover { border: 2px solid #FDCA0D; }   /* v12.2: bordo dorato come Documenti e Sondaggi */
   /* v12.3: bordo dorato anche su Avvisi, Fondo cassa (tutte le varianti, anche la rosa) e Prossimi 7 giorni, come Sondaggi */
@@ -2963,7 +2964,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.9', SCRIPT_NECESSARIO = '12.9';   // v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.10', SCRIPT_NECESSARIO = '12.9';   // v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
