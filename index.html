@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<!-- ripubblicata 11/11 -->
+<!-- pagina 12.8 · 12 novembre 2026: il profilo docente (maestra, preside, maestro comune) non vede più Versamenti della classe, Rendiconto di classe e Ricevute: nella linguetta «Classe e ricevute» un riquadro come quello di «Il tuo fondo cassa» (Profilo docente · Riservato alle famiglie); niente bollino delle ricevute; Contabilità si apre su «Il tuo fondo cassa». Script, contenuti e sw.js invariati -->
+<!-- pagina 12.7 · 12 novembre 2026: tolti gli «Avvisi dei colloqui» (Ok, visto) dalla Home e da Ricevimento e dal bollino di Ricevimento (non li toccava nessuno e allungavano le pagine); restano notifiche, richieste da confermare della maestra e campanella di Rossana. Pallino del colloquio sul riquadro Ricevimento della Home: arancione ⏳ in attesa, verde acqua con la scuola confermato a scuola, viola con la videocamera confermato online (il prossimo colloquio della famiglia, finché non è passato). Script, contenuti e sw.js invariati -->
+<!-- pagina 12.6 · 11 novembre 2026: dopo Esci e un nuovo accesso (es. da amministratrice a genitore) un sondaggio con le foto, con Quanti siete per data o Chi manca lasciava la pagina bianca: Esci ora ricrea vuote le quattro «cassette» dei sondaggi (foto, link delle foto, pillole 👥, ricordati). Script, contenuti e sw.js invariati -->
 <!-- pagina 12.5 · 11 novembre 2026: SONDAGGI, Quanti siete per data (pillole Sì · Sì + Se serve · Tutti, conto sotto ogni data) e voto a tabella (proposta C) per Sì · Se serve · No e Sì / No; serve lo script 12.5 -->
 <!-- pagina 12.3 · 11 novembre 2026: bordo dorato anche su Avvisi, Fondo cassa e Prossimi 7 giorni in Home (script e sw.js restano 12.2) -->
 <!-- pagina 12.2 · 10 novembre 2026: SONDAGGI, step 2 (n. 8): più domande nello stesso sondaggio, Quanti siete, Stelle, Testo libero (Nascondi), proposte delle famiglie, sondaggi programmati; bordo dorato su tutti i riquadri della Home -->
@@ -322,6 +324,9 @@
     color: #fff; font-size: 12px; font-weight: 800; display: grid; place-items: center; }
   .tile .conta { position: absolute; top: 6px; right: 6px; }
   .voce .conta { margin-left: auto; }
+  .tile .pallino-col { position: absolute; top: 6px; right: 6px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 13px; line-height: 1; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); }   /* v12.7: pallino del colloquio */
+  .tile .pallino-col.attesa { background: #e07b00; } .tile .pallino-col.scuola { background: #0f5e57; } .tile .pallino-col.online { background: #5b21b6; }
+  .tile .conta + .pallino-col, .tile .pallino-col + .conta { left: 6px; right: auto; }
 
   .lista { display: grid; gap: 10px; margin: 0 0 14px; }
   .riga-link { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--card); width: 100%; text-align: left;
@@ -2856,7 +2861,7 @@
     if (leggi(K_NOTIF)) { chiama('notificheSpegni', { fcm: leggi(K_NOTIF) }).catch(function () {}); scrivi(K_NOTIF, ''); scrivi(K_NOTIF_Q, ''); }
     scrivi(CHIAVE_TOKEN, '');
     if (typeof spegniVista === 'function') spegniVista(true);
-    STATO = { dati: null, pagina: 'home', schede: {}, sessione: null, tokenMem: '' };
+    STATO = { dati: null, pagina: 'home', schede: {}, sessione: null, tokenMem: '', sdFotoLocali: {}, sdFotoLink: {}, sdPill: {}, sdRicordati: {} };   // v12.6: le cassette dei sondaggi ripartono vuote (prima sparivano: sondaggio aperto dopo Esci = pagina bianca)
     $('contenuto').innerHTML = ''; $('menu').innerHTML = '';
     mostraLogin('Sei uscito. A presto!');
   }
@@ -2949,7 +2954,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.5', SCRIPT_NECESSARIO = '12.5';   // v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.8', SCRIPT_NECESSARIO = '12.5';   // v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -3249,7 +3254,6 @@
       if (p.descrizione) main.appendChild(el('p', { classe: 'pagina-desc', testo: p.descrizione }));
       else main.appendChild(el('div', { style: 'height:16px' }));
     }
-    if (id === 'contabilita' && !ridisegno && soloSenzaAlunno() && STATO.schede['contabilita-0'] === undefined) STATO.schede['contabilita-0'] = SCHEDA_CLASSE;   // v11.2
     if (id === 'sondaggi' && !ridisegno && !STATO.sdTieni) { STATO.sdAperto = null; STATO.sdEdit = null; STATO.sdFatto = null; STATO.sdComeFamiglia = false; }   // v12.0
     if (id === 'sondaggi') { STATO.sdTieni = false; if (STATO.sdAperto || STATO.sdEdit) main.innerHTML = ''; }
     if (id === 'comunicazioni' && !ridisegno) STATO.docPill = 'comunicazioni';   // v11.28 (n. 75): si entra sempre su COMUNICAZIONI
@@ -3403,6 +3407,12 @@
   var MESI = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
   // 10.13: "Nessun bambino/a" nel foglio accessi = profilo docente (maestre…): niente fondo cassa personale
   function senzaAlunno(nome) { return /^\s*nessun[oa]?\s+(bambin|alunn|allie)/i.test(String(nome || '')); }
+  function boxDocente(sopra, titolo, testo) {                          // v12.8: riquadro del profilo docente in Contabilità (Il tuo fondo cassa, Classe e ricevute)
+    return el('div', { classe: 'rend' }, [
+      el('div', { classe: 'rend-testa' }, [el('small', { testo: sopra }), el('div', { classe: 'rend-nome', testo: 'Profilo docente' })]),
+      el('div', { classe: 'vuoto' }, [el('strong', { style: 'display:block;color:var(--ink);margin-bottom:4px', testo: titolo }), testo])
+    ]);
+  }
   function soloSenzaAlunno() { var a = STATO.sessione.alunni || []; return !STATO.sessione.amministratore && a.length > 0 && a.every(senzaAlunno); }
   // Nome nel foglio accessi che non c'è nel master: messaggio WhatsApp pronto per la rappresentante (il contatto lo sceglie chi scrive)
   function linkSegnala(nome) {
@@ -3578,8 +3588,8 @@
       var rata = alunniCassa(miei).filter(function (a) { return a.pendenze; }).length;
       STATO.contatori = {
         comunicazioni: conta(['comunicazioni', 'moduli', 'verbali']),
-        contabilita: conta(['ricevute']) + rata,
-        ricevute: conta(['ricevute']),                                      // v11.2: bollino sulla linguetta "Classe e ricevute"
+        contabilita: soloSenzaAlunno() ? 0 : conta(['ricevute']) + rata,   // v12.8: il profilo docente non vede le ricevute
+        ricevute: soloSenzaAlunno() ? 0 : conta(['ricevute']),              // v11.2: bollino sulla linguetta "Classe e ricevute"
         calendario: STATO.visti
           ? eventiFuturi(dati).filter(function (e) { return eventoNuovo(e, STATO.visti.calendario); }).length
           : eventiEntro(dati, 7).length,
@@ -3589,9 +3599,13 @@
         sondaggi: sdAdmin() ? 0 : (sondaggiDi(dati) || []).filter(sdDaVotare).length,      // v12.0 (n. 8): per Rossana niente bollino (come nella tela)
         ricevimento: (function (col) {                                    // v11.6: avvisi dei colloqui + richieste da confermare (maestra)
           if (!col) return 0;
-          return avvisiColAttuali(col).length + attesaAttuali(col).length;   // v11.28 (n. 75): senza quelli superati
+          return (AVVISI_COL ? avvisiColAttuali(col).length : 0) + attesaAttuali(col).length;   // v11.28 (n. 75): senza quelli superati; v12.7: senza gli avvisi (tolti)
         })(colloquiDi(dati))
       };
+      STATO.pallinoCol = (function (col) {                                  // v12.7: il prossimo colloquio della famiglia (in attesa o confermato)
+        var l = ((col && col.miei) || []).filter(function (c) { return (c.stato === 'attesa' || c.stato === 'confermato') && !colloquioPassato(c); }).sort(perData);
+        return l.length ? { stato: l[0].stato, modo: modoDi(l[0].modo), data: l[0].data } : null;
+      })(colloquiDi(dati));
       var invitato = !!((sondaggiDi(dati) || []).length);                 // v12.0: i profili docente vedono Sondaggi nel menu solo se invitati
       if (STATO.sdInvitato !== invitato) { STATO.sdInvitato = invitato; if (STATO.sessione && soloSenzaAlunno()) disegnaMenu(); }
       applicaContatori();
@@ -3614,6 +3628,15 @@
       }
       badge.title = spiega[b.getAttribute('data-id')] || 'Novità';
       badge.textContent = n > 9 ? '9+' : n;
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.tile[data-id="ricevimento"]'), function (b) {   // v12.7: pallino del colloquio
+      var pc = STATO.pallinoCol, vecchio = b.querySelector('.pallino-col');
+      if (vecchio) vecchio.remove();
+      if (!pc) return;
+      var tipo = pc.stato === 'attesa' ? 'attesa' : pc.modo;
+      var pal = el('span', { classe: 'pallino-col ' + tipo, 'data-pallino': tipo, 'aria-label': pc.stato === 'attesa' ? 'Colloquio in attesa' : 'Colloquio confermato ' + (pc.modo === 'online' ? 'online' : 'a scuola') });
+      if (tipo === 'attesa') pal.textContent = '⏳'; else pal.appendChild(iconaModo(pc.modo, 14));
+      b.appendChild(pal);
     });
     // v10.28: riga di "Avvisi e comunicazioni" senza avvisi
     Array.prototype.forEach.call(document.querySelectorAll('[data-riga-com]'), function (x) { x.textContent = rigaComunicazioni(c.comunicazioni || 0); });
@@ -5658,7 +5681,9 @@
     if (a.tipo === 'ritirato') return ['no', chi + ' ha ritirato la richiesta di ' + q + '.'];
     return ['no', chi + ' ha annullato il colloquio di ' + q + (a.daMaestra ? '. Si può prenotarne un altro.' : '.')];
   }
+  var AVVISI_COL = false;                                              // v12.7: avvisi dei colloqui tolti da Home e Ricevimento (Rossana, 12/11); true = di nuovo come prima
   function boxAvvisiCol(col) {
+    if (!AVVISI_COL) return null;
     var av = avvisiColAttuali(col);                                    // v11.28 (n. 75): gli avvisi dei colloqui superati spariscono
     if (!av.length) return null;
     var sez = el('section', { classe: 'riquadro col-avvisi' }, [el('h3', {}, ['🔔 Avvisi dei colloqui ', el('span', { classe: 'conta', testo: String(av.length) })])]);
@@ -9623,7 +9648,7 @@
               el('span', { classe: 'sotto2', testo: 'Segnalalo alla rappresentante' })]), t]));
         });
         if (soloSenzaAlunno()) {
-          box.appendChild(porta('neutro', 'Profilo docente', 'Nessun alunno assegnato', 'Rendiconto di classe e ricevute', vaiConta(SCHEDA_CLASSE), bollino()));
+          box.appendChild(porta('neutro', 'Profilo docente', 'Nessun alunno assegnato', 'Contabilità', vaiConta(SCHEDA_RENDICONTO), bollino()));   // v12.8: niente più rendiconto e ricevute
           applicaContatori(); return;
         }
         if (!alunni.length && mancanti.length) { applicaContatori(); return; }
@@ -9909,11 +9934,7 @@
       if (STATO.sessione.amministratore) return selettoreAlunno();
       var box = el('div');
       if (soloSenzaAlunno()) {
-        box.appendChild(el('div', { classe: 'rend' }, [
-          el('div', { classe: 'rend-testa' }, [el('small', { testo: 'Fondo cassa di' }), el('div', { classe: 'rend-nome', testo: 'Profilo docente' })]),
-          el('div', { classe: 'vuoto' }, [el('strong', { style: 'display:block;color:var(--ink);margin-bottom:4px', testo: 'Nessun bambino assegnato' }),
-            'Al profilo docente non è assegnato nessun fondo cassa personale. Il rendiconto di classe e le ricevute sono nella scheda “Classe e ricevute”.'])
-        ]));
+        box.appendChild(boxDocente('Fondo cassa di', 'Nessun bambino assegnato', 'Al profilo docente non è assegnato nessun fondo cassa personale.'));   // v12.8
         return box;
       }
       box.appendChild(attesa('Leggo il tuo fondo cassa…'));
@@ -11110,6 +11131,10 @@
         STATO.schede[chiave] = i;
         Array.prototype.forEach.call(barra.children, function (t, j) { t.classList.toggle('attiva', i === j); });
         corpo.innerHTML = '';
+        if (b.schede[i].bollino === 'ricevute' && soloSenzaAlunno()) {    // v12.8: il profilo docente non vede versamenti, rendiconto di classe e ricevute
+          corpo.appendChild(boxDocente('Classe e ricevute', 'Riservato alle famiglie', 'Versamenti, rendiconto di classe e ricevute li vedono solo le famiglie della classe.'));
+          return;
+        }
         disegnaBlocchi(b.schede[i].blocchi, corpo, chiave + '-' + i);
       }
       b.schede.forEach(function (s, i) {
