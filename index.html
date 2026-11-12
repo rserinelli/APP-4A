@@ -2119,6 +2119,8 @@
   .ga-sd { padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--card); color: var(--muted); font: inherit; font-size: 15px; font-weight: 800; line-height: 1.2; }   /* v12.14 */
   .ga-sd[aria-pressed="true"] { border-color: #1c4587; background: #1c4587; color: #fff; }
   .ga-sd-segno { margin-left: 4px; font-size: 15px; }
+  .sd-vista-nota { margin: 0 0 12px; padding: 8px 10px; border-radius: 10px; background: #eaf0ff; border: 1px dashed #3b5bdb; color: #1d3a8a; font-size: 12.5px; font-weight: 700; }
+  body.vista-rapp #contenuto .wa, body.vista-rapp #contenuto a[href*="wa.me"], body.vista-rapp .pannello .wa, body.vista-rapp .pannello a[href*="wa.me"] { opacity: .45; filter: grayscale(1); pointer-events: none; }   /* v12.14 */
   .ga-ruoli span.fisso { border-color: var(--oro); background: var(--accent-soft); color: var(--accent); }
   .ver-righe { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
   .ver-chip { display: grid; justify-items: center; gap: 2px; padding: 10px 6px; border-radius: 12px; font-weight: 900; }
@@ -2988,7 +2990,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.14', SCRIPT_NECESSARIO = '12.10';   // v12.14: vice rappresentante che gestisce i sondaggi (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.14', SCRIPT_NECESSARIO = '12.10';   // v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -3030,7 +3032,7 @@
     STATO.sessione = { email: r.utente.email, amministratore: !!r.utente.admin, alunni: r.utente.alunni || [],
       chiave: r.utente.chiave || r.utente.email, mail: r.utente.mail === undefined ? r.utente.email : r.utente.mail, telefono: r.utente.telefono || '',
       primoIngresso: !!r.utente.primoIngresso, nome: r.utente.nome || '', nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '', preside: !!r.utente.preside, sondaggi: !!r.utente.sondaggi };
-    STATO.sdVice = !!r.utente.viceSondaggi;                                                   // v12.14: Rossana sa se c'è una vice   // v12.14: sondaggi = la vice che li gestisce   // v11.5: firma della mail del colloquio   // v10.28: nome = primo nome del genitore (saluto del profilo docente); v10.15: password appena ricevuta dalla rappresentante → si apre il profilo
+    STATO.sdVice = !!r.utente.viceSondaggi;                                                   // v12.14: Rossana sa se c'è una rappresentante; sondaggi = profilo Rappresentante   // v11.5: firma della mail del colloquio   // v10.28: nome = primo nome del genitore (saluto del profilo docente); v10.15: password appena ricevuta dalla rappresentante → si apre il profilo
     STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null;
     var d = caricaDati(false);
     STATO.documenti = d.documenti; STATO.miei = d.miei; STATO.inArrivo = d.inArrivo;
@@ -3306,7 +3308,7 @@
   // Si sceglie Genitore (di quale alunno), Docente o Errore. Lo script risponde come se fosse entrata quella persona, in sola lettura.
   // Il pulsante blu fa da interruttore: amministratrice ⇄ vista. Riaprendo l'app si riparte sempre amministratrice.
   var VISTE = { genitore: { e: '👪', n: 'Genitore' }, docente: { e: '👩‍🏫', n: 'Maestro comune' }, maestra: { e: '🍎', n: 'Maestra' }, errore: { e: '⚠️', n: 'Errore' },   // v11.10: Maestra
-    preside: { e: '🏫', n: 'Preside' }, prova: { e: '🧪', n: 'Maestra di prova' } };   // v11.24 (n. 71)
+    preside: { e: '🏫', n: 'Preside' }, prova: { e: '🧪', n: 'Maestra di prova' }, rappresentante: { e: '🗳️', n: 'Rappresentante' } };   // v12.14   // v11.24 (n. 71)
   function fotografia() {
     return { sessione: STATO.sessione, dati: STATO.dati, visti: STATO.visti, calPrima: STATO.calPrima, divPrima: STATO.divPrima,
       documenti: STATO.documenti, miei: STATO.miei, inArrivo: STATO.inArrivo, casse: STATO.casse, pagina: STATO.pagina, caricato: STATO.caricato, novita: STATO.novita };
@@ -3334,7 +3336,7 @@
       var dove = STATO.pagina === 'profilo' ? 'home' : STATO.pagina;
       STATO.dati = sistemaContenuti(r.contenuti);   // v11.27 (n. 74)
       STATO.sessione = { email: r.utente.email, amministratore: false, alunni: r.utente.alunni || [], chiave: r.utente.chiave, mail: '', telefono: '',
-        primoIngresso: false, vista: r.utente.vista || scelta.tipo, nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '', nome: r.utente.nome || '', preside: !!r.utente.preside };   // v11.24: preside   // v11.10: nome del saluto
+        primoIngresso: false, vista: r.utente.vista || scelta.tipo, nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '', nome: r.utente.nome || '', preside: !!r.utente.preside, sondaggi: !!r.utente.sondaggi };   // v11.24: preside; v12.14: rappresentante   // v11.10: nome del saluto
       if (r.utente.manca) toast('Email della maestra non trovata nel foglio accessi: controlla “accessi” in Contenuti.gs');
       STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null; STATO.casse = {};
       var d = caricaDati(false);
@@ -3344,7 +3346,7 @@
     }).catch(function (e) {
       VISTA.attiva = false; if (VISTA.admin) ripristina(VISTA.admin); VISTA.scelta = null;
       ridisegnaTutto(STATO.pagina);
-      if (e.codice !== 'SESSIONE') toast(e.codice === 'AZIONE' || e.codice === 'NEGATO' ? (scelta.tipo === 'preside' || scelta.tipo === 'prova' ? 'Per questa vista serve lo script 11.16' : scelta.tipo === 'maestra' ? 'Per la vista “Maestra” serve lo script 11.8' : 'Per “Visualizza come” serve lo script 10.16') : e.message);
+      if (e.codice !== 'SESSIONE') toast(e.codice === 'AZIONE' || e.codice === 'NEGATO' ? (scelta.tipo === 'rappresentante' ? 'Per questa vista serve lo script 12.10' : scelta.tipo === 'preside' || scelta.tipo === 'prova' ? 'Per questa vista serve lo script 11.16' : scelta.tipo === 'maestra' ? 'Per la vista “Maestra” serve lo script 11.8' : 'Per “Visualizza come” serve lo script 10.16') : e.message);
     });
   }
   function tornaAdmin() {
@@ -3365,6 +3367,7 @@
   }
   function aggiornaVistaUI() {
     var on = VISTA.attiva, c = VISTA.scelta, aperto = !$('vistaFoglio').classList.contains('nascosto');
+    document.body.classList.toggle('vista-rapp', !!(on && c && c.tipo === 'rappresentante'));   // v12.14: WhatsApp grigi nei sondaggi
     nascondi_($('vistaContorno'), !on);
     nascondi_($('vistaPill'), !c || aperto || !STATO.sessione);
     if (!c) return;
@@ -3388,6 +3391,7 @@
     var nomeErr = el('span', { classe: 'nome-err', testo: '…' }), notaErr = el('small', { testo: '' });
     var opz = [                                                                      // v11.24 (n. 71): i tre profili della scuola, senza frasi
       ['genitore', 'Genitore', '', el('div', { classe: 'sotto' }, [el('label', { 'for': 'vistaAlunno', testo: 'Come il genitore di' }), sel])],
+      ['rappresentante', 'Rappresentante', '', null],                                // v12.14
       ['maestra', 'Maestra principale', '', null],
       ['preside', 'Preside', '', null],
       ['docente', 'Maestro comune', '', null],
@@ -8813,10 +8817,11 @@
   function sdSvg(nome, classe) { var s = el('span', { classe: classe || null, 'aria-hidden': 'true', style: classe ? null : 'display:inline-grid;place-items:center' }); s.innerHTML = SVG_SD[nome]; return s; }
   function sondaggiDi(dati) { return dati && Array.isArray(dati.sondaggi) ? dati.sondaggi : null; }
   function sdTrova(dati, id) { return (sondaggiDi(dati) || []).filter(function (s) { return s.id === id; })[0] || null; }
-  function sdAdmin() { return adminVero() || sdVice(); }                               // v12.14: anche la vice dei sondaggi
+  function sdAdmin() { return adminVero() || sdVice() || sdVistaRapp(); }               // v12.14: anche la rappresentante (e Visualizza come → Rappresentante)
+  function sdVistaRapp() { return !!(VISTA.attiva && STATO.sessione && STATO.sessione.sondaggi); }   // v12.14: solo per guardare
   function sdVice() { return !!(STATO.sessione && STATO.sessione.sondaggi && !STATO.sessione.amministratore && !STATO.sessione.vista && !VISTA.attiva); }
-  /** v12.14: la firma dei messaggi dei sondaggi: «Rossana» o il nome della vice. */
-  function sdFirma() { if (!sdVice()) return 'Rossana'; var n = String(STATO.sessione.nomeIntero || STATO.sessione.nome || '').trim().split(/\s+/)[0]; return n || 'Rossana'; }
+  /** v12.14: la firma dei messaggi dei sondaggi: «Rossana» o il nome della rappresentante. */
+  function sdFirma() { if (!sdVice() && !sdVistaRapp()) return 'Rossana'; var n = String(STATO.sessione.nomeIntero || STATO.sessione.nome || '').trim().split(/\s+/)[0]; return n || 'Rossana'; }
   function sdDaVotare(s) { return s.stato === 'aperto' && !s.mio && (s.puoVotare || (VISTA.attiva && !!s.io)); }   // v12.9: in Visualizza come conta come per la persona mostrata
   /** v12.2: un programmato uscito da solo nelle ultime 24 ore (Rossana lo deve ancora mandare su WhatsApp). */
   function sdUscitoDaPoco(s) { var t = Date.parse(s.pubblicato || ''); return !!s.esce && s.stato === 'aperto' && !isNaN(t) && Date.now() - t < 864e5; }
@@ -9079,7 +9084,7 @@
       var chi = c.mio ? (s.io ? s.io.nome + ' · tu' : 'tu') : c.nome;
       box.appendChild(el('div', { classe: 'sd-commento' + (c.nascosto ? ' nascosto' : '') + (c.mio ? ' mio' : ''), 'data-commento': c.id }, [
         el('span', {}, [el('span', { testo: '«' + c.testo + '»' }), chi ? el('small', { testo: chi }) : null,
-          c.nascosto ? el('small', { classe: 'sd-nasc', testo: sdVice() || STATO.sdVice ? 'NASCOSTO · solo rappresentanti' : 'NASCOSTO · lo vedi solo tu' }) : null]),
+          c.nascosto ? el('small', { classe: 'sd-nasc', testo: sdVice() || sdVistaRapp() || STATO.sdVice ? 'NASCOSTO · solo rappresentanti' : 'NASCOSTO · lo vedi solo tu' }) : null]),
         admin ? el('button', { type: 'button', classe: 'sd-mini', testo: c.nascosto ? 'Mostra' : 'Nascondi', onclick: function (e) {
           sdAzione('sondaggioNascondi', { id: s.id, commento: c.id, nascosto: !c.nascosto }, e.currentTarget, function () { toast(c.nascosto ? 'Il commento si vede di nuovo' : (STATO.sdVice || sdVice() ? 'Commento nascosto: lo vedono solo le rappresentanti' : 'Commento nascosto: lo vedi solo tu')); }).catch(function () {}); } }) : null]));
     });
@@ -9790,6 +9795,7 @@
           }).catch(function () { vuoto.textContent = 'Sondaggio non trovato: forse è stato chiuso o cancellato.'; });
           return;
         }
+        if (sdVistaRapp()) box.appendChild(el('p', { classe: 'sd-vista-nota', testo: 'In Visualizza come non si cambia niente: i pulsanti sono quelli che vede la rappresentante.' }));   // v12.14
         if (sdAdmin() && (s.stato === 'bozza' || s.stato === 'programmato')) { STATO.sdEdit = sdEditDa(s); box.appendChild(sdEditor()); return; }   // v12.2: anche i programmati
         if (sdAdmin() && !STATO.sdComeFamiglia) box.appendChild(sdGestione(s, lista));
         else box.appendChild(sdDettaglio(s, lista));
@@ -9950,7 +9956,7 @@
       return el('button', { type: 'button', classe: tab === i ? 'on' : '', 'data-tab': String(i), onclick: function () { STATO.sdTab = i; vaiA('sondaggi', true); } }, [n, i === 1 && manca ? el('i', { testo: String(manca) }) : null]);
     })));
     if (tab === 0) {
-      if (s.livello !== 'pubblico') box.appendChild(el('div', { classe: 'sd-banner' }, [sdSvg('lucchetto'), el('span', { testo: s.livello === 'riservato' ? (STATO.sdVice || sdVice() ? 'Chi ha votato cosa lo vedono solo le rappresentanti' : 'Chi ha votato cosa lo vedi solo tu') : 'Voto crittografato: chi ha votato cosa non lo vede nessuno' })]));
+      if (s.livello !== 'pubblico') box.appendChild(el('div', { classe: 'sd-banner' }, [sdSvg('lucchetto'), el('span', { testo: s.livello === 'riservato' ? (STATO.sdVice || sdVice() || sdVistaRapp() ? 'Chi ha votato cosa lo vedono solo le rappresentanti' : 'Chi ha votato cosa lo vedi solo tu') : 'Voto crittografato: chi ha votato cosa non lo vede nessuno' })]));
       if (Array.isArray(s.proposte) && s.proposte.length) box.appendChild(sdProposteAdmin(s));   // v12.2
       box.appendChild(sdRisultati(s, { chiuso: s.stato === 'chiuso', nomiAdmin: sdNomiAdmin(s), admin: true }));
       box.appendChild(el('div', { classe: 'sd-azioni-giu' }, [
@@ -11599,12 +11605,12 @@
           });
           return box;
         }
-        function viceSondaggi(p) {                                                       // v12.14: un tocco = gestisce i sondaggi come Rossana
-          return el('button', { type: 'button', classe: 'ga-sd', 'aria-pressed': String(!!p.sondaggi), testo: p.sondaggi ? '🗳️ Gestisce i sondaggi ✓' : '🗳️ Gestisce i sondaggi', onclick: function (ev) {
+        function viceSondaggi(p) {                                                       // v12.14: un tocco = profilo Rappresentante (i sondaggi come Rossana)
+          return el('button', { type: 'button', classe: 'ga-sd', 'aria-pressed': String(!!p.sondaggi), testo: p.sondaggi ? '🗳️ Rappresentante ✓' : '🗳️ Rappresentante', onclick: function (ev) {
             var b = ev.currentTarget, nuovo = !p.sondaggi; b.disabled = true;
             chiama('ruoloSondaggi', { email: p.chiave, attivo: nuovo }).then(function (x) {
               g.alunni.forEach(function (a) { a.persone.forEach(function (q) { if (q.chiave === p.chiave) q.sondaggi = !!x.sondaggi; }); });
-              toast(x.sondaggi ? '🗳️ ' + nomePersona(p) + ' gestisce i sondaggi' : '🗳️ ' + nomePersona(p) + ': solo genitore'); disegnaElenco();
+              toast(x.sondaggi ? '🗳️ ' + nomePersona(p) + ' è rappresentante' : nomePersona(p) + ': solo genitore'); disegnaElenco();
             }).catch(function (e) { b.disabled = false; if (e.codice !== 'SESSIONE') toast(e.codice === 'AZIONE' ? 'Serve lo script 12.10' : e.message); });
           } });
         }
@@ -11613,7 +11619,7 @@
           var riga = el('div', { classe: 'ga-persona' + (aperto ? ' aperta' : '') });
           var freccia = svgSpan('giu', '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>');
           riga.appendChild(el('button', { type: 'button', classe: 'ga-pers', 'aria-expanded': aperto ? 'true' : 'false', onclick: function () { aperta = aperto ? '' : id; disegnaElenco(); } }, [
-            el('span', { classe: 'tx' }, [el('span', { classe: 'nome-r' }, [el('b', { testo: nomePersona(p) }), pill(p, io), p.sondaggi ? el('span', { classe: 'ga-sd-segno', 'aria-label': 'Gestisce i sondaggi', testo: '🗳️' }) : null]), el('small', { testo: contatto(p) })]),
+            el('span', { classe: 'tx' }, [el('span', { classe: 'nome-r' }, [el('b', { testo: nomePersona(p) }), pill(p, io), p.sondaggi ? el('span', { classe: 'ga-sd-segno', 'aria-label': 'Rappresentante', testo: '🗳️' }) : null]), el('small', { testo: contatto(p) })]),
             freccia]));
           if (p.scuola) riga.appendChild(ruoliScuola(p));                          // v11.24 (n. 71): maestra / preside / maestro comune
           if (p.stato !== 'dentro' && !io) riga.appendChild(pulsantiInvio(p));
@@ -11624,7 +11630,7 @@
             d.appendChild(el('div', null, [el('span', { classe: 'ga-lbl', testo: 'WhatsApp' }), p.telefono ? p.telefono + (p.doppio ? ' · anche su un’altra email' : '') : el('span', { classe: 'manca', testo: 'nessun numero nel foglio: solo email' })]));
             d.appendChild(el('div', null, [el('span', { classe: 'ga-lbl', testo: 'Password' }), testoPassword(p, io), p.password && !io ? ' ' : null, p.password && !io ? el('span', { classe: 'mono ga-pw', testo: p.password }) : null]));
             if (p.info) d.appendChild(el('div', null, [el('span', { classe: 'ga-lbl', testo: 'Uso dell’app' }), p.info]));
-            if (!p.scuola && !io && p.sondaggi !== undefined) d.appendChild(el('div', null, [el('span', { classe: 'ga-lbl', testo: 'Sondaggi' }), viceSondaggi(p)]));   // v12.14
+            if (!p.scuola && !io && p.sondaggi !== undefined) d.appendChild(el('div', null, [el('span', { classe: 'ga-lbl', testo: 'Profilo' }), viceSondaggi(p)]));   // v12.14
             if (p.attiva && !io) d.appendChild(el('div', null, [el('button', { type: 'button', classe: 'ga-em grigio', testo: '↻ Reimposta la password', onclick: function () { reimposta(p, nome); } })]));
             riga.appendChild(d);
           }
