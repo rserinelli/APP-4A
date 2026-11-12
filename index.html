@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!-- pagina 12.8 · 12 novembre 2026: il profilo docente (maestra, preside, maestro comune) non vede più Versamenti della classe, Rendiconto di classe e Ricevute: nella linguetta «Classe e ricevute» un riquadro come quello di «Il tuo fondo cassa» (Profilo docente · Riservato alle famiglie); niente bollino delle ricevute; Contabilità si apre su «Il tuo fondo cassa». Script, contenuti e sw.js invariati -->
 <!-- pagina 12.7 · 12 novembre 2026: tolti gli «Avvisi dei colloqui» (Ok, visto) dalla Home e da Ricevimento e dal bollino di Ricevimento (non li toccava nessuno e allungavano le pagine); restano notifiche, richieste da confermare della maestra e campanella di Rossana. Pallino del colloquio sul riquadro Ricevimento della Home: arancione ⏳ in attesa, verde acqua con la scuola confermato a scuola, viola con la videocamera confermato online (il prossimo colloquio della famiglia, finché non è passato). Script, contenuti e sw.js invariati -->
+<!-- pagina 12.9 · 12 novembre 2026: SONDAGGI — la maestra principale (anche in Visualizza come) vede sempre il riquadro Sondaggi e la voce nel menu (dentro solo i sondaggi a cui è invitata); nei sondaggi con le foto le famiglie aggiungono una foto alla loro proposta (serve lo script 12.9); sul riquadro Sondaggi il numero rosso dei sondaggi ancora da votare anche per Rossana e in Visualizza come, al centro a destra -->
 <!-- pagina 12.6 · 11 novembre 2026: dopo Esci e un nuovo accesso (es. da amministratrice a genitore) un sondaggio con le foto, con Quanti siete per data o Chi manca lasciava la pagina bianca: Esci ora ricrea vuote le quattro «cassette» dei sondaggi (foto, link delle foto, pillole 👥, ricordati). Script, contenuti e sw.js invariati -->
 <!-- pagina 12.5 · 11 novembre 2026: SONDAGGI, Quanti siete per data (pillole Sì · Sì + Se serve · Tutti, conto sotto ogni data) e voto a tabella (proposta C) per Sì · Se serve · No e Sì / No; serve lo script 12.5 -->
 <!-- pagina 12.3 · 11 novembre 2026: bordo dorato anche su Avvisi, Fondo cassa e Prossimi 7 giorni in Home (script e sw.js restano 12.2) -->
@@ -2112,6 +2113,8 @@
   .tile.larga .lbl { flex: 1; min-width: 0; line-height: 1.15; }
   .griglia-larghe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-width: 560px; }
   .griglia-larghe .tile.larga { min-height: 70px; }
+  .tile.larga .conta { top: 50%; right: -11px; transform: translateY(-50%); min-width: 26px; height: 26px; font-size: 14px; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); }   /* v12.9: il numero rosso al centro a destra, sul bordo */
+  .tile.larga .lbl { padding-right: 8px; }
   .griglia-home .tile, .griglia-home .tile:hover { border: 2px solid #FDCA0D; }   /* v12.2: bordo dorato come Documenti e Sondaggi */
   /* v12.3: bordo dorato anche su Avvisi, Fondo cassa (tutte le varianti, anche la rosa) e Prossimi 7 giorni, come Sondaggi */
   .riquadro.oro, .cassa2, .cassa2.rosa, button.cassa2:hover, a.cassa2:hover, .porta[data-porta="calendario"], .porta[data-porta="calendario"]:hover, .riquadro.prox { border: 2px solid #FDCA0D; }
@@ -2453,6 +2456,12 @@
   .sd-prop-admin { padding: 12px 14px; margin-bottom: 10px; display: grid; gap: 8px; border: 2px solid #FDCA0D; }
   .sd-prop-admin > b { font-size: 15px; font-weight: 900; color: #1c4587; }
   .sd-prop-riga { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 12px; background: #f6f9fc; }
+  .sd-prop-riga > .sd-prop-mini, .sd-prop-mini { flex: none; width: 44px; height: 44px; border-radius: 8px; overflow: hidden; background: #d9f1fe; display: grid; place-items: center; color: #1c4587; }   /* v12.9 */
+  .sd-proponi-riga .sd-prop-foto { position: relative; flex: none; display: flex; }
+  .sd-proponi-riga .sd-fotobtn { width: 44px; height: 44px; border-radius: 10px; border: 2px dashed #78c5f1; background: #fff; color: #1c4587; display: grid; place-items: center; cursor: pointer; padding: 0; }
+  .sd-proponi-riga .sd-fotobtn.piena { border: 2px solid #1c4587; padding: 0; overflow: hidden; }
+  .sd-proponi-riga .sd-foto-meno { position: absolute; top: -10px; right: -10px; }
+  .sd-proponi-riga .sd-foto-meno[hidden] { display: none; }
   .sd-prop-riga.attesa { background: #fff4d4; }
   .sd-prop-riga > span { flex: 1; min-width: 0; }
   .sd-prop-riga b { display: block; font-size: 14.5px; overflow-wrap: anywhere; }
@@ -2954,7 +2963,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.8', SCRIPT_NECESSARIO = '12.5';   // v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.9', SCRIPT_NECESSARIO = '12.9';   // v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -3191,7 +3200,7 @@
     nav.appendChild(el('div', { classe: 'menu-testa' }, [el('img', { classe: 'stemma', src: IMMAGINI.stemma, alt: '' }),
       el('span', { classe: 'tx' }, [el('b', { testo: tt.titolo }), el('small', { testo: tt.sotto })]), chiudi]));
     STATO.dati.pagine.forEach(function (p) {
-      if (p.id === 'sondaggi' && !STATO.sessione.amministratore && soloSenzaAlunno() && !STATO.sdInvitato) return;   // v12.0
+      if (p.id === 'sondaggi' && !STATO.sessione.amministratore && soloSenzaAlunno() && !STATO.sdInvitato && !maestraPrincipale()) return;   // v12.0; v12.9: la maestra principale sempre
       nav.appendChild(el('button', { classe: 'voce', 'data-id': p.id, onclick: function () { vaiA(p.id); chiudiMenu(); } }, [
         iconaPagina(p), el('span', { classe: 'tx', testo: p.titolo }), p.url ? svgSpan('esterno', SVG_ESTERNO) : null
       ]));
@@ -3596,7 +3605,7 @@
         divise: STATO.visti
           ? futuri(elencoDivise(dati) || []).filter(function (e) { return eventoNuovo(e, STATO.visti.divise); }).length
           : 0,
-        sondaggi: sdAdmin() ? 0 : (sondaggiDi(dati) || []).filter(sdDaVotare).length,      // v12.0 (n. 8): per Rossana niente bollino (come nella tela)
+        sondaggi: (sondaggiDi(dati) || []).filter(sdDaVotare).length,      // v12.9: anche per Rossana (vota per suo figlio) e in Visualizza come; v12.0: per Rossana niente bollino
         ricevimento: (function (col) {                                    // v11.6: avvisi dei colloqui + richieste da confermare (maestra)
           if (!col) return 0;
           return (AVVISI_COL ? avvisiColAttuali(col).length : 0) + attesaAttuali(col).length;   // v11.28 (n. 75): senza quelli superati; v12.7: senza gli avvisi (tolti)
@@ -4064,7 +4073,7 @@
       sond.hidden = true; sond.style.display = 'none';
       STATO.documenti.then(function (d) {
         var l = sondaggiDi(d);
-        var si = l && (!soloSenzaAlunno() || l.length);
+        var si = l && (!soloSenzaAlunno() || l.length || maestraPrincipale());   // v12.9: la maestra principale sempre
         if (si) { sond.hidden = false; sond.style.display = ''; if (doc) doc.style.gridColumn = ''; }
         else if (doc) doc.style.gridColumn = '1 / -1';
         applicaContatori();
@@ -4096,6 +4105,8 @@
     return s.nome ? 'Buongiorno, ' + s.nome + '!' : 'Buongiorno!';   // v11.5: profilo docente con "Buongiorno"
   }
   /** v11.16: chi entra è una maestra con i colloqui nell'app (email negli accessi di un docente con materia "Maestra…")? */
+  /** v12.9: la maestra principale (anche in Visualizza come → Maestra principale): vede sempre Sondaggi, perché può essere invitata. */
+  function maestraPrincipale() { var s = STATO.sessione || {}; return s.vista ? s.vista === 'maestra' : !s.amministratore && eMaestraApp(s); }
   function eMaestraApp(s) {
     var io = String(s.chiave || s.email || '').trim().toLowerCase(), si = false;
     (STATO.dati && STATO.dati.pagine || []).forEach(function (p) { (p.blocchi || []).forEach(function (b) {
@@ -7722,7 +7733,8 @@
     quanti: 'Quanti siete', stelle: 'Stelle (gradimento)', testo: 'Testo libero', proposte: 'Proposte delle famiglie', punti: 'Stelle a ogni risposta' };   // v12.2: i pezzi dello step 2; v12.4: punti
   var SD_ALTRI = { quanti: 1, stelle: 1, testo: 1, proposte: 1 };
   function sdStep2() { return versioneMaggiore(STATO.versioneScript || '', '12.2'); }   // v12.2: i pezzi nuovi solo con lo script 12.2
-  function sdStep4() { return versioneMaggiore(STATO.versioneScript || '', '12.4'); }   // v12.4: stelle a ogni risposta, orari 8–21, Cambia la chiusura
+  function sdStep4() { return versioneMaggiore(STATO.versioneScript || '', '12.4'); }
+  function sdStep9() { return versioneMaggiore(STATO.versioneScript || '', '12.9'); }   // v12.9: foto nelle proposte delle famiglie   // v12.4: stelle a ogni risposta, orari 8–21, Cambia la chiusura
   var SD_LIV = {
     pubblico: { e: '👤', n: 'PUBBLICO', pill: '👤 PUBBLICO · TUTTI VEDONO I VOTI', wa: '👤 Pubblico: il tuo voto lo vedono tutti', crema: false },
     riservato: { e: '🔒', n: 'RISERVATO', pill: '🔒 RISERVATO · IL TUO VOTO LO VEDE SOLO LA RAPPRESENTANTE', wa: '🔒 Riservato: il tuo voto lo vede solo la rappresentante', crema: true },
@@ -7774,7 +7786,7 @@
   function sondaggiDi(dati) { return dati && Array.isArray(dati.sondaggi) ? dati.sondaggi : null; }
   function sdTrova(dati, id) { return (sondaggiDi(dati) || []).filter(function (s) { return s.id === id; })[0] || null; }
   function sdAdmin() { return adminVero(); }
-  function sdDaVotare(s) { return s.stato === 'aperto' && s.puoVotare && !s.mio; }
+  function sdDaVotare(s) { return s.stato === 'aperto' && !s.mio && (s.puoVotare || (VISTA.attiva && !!s.io)); }   // v12.9: in Visualizza come conta come per la persona mostrata
   /** v12.2: un programmato uscito da solo nelle ultime 24 ore (Rossana lo deve ancora mandare su WhatsApp). */
   function sdUscitoDaPoco(s) { var t = Date.parse(s.pubblicato || ''); return !!s.esce && s.stato === 'aperto' && !isNaN(t) && Date.now() - t < 864e5; }
 
@@ -7874,7 +7886,12 @@
   }
   /** La selezione con la parte che comincia con pref sostituita da val (vuoto = tolta). */
   function sdConParte(sel, pref, val) { var r = (sel || []).filter(function (k) { return String(k).indexOf(pref) !== 0; }); if (val) r.push(val); return r; }
-  function sdEtichettaProp(p) { return p.data ? sdDataLabel(p) : (p.testo || ''); }
+  function sdEtichettaProp(p) { return p.data ? sdDataLabel(p) : (p.testo || (p.foto ? '📷 Foto' : '')); }   // v12.9: anche solo la foto
+  /** v12.9: sondaggio con le foto (le famiglie aggiungono una foto alla proposta): domanda a scelta senza date, con almeno una foto. */
+  function sdConFoto(s) {
+    var u = (s.strati || []).filter(function (x) { return x.tipo === 'una' || x.tipo === 'piu' || x.tipo === 'punti'; })[0];
+    return !!u && !(s.strati || []).some(function (x) { return x.tipo === 'date'; }) && (u.risposte || []).some(function (r) { return r.foto; });
+  }
   function sdModello(s) {
     var uno = null, date = [], titDate = '';
     (s.strati || []).forEach(function (x) {
@@ -7888,7 +7905,7 @@
     if (uno.tipo === 'punti') {                                          // v12.4: da 0 a 5 stelle a ogni risposta, in ordine casuale per famiglia
       m.modo = 'punti';
       m.voci = sdMescola((uno.risposte || []).map(function (r) { return { k: r.id, nome: r.testo || '', sotto: r.sotto || '', foto: r.foto || '' }; })
-        .concat(prop.filter(function (p) { return !p.data; }).map(function (p) { return { k: p.id, nome: p.testo, sotto: '', foto: '', prop: p }; })), s.id + '|' + (s.io ? s.io.k : ''));
+        .concat(prop.filter(function (p) { return !p.data; }).map(function (p) { return { k: p.id, nome: p.testo, sotto: '', foto: p.foto || '', prop: p }; })), s.id + '|' + (s.io ? s.io.k : ''));
       m.titolo = uno.titolo || 'Date da 0 a 5 stelle a ogni idea';
       m.proponi = sdStrato(s, 'proposte') ? 'testo' : '';
       return m;
@@ -7908,7 +7925,7 @@
       m.date = true;                                                     // v12.5: con le date (Quanti siete per data)
     } else if (scelta) {
       m.voci = (uno.risposte || []).map(function (r) { return { k: r.id, nome: r.testo || '', sotto: r.sotto || '', foto: r.foto || '' }; })
-        .concat(prop.filter(function (p) { return !p.data; }).map(function (p) { return { k: p.id, nome: p.testo, sotto: '', foto: '', prop: p }; }));
+        .concat(prop.filter(function (p) { return !p.data; }).map(function (p) { return { k: p.id, nome: p.testo, sotto: '', foto: p.foto || '', prop: p }; }));
       m.modo = m.voci.some(function (v) { return v.foto; }) ? 'foto' : 'lista';
       m.titolo = uno.titolo || (m.multi ? (m.max ? 'Scegli fino a ' + m.max + ' risposte' : 'Scegli una o più risposte') : 'Scegli una risposta');
       m.proponi = sdStrato(s, 'proposte') ? 'testo' : '';
@@ -8051,14 +8068,36 @@
       var campi = data
         ? [el('input', { type: 'date', 'aria-label': 'Giorno proposto', 'data-campo': 'propData', min: isoDi(new Date()) }), el('input', { type: 'time', 'aria-label': 'Ora proposta', 'data-campo': 'propOra' })]
         : [el('input', { type: 'text', 'aria-label': 'La tua idea', placeholder: 'La tua idea', maxlength: '160', 'data-campo': 'propTesto' })];
+      // v12.9: nei sondaggi con le foto la proposta può avere la sua foto (riquadro con la macchina fotografica, poi la foto; «−» per toglierla)
+      var fotoD = '', fotoBox = null;
+      if (!data && sdConFoto(s) && (ctx.anteprima || sdStep9())) {
+        var fb = el('button', { type: 'button', classe: 'sd-fotobtn', 'aria-label': 'Aggiungi una foto', 'data-campo': 'propFoto' });
+        var fin = el('input', { type: 'file', accept: 'image/*', style: 'display:none', 'data-campo': 'propFile' });
+        var fmeno = el('button', { type: 'button', classe: 'sd-meno piccolo sd-foto-meno', 'aria-label': 'Togli la foto', testo: '−', hidden: 'hidden' });
+        var vuota = function () { fotoD = ''; fb.className = 'sd-fotobtn'; fb.innerHTML = SVG_SD.foto; fmeno.hidden = true; fin.value = ''; };
+        vuota();
+        fb.addEventListener('click', function () { if (!ctx.spento) fin.click(); });
+        fmeno.addEventListener('click', vuota);
+        fin.addEventListener('change', function () {
+          var file = fin.files && fin.files[0]; if (!file) return;
+          fb.innerHTML = '…'; err.hidden = true;
+          sdRimpicciolisci(file).then(function (d) {
+            fotoD = d; fb.className = 'sd-fotobtn piena'; fb.innerHTML = '';
+            fb.appendChild(el('img', { src: d, alt: '', style: 'width:100%;height:100%;object-fit:cover;display:block;border-radius:8px' }));
+            fmeno.hidden = false;
+          }).catch(function () { vuota(); err.textContent = 'Foto non leggibile: scegline un’altra.'; err.hidden = false; });
+        });
+        fotoBox = el('span', { classe: 'sd-prop-foto' }, [fb, fmeno, fin]);
+      }
       var ok = el('button', { type: 'button', classe: 'sd-ok', 'aria-label': 'Aggiungi la proposta' }, [sdSvg('spunta')]);
       ok.addEventListener('click', function () {
         err.hidden = true;
         var x = data ? { data: campi[0].value, dalle: campi[1].value } : { testo: campi[0].value };
-        if (data ? !x.data : !String(x.testo).trim()) { err.textContent = data ? 'Scegli il giorno.' : 'Scrivi la tua idea.'; err.hidden = false; return; }
+        if (fotoD) { x.fotoDati = fotoD.split(',')[1]; x.fotoMime = 'image/jpeg'; x.fotoUrl = fotoD; }   // v12.9
+        if (data ? !x.data : !String(x.testo).trim() && !fotoD) { err.textContent = data ? 'Scegli il giorno.' : fotoBox ? 'Scrivi la tua idea o aggiungi una foto.' : 'Scrivi la tua idea.'; err.hidden = false; return; }
         Promise.resolve(ctx.proponi(x, ok)).catch(function (e) { if (e && e.message) { err.textContent = e.message; err.hidden = false; } });
       });
-      box.appendChild(el('div', { classe: 'sd-proponi-riga' + (data ? ' data' : '') }, campi.concat([ok])));
+      box.appendChild(el('div', { classe: 'sd-proponi-riga' + (data ? ' data' : '') + (fotoBox ? ' con-foto' : '') }, (fotoBox ? [fotoBox] : []).concat(campi, [ok])));
       box.appendChild(err);
       if ((sdStrato(s, 'proposte') || {}).approvo !== false) box.appendChild(el('p', { classe: 'sd-nota', testo: 'La vedono tutti dopo che la approva la rappresentante.' }));   // v12.4: solo se approva Rossana
       campi[0].focus();
@@ -8687,7 +8726,8 @@
           el('span', {}, [el('b', { testo: s.titolo }), el('span', { classe: 'sd-pills', style: 'margin:0' }, [sdPillTempo(s), admin ? el('span', { classe: 'sd-pill grigio', testo: s.votati + ' su ' + s.totale }) : null,
             admin && s.daApprovare ? el('span', { classe: 'sd-pill giallo', testo: s.daApprovare === 1 ? '1 PROPOSTA DA APPROVARE' : s.daApprovare + ' PROPOSTE DA APPROVARE' }) : null,   // v12.2
             admin && s.nuove ? el('span', { classe: 'sd-pill giallo', testo: s.nuove === 1 ? '💡 1 PROPOSTA NUOVA' : '💡 ' + s.nuove + ' PROPOSTE NUOVE' }) : null,   // v12.4
-            admin && sdUscitoDaPoco(s) ? el('span', { classe: 'sd-pill crema', testo: 'USCITO ALLE ' + String(s.esce).slice(11, 16) + ' · DA MANDARE' }) : null])]),
+            admin && sdUscitoDaPoco(s) ? el('span', { classe: 'sd-pill crema', testo: 'USCITO ALLE ' + String(s.esce).slice(11, 16) + ' · DA MANDARE' }) : null,
+            admin && sdDaVotare(s) && s.io ? el('span', { classe: 'sd-pill rosso', testo: '🗳️ VOTA PER ' + String(s.io.nome).split(' ')[0].toUpperCase() }) : null])]),   // v12.9
           el('span', { classe: 'sd-vai' + (vota ? ' vota' : ''), testo: vota ? 'VOTA' : 'APRI' })]));
       });
       if (lista.length > 3) card.appendChild(el('button', { type: 'button', classe: 'link-piccolo', testo: 'Tutti i sondaggi', onclick: sdAllElenco }));
@@ -8772,7 +8812,9 @@
       sel: function () { return STATO.sdSel[s.id]; }, setSel: function (x) { STATO.sdSel[s.id] = x; },
       spento: !!VISTA.attiva, chi: chi,
       proponi: function (x, bottone) {                                    // v12.2: proposta delle famiglie, scelta subito se c'è posto
+        var url = x.fotoUrl; delete x.fotoUrl;                             // v12.9: la foto si vede subito, senza riscaricarla
         return sdAzione('sondaggioProponi', Object.assign({ id: s.id }, x), bottone, function (r) {
+          if (r.foto && url) STATO.sdFotoLocali[r.foto] = url;
           var m = sdModello(s);
           if (r.proposta && m && m.modo !== 'perData' && m.modo !== 'punti') STATO.sdSel[s.id] = sdTocca(m, STATO.sdSel[s.id] || [], r.proposta);   // v12.4: con le stelle si sceglie quante
           toast(r.approvata ? '✓ Proposta aggiunta' : '✓ Proposta mandata: la vedono tutti dopo che la approva la rappresentante');
@@ -8869,7 +8911,9 @@
       var togli = el('button', { type: 'button', classe: 'sd-meno piccolo', 'aria-label': 'Togli la proposta', 'data-togli': p.id, testo: '−', onclick: function () {
         sdChiedi('Togliere la proposta «' + sdEtichettaProp(p) + '»? Sparisce anche dai voti di chi l’aveva scelta.', 'Togli la proposta', function (b, f) {
           sdAzione('sondaggioTogliProposta', { id: s.id, proposta: p.id }, b, function () { f.chiudi(); toast('Proposta tolta'); }).catch(function () {}); }); } });
-      card.appendChild(el('div', { classe: 'sd-prop-riga' + (p.ok ? '' : ' attesa'), 'data-proposta': p.id }, [
+      var mini = null;
+      if (p.foto) { mini = el('span', { classe: 'sd-prop-mini', role: 'img', 'aria-label': 'Foto della proposta' }); mini.innerHTML = SVG_SD.immagine; sdMettiFoto(mini, s.id, p.foto); }   // v12.9
+      card.appendChild(el('div', { classe: 'sd-prop-riga' + (p.ok ? '' : ' attesa'), 'data-proposta': p.id }, [mini,
         el('span', {}, [el('b', { testo: sdEtichettaProp(p) }), el('small', { testo: (p.ok ? (s.approvo || !p.ok ? 'Approvata' : 'Visibile a tutti') : 'In attesa') + (p.da ? ' · proposta da ' + p.da : '') })]),
         !p.ok && s.stato !== 'chiuso' ? el('button', { type: 'button', classe: 'sd-mini', 'data-approva': p.id, testo: 'Approva', onclick: function (e) {
           sdAzione('sondaggioApprova', { id: s.id, proposta: p.id }, e.currentTarget, function () { toast('✓ Approvata: ora la vedono tutti'); }).catch(function () {}); } }) : null,
@@ -9363,7 +9407,9 @@
         proponi: function (x) {                                            // v12.2: nell'anteprima la proposta resta qui
           st.proposte = st.proposte || [];
           var id = 'pp' + (st.proposte.length + 1);
-          st.proposte.push({ id: id, testo: String(x.testo || '').trim(), data: x.data || '', dalle: x.dalle || '' });
+          var fid = '';
+          if (x.fotoUrl) { fid = 'anteprima-' + id + '-' + Date.now(); STATO.sdFotoLocali[fid] = x.fotoUrl; }   // v12.9: la foto della proposta
+          st.proposte.push({ id: id, testo: String(x.testo || '').trim(), data: x.data || '', dalle: x.dalle || '', foto: fid });
           var m = sdModello(sdFinto(e, st));
           if (m && m.modo !== 'perData' && m.modo !== 'punti') st.sel = sdTocca(m, st.sel, id);
           disegna(); return Promise.resolve();
