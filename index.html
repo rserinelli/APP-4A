@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- pagina 12.18 · 15 novembre 2026: SONDAGGI — REGOLA GENERALE per tutti i tipi (anche Sì · Mi adeguo · No, Sì / No, stelle, scelte, numeri): chi ha già votato e riapre un sondaggio trova i risultati parziali (o definitivi se chiuso) e chi manca, mai la schermata del voto; per rivotare tocca «Cambia il mio voto» (e «Torna ai risultati» per uscire). Anche subito dopo l'invio: «Voto inviato!» con i risultati. Statistiche: «Comunicazioni & Moduli» si chiama «Documenti». Script, contenuti e sw.js invariati -->
 <!-- pagina 12.16 · 14 novembre 2026: SONDAGGI — Sì · Mi adeguo · No (e Sì / No) in UNA SOLA SCHERMATA: matrice con i voti degli altri nei cerchi, la scelta piena (Sì verde, Mi adeguo giallo, No grigio-rosato), la data in testa con cornice blu e nastro «IN TESTA», «Ordina: Per data · Più votate», nomi dietro la freccina, colonna della data compatta, Quanti siete sotto la matrice e «Quanti siete fin qui» per la data in testa (Sì + Mi adeguo · Solo Sì), fumetto «Mi adeguo non vuol dire forse» una volta per apertura. «Se serve» diventa «Mi adeguo» con la spunta tra parentesi. Comprende la 12.15 (classifica 1°–5° e chi manca nei Risultati su WhatsApp). Script, contenuti e sw.js invariati -->
 <!-- pagina 12.13 · 12 novembre 2026: SONDAGGI — chi ha già votato, riaprendo un sondaggio aperto, trova subito «Come sta andando» (la classifica, nei pubblici con i nomi) e chi manca, con «Cambia il mio voto» sotto; la schermata del voto si apre solo toccando quel pulsante (e «Torna ai risultati» per uscire senza cambiare). Anche in Visualizza come. -->
 <!-- pagina 12.10 · 12 novembre 2026: il numero rosso di Documenti e Sondaggi sta dentro il riquadro, nell'angolo in alto a destra, come negli altri riquadri della griglia (prima era sul bordo, a metà altezza). Solo grafica: script 12.9, contenuti e sw.js invariati -->
@@ -3091,7 +3092,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.17', SCRIPT_NECESSARIO = '12.11';   // v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.18', SCRIPT_NECESSARIO = '12.11';   // v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -3125,6 +3126,17 @@
       c.pagine.splice(dopo + 1, 0, { id: 'sondaggi', titolo: 'Sondaggi', breve: 'Sondaggi', ill: 'sondaggi', inHome: false, illTitolo: true, blocchi: [{ tipo: 'sondaggi' }] });
     }
     return c;
+  }
+  // v12.18: lo script chiama ancora «Comunicazioni & Moduli» la sezione dei documenti (titolo di Contenuti.gs): nell'app è «Documenti»
+  function docRinomina(x) {
+    if (!x || typeof x !== 'object' || x.__doc) return x;
+    try { Object.defineProperty(x, '__doc', { value: 1 }); } catch (e) {}
+    Object.keys(x).forEach(function (k) {
+      var v = x[k];
+      if (typeof v === 'string') x[k] = v.replace(/Comunicazioni\s*(&|e|and)\s*Moduli/gi, 'Documenti');
+      else if (v && typeof v === 'object') docRinomina(v);
+    });
+    return x;
   }
   function soloGuardare() { return !!(STATO.sessione && STATO.sessione.preside); }      // v11.24 (n. 71): il preside
   function avvia(r) {
@@ -10064,9 +10076,9 @@
     box.appendChild(sdIndietro(sdAdmin() ? 'I risultati' : 'Sondaggi', sdAdmin() ? function () { STATO.sdComeFamiglia = false; vaiA('sondaggi', true); } : null));
     STATO.sdSel = STATO.sdSel || {};
     var una = sdUnaSchermata(s);                                        // v12.16: Sì · Mi adeguo · No e Sì / No in una sola schermata
-    if (STATO.sdFatto && STATO.sdFatto.id === s.id && !(una && s.stato === 'aperto')) { box.appendChild(sdFattoVista(s)); return box; }
+    if (STATO.sdFatto && STATO.sdFatto.id === s.id) { box.appendChild(sdFattoVista(s)); return box; }   // v12.18: regola generale, anche Sì · Mi adeguo · No
     if (s.stato === 'chiuso') { box.appendChild(sdChiusoVista(s, lista)); return box; }
-    if (s.stato === 'aperto' && s.mio && STATO.sdCambia !== s.id && !una) { box.appendChild(sdGiaVotatoVista(s)); return box; }   // v12.13: prima i risultati
+    if (s.stato === 'aperto' && s.mio && STATO.sdCambia !== s.id) { box.appendChild(sdGiaVotatoVista(s)); return box; }   // v12.13: prima i risultati; v12.18: per TUTTI i sondaggi
     if (STATO.sdSel[s.id] === undefined) STATO.sdSel[s.id] = (s.mio && s.mio.voto) ? s.mio.voto.slice() : [];
     var ses = STATO.sessione || {}, ruolo = String(ses.ruolo || '').toLowerCase();
     var nome = s.io && s.io.docente ? (ses.nome || s.io.nome) : ((ruolo === 'madre' ? 'Mamma ' : ruolo === 'padre' ? 'Papà ' : '') + (ses.nome || '')).trim();
@@ -10094,7 +10106,7 @@
         sdAzione('sondaggioVota', { id: s.id, voto: voto }, bottone, function () { STATO.sdFatto = { id: s.id, tipo: tipo }; STATO.sdCambia = null; delete STATO.sdSel[s.id]; window.scrollTo(0, 0); }).catch(function () {});
       }
     }));
-    if (s.mio && s.stato === 'aperto' && !una)                            // v12.13: si esce dal cambio senza cambiare
+    if (s.mio && s.stato === 'aperto')                                    // v12.13: si esce dal cambio senza cambiare; v12.18: anche matrice
       box.appendChild(el('div', { classe: 'sd-azioni-giu' }, [el('button', { type: 'button', classe: 'sd-btn2', 'data-azione': 'torna-risultati', testo: 'Torna ai risultati',
         onclick: function () { STATO.sdCambia = null; delete STATO.sdSel[s.id]; vaiA('sondaggi', true); window.scrollTo(0, 0); } })]));
     return box;
@@ -10686,7 +10698,7 @@
         el('button', { type: 'button', classe: 'sd-pill' + (!st.chiuso ? ' giallo' : ''), style: 'border:0;min-height:34px;cursor:pointer', testo: 'APERTO', onclick: function () { st.chiuso = false; disegna(); } }),
         el('button', { type: 'button', classe: 'sd-pill' + (st.chiuso ? ' giallo' : ''), style: 'border:0;min-height:34px;cursor:pointer', testo: 'CHIUSO', onclick: function () { st.chiuso = true; st.fatto = null; disegna(); } })]));
       if (st.chiuso) { corpo.appendChild(sdChiusoVista(s, [])); return; }
-      if (st.fatto && !sdUnaSchermata(s)) {
+      if (st.fatto) {                                                    // v12.18: dopo il voto i risultati, per tutti i sondaggi
         var salva = STATO.sdFatto; STATO.sdFatto = { id: s.id, tipo: st.fatto };
         var v = sdFattoVista(s); STATO.sdFatto = salva;
         v.querySelectorAll('.sd-azioni-giu').forEach(function (n) { n.remove(); });
@@ -11722,6 +11734,7 @@
       }
 
       function disegna(g) {
+        docRinomina(g);                                                  // v12.18: «Comunicazioni & Moduli» si chiama «Documenti»
         STATO.gestioneDati = g;
         box.innerHTML = '';
         var tutte = [];
