@@ -1388,6 +1388,61 @@
   .ga-gen-testa small { display: block; font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
   .ga-gen .ga-invio { padding: 0; }
   .ga-stat { padding: 14px 16px 6px; margin-top: 14px; }
+  /* v12.17: statistiche di uso */
+  .ga-breve { padding: 14px 16px; background: #fff4d4; border-color: #ecd9a6; }
+  .ga-breve .ga-lbl, .ga-breve-gen .ga-lbl { color: #8a6212; margin-bottom: 4px; }
+  .ga-breve p { margin: 0 0 6px; font-size: 14px; }
+  .ga-breve p:last-child { margin-bottom: 0; }
+  .ga-breve p.uno { font-size: 15px; font-weight: 700; }
+  .ga-breve p.calo { color: var(--danger); font-weight: 700; }
+  .ga-breve p.cresce { color: #1e6b3d; font-weight: 700; }
+  .ga-pillole { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 14px; }
+  .ga-pillole .ga-filtro { min-height: 40px; padding: 0 16px; font-size: 14px; }
+  .ga-uso { display: grid; gap: 12px; padding-bottom: 10px; }
+  .ga-uso-riga .testa { display: flex; align-items: baseline; gap: 8px; font-size: 14.5px; }
+  .ga-uso-riga .testa .n { flex: none; width: 22px; color: #8a6212; font-weight: 900; }
+  .ga-uso-riga .testa b { flex: 1; min-width: 0; font-weight: 800; overflow-wrap: anywhere; }
+  .ga-uso-riga .ga-bar { margin: 5px 0 2px 30px; }
+  .ga-uso-riga .ga-bar i { background: var(--accent); }
+  .ga-uso-riga small { display: block; margin-left: 30px; font-size: 12px; color: var(--muted); }
+  .ga-uso-riga.zero .testa b, .ga-uso-riga.zero .ga-num { color: #7a8798; }
+  .ga-fam-uso { padding: 2px 0 14px 36px; border-top: 0; }
+  .ga-genbtn { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 48px; margin-top: 6px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); font: inherit; color: var(--ink); text-align: left; cursor: pointer; }
+  .ga-genbtn.on { border-color: var(--brand); background: var(--brand-soft); }
+  .ga-genbtn.zero { color: #7a8798; cursor: default; }
+  .ga-genbtn .tx { flex: 1; min-width: 0; }
+  .ga-genbtn b { display: block; font-size: 15px; font-weight: 800; overflow-wrap: anywhere; }
+  .ga-genbtn small { display: block; font-size: 12.5px; color: var(--muted); }
+  .ga-breve-gen { margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: #fff4d4; }
+  .ga-breve-gen p { margin: 0; font-size: 14.5px; font-weight: 700; }
+  .ga-gen-uso { margin-top: 14px; padding-top: 12px; border-top: 2px solid #ecd9a6; }
+  .ga-gen-uso .ga-lbl { margin: 0 0 8px; font-size: 11.5px; }
+  .ga-gen-uso .ga-lbl.poi { margin-top: 18px; }
+  .ga-gen-sez { display: grid; gap: 10px; }
+  .ga-gen-sez .testa { display: flex; align-items: baseline; gap: 8px; font-size: 14.5px; }
+  .ga-gen-sez .testa b { flex: 1; min-width: 0; font-weight: 800; overflow-wrap: anywhere; }
+  .ga-gen-sez .ga-bar { margin: 4px 0 2px; }
+  .ga-gen-sez small { display: block; font-size: 12px; color: var(--muted); }
+  .ga-mai { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ga-mai span { display: inline-block; padding: 4px 10px; border-radius: 999px; background: #eef1f5; color: var(--muted); font-size: 13px; font-weight: 700; }
+  .ga-quando-sotto { margin: -4px 0 12px; font-size: 12.5px; color: var(--muted); }
+  .ga-fasce { display: grid; gap: 8px; }
+  .ga-fasce .riga { display: grid; grid-template-columns: 92px minmax(0, 1fr) 40px; gap: 10px; align-items: center; font-size: 14px; }
+  .ga-fasce .riga span:first-child { font-weight: 700; }
+  .ga-fasce .ga-bar { margin: 0; }
+  .ga-fasce .ga-bar i { background: var(--accent); }
+  .ga-fasce .ga-num { text-align: right; font-size: 13.5px; }
+  .ga-giorni { display: flex; height: 30px; border-radius: 8px; overflow: hidden; font-size: 12.5px; font-weight: 800; background: #d9f1fe; color: #1c4587; }
+  .ga-giorni .fer { background: #1f5f99; color: #fff; display: flex; align-items: center; padding-left: 10px; white-space: nowrap; overflow: hidden; }
+  .ga-giorni .we { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; white-space: nowrap; overflow: hidden; }
+  .ga-mesi { display: flex; align-items: flex-end; gap: 10px; height: 110px; padding: 0 4px; border-bottom: 1px solid var(--line); }
+  .ga-mesi .col { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .ga-mesi .col i { display: block; width: 100%; max-width: 54px; border-radius: 6px 6px 0 0; background: #78c5f1; }
+  .ga-mesi .col .ga-num { font-size: 13px; margin-bottom: 3px; }
+  .ga-mesi-nomi { display: flex; gap: 10px; padding: 4px 4px 0; }
+  .ga-mesi-nomi span { flex: 1; min-width: 0; text-align: center; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+  .ga-tend { margin: 10px 0 0; font-size: 13px; font-weight: 700; color: #1e6b3d; }
+  .ga-tend.cala { color: var(--danger); }
   .gestione > .ga-stat:first-of-type { margin-top: 0; }
   .ga-voce { display: block; width: 100%; padding: 12px 0; border: 0; border-top: 1px solid var(--line); background: none; font: inherit; color: var(--ink); text-align: left; cursor: pointer; }
   .ga-voce.prima { border-top: 0; }
@@ -3036,7 +3091,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.16', SCRIPT_NECESSARIO = '12.10';   // v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.17', SCRIPT_NECESSARIO = '12.11';   // v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -3323,6 +3378,7 @@
       chiama('pagina', { pagina: id }).catch(function () {});
       return;
     }
+    var paginaPrima = STATO.pagina;                                    // v12.17
     STATO.pagina = id;
     Array.prototype.forEach.call(document.querySelectorAll('.voce'), function (v) {
       v.classList.toggle('attiva', v.getAttribute('data-id') === id);
@@ -3345,7 +3401,7 @@
     if (id === 'home') { var colonna = el('div', { classe: 'home-n4' }); main.appendChild(colonna); disegnaBlocchi(p.blocchi, colonna, id); }   // v10.28
     else disegnaBlocchi(p.blocchi, main, id);
     applicaContatori();
-    if (!ridisegno && id !== 'home' && !PAGINE_FISSE[id]) chiama('pagina', { pagina: id }).catch(function () {});   // la pagina aperta (azzera i bollini di Calendario e Divise)
+    if (!ridisegno && id !== 'home' && !PAGINE_FISSE[id] && !(id === 'sondaggi' && paginaPrima === 'sondaggi')) chiama('pagina', { pagina: id }).catch(function () {});   /* v12.17: dall'elenco al sondaggio e ritorno è una visita sola */   // la pagina aperta (azzera i bollini di Calendario e Divise)
     if (ridisegno) Promise.all([STATO.documenti, STATO.miei]).then(function () { setTimeout(function () { window.scrollTo(0, scorri); }, 0); });
     else window.scrollTo(0, 0);
   }
@@ -11638,7 +11694,7 @@
     // Accessi in quattro blocchi: A che punto siamo · Da fare · Tutti gli accessi · Foglio accessi. Nessuna funzione di prima si perde.
     gestione: function () {
       var box = el('div', { classe: 'gestione' });
-      var filtro = '', vista = 'tutti', aperta = '', apertoStat = {}, tutteFam = false;
+      var filtro = '', vista = 'tutti', aperta = '', apertoStat = {}, tutteFam = false, statVista = 'famiglie', genScelto = {};   // v12.17: pillole Visite / Famiglie, genitore aperto per famiglia
       box.appendChild(attesa('Carico gli accessi…'));
       function chiPersona(p) { return p.mail || p.email; }
       function nomePersona(p) { return p.nome || (p.mail || p.email || '').split('@')[0]; }
@@ -11903,6 +11959,17 @@
           });
           box.appendChild(card);
         }
+        // v12.17: «In breve», due righe scritte dallo script con i numeri di adesso
+        var uso = g.uso && Array.isArray(g.uso.sezioni) ? g.uso : null;
+        if (uso && uso.breve && uso.breve.uno) {
+          var bv = uso.breve;
+          box.appendChild(el('div', { classe: 'card ga-stat ga-breve' }, [
+            el('span', { classe: 'ga-lbl', testo: t.breveTitolo || 'In breve' }),
+            el('p', { classe: 'uno', testo: bv.uno }),
+            bv.due ? el('p', { testo: bv.due }) : null,
+            bv.calo ? el('p', { classe: 'calo', testo: bv.calo }) : null,
+            bv.cresce ? el('p', { classe: 'cresce', testo: bv.cresce }) : null]));
+        }
         if (g.letture) {
           blocchiLettura(g.letture.avvisi, t.avvisi || 'Chi ha visto gli avvisi', t.avvisiSotto, 'avviso');
           blocchiLettura(g.letture.documenti, t.documenti || 'Chi ha aperto i documenti', t.documentiSotto, 'doc');
@@ -11919,7 +11986,28 @@
         }
         // sezioni più aperte (come prima)
         var cl = g.classifica, voci = cl && Array.isArray(cl.voci) ? cl.voci : [];
-        if (voci.some(function (x) { return x.valore > 0; })) {
+        if (uso) {                                                       // v12.17: pillole Visite / Famiglie
+          var perFam = statVista === 'famiglie', totF = uso.famiglie || 0;
+          var ord = uso.sezioni.slice().sort(function (a, b) { return perFam ? (b.famiglie - a.famiglie || b.visite - a.visite) : (b.visite - a.visite || b.famiglie - a.famiglie); });
+          var maxU = perFam ? Math.max(totF, 1) : Math.max.apply(null, ord.map(function (x) { return x.visite; }).concat([1]));
+          var pillole = el('div', { classe: 'ga-pillole', role: 'group', 'aria-label': 'Conta per' });
+          [['visite', 'Visite'], ['famiglie', 'Famiglie']].forEach(function (pl) {
+            pillole.appendChild(el('button', { type: 'button', classe: 'ga-filtro' + (statVista === pl[0] ? ' on' : ''), 'aria-pressed': statVista === pl[0] ? 'true' : 'false', testo: pl[1],
+              onclick: function () { if (statVista === pl[0]) return; statVista = pl[0]; disegna(g); } }));
+          });
+          var righeU = el('div', { classe: 'ga-uso' });
+          ord.forEach(function (x, i) {
+            var v = perFam ? x.famiglie : x.visite, zero = !x.visite;
+            var fam1 = x.famiglie === 1 ? '1 famiglia' : x.famiglie + ' famiglie', mae = x.maestre ? ' · + ' + (x.maestre === 1 ? '1 maestra' : x.maestre + ' maestre') : '';
+            righeU.appendChild(el('div', { classe: 'ga-uso-riga' + (zero ? ' zero' : '') }, [
+              el('div', { classe: 'testa' }, [el('span', { classe: 'n', testo: String(i + 1) }), el('b', { testo: x.nome }),
+                el('span', { classe: 'ga-num', testo: perFam ? x.famiglie + ' su ' + totF : x.visite + (x.visite === 1 ? ' visita' : ' visite') })]),
+              el('span', { classe: 'ga-bar' }, [el('i', { style: 'width:' + Math.min(100, Math.round(v / maxU * 100)) + '%' })]),
+              el('small', { testo: perFam ? x.visite + (x.visite === 1 ? ' visita' : ' visite') + mae : fam1 + mae })]));
+          });
+          box.appendChild(el('div', { classe: 'card ga-stat' }, [el('h3', { classe: 'ga-h3', testo: t.usoTitolo || 'Sezioni più usate dalla classe' }),
+            el('p', { classe: 'ga-sub', testo: perFam ? (t.usoFamiglie || '') : (t.usoVisite || '') }), pillole, righeU, cl && cl.nota ? el('p', { classe: 'classe-nota', testo: cl.nota }) : null]));
+        } else if (voci.some(function (x) { return x.valore > 0; })) {
           var max = Math.max.apply(null, voci.map(function (x) { return x.valore; })), barre = el('div', { classe: 'barre' });
           voci.forEach(function (x) {
             barre.appendChild(el('div', { classe: 'barre-riga oro' + (x.valore ? '' : ' zero') }, [
@@ -11929,6 +12017,67 @@
             ]));
           });
           box.appendChild(el('div', { classe: 'card ga-stat' }, [el('h3', { classe: 'ga-h3', testo: cl.titolo || '' }), barre, cl.nota ? el('p', { classe: 'classe-nota', testo: cl.nota }) : null]));
+        }
+        // v12.17: i genitori della famiglia aperta; toccandone uno, «In breve», cosa usa di più, cosa non ha mai aperto, quando la usa
+        function usoFamiglia(f, k) {
+          var con = f.genitori.filter(function (p) { return p.uso; });
+          var scelto = con.filter(function (p) { return p.nome === genScelto[k]; })[0] || con[0];
+          var scatola = el('div', { classe: 'ga-fam-uso' });
+          f.genitori.forEach(function (p) {
+            var on = p === scelto;
+            scatola.appendChild(el('button', { type: 'button', classe: 'ga-genbtn' + (on ? ' on' : '') + (p.uso ? '' : ' zero'), 'aria-pressed': on ? 'true' : 'false', disabled: p.uso ? null : 'disabled',
+              onclick: function () { if (!p.uso || on) return; genScelto[k] = p.nome; disegna(g); } }, [
+              el('span', { classe: 'tx' }, [el('b', { testo: p.nome }), el('small', { testo: p.ultimo ? 'ultimo accesso ' + p.ultimo : 'non è ancora entrato' })]),
+              el('span', { classe: 'ga-num', testo: p.accessi + (p.accessi === 1 ? ' accesso' : ' accessi') })]));
+          });
+          var u = scelto && scelto.uso;
+          if (!u) return scatola;
+          if (u.breve) scatola.appendChild(el('div', { classe: 'ga-breve-gen' }, [el('span', { classe: 'ga-lbl', testo: t.breveTitolo || 'In breve' }), el('p', { testo: u.breve })]));
+          var dett = el('div', { classe: 'ga-gen-uso' });
+          if (u.sezioni && u.sezioni.length) {
+            var maxS = u.sezioni[0].n || 1, lista = el('div', { classe: 'ga-gen-sez' });
+            u.sezioni.forEach(function (x) {
+              lista.appendChild(el('div', null, [
+                el('div', { classe: 'testa' }, [el('b', { testo: x.nome }), el('span', { classe: 'ga-num', testo: x.pct + '%' })]),
+                el('span', { classe: 'ga-bar' }, [el('i', { style: 'width:' + Math.round(x.n / maxS * 100) + '%' })]),
+                el('small', { testo: x.n + (x.n === 1 ? ' visita' : ' visite') + (x.sopra ? ' · ' + (t.genMedia || 'più della media della classe') : '') })]));
+            });
+            dett.appendChild(el('span', { classe: 'ga-lbl', testo: t.genCosa || 'Cosa usa di più' }));
+            dett.appendChild(lista);
+          }
+          if (u.mai && u.mai.length) {
+            dett.appendChild(el('span', { classe: 'ga-lbl' + (dett.firstChild ? ' poi' : ''), testo: t.genMaiTitolo || 'Non ha mai aperto' }));
+            dett.appendChild(el('div', { classe: 'ga-mai' }, u.mai.map(function (n) { return el('span', { testo: n }); })));
+          }
+          dett.appendChild(el('span', { classe: 'ga-lbl' + (dett.firstChild ? ' poi' : ''), testo: t.genQuando || 'Quando la usa' }));
+          if (!u.fasce && !(u.mesi && u.mesi.length)) dett.appendChild(el('p', { classe: 'ga-quando-sotto', style: 'margin:0', testo: t.genQuandoVuoto || 'Si riempie dai prossimi accessi.' }));
+          else {
+            dett.appendChild(el('p', { classe: 'ga-quando-sotto', testo: String(t.genQuandoSotto || '').replace('{dal}', u.dal || '') }));
+            if (u.fasce) {
+              var fasce = el('div', { classe: 'ga-fasce' });
+              ['Mattina', 'Pomeriggio', 'Sera'].forEach(function (n, i) {
+                fasce.appendChild(el('div', { classe: 'riga' }, [el('span', { testo: n }), el('span', { classe: 'ga-bar' }, [el('i', { style: 'width:' + u.fasce[i] + '%' })]), el('span', { classe: 'ga-num', testo: u.fasce[i] + '%' })]));
+              });
+              dett.appendChild(fasce);
+            }
+            if (u.giorni) {
+              dett.appendChild(el('span', { classe: 'ga-lbl poi', testo: 'Giorni' }));
+              dett.appendChild(el('div', { classe: 'ga-giorni', role: 'img', 'aria-label': 'Feriali ' + u.giorni[0] + '%, weekend ' + u.giorni[1] + '%' }, [
+                u.giorni[0] ? el('span', { classe: 'fer', style: 'width:' + u.giorni[0] + '%', testo: u.giorni[0] >= 30 ? 'Feriali ' + u.giorni[0] + '%' : u.giorni[0] + '%' }) : null,
+                u.giorni[1] ? el('span', { classe: 'we', testo: u.giorni[1] >= 30 ? 'Weekend ' + u.giorni[1] + '%' : u.giorni[1] + '%' }) : null]));
+            }
+            if (u.mesi && u.mesi.length) {
+              var maxM = Math.max.apply(null, u.mesi.map(function (m) { return m.n; }).concat([1]));
+              dett.appendChild(el('span', { classe: 'ga-lbl poi', testo: 'Accessi al mese' }));
+              dett.appendChild(el('div', { classe: 'ga-mesi' }, u.mesi.map(function (m) {
+                return el('div', { classe: 'col' }, [el('span', { classe: 'ga-num', testo: String(m.n) }), el('i', { style: 'height:' + Math.max(4, Math.round(m.n / maxM * 80)) + 'px' })]);
+              })));
+              dett.appendChild(el('div', { classe: 'ga-mesi-nomi' }, u.mesi.map(function (m) { return el('span', { testo: m.nome }); })));
+              if (u.tendenza) dett.appendChild(el('p', { classe: 'ga-tend' + (u.cala ? ' cala' : ''), testo: u.tendenza }));
+            }
+          }
+          scatola.appendChild(dett);
+          return scatola;
         }
         // n. 36: chi usa di più l'app, per famiglia
         if (Array.isArray(g.classificaFamiglie)) {
@@ -11944,12 +12093,14 @@
               el('span', { classe: 'ga-voce-testa' }, [el('b', { testo: 'Famiglia di ' + f.alunno }), el('span', { classe: 'ga-num', testo: String(f.accessi) })]),
               el('span', { classe: 'ga-bar' }, [el('i', { style: 'width:' + Math.round(f.accessi / maxA * 100) + '%' })]),
               el('small', { testo: sotto })]);
-            if (aperto) corpo.appendChild(el('span', { classe: 'ga-fam-dett' }, f.genitori.map(function (p) {
+            var conUso = f.genitori.some(function (p) { return p.uso; });                // v12.17: con lo script 12.11 i genitori si toccano
+            if (aperto && !conUso) corpo.appendChild(el('span', { classe: 'ga-fam-dett' }, f.genitori.map(function (p) {
               return el('span', { classe: 'riga' + (p.accessi ? '' : ' zero') }, [el('span', null, [el('b', { testo: p.nome }), el('small', { testo: p.ultimo ? 'ultimo accesso ' + p.ultimo : 'non è ancora entrato' })]),
                 el('span', { classe: 'ga-num', testo: p.accessi + (p.accessi === 1 ? ' accesso' : ' accessi') })]);
             })));
             card.appendChild(el('button', { type: 'button', classe: 'ga-riga' + (zero ? ' zero' : '') + (i === 0 ? ' prima' : ''), 'aria-expanded': aperto ? 'true' : 'false',
               onclick: function () { apertoStat[k] = !apertoStat[k]; disegna(g); } }, [el('span', { classe: 'ga-pos' + (zero ? ' zero' : i < 3 ? ' oro' : ''), testo: zero ? '–' : String(i + 1) }), corpo]));
+            if (aperto && conUso) card.appendChild(usoFamiglia(f, k));
           });
           if (fam.length > 10) card.appendChild(el('div', { classe: 'ga-piede' }, [el('button', { type: 'button', classe: 'btn btn-sec', testo: tutteFam ? 'Mostra solo le prime 10' : 'Mostra tutte le famiglie (' + fam.length + ')', onclick: function () { tutteFam = !tutteFam; disegna(g); } })]));
           if (!fam.length) card.appendChild(el('p', { classe: 'stato', testo: 'Nessuna famiglia da mostrare.' }));
