@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- pagina 12.16 · 14 novembre 2026: SONDAGGI — Sì · Mi adeguo · No (e Sì / No) in UNA SOLA SCHERMATA: matrice con i voti degli altri nei cerchi, la scelta piena (Sì verde, Mi adeguo giallo, No grigio-rosato), la data in testa con cornice blu e nastro «IN TESTA», «Ordina: Per data · Più votate», nomi dietro la freccina, colonna della data compatta, Quanti siete sotto la matrice e «Quanti siete fin qui» per la data in testa (Sì + Mi adeguo · Solo Sì), fumetto «Mi adeguo non vuol dire forse» una volta per apertura. «Se serve» diventa «Mi adeguo» con la spunta tra parentesi. Comprende la 12.15 (classifica 1°–5° e chi manca nei Risultati su WhatsApp). Script, contenuti e sw.js invariati -->
 <!-- pagina 12.13 · 12 novembre 2026: SONDAGGI — chi ha già votato, riaprendo un sondaggio aperto, trova subito «Come sta andando» (la classifica, nei pubblici con i nomi) e chi manca, con «Cambia il mio voto» sotto; la schermata del voto si apre solo toccando quel pulsante (e «Torna ai risultati» per uscire senza cambiare). Anche in Visualizza come. -->
 <!-- pagina 12.10 · 12 novembre 2026: il numero rosso di Documenti e Sondaggi sta dentro il riquadro, nell'angolo in alto a destra, come negli altri riquadri della griglia (prima era sul bordo, a metà altezza). Solo grafica: script 12.9, contenuti e sw.js invariati -->
 <!-- pagina 12.8 · 12 novembre 2026: il profilo docente (maestra, preside, maestro comune) non vede più Versamenti della classe, Rendiconto di classe e Ricevute: nella linguetta «Classe e ricevute» un riquadro come quello di «Il tuo fondo cassa» (Profilo docente · Riservato alle famiglie); niente bollino delle ricevute; Contabilità si apre su «Il tuo fondo cassa». Script, contenuti e sw.js invariati -->
@@ -2412,40 +2413,85 @@
   .sd-pill-prop { display: inline-block; margin-top: 4px; padding: 2px 8px; border-radius: 999px; background: #d9f1fe; color: #1c4587; font-size: 10.5px; font-weight: 900; letter-spacing: .03em; }
   .sd-pill-prop.attesa { background: #fff4d4; }
   .sd-data > .sd-pill-prop { margin: -2px 0 6px; }
-  /* v12.5: voto a tabella (proposta C): giorno grande a sinistra, colonne ✓ Sì · ? Se serve · ✕ No con l'intestazione ferma in alto */
-  .sd-tab-head, .sd-tab { display: grid; grid-template-columns: minmax(0, 1fr) repeat(3, 58px); align-items: stretch; }
-  .sd-tab-wrap.due .sd-tab-head, .sd-tab-wrap.due .sd-tab { grid-template-columns: minmax(0, 1fr) repeat(2, 72px); }
-  @media (max-width: 359px) { .sd-tab-wrap:not(.due) .sd-tab-head, .sd-tab-wrap:not(.due) .sd-tab { grid-template-columns: minmax(0, 1fr) repeat(3, 50px); } }
-  .sd-tab-head { position: sticky; top: var(--sd-cima, 66px); z-index: 3; padding: 4px 0 8px; background: #fff; }
-  .sd-th { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 12px; font-weight: 900; line-height: 1.15; color: #1c4587; text-align: center; }
-  .sd-th.forse .sd-tab-ico { color: #c99a00; }
-  .sd-th.no { color: #4f5f72; }
+  /* v12.16: matrice Sì · Mi adeguo · No in una sola schermata: data compatta (62 px), colonne che si allargano, freccina dei nomi */
+  .sd-tab-head, .sd-tab { display: grid; grid-template-columns: 62px repeat(3, minmax(0, 1fr)) 30px; align-items: stretch; }
+  .sd-tab-wrap.due .sd-tab-head, .sd-tab-wrap.due .sd-tab { grid-template-columns: 62px repeat(2, minmax(0, 1fr)) 30px; }
+  .sd-tab-wrap[data-tabella="una"] .sd-tab-head, .sd-tab-wrap[data-tabella="una"] .sd-tab { grid-template-columns: repeat(3, minmax(0, 1fr)) 30px; }
+  .sd-tab-wrap.due[data-tabella="una"] .sd-tab-head, .sd-tab-wrap.due[data-tabella="una"] .sd-tab { grid-template-columns: repeat(2, minmax(0, 1fr)) 30px; }
+  .sd-una-dom { display: flex; align-items: center; gap: 8px; padding: 10px 4px 2px; }
+  .sd-una-dom .sd-n { flex: none; display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #1c4587; color: #fff; font-size: 13px; font-weight: 900; }
+  .sd-tab-head { position: sticky; top: var(--sd-cima, 66px); z-index: 3; padding: 2px 0 8px; background: #fff; }
+  .sd-th { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 2px; min-width: 0; font-size: 11.5px; font-weight: 900; line-height: 1.15; color: #15243b; text-align: center; }
+  .sd-th .sd-tab-ico { color: #1c4587; }
   .sd-tab-ico { display: grid; place-items: center; }
-  .sd-td { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-width: 0; padding: 10px 0; border-top: 1px solid #e6eef5; }
-  .sd-td.d { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 4px 8px; padding-left: 6px; padding-right: 4px; border-radius: 10px 0 0 10px; }
-  .sd-td.fine { border-radius: 0 10px 10px 0; }
-  .sd-td.t-si { background: #e8f0fb; } .sd-td.t-forse { background: #fff6d1; } .sd-td.t-no { background: #eef1f5; }
-  .sd-tab-num { font-size: 30px; font-weight: 900; line-height: 1; color: #1c4587; }
-  .sd-tab-gm { min-width: 0; }
-  .sd-tab-gm small { display: block; font-size: 12.5px; font-weight: 900; line-height: 1.25; }
-  .sd-tab-ora { display: inline-block; margin-top: 2px; padding: 1px 7px; border-radius: 999px; background: #FDCA0D; color: #1c4587; font-size: 12px; font-weight: 900; }
-  .sd-tab-dom { flex: 1 1 0; min-width: 0; font-size: 17px; font-weight: 900; line-height: 1.25; overflow-wrap: anywhere; }
+  .sd-mx-box { border-top: 1px solid #e6eef5; }
+  .sd-mx-box.lead { margin: 6px -4px; border: 3px solid #1c4587; border-radius: 14px; overflow: hidden; background: #f0f6ff; box-shadow: 0 4px 14px rgba(28,69,135,.25); }
+  .sd-mx-box.lead + .sd-mx-box { border-top: 0; }
+  .sd-nastro { display: flex; align-items: center; gap: 6px; padding: 5px 10px; background: #1c4587; color: #fff; }
+  .sd-nastro > span:first-child { flex: none; color: #FDCA0D; }
+  .sd-nastro svg { width: 20px; height: 20px; }
+  .sd-nastro b { font-size: 15px; font-weight: 900; letter-spacing: .05em; }
+  .sd-nastro span:last-child { margin-left: auto; font-size: 12.5px; font-weight: 800; color: #d9f1fe; text-align: right; }
+  .sd-tab { border-radius: 10px; }
+  .sd-tab.t-si { background: #e3f5ea; } .sd-tab.t-forse { background: #fff6cc; } .sd-tab.t-no { background: #f1ecea; }
+  .sd-td { display: flex; align-items: center; justify-content: center; min-width: 0; padding: 9px 0; }
+  .sd-td.d { justify-content: flex-start; gap: 6px; padding-left: 4px; padding-right: 2px; }
+  .sd-dt { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+  .sd-dr { display: flex; align-items: center; gap: 3px; }
+  .sd-tab-num { font-size: 28px; font-weight: 900; line-height: 1; color: #1c4587; }
+  .sd-tab-gm { display: flex; flex-direction: column; }
+  .sd-tab-gm small { display: block; font-size: 10.5px; font-weight: 900; line-height: 1.15; text-transform: uppercase; letter-spacing: .02em; color: #15243b; }
+  .sd-tab-ora { display: inline-block; padding: 0 6px; border-radius: 999px; background: #FDCA0D; color: #1c4587; font-size: 11.5px; font-weight: 900; line-height: 1.5; }
+  .sd-tab-dom { flex: 1 1 0; min-width: 0; font-size: 17px; font-weight: 900; line-height: 1.25; overflow-wrap: break-word; }
   .sd-td.d .sd-n { flex: none; display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #1c4587; color: #fff; font-size: 13px; font-weight: 900; }
-  .sd-td.d .sd-pills, .sd-td.d .sd-pill-prop { flex-basis: auto; margin: 0; }
-  .sd-td.d .sd-tab-pills { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 4px; }
-  .sd-cerchio { display: grid; place-items: center; width: 46px; height: 46px; padding: 0; border: 2.5px solid #c9d6e2; border-radius: 50%; background: #fff; color: #9aa8b8; cursor: pointer; }
-  .sd-cerchio.si { border-color: #a9c6ea; background: #f2f7fc; color: #5f8fd0; }
-  .sd-cerchio.forse { border-color: #f3d777; background: #fffbea; color: #c99a00; }
-  .sd-cerchio.si.on { border-color: #1c4587; background: #1c4587; color: #fff; }
-  .sd-cerchio.forse.on { border-color: #FDCA0D; background: #FDCA0D; color: #1c4587; }
-  .sd-cerchio.no.on { border-color: #4f5f72; background: #4f5f72; color: #fff; }
-  .sd-cn { font-size: 12px; font-weight: 900; line-height: 1; color: #4f5f72; }
-  .sd-nc { display: grid; place-items: center; min-width: 40px; height: 40px; padding: 0 6px; border-radius: 999px; background: #eef4f9; color: #15243b; font-size: 17px; font-weight: 900; }
-  .sd-nc.mio { background: #FDCA0D; color: #1c4587; }
-  .sd-tab-sotto { grid-column: 1 / -1; min-width: 0; padding: 0 0 10px; }
+  .sd-cerchio { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 2px solid #cfdbe6; border-radius: 50%; background: #fff; color: #a3b1c0; font: inherit; font-size: 17px; font-weight: 900; cursor: pointer; transition: transform .12s; }
+  .sd-cerchio.num { color: #4f5f72; }
+  .sd-cerchio.num.zero { color: #b4c0cc; }
+  .sd-cerchio.on { transform: scale(1.1); }
+  .sd-cerchio.si.on { border-color: #167a43; background: #1e9e57; color: #fff; box-shadow: 0 2px 8px rgba(20,120,60,.4); }
+  .sd-cerchio.forse.on { border-color: #d9a800; background: #FDCA0D; color: #1c4587; box-shadow: 0 2px 8px rgba(190,140,0,.45); }
+  .sd-cerchio.no.on { border-color: #756666; background: #8c7b7b; color: #fff; box-shadow: 0 2px 6px rgba(90,70,70,.35); }
+  .sd-nc { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: #eef3f8; color: #15243b; font-size: 17px; font-weight: 900; }
+  .sd-nc.zero { color: #9aa8b8; }
+  .sd-nc.si.mio { background: #1e9e57; color: #fff; } .sd-nc.forse.mio { background: #FDCA0D; color: #1c4587; } .sd-nc.no.mio { background: #8c7b7b; color: #fff; }
+  .sd-chev { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 1.5px solid #78c5f1; border-radius: 50%; background: #fff; color: #1c4587; cursor: pointer; }
+  .sd-chev svg { transition: transform .15s; }
+  .sd-chev.su { background: #1c4587; border-color: #1c4587; color: #fff; }
+  .sd-chev.su svg { transform: rotate(180deg); }
+  .sd-tab-sotto { min-width: 0; }
   .sd-tab-sotto:empty { display: none; }
-  .sd-tab-sotto .sd-nomi-data { display: block; margin-top: 6px; font-size: 12px; font-weight: 700; color: #1c4587; white-space: pre-line; }
-  .sd-tab-sotto .sd-togli { margin-top: 6px; }
+  .sd-tab-sotto > * { margin: 0 4px 8px; }
+  .sd-tab-sotto .sd-tab-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+  .sd-tab-sotto .sd-togli { margin-top: 0; }
+  .sd-mx-nomi { display: grid; gap: 8px; padding: 10px; border-radius: 10px; background: #f4f8fb; }
+  .sd-mx-gt { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 900; color: #1c4587; }
+  .sd-mx-gt.no { color: #4f5f72; }
+  .sd-mx-nomi .sd-nomi { margin: 4px 0 0; }
+  .sd-ordina { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; }
+  .sd-ordina > span { flex: none; font-size: 13px; font-weight: 900; color: #4f5f72; }
+  .sd-ordina > div { flex: 1; display: flex; gap: 4px; padding: 3px; border-radius: 999px; background: #d9f1fe; }
+  .sd-ordina button { flex: 1; min-height: 36px; padding: 0 8px; border: 0; border-radius: 999px; background: none; color: #1c4587; font: inherit; font-size: 13px; font-weight: 900; cursor: pointer; white-space: nowrap; }
+  .sd-ordina button.on { background: #1c4587; color: #fff; }
+  .sd-fumetto { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 2px 6px 10px; padding: 10px 10px 10px 12px; border-radius: 12px; background: #FDCA0D; color: #1c4587; box-shadow: 0 3px 10px rgba(190,140,0,.35); }
+  .sd-punta { position: absolute; top: -7px; left: 50%; width: 14px; height: 14px; background: #FDCA0D; transform: translateX(-50%) rotate(45deg); }
+  .sd-fu-tx { flex: 1 1 170px; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+  .sd-fu-tx b { font-size: 14.5px; font-weight: 900; }
+  .sd-fu-tx small { font-size: 12.5px; font-weight: 800; }
+  .sd-capito { flex: none; margin-left: auto; min-height: 40px; padding: 0 10px; border: 0; border-radius: 999px; background: #1c4587; color: #fff; font: inherit; font-size: 13px; font-weight: 900; cursor: pointer; }
+  .sd-inviato { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; padding: 9px 12px; border-radius: 12px; background: #e3f5ea; color: #145c34; font-weight: 900; }
+  .sd-inviato svg { width: 18px; height: 18px; }
+  .sd-qt { margin: 12px 0 10px; padding: 12px 14px; }
+  .sd-qt-testa { display: flex; align-items: center; gap: 8px; }
+  .sd-qt-testa > b { flex: 1; min-width: 0; font-size: 16px; font-weight: 900; }
+  .sd-qt-per { margin: 2px 0 10px; font-size: 14px; font-weight: 800; color: #4f5f72; }
+  .sd-qt-pill { display: flex; gap: 6px; margin-bottom: 10px; }
+  .sd-qt-pill button { flex: 1; min-height: 40px; padding: 0 8px; border: 1.5px solid #78c5f1; border-radius: 999px; background: #fff; color: #1c4587; font: inherit; font-size: 13px; font-weight: 900; white-space: nowrap; cursor: pointer; }
+  .sd-qt-pill button.on { border-color: #1c4587; background: #1c4587; color: #fff; }
+  .sd-qt-num { display: flex; gap: 6px; }
+  .sd-qt-num > div { flex: 1; min-width: 0; padding: 8px 4px; border-radius: 12px; background: #f4f8fb; text-align: center; }
+  .sd-qt-num b { display: block; font-size: 24px; font-weight: 900; line-height: 1.1; color: #1c4587; }
+  .sd-qt-num small { display: block; font-size: 12px; font-weight: 800; color: #4f5f72; }
+  .sd-qt-num > .tot { background: #1c4587; } .sd-qt-num > .tot b, .sd-qt-num > .tot small { color: #fff; }
   .sd-btn .sd-btn-pill { flex: none; display: inline-flex; padding: 3px 9px; border-radius: 999px; background: rgba(255,255,255,.2); color: #fff; font-size: 11.5px; font-weight: 800; white-space: nowrap; }
   .sd-btn.spento .sd-btn-pill { background: rgba(255,255,255,.35); }
   /* v12.5: Quanti siete per data: pillole 👥 sopra i risultati e riga crema sotto ogni data */
@@ -2897,7 +2943,7 @@
     if (leggi(K_NOTIF)) { chiama('notificheSpegni', { fcm: leggi(K_NOTIF) }).catch(function () {}); scrivi(K_NOTIF, ''); scrivi(K_NOTIF_Q, ''); }
     scrivi(CHIAVE_TOKEN, '');
     if (typeof spegniVista === 'function') spegniVista(true);
-    STATO = { dati: null, pagina: 'home', schede: {}, sessione: null, tokenMem: '', sdFotoLocali: {}, sdFotoLink: {}, sdPill: {}, sdRicordati: {} };   // v12.6: le cassette dei sondaggi ripartono vuote (prima sparivano: sondaggio aperto dopo Esci = pagina bianca)
+    STATO = { dati: null, pagina: 'home', schede: {}, sessione: null, tokenMem: '', sdFotoLocali: {}, sdFotoLink: {}, sdPill: {}, sdRicordati: {}, sdOrdine: {}, sdAperte: {}, sdFumettoVisto: {} };   // v12.6: le cassette dei sondaggi ripartono vuote (prima sparivano: sondaggio aperto dopo Esci = pagina bianca)
     $('contenuto').innerHTML = ''; $('menu').innerHTML = '';
     mostraLogin('Sei uscito. A presto!');
   }
@@ -2990,7 +3036,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.14', SCRIPT_NECESSARIO = '12.10';   // v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.16', SCRIPT_NECESSARIO = '12.10';   // v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -8760,8 +8806,8 @@
   // =====================================================================================================================
   var SD_UNO = { una: 1, piu: 1, sino: 1, sisenon: 1, punti: 1 };   // v12.4: punti = stelle a ogni risposta
   var SD_VAL = { sino: ['si', 'no'], sisenon: ['si', 'forse', 'no'], punti: ['1', '2', '3', '4', '5'] };
-  var SD_TXT = { si: 'Sì', forse: 'Se serve', no: 'No' };
-  var SD_NOMI = { una: 'Una scelta', piu: 'Più scelte', sino: 'Sì / No', sisenon: 'Sì · Se serve · No', date: 'Data e ora',
+  var SD_TXT = { si: 'Sì', forse: 'Mi adeguo', no: 'No' };   // v12.16: «Se serve» → «Mi adeguo» (il codice interno resta «forse»)
+  var SD_NOMI = { una: 'Una scelta', piu: 'Più scelte', sino: 'Sì / No', sisenon: 'Sì · Mi adeguo · No', date: 'Data e ora',
     quanti: 'Quanti siete', stelle: 'Stelle (gradimento)', testo: 'Testo libero', proposte: 'Proposte delle famiglie', punti: 'Stelle a ogni risposta' };   // v12.2: i pezzi dello step 2; v12.4: punti
   var SD_ALTRI = { quanti: 1, stelle: 1, testo: 1, proposte: 1 };
   function sdStep2() { return versioneMaggiore(STATO.versioneScript || '', '12.2'); }   // v12.2: i pezzi nuovi solo con lo script 12.2
@@ -8776,6 +8822,7 @@
     spunta: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>',
     clessidra: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10M7 21h10M8 3c0 5 8 5 8 9s-8 4-8 9M16 3c0 5-8 5-8 9s8 4 8 9"/></svg>',
     lucchetto: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+    giu: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',   // v12.16
     coppa: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg>',
     indietro: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>',
     avanti: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>',
@@ -9003,6 +9050,11 @@
       else if (x.tipo === 'stelle') out.push({ tipo: 'stelle', st: x, titolo: x.titolo || 'Quante stelle?' });
       else if (x.tipo === 'testo') out.push({ tipo: 'testo', st: x, titolo: x.titolo || 'Vuoi aggiungere qualcosa?' });
     });
+    if (m && m.date) {                                                   // v12.16: con le date «Quanti siete?» va subito sotto le date
+      var iu = -1, iq = -1;
+      out.forEach(function (q, i) { if (q.tipo === 'uno') iu = i; if (q.tipo === 'quanti') iq = i; });
+      if (iu >= 0 && iq >= 0 && iq !== iu + 1) { var q0 = out.splice(iq, 1)[0]; out.splice(out.indexOf(out.filter(function (q) { return q.tipo === 'uno'; })[0]) + 1, 0, q0); }
+    }
     return out;
   }
   /** La domanda a cui si deve rispondere per votare (come lo script): la domanda a scelta, se c'è, se no la prima. */
@@ -9185,6 +9237,7 @@
         }
         box.appendChild(el('div', { classe: 'sd-pills' }, [sdPillTempo(s), sdLivPill(s)]));
         box.appendChild(el('h2', { classe: 'sd-titolo', testo: s.titolo }));
+        if (ctx.fatto) box.appendChild(el('div', { classe: 'sd-inviato', 'data-fatto': ctx.fatto }, [sdSvg('spunta'), { inviato: 'Voto inviato. Grazie!', cambiato: 'Voto cambiato. Grazie!', confermato: 'Voto confermato. Grazie!', ritirato: 'Voto ritirato' }[ctx.fatto] || 'Fatto']));   // v12.16
         if (!cc && s.stato === 'aperto') {
           var serve = Math.ceil(s.totale / 2);
           box.appendChild(el('div', { classe: 'sd-soglia' }, [sdSvg('lucchetto'), el('b', { testo: s.risultati === 'chiusura' ? 'Risultati alla chiusura' : 'Risultati da ' + serve + ' voti' }),
@@ -9234,7 +9287,8 @@
         }
         box.appendChild(blocco);
       });
-      if (!ctx.soloScelte) box.appendChild(sdMancaBox(s, sel.length ? 1 : 0));
+      var unaSch = princ && princ.tipo === 'uno' && (princ.m.modo === 'perData' || princ.m.modo === 'bottoni');   // v12.16
+      if (!ctx.soloScelte && !unaSch) box.appendChild(sdMancaBox(s, sel.length ? 1 : 0));
       if (ctx.soloScelte || (s.stato === 'aperto' && (s.puoVotare || ctx.spento))) {
         btn = el('button', { type: 'button', classe: 'sd-btn' });
         nota = el('p', { classe: 'sd-nota', hidden: 'hidden' });
@@ -9245,6 +9299,8 @@
       } else if (s.stato === 'aperto' && s.mio && !s.cambia) {
         box.appendChild(el('div', { classe: 'sd-tutti' }, [sdSvg('spunta'), 'Voto inviato: in questo sondaggio non si cambia']));
       }
+      if (!ctx.soloScelte && qdData) box.appendChild(sdQuantiTesta(s, princ.m, sdQDOra(s, sel), cc.c, s.stato === 'chiuso'));   // v12.16: per la data in testa
+      if (!ctx.soloScelte && unaSch) box.appendChild(sdMancaBox(s, sel.length ? 1 : 0));
     }
     disegna();
     return box;
@@ -9284,7 +9340,6 @@
       blocco.appendChild(lp);
     } else if (m.modo === 'lista') {
       var mx = 0; if (cc) m.voci.forEach(function (v) { mx = Math.max(mx, cc.c[v.k] || 0); });
-      var qdLista = cc && sdConQD(s, m) ? sdQDOra(s, sel) : null;
       var lista = el('div', { classe: 'sd-lista' });
       m.voci.forEach(function (v) {
         var on = sc.indexOf(v.k) >= 0, n = cc ? cc.c[v.k] || 0 : 0, pc = cc ? pct(n, cc.votanti) : 0;
@@ -9295,7 +9350,6 @@
           cc ? el('span', { classe: 'sd-num' }, [el('b', { testo: pc + '%' }), el('small', { testo: n + (n === 1 ? ' voto' : ' voti') })]) : null]);
         var riga = el('div', {}, [b]);
         if (cc && cc.nomi) { var nn = (cc.nomi[v.k] || []); if (nn.length || on) riga.appendChild(sdChipNomi(nn, on && s.io ? s.io.nome + ' · tu' : '')); }
-        if (qdLista) riga.appendChild(sdContoQD(s, v.k, qdLista, 'si'));    // v12.5: chi ha scelto la data
         var t = togli(v.prop); if (t) riga.appendChild(t);
         lista.appendChild(riga);
       });
@@ -9317,12 +9371,21 @@
         g.appendChild(cella);
       });
       blocco.appendChild(g);
-    } else {                                                             // v12.5: Sì · Se serve · No e Sì / No a tabella (proposta C), con e senza date
+    } else {                                                             // v12.16: Sì · Mi adeguo · No e Sì / No a matrice, in una sola schermata
       var numero = null;
       if (m.modo === 'bottoni') { var nn0 = testa.querySelector('.sd-n'); numero = nn0 ? nn0.textContent : null; blocco.removeChild(testa); }
-      var qdTab = cc && sdConQD(s, m) ? sdQDOra(s, sel) : null;
-      if (qdTab) blocco.appendChild(sdPilloleQD(s, m, disegna));
-      blocco.appendChild(sdTabella(s, m, { sel: sc, tocca: tocca, cc: cc, nomiVoto: cc && cc.nomi, qd: qdTab, pill: sdPillDi(s, m), numero: numero, togli: togli }));
+      var fermo = !!ctx.spento || (!ctx.soloScelte && !ctx.anteprima && !s.puoVotare);
+      var toccaMx = function (k) {
+        return function () {
+          if (fermo) return;
+          var on = sc.indexOf(k) >= 0, forse = /(^|:)forse$/.test(k);
+          if (forse && !on && !ctx.soloScelte && !STATO.sdFumettoVisto[s.id]) { STATO.sdFumettoVisto[s.id] = true; STATO.sdFumetto = { id: s.id, riga: k.indexOf(':') > 0 ? k.split(':')[0] : '' }; }
+          else if (STATO.sdFumetto && STATO.sdFumetto.id === s.id) STATO.sdFumetto = null;
+          ctx.setSel(sdTocca(m, ctx.sel(), k)); disegna();
+        };
+      };
+      var fum = STATO.sdFumetto && STATO.sdFumetto.id === s.id ? STATO.sdFumetto.riga : undefined;
+      blocco.appendChild(sdTabella(s, m, { sel: sc, tocca: toccaMx, cc: cc, nomi: cc && cc.nomi && !ctx.soloScelte ? cc.nomi : null, numero: numero, togli: togli, ridisegna: disegna, fumetto: fum }));
     }
     if (m.proponi && !ctx.soloScelte && s.stato === 'aperto' && (s.puoVotare || ctx.spento) && ctx.proponi) blocco.appendChild(sdProponiBox(s, m, ctx));
   }
@@ -9401,6 +9464,7 @@
   function apriSondaggio(id) {
     STATO.sdAperto = id; STATO.sdEdit = null; STATO.sdFatto = null; STATO.sdTab = 0; STATO.sdComeFamiglia = false; STATO.sdCambia = null;   // v12.13
     if (STATO.sdSel) delete STATO.sdSel[id];
+    delete STATO.sdFumettoVisto[id]; STATO.sdFumetto = null;          // v12.16: il fumetto di Mi adeguo torna a ogni apertura
     STATO.sdTieni = true; vaiA('sondaggi');
   }
   function sdAllElenco() { STATO.sdAperto = null; STATO.sdEdit = null; STATO.sdFatto = null; STATO.sdCambia = null; STATO.sdTieni = true; vaiA('sondaggi'); }
@@ -9409,10 +9473,13 @@
 
   // ---------- v12.5: voto a tabella (proposta C) e Quanti siete per data ----------
   SVG_SD.persone = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2c2.8.3 5 2.6 5 5.8"/></svg>';
-  var SD_TAB_ICO = { si: '<path d="M5 12.5l4.5 4.5L19 7.5"/>', forse: '<path d="M9.2 9a3 3 0 1 1 4 2.8c-.8.4-1.2 1-1.2 1.8v.6"/><path d="M12 18h.01"/>', no: '<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>' };
-  var SD_PILLOLE = [['si', 'Sì'], ['sise', 'Sì + Se serve'], ['tutti', 'Tutti']];
-  var SD_PILL_WA = { si: '👥 contati solo i Sì', sise: '👥 contati i Sì e i Se serve', tutti: '👥 contati tutti: Sì, Se serve e No' };
+  var SD_TAB_ICO = { si: '<path d="M5 12.5l4.5 4.5L19 7.5"/>', forse: '<path d="M7.5 4c-3.2 4.3-3.2 11.7 0 16M16.5 4c3.2 4.3 3.2 11.7 0 16M8.8 12.4l2.3 2.3 4.2-4.8"/>', no: '<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>' };
+  var SD_PILLOLE = [['sise', 'Sì + Mi adeguo'], ['si', 'Solo Sì']];   // v12.16: niente «Tutti» (i No non vengono)
+  var SD_PILL_WA = { si: '(contati solo i Sì)', sise: '(contati i Sì e i «Mi adeguo»)' };
   STATO.sdPill = STATO.sdPill || {};
+  STATO.sdOrdine = STATO.sdOrdine || {};   // v12.16: «Per data» / «Più votate» per sondaggio
+  STATO.sdAperte = STATO.sdAperte || {};   // v12.16: righe con i nomi aperti («<id>|<data>»)
+  STATO.sdFumettoVisto = STATO.sdFumettoVisto || {};   // v12.16: fumetto di Mi adeguo già mostrato in questa apertura
   function sdTabIco(v, px) {
     var x = el('span', { classe: 'sd-tab-ico', 'aria-hidden': 'true' });
     x.innerHTML = '<svg width="' + px + '" height="' + px + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (v === 'forse' ? '2.6' : '3') + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + SD_TAB_ICO[v] + '</svg>';
@@ -9425,13 +9492,12 @@
   }
   /** La pillola accesa: «Sì» (di base) · «Sì + Se serve» · «Tutti»; con Una / Più scelte tra le date sempre «si» (chi ha scelto la data). */
   function sdPillDi(s, m) {
-    if (!m || m.modo !== 'perData') return 'si';
-    var p = STATO.sdPill[s.id] || 'si';
-    return p === 'sise' && m.tipo === 'sino' ? 'si' : p;
+    if (!m || m.modo !== 'perData' || m.tipo === 'sino') return 'si';
+    return STATO.sdPill[s.id] === 'si' ? 'si' : 'sise';               // v12.16: di base «Sì + Mi adeguo»
   }
   /** I totali per data vuoti (per l'anteprima della torta). */
   function sdQDVuoto(s, m) {
-    var q = sdStrato(s, 'quanti'), out = {};
+    var q = sdStrato(s, 'quanti'), out = {};   // v12.16: «tutti» resta per compatibilità
     var ids = m.modo === 'perData' ? m.righe.map(function (r) { return r.id; }) : m.voci.map(function (v) { return v.k; });
     ids.forEach(function (id) {
       out[id] = {};
@@ -9477,16 +9543,16 @@
   function sdPilloleQD(s, m, ridisegna) {
     var ora = sdPillDi(s, m);
     return el('div', { classe: 'sd-qd-pill', role: 'group', 'aria-label': 'Chi contare in Quanti siete' }, [sdSvg('persone', 'sd-conto-ico')].concat(
-      SD_PILLOLE.filter(function (p) { return m.tipo !== 'sino' || p[0] !== 'sise'; }).map(function (p) {
+      SD_PILLOLE.map(function (p) {
         return el('button', { type: 'button', classe: p[0] === ora ? 'on' : '', 'data-pill': p[0], 'aria-pressed': p[0] === ora ? 'true' : 'false',
           onclick: function () { STATO.sdPill[s.id] = p[0]; ridisegna(); } }, [p[1]]);
       })));
   }
-  /** Le parti della data per la tabella: 18 · «mer · nov» · 16:30. */
+  /** Le parti della data per la tabella: 18 · «MER» «NOV» · 16:30 (v12.16: giorno e mese impilati accanto al numero, l'ora sotto). */
   function sdDataParti(x) {
     var d = sdGiorni(x && x.data);
-    if (!d) return { n: '?', gm: '', o: '' };
-    return { n: String(d.getDate()), gm: GIORNI_SETT[d.getDay()].toLowerCase() + ' · ' + MESI[d.getMonth()].slice(0, 3), o: (x.dalle || '').replace(/^0(\d)/, '$1') };
+    if (!d) return { n: '?', g: '', m: '', o: '' };
+    return { n: String(d.getDate()), g: GIORNI_SETT[d.getDay()].slice(0, 3).toLowerCase(), m: MESI[d.getMonth()].slice(0, 3).toLowerCase(), o: (x.dalle || '').replace(/^0(\d)/, '$1') };
   }
   /** Quante date hanno una risposta («2 su 3 date» nel pulsante). */
   function sdDateRisposte(m, sel) {
@@ -9494,49 +9560,132 @@
     var n = m.righe.filter(function (r) { return r.voci.some(function (v) { return sel.indexOf(v.k) >= 0; }); }).length;
     return n + ' su ' + m.righe.length + (m.righe.length === 1 ? ' data' : ' date');
   }
-  /** Sì · Se serve · No (o Sì / No) a tabella, con le date (una riga per data) o senza (una riga con la domanda in grande).
-   *  o: { ris (risultati: i numeri nei cerchi), sel (voto: le scelte), mio (risultati: il proprio voto), tocca, cc (conti), nomiVoto (nomi nel voto),
-   *  nomiRis (nomi nei risultati), qd + pill (Quanti siete per data), numero (domanda numerata), togli (proposta) } */
+  /** v12.16: i punti di una data: Sì + Mi adeguo (con Sì / No solo i Sì); a parità vince chi ha più Sì. */
+  function sdPuntiRiga(m, c, r) {
+    var si = (c && c[r.id + ':si']) || 0, f = (c && c[r.id + ':forse']) || 0;
+    return { pt: si + (m.tipo === 'sino' ? 0 : f), si: si };
+  }
+  /** v12.16: la data (o la risposta, con Una / Più scelte) in testa: { id, nome, d, pt, si, pari } o null se nessuno ha ancora detto sì. */
+  function sdInTesta(m, c) {
+    if (!c || !m) return null;
+    var best = null, pari = false;
+    var lista = m.modo === 'perData' ? m.righe.map(function (r) { var p = sdPuntiRiga(m, c, r); return { id: r.id, nome: r.nome, d: r.d, pt: p.pt, si: p.si }; })
+      : m.modo === 'lista' && m.date ? m.voci.map(function (v) { var n = c[v.k] || 0; return { id: v.k, nome: v.nome, d: v.d, pt: n, si: n }; }) : [];
+    lista.forEach(function (x) {
+      if (!x.pt) return;
+      if (!best || x.pt > best.pt || (x.pt === best.pt && x.si > best.si)) { best = x; pari = false; }
+      else if (x.pt === best.pt && x.si === best.si) pari = true;
+    });
+    return best ? Object.assign({ pari: pari }, best) : null;
+  }
+  /** v12.16: le righe in ordine di voto (Più votate). */
+  function sdRigheVotate(m, c, righe) {
+    return righe.map(function (r, i) { return { r: r, i: i, p: sdPuntiRiga(m, c, r) }; })
+      .sort(function (a, b) { return b.p.pt - a.p.pt || b.p.si - a.p.si || a.i - b.i; }).map(function (x) { return x.r; });
+  }
+  /** Sì · Mi adeguo · No (o Sì / No) a matrice, con le date (una riga per data) o senza (una riga con la domanda in grande).
+   *  v12.16: una sola schermata. Nei cerchi i voti degli altri (se i risultati si vedono), la scelta piena e colorata, la data in testa con
+   *  cornice e nastro, «Ordina», i nomi dietro la freccina, il fumetto di Mi adeguo.
+   *  o: { ris (sola lettura: numeri senza pulsante), sel (le scelte), mio (ris: il proprio voto), tocca, cc (conti), nomi (chi ha votato cosa),
+   *  numero (domanda numerata), togli (proposta), chiuso (VINCE), ridisegna, fumetto (id della riga col fumetto) } */
   function sdTabella(s, m, o) {
     var K = SD_VAL[m.tipo], perData = m.modo === 'perData', scelte = (o.ris ? o.mio : o.sel) || [];
     var righe = perData ? m.righe : [{ id: '', domanda: m.domanda, voci: m.voci }];
+    var c = o.cc ? o.cc.c : null, testa = perData ? sdInTesta(m, c) : null;
     var barra = document.querySelector('.barra');                    // l'intestazione delle colonne si ferma sotto la barra in alto
     if (barra && barra.offsetHeight) document.documentElement.style.setProperty('--sd-cima', Math.ceil(barra.getBoundingClientRect().height) + 'px');
-    var wrap = el('div', { classe: 'sd-tab-wrap' + (K.length === 2 ? ' due' : ''), 'data-tabella': perData ? 'date' : 'una' });
-    wrap.appendChild(el('div', { classe: 'sd-tab-head' }, [el('span')].concat(K.map(function (v) { return el('span', { classe: 'sd-th ' + v }, [sdTabIco(v, 22), el('span', { testo: SD_TXT[v] })]); }))));
-    var tab = el('div', { classe: 'sd-tab' + (o.ris ? ' ris' : '') });
+    var wrap = el('div', { classe: 'sd-tab-wrap' + (K.length === 2 ? ' due' : '') + (o.ris ? ' ris' : ''), 'data-tabella': perData ? 'date' : 'una' });
+    var ordina = perData && c && righe.length > 1 && o.ridisegna;
+    var ordine = ordina && STATO.sdOrdine[s.id] === 'voti' ? 'voti' : 'data';
+    if (ordina) wrap.appendChild(el('div', { classe: 'sd-ordina' }, [el('span', { testo: 'Ordina:' }), el('div', { role: 'group', 'aria-label': 'Ordine delle date' },
+      [['data', 'Per data'], ['voti', 'Più votate']].map(function (x) {
+        return el('button', { type: 'button', classe: ordine === x[0] ? 'on' : '', 'data-ordine': x[0], 'aria-pressed': ordine === x[0] ? 'true' : 'false',
+          onclick: function () { STATO.sdOrdine[s.id] = x[0]; o.ridisegna(); } }, [x[1]]);
+      }))]));
+    if (ordine === 'voti') righe = sdRigheVotate(m, c, righe);
+    wrap.appendChild(el('div', { classe: 'sd-tab-head' }, (perData ? [el('span')] : []).concat(K.map(function (v) { return el('span', { classe: 'sd-th ' + v }, [sdTabIco(v, 20), el('span', { testo: SD_TXT[v] })]); })).concat([el('span')])));
+    var manca = Array.isArray(s.manca) ? s.manca.filter(function (n) { return typeof n === 'string'; }) : null;
     righe.forEach(function (r) {
       var scelta = r.voci.filter(function (v) { return scelte.indexOf(v.k) >= 0; })[0] || null;
-      var tinta = scelta && !o.ris ? ' t-' + scelta.v : '', nome = perData ? r.nome : r.domanda, pills = [];
-      if (o.ris && scelta) pills.push(el('span', { classe: 'sd-pill giallo' }, [sdSvg('spunta'), 'TU: ' + scelta.t.toUpperCase()]));
-      if (r.prop) pills.push(sdPillProp(r.prop));
+      var pr = perData && testa ? sdPuntiRiga(m, c, r) : null, lead = !!testa && (testa.id === r.id || (testa.pari && pr.pt === testa.pt && pr.si === testa.si)), chiave = s.id + '|' + (r.id || 'una');   // a pari merito la cornice va su tutte
+      var nomiRiga = o.nomi ? r.voci.map(function (v) { var l = (o.nomi[v.k] || []).slice(); return l; }) : null;
+      var conNomi = !!nomiRiga, aperta = conNomi && !!STATO.sdAperte[chiave];
+      var box = el('div', { classe: 'sd-mx-box' + (lead ? ' lead' : ''), 'data-box': r.id || 'una' });
+      if (lead) box.appendChild(el('div', { classe: 'sd-nastro', 'data-nastro': r.id }, [sdSvg('coppa'), el('b', { testo: testa.pari ? 'PARI' : o.chiuso ? 'VINCE' : 'IN TESTA' }),
+        el('span', { testo: m.tipo === 'sino' ? testa.si + (testa.si === 1 ? ' sì' : ' sì') : testa.pt + ' tra Sì e Mi adeguo' })]));
+      var riga = el('div', { classe: 'sd-tab' + (scelta ? ' t-' + scelta.v : ''), 'data-riga': r.id || 'una' });
       var sx;
-      if (perData) { var dp = sdDataParti(r.d); sx = [el('b', { classe: 'sd-tab-num', testo: dp.n }), el('span', { classe: 'sd-tab-gm' }, [el('small', { testo: dp.gm }), dp.o ? el('span', { classe: 'sd-tab-ora', testo: dp.o }) : null])]; }
-      else sx = [o.numero ? el('span', { classe: 'sd-n', testo: String(o.numero) }) : null, el('b', { classe: 'sd-tab-dom', testo: r.domanda })];
-      if (pills.length) sx.push(el('span', { classe: 'sd-tab-pills' }, pills));
-      tab.appendChild(el('div', { classe: 'sd-td d' + tinta, 'data-riga': r.id || 'una' }, sx));
-      r.voci.forEach(function (v, i) {
-        var on = scelta === v, n = o.cc ? o.cc.c[v.k] || 0 : 0, dentro;
-        if (o.ris) dentro = [el('span', { classe: 'sd-nc' + (on ? ' mio' : ''), 'data-k': v.k, 'aria-label': nome + ': ' + v.t + ' ' + n, testo: String(n) })];
+      if (perData) { var dp = sdDataParti(r.d);
+        sx = [el('span', { classe: 'sd-dt' }, [el('span', { classe: 'sd-dr' }, [el('b', { classe: 'sd-tab-num', testo: dp.n }), el('span', { classe: 'sd-tab-gm' }, [el('small', { testo: dp.g }), el('small', { testo: dp.m })])]),
+          dp.o ? el('span', { classe: 'sd-tab-ora', testo: dp.o }) : null])]; }
+      else box.appendChild(el('div', { classe: 'sd-una-dom' }, [o.numero ? el('span', { classe: 'sd-n', testo: String(o.numero) }) : null, el('b', { classe: 'sd-tab-dom', testo: r.domanda })]));   // v12.16: senza date la domanda sta sopra, a tutta larghezza
+      var nome = perData ? r.nome : r.domanda;
+      if (perData) riga.appendChild(el('div', { classe: 'sd-td d' }, sx));
+      r.voci.forEach(function (v) {
+        var on = scelta === v, n = c ? c[v.k] || 0 : 0, dentro;
+        if (o.ris) dentro = el('span', { classe: 'sd-nc ' + v.v + (on ? ' mio' : '') + (n ? '' : ' zero'), 'data-k': v.k, 'aria-label': nome + ': ' + v.t + ' ' + n, testo: String(n) });
         else {
-          dentro = [el('button', { type: 'button', classe: 'sd-cerchio ' + v.v + (on ? ' on' : ''), 'data-k': v.k, 'aria-label': nome + ': ' + v.t, 'aria-pressed': on ? 'true' : 'false', onclick: o.tocca(v.k) }, [sdTabIco(v.v, 22)])];
-          if (o.cc) dentro.push(el('small', { classe: 'sd-cn', 'data-n': v.k, testo: String(n) }));
+          dentro = el('button', { type: 'button', classe: 'sd-cerchio ' + v.v + (on ? ' on' : '') + (c ? ' num' : '') + (c && !n ? ' zero' : ''), 'data-k': v.k,
+            'aria-label': nome + ': ' + v.t + (c ? ', ' + n + (n === 1 ? ' voto' : ' voti') : ''), 'aria-pressed': on ? 'true' : 'false', onclick: o.tocca(v.k) },
+            c ? [String(n)] : [sdTabIco(v.v, 22)]);
         }
-        tab.appendChild(el('div', { classe: 'sd-td' + tinta + (i === r.voci.length - 1 ? ' fine' : '') }, dentro));
+        riga.appendChild(el('div', { classe: 'sd-td' }, [dentro]));
       });
-      var sotto = el('div', { classe: 'sd-tab-sotto', 'data-sotto': r.id || 'una' });
-      if (o.qd && perData) sotto.appendChild(sdContoQD(s, r.id, o.qd, o.pill));
-      if (o.nomiVoto) {
-        var tx = r.voci.map(function (v) { var nn = (o.nomiVoto[v.k] || []).slice(); if (scelte.indexOf(v.k) >= 0 && s.io) nn.unshift(s.io.nome + ' · tu'); return nn.length ? v.t + ': ' + nn.join(', ') : ''; }).filter(Boolean);
-        if (tx.length) sotto.appendChild(el('span', { classe: 'sd-nomi-data', testo: tx.join('\n') }));
+      riga.appendChild(el('div', { classe: 'sd-td' }, [conNomi ? el('button', { type: 'button', classe: 'sd-chev' + (aperta ? ' su' : ''), 'data-chev': r.id || 'una',
+        'aria-label': (aperta ? 'Chiudi chi ha votato: ' : 'Chi ha votato: ') + nome, 'aria-expanded': aperta ? 'true' : 'false',
+        onclick: function () { STATO.sdAperte[chiave] = !aperta; if (o.ridisegna) o.ridisegna(); } }, [sdSvg('giu')]) : null]));
+      box.appendChild(riga);
+      if (o.fumetto !== undefined && o.fumetto === (r.id || '')) {
+        var fu = el('div', { classe: 'sd-fumetto', role: 'status', 'data-fumetto': r.id || 'una' }, [el('span', { classe: 'sd-punta' }), sdTabIco('forse', 22),
+          el('span', { classe: 'sd-fu-tx' }, [el('b', { testo: perData ? 'Se vince questa data, ci sei.' : 'Ti va bene quello che sceglie la maggioranza.' }),
+            el('small', { testo: perData ? 'Mi adeguo non vuol dire «forse», vuol dire «mi adeguo alla maggioranza».' : 'Mi adeguo non vuol dire «forse».' })]),
+          el('button', { type: 'button', classe: 'sd-capito', testo: 'Ho capito', onclick: function () { STATO.sdFumetto = null; fu.remove(); } })]);
+        box.appendChild(fu);
+        setTimeout(function () { if (fu.isConnected) { fu.remove(); if (STATO.sdFumetto && STATO.sdFumetto.id === s.id) STATO.sdFumetto = null; } }, 8000);
       }
-      if (o.nomiRis) r.voci.forEach(function (v) { var l = o.nomiRis[v.k] || []; if (l.length) sotto.appendChild(el('div', {}, [el('small', { style: 'display:block;margin-top:6px;font-size:12px;font-weight:900;color:#1c4587', testo: v.t }), sdChipNomi(l)])); });
+      var sotto = el('div', { classe: 'sd-tab-sotto', 'data-sotto': r.id || 'una' });
+      if (r.prop) sotto.appendChild(el('div', { classe: 'sd-tab-pills' }, [sdPillProp(r.prop)]));
+      if (aperta) {
+        var gr = el('div', { classe: 'sd-mx-nomi' });
+        r.voci.forEach(function (v, i) {
+          var l = nomiRiga[i], tu = !o.ris && scelte.indexOf(v.k) >= 0 && s.io ? s.io.nome + ' · tu' : '';
+          gr.appendChild(el('div', { 'data-gruppo': v.v }, [el('b', { classe: 'sd-mx-gt ' + v.v }, [sdTabIco(v.v, 16), v.t + ' · ' + (l.length + (tu ? 1 : 0))]),
+            l.length || tu ? sdChipNomi(l, tu) : null]));
+        });
+        if (manca && manca.length) gr.appendChild(el('div', { 'data-gruppo': 'manca' }, [el('b', { classe: 'sd-mx-gt no' }, [(s.stato === 'chiuso' ? 'Non hanno votato' : 'Non hanno ancora votato') + ' · ' + manca.length]), sdChipNomi(manca)]));
+        sotto.appendChild(gr);
+      }
       var tg = o.togli ? o.togli(r.prop) : null; if (tg) sotto.appendChild(tg);
-      tab.appendChild(sotto);
+      box.appendChild(sotto);
+      wrap.appendChild(box);
     });
-    wrap.appendChild(tab);
     return wrap;
   }
+  /** v12.16: «Quanti siete fin qui» (o «Quanti siete» a sondaggio chiuso) per la data in testa, con le pillole Sì + Mi adeguo · Solo Sì. */
+  function sdQuantiTesta(s, m, qd, c, chiuso) {
+    var holder = el('div', { classe: 'sd-qt-box' });
+    function riempi() {
+      holder.innerHTML = '';
+      var testa = sdInTesta(m, c), voci = (sdStrato(s, 'quanti') || {}).voci || [];
+      if (!testa || !qd || !voci.length) return;
+      var pill = m.modo === 'perData' ? sdPillDi(s, m) : 'si', tq = (qd[testa.id] && qd[testa.id][pill]) || {}, tot = 0;
+      var caselle = voci.map(function (v) { var n = tq[v.id] || 0; tot += n; return el('div', {}, [el('b', { testo: String(n) }), el('small', { testo: v.nome })]); });
+      if (voci.length > 1) caselle.push(el('div', { classe: 'tot' }, [el('b', { testo: String(tot) }), el('small', { testo: 'In tutto' })]));
+      var card = el('div', { classe: 'sd-card sd-qt', 'data-qt': testa.id, 'data-qt-tot': String(tot) }, [
+        el('div', { classe: 'sd-qt-testa' }, [sdSvg('persone', 'sd-conto-ico'), el('b', { testo: chiuso ? 'Quanti siete' : 'Quanti siete fin qui' }),
+          el('span', { classe: 'sd-pill scuro' }, [sdSvg('coppa'), testa.pari ? 'PARI' : chiuso ? 'VINCE' : 'IN TESTA'])]),
+        el('div', { classe: 'sd-qt-per', testo: testa.d ? sdDataLabel(testa.d) : testa.nome }),
+        m.modo === 'perData' && m.tipo !== 'sino' ? el('div', { classe: 'sd-qt-pill', role: 'group', 'aria-label': 'Chi contare' }, SD_PILLOLE.map(function (p) {
+          return el('button', { type: 'button', classe: p[0] === pill ? 'on' : '', 'data-pill': p[0], 'aria-pressed': p[0] === pill ? 'true' : 'false',
+            onclick: function () { STATO.sdPill[s.id] = p[0]; riempi(); } }, [p[1]]); })) : null,
+        el('div', { classe: 'sd-qt-num' }, caselle)]);
+      holder.appendChild(card);
+    }
+    riempi();
+    return holder;
+  }
+  /** v12.16: Sì · Mi adeguo · No e Sì / No si votano e si guardano in una sola schermata. */
+  function sdUnaSchermata(s) { var m = sdModello(s); return !!m && (m.modo === 'perData' || m.modo === 'bottoni'); }
 
   /** Chi manca, come lo vede una famiglia: nomi (pubblico e anonimo) o solo il numero (riservato). */
   function sdMancaBox(s, ioOra) {
@@ -9589,6 +9738,7 @@
       }
       card.appendChild(sdCommentiBox(s, !!opz.admin));
     });
+    if (qdData) card.appendChild(sdQuantiTesta(s, princ.m, s.quantiDate, c, !!opz.chiuso));   // v12.16: Quanti siete per la data in testa
     return card;
   }
   function sdRisScelta(card, s, m, opz, mio) {
@@ -9600,13 +9750,11 @@
       if (!l.length) return null;
       return sdChipNomi(l);
     }
-    if (m.modo === 'perData' || m.modo === 'bottoni') {                 // v12.5: la stessa tabella del voto, con i numeri nei cerchi
+    if (m.modo === 'perData' || m.modo === 'bottoni') {                 // v12.16: la stessa matrice del voto, con i numeri nei cerchi
       var zona = el('div', { classe: 'sd-ris-tab' });
       var rifai = function () {
         zona.innerHTML = '';
-        var qd = sdConQD(s, m) ? s.quantiDate : null;
-        if (qd) zona.appendChild(sdPilloleQD(s, m, rifai));
-        zona.appendChild(sdTabella(s, m, { ris: true, mio: mio.filter(sdEScelta), cc: { c: c }, nomiRis: nomi, qd: qd, pill: sdPillDi(s, m), numero: opz.numero }));
+        zona.appendChild(sdTabella(s, m, { ris: true, mio: mio.filter(sdEScelta), cc: { c: c }, nomi: nomi, numero: opz.numero, chiuso: !!opz.chiuso, ridisegna: rifai }));
       };
       rifai();
       card.appendChild(zona);
@@ -9616,7 +9764,6 @@
     voci.forEach(function (v) { mx = Math.max(mx, c[v.k] || 0); tot += c[v.k] || 0; });
     var base = m.multi ? s.votati : tot;
     var pari = voci.filter(function (v) { return (c[v.k] || 0) === mx; }).length > 1;
-    var qdL = sdConQD(s, m) ? s.quantiDate : null;                       // v12.5: Una / Più scelte tra le date: chi ha scelto la data
     voci.forEach(function (v) {
       var n = c[v.k] || 0, on = mio.indexOf(v.k) >= 0, primo = mx > 0 && n === mx;
       var pills = [];
@@ -9628,7 +9775,7 @@
         pills.length ? el('div', { classe: 'sd-pills' }, pills) : null,
         el('div', { classe: 'sd-testa' }, [el('b', { testo: v.nome || v.t || '' }), el('b', { testo: pct(n, base) + '% · ' + n })]),
         el('div', { classe: 'sd-traccia' }, [el('i', { classe: primo ? 'primo' : '', style: 'width:' + (mx ? Math.round(n / mx * 100) : 0) + '%' })]),
-        chips(v.k), qdL ? sdContoQD(s, v.k, qdL, 'si') : null]));
+        chips(v.k)]));
     });
   }
   /** v12.4: le risposte a stelle in classifica (più stelle in tutto; a pari stelle più 5★). */
@@ -9680,28 +9827,34 @@
       : 'Mancano ancora i voti per: ' + manca.map(function (x) { return x.nome; }).join(', ');
     return '⏰ *' + s.titolo + '*\n' + corpo + '\n\n👉 Vota nell’app, ci vuole un minuto:\n' + sdLink(s);
   }
+  /** v12.15: i posti in classifica (a pari merito lo stesso posto: 1°, 1°, 3°). uguali(a, b) dice se due voci sono pari. */
+  function sdPosti(lista, uguali) {
+    var posti = [];
+    lista.forEach(function (x, i) { posti.push(i && uguali(lista[i - 1], x) ? posti[i - 1] : i + 1); });
+    return posti;
+  }
   function sdTestoRisultati(s) {
     var c = s.conti || {}, righe = [], dom = sdDomande(s);
-    var princ = sdPrincipale(dom), qdW = princ && princ.tipo === 'uno' && sdConQD(s, princ.m) ? s.quantiDate : null, pillW = qdW ? sdPillDi(s, princ.m) : 'si', finale = '';   // v12.5
+    var princ = sdPrincipale(dom), mP = princ && princ.tipo === 'uno' ? princ.m : null, qdW = mP && sdConQD(s, mP) ? s.quantiDate : null, finale = '';   // v12.16
     dom.forEach(function (q, i) {
-      if (q.tipo === 'quanti' && qdW) return;                           // v12.5: il conto è sotto ogni data
+      if (q.tipo === 'quanti' && qdW) return;                           // v12.16: il conto è in fondo, per la data in testa
       var pre = dom.length > 1 ? '*' + (i + 1) + '. ' + q.titolo + '*\n' : '';
       if (q.tipo === 'uno') {
         var m = q.m;
-        if (m.modo === 'punti') {                                       // v12.4: 🏆 Buono per la libreria ⭐ 45 · 5★×6
-          righe.push(pre + sdOrdinePunti(s, m).map(function (x, j) {
-            return (j === 0 && x.p.tot ? '🏆 ' : '') + (x.v.nome || 'Foto') + ' ⭐ ' + x.p.tot + ' · 5★×' + x.p.cinque;
-          }).join('\n'));
-        } else if (m.modo === 'perData') {
-          righe.push(pre + m.righe.map(function (r) { return '📅 ' + r.nome + '\n' + r.voci.map(function (v) { return v.t + ' ' + (c[v.k] || 0); }).join(' · ') + (qdW ? '\n' + sdTestoQD(s, r.id, qdW, pillW) : ''); }).join('\n\n'));
-          if (qdW) finale = SD_PILL_WA[pillW];                          // v12.5: quale pillola
-        } else {
-          var tot = 0; m.voci.forEach(function (v) { tot += c[v.k] || 0; });
-          var base = m.multi ? s.votati : tot;
-          righe.push(pre + m.voci.slice().sort(function (a, b) { return (c[b.k] || 0) - (c[a.k] || 0); }).map(function (v, j) {
-            var n = c[v.k] || 0, bl = base ? Math.round(n / base * 10) : 0;
-            return (j === 0 && n ? '🏆 ' : '') + (v.nome || v.t || 'Foto') + '\n' + '▰'.repeat(bl) + '▱'.repeat(10 - bl) + ' ' + n + (n === 1 ? ' voto' : ' voti') + (qdW ? '\n' + sdTestoQD(s, v.k, qdW, 'si') : '');
-          }).join('\n\n'));
+        if (m.modo === 'punti') {                                       // v12.15: 1°: 39 ⭐ Buono per la libreria (al massimo 5)
+          var lp = sdOrdinePunti(s, m).filter(function (x) { return x.p.tot > 0; }).slice(0, 5);
+          var pp = sdPosti(lp, function (a, b) { return a.p.tot === b.p.tot && a.p.cinque === b.p.cinque; });
+          righe.push(pre + (lp.length ? lp.map(function (x, j) { return pp[j] + '°: ' + x.p.tot + ' ⭐ ' + (x.v.nome || 'Foto'); }).join('\n') : 'Ancora nessun voto'));
+        } else if (m.modo === 'perData') {                              // v12.16: date in classifica (Sì + Mi adeguo, a parità più Sì)
+          var ld = sdRigheVotate(m, c, m.righe).filter(function (r) { return r.voci.some(function (v) { return c[v.k]; }); }).slice(0, 5);
+          var pd = sdPosti(ld, function (a, b) { var x = sdPuntiRiga(m, c, a), y = sdPuntiRiga(m, c, b); return x.pt === y.pt && x.si === y.si; });
+          righe.push(pre + (ld.length ? ld.map(function (r, j) { return pd[j] + '°: ' + r.nome + '\n' + r.voci.map(function (v) { return v.t + ' ' + (c[v.k] || 0); }).join(' · '); }).join('\n\n') : 'Ancora nessun voto'));
+        } else if (m.modo === 'bottoni') {
+          righe.push(pre + m.voci.map(function (v) { return v.t + ' ' + (c[v.k] || 0); }).join(' · '));
+        } else {                                                        // v12.15: 1°: 8 voti · Crostata (al massimo 5)
+          var lv = m.voci.filter(function (v) { return c[v.k]; }).sort(function (a, b) { return (c[b.k] || 0) - (c[a.k] || 0); }).slice(0, 5);
+          var pv = sdPosti(lv, function (a, b) { return (c[a.k] || 0) === (c[b.k] || 0); });
+          righe.push(pre + (lv.length ? lv.map(function (v, j) { var n = c[v.k] || 0; return pv[j] + '°: ' + n + (n === 1 ? ' voto' : ' voti') + ' · ' + (v.nome || v.t || 'Foto'); }).join('\n') : 'Ancora nessun voto'));
         }
       } else if (q.tipo === 'quanti') {
         var tq = 0; (q.st.voci || []).forEach(function (v) { tq += c['n:' + v.id] || 0; });
@@ -9711,15 +9864,31 @@
         righe.push(pre + (md.n ? '⭐ Media ' + md.txt + ' su 5 (' + md.n + (md.n === 1 ? ' voto' : ' voti') + ')' : '⭐ Ancora nessun voto'));
       }
     });
+    if (qdW) {                                                          // v12.16: 👥 in fondo, per la data in testa
+      var tt = sdInTesta(mP, c);
+      if (tt) {
+        var pillW = sdPillDi(s, mP), voci = (sdStrato(s, 'quanti') || {}).voci || [], tv = (qdW[tt.id] && qdW[tt.id][pillW]) || {}, tot = 0;
+        var pz = voci.map(function (v) { var n = tv[v.id] || 0; tot += n; return v.nome + ' ' + n; });
+        if (voci.length > 1) pz.push('In tutto ' + tot);
+        finale = '👥 *' + (tt.d ? sdDataLabel(tt.d) : tt.nome) + ': ' + pz.join(' · ') + '*' + (mP.modo === 'perData' ? '\n' + SD_PILL_WA[pillW] : '');
+      }
+    }
+    var aperto = s.stato !== 'chiuso', g = s.gestione || {}, manca = Array.isArray(g.manca) ? g.manca : Array.isArray(s.manca) ? s.manca : [];
+    var nm = manca.length || (s.mancano || 0), coda;
+    if (aperto && nm) {                                                 // v12.15: chi manca in grassetto, poi l'invito a votare
+      var nomiM = manca.map(function (x) { return typeof x === 'string' ? x : x.nome; }).filter(Boolean);
+      coda = (s.livello === 'riservato' || !nomiM.length ? '*' + (nm === 1 ? 'Manca ancora 1 voto' : 'Mancano ancora ' + nm + ' voti') + '*' : '*Mancano ancora i voti per: ' + nomiM.join(', ') + '*') +
+        '\n\n👉 Vota nell’app, ci vuole un minuto:\n' + sdLink(s);
+    } else coda = '👉 Tutti i risultati nell’app:\n' + sdLink(s);
     return (s.stato === 'chiuso' ? '🗳️ *Risultati del sondaggio*' : '🗳️ *Risultati fin qui*') + '\n*' + s.titolo + '*\nHanno votato ' + s.votati + ' su ' + s.totale + '. Grazie!\n\n' +
-      righe.join('\n\n') + (finale ? '\n\n' + finale : '') + '\n\n👉 ' + sdLink(s);
+      righe.join('\n\n') + (finale ? '\n\n' + finale : '') + '\n\n' + coda;
   }
   /** v12.5: Risultati su WhatsApp con le pillole 👥 nel foglio (il messaggio si riscrive con la pillola scelta). */
   function sdFoglioRisultati(s) {
     var titolo = s.stato === 'chiuso' ? 'Risultati su WhatsApp' : 'Risultati parziali su WhatsApp';
     var dom = sdDomande(s), princ = sdPrincipale(dom), m = princ && princ.tipo === 'uno' ? princ.m : null;
     var f = sdFoglioWa(titolo, sdTestoRisultati(s), 'Apri WhatsApp');
-    if (!m || m.modo !== 'perData' || !sdConQD(s, m)) return f;
+    if (!m || m.modo !== 'perData' || m.tipo === 'sino' || !sdConQD(s, m) || !sdInTesta(m, s.conti || {})) return f;   // v12.16: pillole solo se c'è da scegliere
     var bolla = f.pannello.querySelector('.bolla-wa > div'), wa = f.pannello.querySelector('a.sd-btn.wa');
     var copiaB = f.pannello.querySelector('.sd-btn2'), testa = f.pannello.querySelector('h3');
     var metti = function () {
@@ -9838,9 +10007,10 @@
     var box = el('div');
     box.appendChild(sdIndietro(sdAdmin() ? 'I risultati' : 'Sondaggi', sdAdmin() ? function () { STATO.sdComeFamiglia = false; vaiA('sondaggi', true); } : null));
     STATO.sdSel = STATO.sdSel || {};
-    if (STATO.sdFatto && STATO.sdFatto.id === s.id) { box.appendChild(sdFattoVista(s)); return box; }
+    var una = sdUnaSchermata(s);                                        // v12.16: Sì · Mi adeguo · No e Sì / No in una sola schermata
+    if (STATO.sdFatto && STATO.sdFatto.id === s.id && !(una && s.stato === 'aperto')) { box.appendChild(sdFattoVista(s)); return box; }
     if (s.stato === 'chiuso') { box.appendChild(sdChiusoVista(s, lista)); return box; }
-    if (s.stato === 'aperto' && s.mio && STATO.sdCambia !== s.id) { box.appendChild(sdGiaVotatoVista(s)); return box; }   // v12.13: prima i risultati
+    if (s.stato === 'aperto' && s.mio && STATO.sdCambia !== s.id && !una) { box.appendChild(sdGiaVotatoVista(s)); return box; }   // v12.13: prima i risultati
     if (STATO.sdSel[s.id] === undefined) STATO.sdSel[s.id] = (s.mio && s.mio.voto) ? s.mio.voto.slice() : [];
     var ses = STATO.sessione || {}, ruolo = String(ses.ruolo || '').toLowerCase();
     var nome = s.io && s.io.docente ? (ses.nome || s.io.nome) : ((ruolo === 'madre' ? 'Mamma ' : ruolo === 'padre' ? 'Papà ' : '') + (ses.nome || '')).trim();
@@ -9848,7 +10018,7 @@
       sotto: s.io.docente ? 'vota per sé' : (ruolo === 'madre' ? 'mamma di ' : ruolo === 'padre' ? 'papà di ' : 'vota per ') + s.io.nome } : null;
     box.appendChild(sdVoto(s, {
       sel: function () { return STATO.sdSel[s.id]; }, setSel: function (x) { STATO.sdSel[s.id] = x; },
-      spento: !!VISTA.attiva, chi: chi,
+      spento: !!VISTA.attiva, chi: chi, fatto: una && STATO.sdFatto && STATO.sdFatto.id === s.id ? STATO.sdFatto.tipo : null,
       proponi: function (x, bottone) {                                    // v12.2: proposta delle famiglie, scelta subito se c'è posto
         var url = x.fotoUrl; delete x.fotoUrl;                             // v12.9: la foto si vede subito, senza riscaricarla
         return sdAzione('sondaggioProponi', Object.assign({ id: s.id }, x), bottone, function (r) {
@@ -9868,7 +10038,7 @@
         sdAzione('sondaggioVota', { id: s.id, voto: voto }, bottone, function () { STATO.sdFatto = { id: s.id, tipo: tipo }; STATO.sdCambia = null; delete STATO.sdSel[s.id]; window.scrollTo(0, 0); }).catch(function () {});
       }
     }));
-    if (s.mio && s.stato === 'aperto')                                    // v12.13: si esce dal cambio senza cambiare
+    if (s.mio && s.stato === 'aperto' && !una)                            // v12.13: si esce dal cambio senza cambiare
       box.appendChild(el('div', { classe: 'sd-azioni-giu' }, [el('button', { type: 'button', classe: 'sd-btn2', 'data-azione': 'torna-risultati', testo: 'Torna ai risultati',
         onclick: function () { STATO.sdCambia = null; delete STATO.sdSel[s.id]; vaiA('sondaggi', true); window.scrollTo(0, 0); } })]));
     return box;
@@ -10202,7 +10372,7 @@
         el('span', {}, [el('small', { testo: SD_NOMI[x.tipo] }), senzaTitolo ? null : el('input', { type: 'text', value: x.titolo || '', placeholder: segna, 'aria-label': 'Titolo', maxlength: '60', oninput: function (ev) { x.titolo = ev.target.value; } })]),
         el('button', { type: 'button', classe: 'sd-meno', 'aria-label': 'Togli il pezzo', testo: '−', onclick: function () { e.strati.splice(i, 1); ridisegna(); } })]));
       if (SD_UNO[x.tipo] && haDate) {
-        st.appendChild(el('div', { classe: 'sd-sulle' }, [sdSvg('date'), el('span', { testo: { una: 'Si sceglie una data', piu: 'Si scelgono più date', sino: 'Sì o No per ogni data', sisenon: 'Sì, Se serve o No per ogni data' }[x.tipo] })]));
+        st.appendChild(el('div', { classe: 'sd-sulle' }, [sdSvg('date'), el('span', { testo: { una: 'Si sceglie una data', piu: 'Si scelgono più date', sino: 'Sì o No per ogni data', sisenon: 'Sì, Mi adeguo o No per ogni data' }[x.tipo] })]));
         if (x.tipo === 'piu') st.appendChild(sdMaxRiga(x, e.strati.filter(function (z) { return z.tipo === 'date'; }).reduce(function (n, z) { return n + z.date.length; }, 0), ridisegna));
       } else if (x.tipo === 'una' || x.tipo === 'piu' || x.tipo === 'punti') {
         x.risposte.forEach(function (r, j) {
@@ -10446,6 +10616,7 @@
   }
   function sdAnteprima(e) {
     var st = { sel: [], inviato: false, voto: [], chiuso: false, fatto: null };
+    delete STATO.sdFumettoVisto.anteprima; STATO.sdFumetto = null;        // v12.16
     var corpo = el('div', { classe: 'sd-prev-corpo sd' });
     var chiudi = function () { velo.remove(); document.removeEventListener('keydown', tasti); };
     var tasti = function (ev) { if (ev.key === 'Escape') chiudi(); };
@@ -10459,7 +10630,7 @@
         el('button', { type: 'button', classe: 'sd-pill' + (!st.chiuso ? ' giallo' : ''), style: 'border:0;min-height:34px;cursor:pointer', testo: 'APERTO', onclick: function () { st.chiuso = false; disegna(); } }),
         el('button', { type: 'button', classe: 'sd-pill' + (st.chiuso ? ' giallo' : ''), style: 'border:0;min-height:34px;cursor:pointer', testo: 'CHIUSO', onclick: function () { st.chiuso = true; st.fatto = null; disegna(); } })]));
       if (st.chiuso) { corpo.appendChild(sdChiusoVista(s, [])); return; }
-      if (st.fatto) {
+      if (st.fatto && !sdUnaSchermata(s)) {
         var salva = STATO.sdFatto; STATO.sdFatto = { id: s.id, tipo: st.fatto };
         var v = sdFattoVista(s); STATO.sdFatto = salva;
         v.querySelectorAll('.sd-azioni-giu').forEach(function (n) { n.remove(); });
@@ -10467,7 +10638,7 @@
         corpo.appendChild(el('div', { classe: 'sd-azioni-giu' }, [el('button', { type: 'button', classe: 'sd-btn2', testo: 'Cambia il voto', onclick: function () { st.fatto = null; disegna(); } })]));
         return;
       }
-      corpo.appendChild(sdVoto(s, { anteprima: true, chi: { iniziale: 'E', nome: 'Mamma Elena', sotto: 'mamma di Luca' },
+      corpo.appendChild(sdVoto(s, { anteprima: true, chi: { iniziale: 'E', nome: 'Mamma Elena', sotto: 'mamma di Luca' }, fatto: st.fatto,
         sel: function () { return st.sel; }, setSel: function (v) { st.sel = v; },
         proponi: function (x) {                                            // v12.2: nell'anteprima la proposta resta qui
           st.proposte = st.proposte || [];
