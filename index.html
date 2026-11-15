@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<!-- pagina 12.23 · 15 novembre 2026: SONDAGGI, LA DISTINTA sotto Quanti siete (famiglia per famiglia, solo pubblici; serve lo script 12.14) e FRECCETTA dei nomi dorata e più visibile. Comprende la 12.22 —
+<!-- pagina 12.24 · 15 novembre 2026: SONDAGGI, chi ha già votato vede in cima il TITOLO grande, poi «Hai già votato» con il pulsante «Cambia il mio voto», poi «RISULTATI PARZIALI» e chi manca. Comprende la
+     pagina 12.23 · 15 novembre 2026: SONDAGGI, LA DISTINTA sotto Quanti siete (famiglia per famiglia, solo pubblici; serve lo script 12.14) e FRECCETTA dei nomi dorata e più visibile. Comprende la 12.22 —
      pagina 12.22 · 15 novembre 2026: SONDAGGI, la schermata del voto non torna più in cima a ogni tocco (date, Quanti siete, stelle…). Comprende la 12.21 —
      pagina 12.21 · 15 novembre 2026: APERTURA ISTANTANEA (decisione di Rossana: il telefono può ricordare l'ultima Home) — il telefono tiene l'ultima risposta di «avvio» (nome, figli, contenuti delle sezioni; mai saldi, documenti, sondaggi o password), legata all'accesso: riaprendo l'app la Home compare subito e lo script controlla dietro (accesso scaduto → login; qualcosa di cambiato → la pagina si ridisegna dov'è). Esci e accesso scaduto la cancellano. Senza rete l'app si apre lo stesso dalla copia. Script 12.13 e sw.js 12.19 invariati. Comprende 12.19 e 12.20 -->
 <!-- pagina 12.20 · 15 novembre 2026: ACCESSO PIÙ VELOCE — «avvio» (apertura dell'app) ed «entra» (password) chiedono allo script di rispondere senza scrivere l'accesso nella scheda Sistema (accessoDopo); l'accesso si conta con la chiamata «segnaAccesso», in parallelo (script 12.13). Con lo script vecchio funziona come prima. Comprende la 12.19 (Home più veloce). sw.js 12.19 invariato -->
@@ -2297,6 +2298,12 @@
   .sd-chi b { display: block; font-size: 14.5px; }
   .sd-chi small { font-size: 12.5px; font-weight: 700; }
   .sd-chi.gia { background: #fff4d4; border: 2px solid #FDCA0D; }
+  .sd-gia-votato .sd-titolo { margin: 2px 0 8px; font-size: 26px; color: #15243b; }   /* v12.24: il titolo prima di tutto */
+  .sd-gia-box { margin: 6px 0 20px; padding: 10px 12px 12px; border-radius: 14px; background: #fff4d4; border: 2px solid #FDCA0D; }
+  .sd-gia-box .sd-chi { margin: 0 0 10px; padding: 0; background: none; border: 0; }
+  .sd-gia-box .sd-tutti { margin: 0; }
+  .sd-sez-ris { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; padding-bottom: 8px; border-bottom: 3px solid #FDCA0D; font-size: 19px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; color: #1c4587; }
+  .sd-sez-ris span { flex: none; padding: 3px 11px; border-radius: 999px; background: #1c4587; color: #fff; font-size: 14.5px; letter-spacing: 0; text-transform: none; }
   .sd-soglia { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 10px 14px; border-radius: 14px; background: #fff4d4; color: #1c4587; }
   .sd-soglia b { flex: 1; font-size: 14.5px; font-weight: 900; }
   .sd-soglia span { padding: 3px 10px; border-radius: 999px; background: #1c4587; color: #fff; font-size: 13px; font-weight: 900; }
@@ -3124,7 +3131,7 @@
     if (msgPrima) mostraLogin(msgPrima); else mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.23', SCRIPT_NECESSARIO = '12.14';   // v12.21: apertura istantanea (copia dell'ultimo avvio sul telefono); v12.20: accesso più veloce (l'accesso si conta a parte, segnaAccesso); v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.24', SCRIPT_NECESSARIO = '12.14';   // v12.21: apertura istantanea (copia dell'ultimo avvio sul telefono); v12.20: accesso più veloce (l'accesso si conta a parte, segnaAccesso); v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -10274,27 +10281,26 @@
     return box;
   }
   /** v12.13: chi ha già votato (sondaggio aperto) trova subito come sta andando; il voto si riapre con «Cambia il mio voto». */
-  function sdGiaVotatoVista(s) {
+  function sdGiaVotatoVista(s) {                                       // v12.24: titolo · «Hai già votato» + Cambia il mio voto · RISULTATI PARZIALI · chi manca
     var box = el('div', { classe: 'sd sd-gia-votato' });
-    var tit = s.mio.mano ? 'La rappresentante ha segnato il voto per ' + (s.io ? s.io.nome : '') : s.mio.io ? 'Hai già votato in questo sondaggio' : (s.mio.da || 'La tua famiglia') + ' ha già votato per ' + (s.io ? s.io.nome : '');
+    var tit = s.mio.mano ? 'La rappresentante ha segnato il voto per ' + (s.io ? s.io.nome : '') : s.mio.io ? 'Hai già votato' : (s.mio.da || 'La tua famiglia') + ' ha già votato per ' + (s.io ? s.io.nome : '');
     var idee = s.mio.voto ? sdIdeeNuove(s, s.mio.voto.slice()) : [];
-    box.appendChild(el('div', { classe: 'sd-chi gia' }, [el('span', { classe: 'sd-av', testo: s.mio.mano ? 'R' : (s.mio.da || '?').replace(/^(Mamma|Papà)\s+/i, '').charAt(0).toUpperCase() || '✓' }),
-      el('span', {}, [el('b', { testo: tit }), el('small', { testo: sdQuandoVoto(s.mio.quando) })]),
-      idee.length ? el('span', { classe: 'sd-pill', style: 'flex:none;background:#1c4587;color:#fff', testo: idee.length === 1 ? '1 IDEA NUOVA' : idee.length + ' IDEE NUOVE' }) : null]));
-    box.appendChild(el('div', { classe: 'sd-pills' }, [sdPillTempo(s), sdLivPill(s)]));
     box.appendChild(el('h2', { classe: 'sd-titolo', testo: s.titolo }));
+    box.appendChild(el('div', { classe: 'sd-pills' }, [sdPillTempo(s), sdLivPill(s)]));
+    var gia = el('div', { classe: 'sd-gia-box' }, [el('div', { classe: 'sd-chi gia' }, [el('span', { classe: 'sd-av', testo: s.mio.mano ? 'R' : (s.mio.da || '?').replace(/^(Mamma|Papà)\s+/i, '').charAt(0).toUpperCase() || '✓' }),
+      el('span', {}, [el('b', { testo: tit }), el('small', { testo: sdQuandoVoto(s.mio.quando) })]),
+      idee.length ? el('span', { classe: 'sd-pill', style: 'flex:none;background:#1c4587;color:#fff', testo: idee.length === 1 ? '1 IDEA NUOVA' : idee.length + ' IDEE NUOVE' }) : null])]);
+    if (s.cambia && (s.puoVotare || VISTA.attiva)) {
+      gia.appendChild(el('button', { type: 'button', classe: 'sd-btn' + (VISTA.attiva ? ' vista-off' : ''), 'data-azione': 'cambia-voto', testo: idee.length ? 'Vota anche le idee nuove' : 'Cambia il mio voto',
+        onclick: function () { STATO.sdCambia = s.id; vaiA('sondaggi', true); window.scrollTo(0, 0); } }));
+      if (VISTA.attiva) gia.appendChild(el('p', { classe: 'vista-nota', style: 'margin-top:10px', testo: 'In Visualizza come puoi aprire la schermata del voto, ma non si cambia niente.' }));
+    } else if (!s.cambia) gia.appendChild(el('div', { classe: 'sd-tutti piccolo' }, [sdSvg('spunta'), 'In questo sondaggio il voto non si cambia']));
+    box.appendChild(gia);
     if (s.conti) {
-      var r = sdRisultati(s);
-      r.insertBefore(el('b', { testo: 'Come sta andando · ' + s.votati + ' su ' + s.totale }), r.firstChild);
-      box.appendChild(r);
+      box.appendChild(el('h3', { classe: 'sd-sez-ris' }, ['Risultati parziali', el('span', { testo: s.votati + ' su ' + s.totale })]));
+      box.appendChild(sdRisultati(s));
     } else box.appendChild(el('div', { classe: 'sd-soglia' }, [sdSvg('lucchetto'), el('b', { testo: s.risultati === 'chiusura' ? 'Risultati alla chiusura' : 'Risultati da ' + Math.ceil(s.totale / 2) + ' voti' }), el('span', { testo: s.votati + ' su ' + s.totale })]));
     box.appendChild(sdMancaBox(s, 0));
-    if (s.cambia && (s.puoVotare || VISTA.attiva)) {
-      var b = el('button', { type: 'button', classe: 'sd-btn' + (VISTA.attiva ? ' vista-off' : ''), 'data-azione': 'cambia-voto', testo: idee.length ? 'Vota anche le idee nuove' : 'Cambia il mio voto',
-        onclick: function () { STATO.sdCambia = s.id; vaiA('sondaggi', true); window.scrollTo(0, 0); } });
-      box.appendChild(el('div', { style: 'margin-top:16px' }, [b]));
-      if (VISTA.attiva) box.appendChild(el('p', { classe: 'vista-nota', style: 'margin-top:10px', testo: 'In Visualizza come puoi aprire la schermata del voto, ma non si cambia niente.' }));
-    } else if (!s.cambia) box.appendChild(el('div', { classe: 'sd-tutti' }, [sdSvg('spunta'), 'Voto inviato: in questo sondaggio non si cambia']));
     return box;
   }
   function sdFattoVista(s) {
