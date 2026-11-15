@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- pagina 12.20 · 15 novembre 2026: ACCESSO PIÙ VELOCE — «avvio» (apertura dell'app) ed «entra» (password) chiedono allo script di rispondere senza scrivere l'accesso nella scheda Sistema (accessoDopo); l'accesso si conta con la chiamata «segnaAccesso», in parallelo (script 12.13). Con lo script vecchio funziona come prima. Comprende la 12.19 (Home più veloce). sw.js 12.19 invariato -->
 <!-- pagina 12.19 · 15 novembre 2026: HOME PIÙ VELOCE — con l'accesso già fatto, dati della Home (documenti, sondaggi, fondo cassa, visti) e illustrazioni partono subito insieme ad «avvio» (prima dopo); i sondaggi hanno la loro chiamata in parallelo e «documenti» non li calcola più (script 12.12, campo senzaSondaggi); il riquadro Avvisi non aspetta più i sondaggi; il riquadro largo Sondaggi le famiglie e la maestra principale lo vedono subito (gli altri profili docente solo se invitati, come prima); il riquadro «N sondaggi da votare» non aspetta più i documenti. Con lo script 12.11 funziona lo stesso (un po' meno veloce). Serve sw.js 12.19 (illustrazioni salvate sul telefono) -->
 <!-- pagina 12.18 · 15 novembre 2026: SONDAGGI — REGOLA GENERALE per tutti i tipi (anche Sì · Mi adeguo · No, Sì / No, stelle, scelte, numeri): chi ha già votato e riapre un sondaggio trova i risultati parziali (o definitivi se chiuso) e chi manca, mai la schermata del voto; per rivotare tocca «Cambia il mio voto» (e «Torna ai risultati» per uscire). Anche subito dopo l'invio: «Voto inviato!» con i risultati. Statistiche: «Comunicazioni & Moduli» si chiama «Documenti». Script, contenuti e sw.js invariati -->
 <!-- pagina 12.16 · 14 novembre 2026: SONDAGGI — Sì · Mi adeguo · No (e Sì / No) in UNA SOLA SCHERMATA: matrice con i voti degli altri nei cerchi, la scelta piena (Sì verde, Mi adeguo giallo, No grigio-rosato), la data in testa con cornice blu e nastro «IN TESTA», «Ordina: Per data · Più votate», nomi dietro la freccina, colonna della data compatta, Quanti siete sotto la matrice e «Quanti siete fin qui» per la data in testa (Sì + Mi adeguo · Solo Sì), fumetto «Mi adeguo non vuol dire forse» una volta per apertura. «Se serve» diventa «Mi adeguo» con la spunta tra parentesi. Comprende la 12.15 (classifica 1°–5° e chi manca nei Risultati su WhatsApp). Script, contenuti e sw.js invariati -->
@@ -2934,9 +2935,11 @@
     if (!pass) { errore('logErrore', 'Scrivi la password.'); return; }
     errore('logErrore', ''); occupato($('btnEntra'), true, 'Entro…');
     c.password = pass;
+    c.accessoDopo = true;                                              // v12.20: lo script risponde senza scrivere l'accesso…
     chiama('entra', c).then(function (r) {
       ricordaCredenziale(c);
       entrato(r);
+      chiama('segnaAccesso', { nuova: true }).catch(function () {});   // …che si conta qui, in parallelo (script vecchio: niente, lo ha già contato)
     }).catch(function (e) { errore('logErrore', e.message); })
       .then(function () { occupato($('btnEntra'), false, 'Entra'); });
   });
@@ -3087,14 +3090,15 @@
     fermo('App non ancora collegata: manca l\'indirizzo dello script (URL_SCRIPT in index.html).');
   } else if (leggi(CHIAVE_TOKEN)) {
     precarica();                                                       // v12.19: illustrazioni e dati della Home partono insieme all'accesso
-    chiama('avvio').then(avvia).catch(function (e) {
+    prechiama('segnaAccesso');                                         // v12.20: l'accesso si conta a parte, così «avvio» risponde prima
+    chiama('avvio', { accessoDopo: true }).then(avvia).catch(function (e) {
       if (e.codice !== 'SESSIONE') mostraLogin(e.codice === 'RETE' ? e.message : 'Rifai l\'accesso.');
     });
   } else {
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.19', SCRIPT_NECESSARIO = '12.12';   // v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.20', SCRIPT_NECESSARIO = '12.13';   // v12.20: accesso più veloce (l'accesso si conta a parte, segnaAccesso); v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
