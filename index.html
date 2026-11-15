@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- pagina 12.25 · 15 novembre 2026: SONDAGGI, UNA SOLA SCHERMATA in stile Calendario per tutti i sondaggi (tela «Sondaggi: voto e risultati in stile Calendario», versione 2). Sì · Mi adeguo · No e Sì / No: foglietto della data largo e pulsanti con la parola; i voti degli altri ACCANTO ai pulsanti (numero e barretta), non dentro. Chi ha già votato trova il suo voto BLOCCATO col lucchetto: «Modifica il voto» nel riquadro dorato lo sblocca lì (niente cambio di schermata), «Annulla, tengo il voto di prima», «Salva il nuovo voto». Niente più «Cambia il mio voto» / «Torna ai risultati». Script, contenuti e sw.js invariati -->
 <!-- pagina 12.24 · 15 novembre 2026: SONDAGGI, chi ha già votato vede in cima il TITOLO grande, poi «Hai già votato» con il pulsante «Cambia il mio voto», poi «RISULTATI PARZIALI» e chi manca. Comprende la
      pagina 12.23 · 15 novembre 2026: SONDAGGI, LA DISTINTA sotto Quanti siete (famiglia per famiglia, solo pubblici; serve lo script 12.14) e FRECCETTA dei nomi dorata e più visibile. Comprende la 12.22 —
      pagina 12.22 · 15 novembre 2026: SONDAGGI, la schermata del voto non torna più in cima a ogni tocco (date, Quanti siete, stelle…). Comprende la 12.21 —
@@ -2541,6 +2542,65 @@
   .sd-mx-gt { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 900; color: #1c4587; }
   .sd-mx-gt.no { color: #4f5f72; }
   .sd-mx-nomi .sd-nomi { margin: 4px 0 0; }
+  /* v12.25: una sola schermata in stile Calendario; voto bloccato col lucchetto, «Modifica il voto» lo sblocca lì */
+  .sd-titolo.grande { margin: 2px 0 8px; font-size: 26px; color: #15243b; }
+  .sd .sd-pills + .sd-gia-box, .sd .sd-pills + .sd-chi { margin-top: 12px; }
+  .sd-gia-box[data-oro="cambio"] { background: #eaf6fd; border-color: #1c4587; }
+  .sd-gia-box .sd-av svg { width: 18px; height: 18px; }
+  .sd-gia-box .sd-btn2 { width: 100%; margin: 0; }
+  .sd-istr { margin: 4px 0 10px; font-size: 15px; font-weight: 800; color: #15243b; }
+  .sd-cal-wrap { display: grid; gap: 10px; }
+  .sd-blocco.sd-blocco-cal { padding-left: 8px; padding-right: 8px; }
+  .sd-ris .sd-ris-tab { margin-left: -8px; margin-right: -8px; }
+  .sd-cal-wrap .sd-ordina { margin: 0; }
+  .sd-cal { border: 2px solid #d6e4ef; border-radius: 16px; background: #fff; overflow: hidden; }
+  .sd-cal.sc-si { border-color: #1e9e57; } .sd-cal.sc-forse { border-color: #FDCA0D; } .sd-cal.sc-no { border-color: #8c7b7b; }
+  .sd-cal.lead { border: 3px solid #1c4587; background: #f0f6ff; box-shadow: 0 4px 14px rgba(28,69,135,.25); }
+  .sd-cal .sd-una-dom { padding: 10px 12px 0; }
+  .sd-cal-in { display: flex; gap: 10px; padding: 10px; }
+  .sd-foglio { flex: none; width: 100px; align-self: flex-start; border: 2px solid #1c4587; border-radius: 12px; overflow: hidden; text-align: center; background: #fff; }
+  .sd-foglio .fg { display: block; padding: 4px 0; background: #1c4587; color: #fff; font-size: 14px; font-weight: 900; letter-spacing: .06em; }
+  .sd-foglio .fn { display: block; padding-top: 4px; font-size: 44px; font-weight: 900; line-height: 1.05; color: #15243b; }
+  .sd-foglio .fm { display: block; padding-bottom: 4px; font-size: 14px; font-weight: 900; color: #1c4587; }
+  .sd-foglio .fo { display: block; padding: 4px 0; background: #FDCA0D; color: #1c4587; font-size: 15px; font-weight: 900; }
+  .sd-cal-col { flex: 1; min-width: 0; display: grid; gap: 6px; align-content: start; }
+  .sd-cal-r { display: grid; grid-template-columns: minmax(0, 1fr) 48px; gap: 6px; align-items: center; }
+  .sd-cal-col.senza .sd-cal-r { grid-template-columns: minmax(0, 1fr); }
+  .sd-vb { display: flex; align-items: center; gap: 6px; width: 100%; min-width: 0; min-height: 48px; padding: 0 6px; border: 2px solid #d6e4ef; border-radius: 12px; background: #fff; color: #15243b; font: inherit; font-size: 16px; font-weight: 900; text-align: left; cursor: pointer; box-sizing: border-box; }
+  .sd-vb .ic { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; }
+  .sd-vb.si .ic { color: #167a43; background: #e3f5ea; } .sd-vb.forse .ic { color: #7a5d00; background: #fff3c2; } .sd-vb.no .ic { color: #6b5b5b; background: #f1ecea; }
+  .sd-vb .tx { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sd-vb { position: relative; }
+  .sd-vb .lk { position: absolute; top: -7px; right: -6px; width: 22px; height: 22px; border-radius: 50%; background: #1c4587; color: #fff; display: grid; place-items: center; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+  .sd-vb .lk svg { width: 12px; height: 12px; }
+  .sd-vb.si.on { background: #1e9e57; border-color: #167a43; color: #fff; box-shadow: 0 2px 8px rgba(20,120,60,.35); }
+  .sd-vb.forse.on { background: #FDCA0D; border-color: #d9a800; color: #1c4587; box-shadow: 0 2px 8px rgba(190,140,0,.4); }
+  .sd-vb.no.on { background: #8c7b7b; border-color: #756666; color: #fff; box-shadow: 0 2px 6px rgba(90,70,70,.3); }
+  .sd-vb.on .ic { background: rgba(255,255,255,.25); color: inherit; }
+  .sd-vb:disabled, .sd-vb.ris { cursor: default; }
+  .sd-cal-wrap.bloccato .sd-vb:not(.on) { opacity: .45; }
+  .sd-cal-n { display: grid; gap: 4px; min-width: 0; }
+  .sd-cal-n b { font-size: 18px; font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums; }
+  .sd-cal-n.si b { color: #167a43; } .sd-cal-n.forse b { color: #7a5d00; } .sd-cal-n.no b { color: #6b5b5b; } .sd-cal-n.zero b { color: #8a97a5; }
+  .sd-cal-n .mb { display: block; width: 100%; height: 6px; border-radius: 3px; background: #dfe6ed; overflow: hidden; }
+  .sd-cal-n .mb i { display: block; height: 6px; }
+  .sd-cal-n.si i { background: #1e9e57; } .sd-cal-n.forse i { background: #FDCA0D; } .sd-cal-n.no i { background: #8c7b7b; }
+  .sd-cal-chi { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; min-height: 44px; padding: 0; border: 0; border-top: 1px solid #e6eef5; background: none; color: #1c4587; font: inherit; font-size: 13.5px; font-weight: 900; cursor: pointer; }
+  .sd-cal-chi svg { width: 16px; height: 16px; transition: transform .15s; }
+  .sd-cal-chi.su svg { transform: rotate(180deg); }
+  .sd-cal .sd-tab-sotto > * { margin: 0 10px 10px; }
+  .sd-cal .sd-fumetto { margin: 0 10px 10px; }
+  .sd-lock .sd-opz:not(.on), .sd-lock .sd-fotoopz:not(.on) { opacity: .45; cursor: default; }
+  .sd-lock .sd-opz, .sd-lock .sd-fotoopz, .sd-lock .sd-stelle button, .sd-lock .sd-pt-stelle button { cursor: default; }
+  .sd-tondo-btn:disabled { opacity: .4; cursor: default; }
+  @media (max-width: 359px) {
+    .sd-blocco.sd-blocco-cal { padding-left: 6px; padding-right: 6px; }
+    .sd-ris .sd-ris-tab { margin-left: -10px; margin-right: -10px; }
+    .sd-foglio { width: 76px; } .sd-foglio .fn { font-size: 36px; } .sd-foglio .fg, .sd-foglio .fm { font-size: 13px; } .sd-foglio .fo { font-size: 14px; }
+    .sd-vb { font-size: 15px; padding: 0 5px; gap: 5px; } .sd-vb .ic { width: 22px; height: 22px; }
+    .sd-cal-r { grid-template-columns: minmax(0, 1fr) 44px; }
+    .sd-cal-in { gap: 8px; padding: 8px; }
+  }
   .sd-ordina { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; }
   .sd-ordina > span { flex: none; font-size: 13px; font-weight: 900; color: #4f5f72; }
   .sd-ordina > div { flex: 1; display: flex; gap: 4px; padding: 3px; border-radius: 999px; background: #d9f1fe; }
@@ -3131,7 +3191,7 @@
     if (msgPrima) mostraLogin(msgPrima); else mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.24', SCRIPT_NECESSARIO = '12.14';   // v12.21: apertura istantanea (copia dell'ultimo avvio sul telefono); v12.20: accesso più veloce (l'accesso si conta a parte, segnaAccesso); v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.25', SCRIPT_NECESSARIO = '12.14';   // v12.21: apertura istantanea (copia dell'ultimo avvio sul telefono); v12.20: accesso più veloce (l'accesso si conta a parte, segnaAccesso); v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -9416,8 +9476,8 @@
       if (ctx.soloScelte) return { t: ctx.testoBtn || 'Segna il voto', cls: 'sd-btn' + (ok ? '' : ' spento'), dis: !ok };
       if (!s.mio) return { t: 'Invia il voto', cls: 'sd-btn' + (ok ? '' : ' spento'), dis: !ok };
       if (!sl.length) return { t: 'Ritira il voto', cls: 'sd-btn ritira', dis: false };
-      if (!ok) return { t: 'Cambia voto', cls: 'sd-btn spento', dis: true };
-      return { t: sdUguali(sl, mio) ? 'Conferma voto' : 'Cambia voto', cls: 'sd-btn', dis: false };
+      if (!ok) return { t: 'Salva il nuovo voto', cls: 'sd-btn spento', dis: true };
+      return sdUguali(sl, mio) ? { t: 'Nessuna modifica', cls: 'sd-btn spento', dis: true } : { t: 'Salva il nuovo voto', cls: 'sd-btn', dis: false };   // v12.25
     }
     function aggiornaBtn() {
       if (!btn) return;
@@ -9442,20 +9502,38 @@
     function disegnaDentro() {
       box.innerHTML = ''; btn = null; nota = null;
       if (!dom.length) { box.appendChild(el('p', { classe: 'sd-vuoto', testo: 'Sondaggio senza domande' })); return; }
+      var lk = !ctx.soloScelte && (typeof ctx.bloccato === 'function' ? !!ctx.bloccato() : !!ctx.bloccato);   // v12.25: chi ha già votato trova il voto bloccato
+      ctx.fermoLock = lk;
+      box.classList.toggle('sd-lock', lk);
       var sel = selOra(); ctx.setSel(sel);
       var cc = sdConti(s, sel), p = sdParti(sel);
       if (!ctx.soloScelte) {
-        if (ctx.chi) box.appendChild(el('div', { classe: 'sd-chi' }, [el('span', { classe: 'sd-av', testo: ctx.chi.iniziale }), el('span', {}, [el('b', { testo: ctx.chi.nome }), el('small', { testo: ctx.chi.sotto })])]));
-        if (s.mio) {
-          var tit = s.mio.mano ? 'La rappresentante ha segnato il voto per ' + (s.io ? s.io.nome : '') : s.mio.io ? 'Hai già votato in questo sondaggio' : (s.mio.da || 'La tua famiglia') + ' ha già votato per ' + (s.io ? s.io.nome : '');
-          var idee = sdIdeeNuove(s, sel);                                  // v12.4: proposte arrivate dopo il voto
-          box.appendChild(el('div', { classe: 'sd-chi gia' }, [el('span', { classe: 'sd-av', testo: s.mio.mano ? 'R' : (s.mio.da || '?').replace(/^(Mamma|Papà)\s+/i, '').charAt(0).toUpperCase() || '✓' }),
-            el('span', {}, [el('b', { testo: tit }), el('small', { testo: sdQuandoVoto(s.mio.quando) })]),
-            idee.length ? el('span', { classe: 'sd-pill', style: 'flex:none;background:#1c4587;color:#fff', testo: idee.length === 1 ? '1 IDEA NUOVA' : idee.length + ' IDEE NUOVE' }) : null]));
-        }
+        var fattoV = typeof ctx.fatto === 'function' ? ctx.fatto() : ctx.fatto;
+        var FATTO = { inviato: 'Voto inviato. Grazie!', cambiato: 'Voto cambiato. Grazie!', confermato: 'Voto confermato. Grazie!', ritirato: 'Voto ritirato' };
+        box.appendChild(el('h2', { classe: 'sd-titolo grande', testo: s.titolo }));   // v12.25: il titolo prima di tutto (come la 12.24)
         box.appendChild(el('div', { classe: 'sd-pills' }, [sdPillTempo(s), sdLivPill(s)]));
-        box.appendChild(el('h2', { classe: 'sd-titolo', testo: s.titolo }));
-        if (ctx.fatto) box.appendChild(el('div', { classe: 'sd-inviato', 'data-fatto': ctx.fatto }, [sdSvg('spunta'), { inviato: 'Voto inviato. Grazie!', cambiato: 'Voto cambiato. Grazie!', confermato: 'Voto confermato. Grazie!', ritirato: 'Voto ritirato' }[ctx.fatto] || 'Fatto']));   // v12.16
+        if (ctx.chi && !s.mio) box.appendChild(el('div', { classe: 'sd-chi' }, [el('span', { classe: 'sd-av', testo: ctx.chi.iniziale }), el('span', {}, [el('b', { testo: ctx.chi.nome }), el('small', { testo: ctx.chi.sotto })])]));
+        if (s.mio) {                                                       // v12.25: riquadro dorato con «Modifica il voto» (sblocca qui, senza cambiare schermata)
+          var tit = s.mio.mano ? 'La rappresentante ha segnato il voto per ' + (s.io ? s.io.nome : '') : s.mio.io ? 'Hai già votato' : (s.mio.da || 'La tua famiglia') + ' ha già votato per ' + (s.io ? s.io.nome : '');
+          var idee = sdIdeeNuove(s, (s.mio.voto || []).slice());           // v12.4: proposte arrivate dopo il voto
+          var cambiando = !lk && s.stato === 'aperto';
+          var oroT = cambiando ? 'Stai cambiando il voto' : fattoV && FATTO[fattoV] ? FATTO[fattoV] : tit;
+          var oroS = cambiando ? 'Tocca le nuove risposte e poi «Salva il nuovo voto».' : sdQuandoVoto(s.mio.quando);
+          var oro = el('div', { classe: 'sd-gia-box', 'data-oro': cambiando ? 'cambio' : 'bloccato' }, [el('div', { classe: 'sd-chi gia' }, [
+            el('span', { classe: 'sd-av' + (cambiando ? ' matita' : '') }, cambiando ? [sdSvg('matita')] : [sdSvg('spunta')]),
+            el('span', {}, [el('b', { testo: oroT }), el('small', { testo: oroS })]),
+            idee.length && !cambiando ? el('span', { classe: 'sd-pill', style: 'flex:none;background:#1c4587;color:#fff', testo: idee.length === 1 ? '1 IDEA NUOVA' : idee.length + ' IDEE NUOVE' }) : null])]);
+          if (s.stato === 'aperto' && lk && s.cambia && (s.puoVotare || ctx.spento || ctx.anteprima) && ctx.modifica)
+            oro.appendChild(el('button', { type: 'button', classe: 'sd-btn', 'data-azione': 'modifica-voto', onclick: function () { ctx.modifica(); disegna(); } },
+              [sdSvg('matita'), idee.length ? 'Vota anche le idee nuove' : 'Modifica il voto']));
+          else if (s.stato === 'aperto' && lk && !s.cambia) oro.appendChild(el('div', { classe: 'sd-tutti piccolo' }, [sdSvg('lucchetto'), 'In questo sondaggio il voto non si cambia']));
+          else if (cambiando && ctx.annulla) oro.appendChild(el('button', { type: 'button', classe: 'sd-btn2', 'data-azione': 'annulla-modifica', testo: 'Annulla, tengo il voto di prima',
+            onclick: function () { ctx.annulla(); disegna(); } }));
+          box.appendChild(oro);
+          if (ctx.spento && lk) box.appendChild(el('p', { classe: 'vista-nota', style: 'margin:-10px 0 14px', testo: 'In Visualizza come puoi sbloccare il voto per vederlo, ma non si cambia niente.' }));
+        } else if (fattoV) box.appendChild(el('div', { classe: 'sd-inviato', 'data-fatto': fattoV }, [sdSvg('spunta'), FATTO[fattoV] || 'Fatto']));   // v12.16
+        if (princ && princ.tipo === 'uno' && (princ.m.modo === 'perData' || princ.m.modo === 'bottoni') && s.stato === 'aperto' && !lk)   // v12.25
+          box.appendChild(el('p', { classe: 'sd-istr', testo: (princ.m.modo === 'perData' ? 'Per ogni data tocca ' : 'Tocca ') + (princ.m.tipo === 'sino' ? 'Sì o No.' : 'Sì, Mi adeguo o No.') + (cc ? ' Accanto vedi i voti degli altri.' : '') }));
         if (!cc && s.stato === 'aperto') {
           var serve = Math.ceil(s.totale / 2);
           box.appendChild(el('div', { classe: 'sd-soglia' }, [sdSvg('lucchetto'), el('b', { testo: s.risultati === 'chiusura' ? 'Risultati alla chiusura' : 'Risultati da ' + serve + ' voti' }),
@@ -9472,11 +9550,11 @@
         else if (q.tipo === 'quanti') {
           (q.st.voci || []).forEach(function (v) {
             var n = p.n[v.id] || 0;
-            var cambia = function (x) { return function () { if (ctx.spento) return; x = Math.max(0, Math.min(20, x)); ctx.setSel(sdConParte(selOra(), 'n:' + v.id + ':', x ? 'n:' + v.id + ':' + x : '')); disegna(); }; };
+            var cambia = function (x) { return function () { if (ctx.spento || ctx.fermoLock) return; x = Math.max(0, Math.min(20, x)); ctx.setSel(sdConParte(selOra(), 'n:' + v.id + ':', x ? 'n:' + v.id + ':' + x : '')); disegna(); }; };
             var riga = el('div', { classe: 'sd-quanti', 'data-voce': v.id }, [el('b', { testo: v.nome }),
-              el('button', { type: 'button', classe: 'sd-tondo-btn', 'aria-label': v.nome + ': uno in meno', testo: '−', onclick: cambia(n - 1) }),
+              el('button', { type: 'button', classe: 'sd-tondo-btn', 'aria-label': v.nome + ': uno in meno', testo: '−', disabled: ctx.fermoLock ? 'disabled' : null, onclick: cambia(n - 1) }),
               el('b', { classe: 'sd-qn', testo: String(n) }),
-              el('button', { type: 'button', classe: 'sd-tondo-btn', 'aria-label': v.nome + ': uno in più', testo: '+', onclick: cambia(n + 1) })]);
+              el('button', { type: 'button', classe: 'sd-tondo-btn', 'aria-label': v.nome + ': uno in più', testo: '+', disabled: ctx.fermoLock ? 'disabled' : null, onclick: cambia(n + 1) })]);
             if (cc && !qdData) riga.appendChild(el('small', { testo: 'In tutto: ' + (cc.c['n:' + v.id] || 0) }));
             blocco.appendChild(riga);
           });
@@ -9488,13 +9566,13 @@
           var st = el('div', { classe: 'sd-stelle' });
           [1, 2, 3, 4, 5].forEach(function (v) {
             st.appendChild(el('button', { type: 'button', classe: p.s >= v ? 'on' : '', 'data-stella': String(v), 'aria-label': v + (v === 1 ? ' stella' : ' stelle'), 'aria-pressed': p.s === v ? 'true' : 'false',
-              onclick: function () { if (ctx.spento) return; ctx.setSel(sdConParte(selOra(), 's:', p.s === v ? '' : 's:' + v)); disegna(); } }, [sdSvg(p.s >= v ? 'stellaPiena' : 'stella')]));
+              onclick: function () { if (ctx.spento || ctx.fermoLock) return; ctx.setSel(sdConParte(selOra(), 's:', p.s === v ? '' : 's:' + v)); disegna(); } }, [sdSvg(p.s >= v ? 'stellaPiena' : 'stella')]));
           });
           blocco.appendChild(st);
           if (cc) { var md = sdMedia(cc.c); blocco.appendChild(el('small', { classe: 'sd-media', testo: md.n ? 'Media ' + md.txt + ' su 5 · ' + md.n + (md.n === 1 ? ' voto' : ' voti') : 'Ancora nessun voto' })); }
         } else {
           var ta = el('textarea', { rows: '3', maxlength: '300', classe: 'sd-ta', 'aria-label': q.titolo, placeholder: q === princ ? 'Scrivi qui' : 'Scrivi qui (se vuoi)' });
-          ta.value = p.t; ta.disabled = !!ctx.spento;
+          ta.value = p.t; ta.disabled = !!ctx.spento || !!ctx.fermoLock;
           ta.addEventListener('input', function () { ctx.setSel(sdConParte(selOra(), 't:', ta.value.trim() ? 't:' + ta.value : '')); aggiornaBtn(); });
           blocco.appendChild(ta);
           if (cc && Array.isArray(s.commenti) && !ctx.soloScelte) {
@@ -9507,15 +9585,13 @@
       });
       var unaSch = princ && princ.tipo === 'uno' && (princ.m.modo === 'perData' || princ.m.modo === 'bottoni');   // v12.16
       if (!ctx.soloScelte && !unaSch) box.appendChild(sdMancaBox(s, sel.length ? 1 : 0));
-      if (ctx.soloScelte || (s.stato === 'aperto' && (s.puoVotare || ctx.spento))) {
+      if (ctx.soloScelte || (s.stato === 'aperto' && (s.puoVotare || ctx.spento || ctx.anteprima) && !lk)) {   // v12.25: col voto bloccato il pulsante è «Modifica il voto» in cima
         btn = el('button', { type: 'button', classe: 'sd-btn' });
         nota = el('p', { classe: 'sd-nota', hidden: 'hidden' });
         aggiornaBtn();
         btn.addEventListener('click', function () { if (btn.disabled) return; ctx.invia(selOra().slice(), btn); });
         box.appendChild(el('div', { style: 'margin-top:16px' }, [nota, btn]));
         if (ctx.spento) box.appendChild(el('p', { classe: 'vista-nota', style: 'margin-top:10px', testo: 'In Visualizza come non si cambia niente: il pulsante è quello che vede la famiglia.' }));
-      } else if (s.stato === 'aperto' && s.mio && !s.cambia) {
-        box.appendChild(el('div', { classe: 'sd-tutti' }, [sdSvg('spunta'), 'Voto inviato: in questo sondaggio non si cambia']));
       }
       if (!ctx.soloScelte && qdData) box.appendChild(sdQuantiTesta(s, princ.m, sdQDOra(s, sel), cc.c, s.stato === 'chiuso'));   // v12.16: per la data in testa
       if (!ctx.soloScelte && unaSch) box.appendChild(sdMancaBox(s, sel.length ? 1 : 0));
@@ -9527,10 +9603,10 @@
   function sdBloccoScelta(s, m, blocco, testa, sel, cc, ctx, disegna) {
     var sc = sel.filter(sdEScelta);
     if (m.multi && m.max) testa.appendChild(el('span', { classe: 'sd-pill' + (sc.length >= m.max ? ' giallo' : ''), style: 'flex:none', testo: sc.length + ' su ' + m.max }));
-    var tocca = function (k) { return function () { if (ctx.spento) return; ctx.setSel(sdTocca(m, ctx.sel(), k)); disegna(); }; };
+    var tocca = function (k) { return function () { if (ctx.spento || ctx.fermoLock) return; ctx.setSel(sdTocca(m, ctx.sel(), k)); disegna(); }; };
     var pieno = m.multi && m.max && sc.length >= m.max;
     var togli = function (p) {
-      if (!p || !p.mia || !p.puoTogliere || !ctx.togliProposta || ctx.spento) return null;
+      if (!p || !p.mia || !p.puoTogliere || !ctx.togliProposta || ctx.spento || ctx.fermoLock) return null;
       return el('button', { type: 'button', classe: 'sd-togli', 'data-togli': p.id, onclick: function (e) { ctx.togliProposta(p.id, e.currentTarget); } },
         [el('span', { classe: 'sd-meno mini', testo: '−' }), 'Togli la mia proposta']);
     };
@@ -9592,7 +9668,7 @@
     } else {                                                             // v12.16: Sì · Mi adeguo · No e Sì / No a matrice, in una sola schermata
       var numero = null;
       if (m.modo === 'bottoni') { var nn0 = testa.querySelector('.sd-n'); numero = nn0 ? nn0.textContent : null; blocco.removeChild(testa); }
-      var fermo = !!ctx.spento || (!ctx.soloScelte && !ctx.anteprima && !s.puoVotare);
+      var fermo = !!ctx.spento || !!ctx.fermoLock || (!ctx.soloScelte && !ctx.anteprima && !s.puoVotare);
       var toccaMx = function (k) {
         return function () {
           if (fermo) return;
@@ -9603,9 +9679,10 @@
         };
       };
       var fum = STATO.sdFumetto && STATO.sdFumetto.id === s.id ? STATO.sdFumetto.riga : undefined;
-      blocco.appendChild(sdTabella(s, m, { sel: sc, tocca: toccaMx, cc: cc, nomi: cc && cc.nomi && !ctx.soloScelte ? cc.nomi : null, numero: numero, togli: togli, ridisegna: disegna, fumetto: fum }));
+      blocco.classList.add('sd-blocco-cal');                             // v12.25: a 320 px la scheda lascia più spazio alle date
+      blocco.appendChild(sdTabella(s, m, { sel: sc, tocca: toccaMx, cc: cc, nomi: cc && cc.nomi && !ctx.soloScelte ? cc.nomi : null, numero: numero, togli: togli, ridisegna: disegna, fumetto: fum, blocca: !!ctx.fermoLock }));
     }
-    if (m.proponi && !ctx.soloScelte && s.stato === 'aperto' && (s.puoVotare || ctx.spento) && ctx.proponi) blocco.appendChild(sdProponiBox(s, m, ctx));
+    if (m.proponi && !ctx.soloScelte && !ctx.fermoLock && s.stato === 'aperto' && (s.puoVotare || ctx.spento) && ctx.proponi) blocco.appendChild(sdProponiBox(s, m, ctx));
   }
 
   // ---------- foto delle risposte ----------
@@ -9807,13 +9884,11 @@
    *  cornice e nastro, «Ordina», i nomi dietro la freccina, il fumetto di Mi adeguo.
    *  o: { ris (sola lettura: numeri senza pulsante), sel (le scelte), mio (ris: il proprio voto), tocca, cc (conti), nomi (chi ha votato cosa),
    *  numero (domanda numerata), togli (proposta), chiuso (VINCE), ridisegna, fumetto (id della riga col fumetto) } */
-  function sdTabella(s, m, o) {
+  function sdTabella(s, m, o) {                                        // v12.25: stile Calendario (tela «Sondaggi: voto e risultati in stile Calendario», versione 2)
     var K = SD_VAL[m.tipo], perData = m.modo === 'perData', scelte = (o.ris ? o.mio : o.sel) || [];
     var righe = perData ? m.righe : [{ id: '', domanda: m.domanda, voci: m.voci }];
     var c = o.cc ? o.cc.c : null, testa = perData ? sdInTesta(m, c) : null;
-    var barra = document.querySelector('.barra');                    // l'intestazione delle colonne si ferma sotto la barra in alto
-    if (barra && barra.offsetHeight) document.documentElement.style.setProperty('--sd-cima', Math.ceil(barra.getBoundingClientRect().height) + 'px');
-    var wrap = el('div', { classe: 'sd-tab-wrap' + (K.length === 2 ? ' due' : '') + (o.ris ? ' ris' : ''), 'data-tabella': perData ? 'date' : 'una' });
+    var wrap = el('div', { classe: 'sd-cal-wrap' + (o.ris ? ' ris' : '') + (o.blocca ? ' bloccato' : ''), 'data-tabella': perData ? 'date' : 'una' });
     var ordina = perData && c && righe.length > 1 && o.ridisegna;
     var ordine = ordina && STATO.sdOrdine[s.id] === 'voti' ? 'voti' : 'data';
     if (ordina) wrap.appendChild(el('div', { classe: 'sd-ordina' }, [el('span', { testo: 'Ordina:' }), el('div', { role: 'group', 'aria-label': 'Ordine delle date' },
@@ -9822,38 +9897,39 @@
           onclick: function () { STATO.sdOrdine[s.id] = x[0]; o.ridisegna(); } }, [x[1]]);
       }))]));
     if (ordine === 'voti') righe = sdRigheVotate(m, c, righe);
-    wrap.appendChild(el('div', { classe: 'sd-tab-head' }, (perData ? [el('span')] : []).concat(K.map(function (v) { return el('span', { classe: 'sd-th ' + v }, [sdTabIco(v, 20), el('span', { testo: SD_TXT[v] })]); })).concat([el('span')])));
+    var max = 1;
+    if (c) righe.forEach(function (r) { r.voci.forEach(function (v) { max = Math.max(max, c[v.k] || 0); }); });
     var manca = Array.isArray(s.manca) ? s.manca.filter(function (n) { return typeof n === 'string'; }) : null;
     righe.forEach(function (r) {
       var scelta = r.voci.filter(function (v) { return scelte.indexOf(v.k) >= 0; })[0] || null;
       var pr = perData && testa ? sdPuntiRiga(m, c, r) : null, lead = !!testa && (testa.id === r.id || (testa.pari && pr.pt === testa.pt && pr.si === testa.si)), chiave = s.id + '|' + (r.id || 'una');   // a pari merito la cornice va su tutte
-      var nomiRiga = o.nomi ? r.voci.map(function (v) { var l = (o.nomi[v.k] || []).slice(); return l; }) : null;
+      var nomiRiga = o.nomi ? r.voci.map(function (v) { return (o.nomi[v.k] || []).slice(); }) : null;
       var conNomi = !!nomiRiga, aperta = conNomi && !!STATO.sdAperte[chiave];
-      var box = el('div', { classe: 'sd-mx-box' + (lead ? ' lead' : ''), 'data-box': r.id || 'una' });
-      if (lead) box.appendChild(el('div', { classe: 'sd-nastro', 'data-nastro': r.id }, [sdSvg('coppa'), el('b', { testo: testa.pari ? 'PARI' : o.chiuso ? 'VINCE' : 'IN TESTA' }),
-        el('span', { testo: m.tipo === 'sino' ? testa.si + (testa.si === 1 ? ' sì' : ' sì') : testa.pt + ' tra Sì e Mi adeguo' })]));
-      var riga = el('div', { classe: 'sd-tab' + (scelta ? ' t-' + scelta.v : ''), 'data-riga': r.id || 'una' });
-      var sx;
-      if (perData) { var dp = sdDataParti(r.d);
-        sx = [el('span', { classe: 'sd-dt' }, [el('span', { classe: 'sd-dr' }, [el('b', { classe: 'sd-tab-num', testo: dp.n }), el('span', { classe: 'sd-tab-gm' }, [el('small', { testo: dp.g }), el('small', { testo: dp.m })])]),
-          dp.o ? el('span', { classe: 'sd-tab-ora', testo: dp.o }) : null])]; }
-      else box.appendChild(el('div', { classe: 'sd-una-dom' }, [o.numero ? el('span', { classe: 'sd-n', testo: String(o.numero) }) : null, el('b', { classe: 'sd-tab-dom', testo: r.domanda })]));   // v12.16: senza date la domanda sta sopra, a tutta larghezza
       var nome = perData ? r.nome : r.domanda;
-      if (perData) riga.appendChild(el('div', { classe: 'sd-td d' }, sx));
+      var box = el('div', { classe: 'sd-cal' + (lead ? ' lead' : '') + (scelta && !lead ? ' sc-' + scelta.v : ''), 'data-box': r.id || 'una' });
+      if (lead) box.appendChild(el('div', { classe: 'sd-nastro', 'data-nastro': r.id }, [sdSvg('coppa'), el('b', { testo: testa.pari ? 'PARI' : o.chiuso ? 'VINCE' : 'IN TESTA' }),
+        el('span', { testo: m.tipo === 'sino' ? testa.si + ' sì' : testa.pt + ' tra Sì e Mi adeguo' })]));
+      if (!perData) box.appendChild(el('div', { classe: 'sd-una-dom' }, [o.numero ? el('span', { classe: 'sd-n', testo: String(o.numero) }) : null, el('b', { classe: 'sd-tab-dom', testo: r.domanda })]));
+      var dentro = el('div', { classe: 'sd-cal-in', 'data-riga': r.id || 'una' });
+      if (perData) {
+        var dp = sdDataParti(r.d);
+        dentro.appendChild(el('div', { classe: 'sd-foglio', role: 'img', 'aria-label': r.nome || (dp.g + ' ' + dp.n + ' ' + dp.m) }, [el('span', { classe: 'fg', testo: dp.g.toUpperCase() }),
+          el('b', { classe: 'fn', testo: dp.n }), el('span', { classe: 'fm', testo: dp.m.toUpperCase() }), dp.o ? el('span', { classe: 'fo', testo: dp.o }) : null]));
+      }
+      var col = el('div', { classe: 'sd-cal-col' + (c ? '' : ' senza') });
       r.voci.forEach(function (v) {
-        var on = scelta === v, n = c ? c[v.k] || 0 : 0, dentro;
-        if (o.ris) dentro = el('span', { classe: 'sd-nc ' + v.v + (on ? ' mio' : '') + (n ? '' : ' zero'), 'data-k': v.k, 'aria-label': nome + ': ' + v.t + ' ' + n, testo: String(n) });
-        else {
-          dentro = el('button', { type: 'button', classe: 'sd-cerchio ' + v.v + (on ? ' on' : '') + (c ? ' num' : '') + (c && !n ? ' zero' : ''), 'data-k': v.k,
-            'aria-label': nome + ': ' + v.t + (c ? ', ' + n + (n === 1 ? ' voto' : ' voti') : ''), 'aria-pressed': on ? 'true' : 'false', onclick: o.tocca(v.k) },
-            c ? [String(n)] : [sdTabIco(v.v, 22)]);
-        }
-        riga.appendChild(el('div', { classe: 'sd-td' }, [dentro]));
+        var on = scelta === v, n = c ? c[v.k] || 0 : 0;
+        var corpo = [el('span', { classe: 'ic' }, [sdTabIco(v.v, 18)]), el('span', { classe: 'tx', testo: SD_TXT[v.v] || v.t }), on && o.blocca ? sdSvg('lucchetto', 'lk') : null];
+        var b = o.ris ? el('span', { classe: 'sd-vb ' + v.v + (on ? ' on' : '') + ' ris', 'data-k': v.k }, corpo)
+          : el('button', { type: 'button', classe: 'sd-vb ' + v.v + (on ? ' on' : ''), 'data-k': v.k, 'aria-pressed': on ? 'true' : 'false',
+            'aria-label': nome + ': ' + v.t + (o.blocca ? (on ? ', il tuo voto' : '') : ''), disabled: o.blocca ? 'disabled' : null, onclick: o.tocca(v.k) }, corpo);
+        var riga = el('div', { classe: 'sd-cal-r' }, [b]);
+        if (c) riga.appendChild(el('span', { classe: 'sd-cal-n ' + v.v + (n ? '' : ' zero'), role: 'img', 'aria-label': v.t + ': ' + n + (n === 1 ? ' voto' : ' voti'), 'data-n': String(n) },
+          [el('b', { testo: String(n) }), el('span', { classe: 'mb' }, [el('i', { style: 'width:' + Math.round(n / max * 100) + '%' })])]));
+        col.appendChild(riga);
       });
-      riga.appendChild(el('div', { classe: 'sd-td' }, [conNomi ? el('button', { type: 'button', classe: 'sd-chev' + (aperta ? ' su' : ''), 'data-chev': r.id || 'una',
-        'aria-label': (aperta ? 'Chiudi chi ha votato: ' : 'Chi ha votato: ') + nome, 'aria-expanded': aperta ? 'true' : 'false',
-        onclick: function () { STATO.sdAperte[chiave] = !aperta; if (o.ridisegna) o.ridisegna(); } }, [sdSvg('giu')]) : null]));
-      box.appendChild(riga);
+      dentro.appendChild(col);
+      box.appendChild(dentro);
       if (o.fumetto !== undefined && o.fumetto === (r.id || '')) {
         var fu = el('div', { classe: 'sd-fumetto', role: 'status', 'data-fumetto': r.id || 'una' }, [el('span', { classe: 'sd-punta' }), sdTabIco('forse', 22),
           el('span', { classe: 'sd-fu-tx' }, [el('b', { testo: perData ? 'Se vince questa data, ci sei.' : 'Ti va bene quello che sceglie la maggioranza.' }),
@@ -9862,6 +9938,9 @@
         box.appendChild(fu);
         setTimeout(function () { if (fu.isConnected) { fu.remove(); if (STATO.sdFumetto && STATO.sdFumetto.id === s.id) STATO.sdFumetto = null; } }, 8000);
       }
+      if (conNomi) box.appendChild(el('button', { type: 'button', classe: 'sd-cal-chi' + (aperta ? ' su' : ''), 'data-chev': r.id || 'una',
+        'aria-label': (aperta ? 'Chiudi chi ha votato: ' : 'Chi ha votato: ') + nome, 'aria-expanded': aperta ? 'true' : 'false',
+        onclick: function () { STATO.sdAperte[chiave] = !aperta; if (o.ridisegna) o.ridisegna(); } }, [aperta ? 'Chiudi' : 'Chi ha votato', sdSvg('giu')]));
       var sotto = el('div', { classe: 'sd-tab-sotto', 'data-sotto': r.id || 'una' });
       if (r.prop) sotto.appendChild(el('div', { classe: 'sd-tab-pills' }, [sdPillProp(r.prop)]));
       if (aperta) {
@@ -10244,18 +10323,21 @@
     var box = el('div');
     box.appendChild(sdIndietro(sdAdmin() ? 'I risultati' : 'Sondaggi', sdAdmin() ? function () { STATO.sdComeFamiglia = false; vaiA('sondaggi', true); } : null));
     STATO.sdSel = STATO.sdSel || {};
-    var una = sdUnaSchermata(s);                                        // v12.16: Sì · Mi adeguo · No e Sì / No in una sola schermata
-    if (STATO.sdFatto && STATO.sdFatto.id === s.id) { box.appendChild(sdFattoVista(s)); return box; }   // v12.18: regola generale, anche Sì · Mi adeguo · No
     if (s.stato === 'chiuso') { box.appendChild(sdChiusoVista(s, lista)); return box; }
-    if (s.stato === 'aperto' && s.mio && STATO.sdCambia !== s.id) { box.appendChild(sdGiaVotatoVista(s)); return box; }   // v12.13: prima i risultati; v12.18: per TUTTI i sondaggi
-    if (STATO.sdSel[s.id] === undefined) STATO.sdSel[s.id] = (s.mio && s.mio.voto) ? s.mio.voto.slice() : [];
+    // v12.25: UNA SOLA SCHERMATA per tutti i sondaggi. Chi ha già votato trova il suo voto BLOCCATO (lucchetto) con i voti degli altri;
+    // «Modifica il voto» lo sblocca lì, «Annulla» rimette il voto di prima, «Salva il nuovo voto» lo manda (la regola del 15/11 resta: niente voto cambiato per sbaglio).
+    var bloccato = function () { return s.stato === 'aperto' && !!s.mio && STATO.sdCambia !== s.id; };
+    if (STATO.sdSel[s.id] === undefined || bloccato()) STATO.sdSel[s.id] = (s.mio && s.mio.voto) ? s.mio.voto.slice() : [];
     var ses = STATO.sessione || {}, ruolo = String(ses.ruolo || '').toLowerCase();
     var nome = s.io && s.io.docente ? (ses.nome || s.io.nome) : ((ruolo === 'madre' ? 'Mamma ' : ruolo === 'padre' ? 'Papà ' : '') + (ses.nome || '')).trim();
     var chi = s.io ? { iniziale: (ses.nome || s.io.nome || '?').charAt(0).toUpperCase(), nome: nome || s.io.nome,
       sotto: s.io.docente ? 'vota per sé' : (ruolo === 'madre' ? 'mamma di ' : ruolo === 'padre' ? 'papà di ' : 'vota per ') + s.io.nome } : null;
     box.appendChild(sdVoto(s, {
       sel: function () { return STATO.sdSel[s.id]; }, setSel: function (x) { STATO.sdSel[s.id] = x; },
-      spento: !!VISTA.attiva, chi: chi, fatto: una && STATO.sdFatto && STATO.sdFatto.id === s.id ? STATO.sdFatto.tipo : null,
+      spento: !!VISTA.attiva, chi: chi, fatto: function () { return STATO.sdFatto && STATO.sdFatto.id === s.id ? STATO.sdFatto.tipo : null; },
+      bloccato: bloccato,                                                 // v12.25
+      modifica: function () { STATO.sdCambia = s.id; STATO.sdFatto = null; STATO.sdSel[s.id] = (s.mio && s.mio.voto) ? s.mio.voto.slice() : []; },
+      annulla: function () { STATO.sdCambia = null; STATO.sdFumetto = null; STATO.sdSel[s.id] = (s.mio && s.mio.voto) ? s.mio.voto.slice() : []; },
       proponi: function (x, bottone) {                                    // v12.2: proposta delle famiglie, scelta subito se c'è posto
         var url = x.fotoUrl; delete x.fotoUrl;                             // v12.9: la foto si vede subito, senza riscaricarla
         return sdAzione('sondaggioProponi', Object.assign({ id: s.id }, x), bottone, function (r) {
@@ -10275,9 +10357,6 @@
         sdAzione('sondaggioVota', { id: s.id, voto: voto }, bottone, function () { STATO.sdFatto = { id: s.id, tipo: tipo }; STATO.sdCambia = null; delete STATO.sdSel[s.id]; window.scrollTo(0, 0); }).catch(function () {});
       }
     }));
-    if (s.mio && s.stato === 'aperto')                                    // v12.13: si esce dal cambio senza cambiare; v12.18: anche matrice
-      box.appendChild(el('div', { classe: 'sd-azioni-giu' }, [el('button', { type: 'button', classe: 'sd-btn2', 'data-azione': 'torna-risultati', testo: 'Torna ai risultati',
-        onclick: function () { STATO.sdCambia = null; delete STATO.sdSel[s.id]; vaiA('sondaggi', true); window.scrollTo(0, 0); } })]));
     return box;
   }
   /** v12.13: chi ha già votato (sondaggio aperto) trova subito come sta andando; il voto si riapre con «Cambia il mio voto». */
@@ -10866,15 +10945,10 @@
         el('button', { type: 'button', classe: 'sd-pill' + (!st.chiuso ? ' giallo' : ''), style: 'border:0;min-height:34px;cursor:pointer', testo: 'APERTO', onclick: function () { st.chiuso = false; disegna(); } }),
         el('button', { type: 'button', classe: 'sd-pill' + (st.chiuso ? ' giallo' : ''), style: 'border:0;min-height:34px;cursor:pointer', testo: 'CHIUSO', onclick: function () { st.chiuso = true; st.fatto = null; disegna(); } })]));
       if (st.chiuso) { corpo.appendChild(sdChiusoVista(s, [])); return; }
-      if (st.fatto) {                                                    // v12.18: dopo il voto i risultati, per tutti i sondaggi
-        var salva = STATO.sdFatto; STATO.sdFatto = { id: s.id, tipo: st.fatto };
-        var v = sdFattoVista(s); STATO.sdFatto = salva;
-        v.querySelectorAll('.sd-azioni-giu').forEach(function (n) { n.remove(); });
-        corpo.appendChild(v);
-        corpo.appendChild(el('div', { classe: 'sd-azioni-giu' }, [el('button', { type: 'button', classe: 'sd-btn2', testo: 'Cambia il voto', onclick: function () { st.fatto = null; disegna(); } })]));
-        return;
-      }
-      corpo.appendChild(sdVoto(s, { anteprima: true, chi: { iniziale: 'E', nome: 'Mamma Elena', sotto: 'mamma di Luca' }, fatto: st.fatto,
+      corpo.appendChild(sdVoto(s, { anteprima: true, chi: { iniziale: 'E', nome: 'Mamma Elena', sotto: 'mamma di Luca' }, fatto: st.modifica ? null : st.fatto,
+        bloccato: function () { return !!s.mio && !st.modifica; },        // v12.25: come per le famiglie, voto bloccato con «Modifica il voto»
+        modifica: function () { st.modifica = true; st.sel = (st.voto || []).slice(); },
+        annulla: function () { st.modifica = false; st.sel = (st.voto || []).slice(); },
         sel: function () { return st.sel; }, setSel: function (v) { st.sel = v; },
         proponi: function (x) {                                            // v12.2: nell'anteprima la proposta resta qui
           st.proposte = st.proposte || [];
@@ -10887,7 +10961,7 @@
           disegna(); return Promise.resolve();
         },
         togliProposta: function (pid) { st.proposte = (st.proposte || []).filter(function (p) { return p.id !== pid; }); st.sel = st.sel.filter(function (k) { return k !== pid && k.indexOf(pid + ':') !== 0; }); disegna(); },
-        invia: function (voto) { st.fatto = !st.inviato ? 'inviato' : !voto.length ? 'ritirato' : sdUguali(voto, st.voto) ? 'confermato' : 'cambiato'; st.inviato = voto.length > 0; st.voto = voto.slice(); velo.scrollTop = 0; disegna(); } }));
+        invia: function (voto) { st.fatto = !st.inviato ? 'inviato' : !voto.length ? 'ritirato' : sdUguali(voto, st.voto) ? 'confermato' : 'cambiato'; st.inviato = voto.length > 0; st.voto = voto.slice(); st.modifica = false; velo.scrollTop = 0; disegna(); } }));
     }
     disegna();
     document.addEventListener('keydown', tasti);
