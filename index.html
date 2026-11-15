@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- pagina 12.21 · 15 novembre 2026: APERTURA ISTANTANEA (decisione di Rossana: il telefono può ricordare l'ultima Home) — il telefono tiene l'ultima risposta di «avvio» (nome, figli, contenuti delle sezioni; mai saldi, documenti, sondaggi o password), legata all'accesso: riaprendo l'app la Home compare subito e lo script controlla dietro (accesso scaduto → login; qualcosa di cambiato → la pagina si ridisegna dov'è). Esci e accesso scaduto la cancellano. Senza rete l'app si apre lo stesso dalla copia. Script 12.13 e sw.js 12.19 invariati. Comprende 12.19 e 12.20 -->
 <!-- pagina 12.20 · 15 novembre 2026: ACCESSO PIÙ VELOCE — «avvio» (apertura dell'app) ed «entra» (password) chiedono allo script di rispondere senza scrivere l'accesso nella scheda Sistema (accessoDopo); l'accesso si conta con la chiamata «segnaAccesso», in parallelo (script 12.13). Con lo script vecchio funziona come prima. Comprende la 12.19 (Home più veloce). sw.js 12.19 invariato -->
 <!-- pagina 12.19 · 15 novembre 2026: HOME PIÙ VELOCE — con l'accesso già fatto, dati della Home (documenti, sondaggi, fondo cassa, visti) e illustrazioni partono subito insieme ad «avvio» (prima dopo); i sondaggi hanno la loro chiamata in parallelo e «documenti» non li calcola più (script 12.12, campo senzaSondaggi); il riquadro Avvisi non aspetta più i sondaggi; il riquadro largo Sondaggi le famiglie e la maestra principale lo vedono subito (gli altri profili docente solo se invitati, come prima); il riquadro «N sondaggi da votare» non aspetta più i documenti. Con lo script 12.11 funziona lo stesso (un po' meno veloce). Serve sw.js 12.19 (illustrazioni salvate sul telefono) -->
 <!-- pagina 12.18 · 15 novembre 2026: SONDAGGI — REGOLA GENERALE per tutti i tipi (anche Sì · Mi adeguo · No, Sì / No, stelle, scelte, numeri): chi ha già votato e riapre un sondaggio trova i risultati parziali (o definitivi se chiuso) e chi manca, mai la schermata del voto; per rivotare tocca «Cambia il mio voto» (e «Torna ai risultati» per uscire). Anche subito dopo l'invio: «Voto inviato!» con i risultati. Statistiche: «Comunicazioni & Moduli» si chiama «Documenti». Script, contenuti e sw.js invariati -->
@@ -2836,7 +2837,7 @@
   };
   Array.prototype.forEach.call(document.querySelectorAll('img[data-img]'), function (i) { i.src = IMMAGINI[i.getAttribute('data-img')] || ''; });
 
-  // ---------- Memoria del telefono (solo la sessione e l'ultima email) ----------
+  // ---------- Memoria del telefono (la sessione, l'ultima email e, dalla v12.21, la copia dell'ultimo avvio: vedi salvaAvvio) ----------
   function leggi(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return k === CHIAVE_TOKEN ? STATO.tokenMem : ''; } }
   function scrivi(k, v) {
     if (k === CHIAVE_TOKEN) STATO.tokenMem = v || '';
@@ -2897,8 +2898,17 @@
 
   function sessioneScaduta() {
     scrivi(CHIAVE_TOKEN, '');
+    togliAvvio();                                                      // v12.21
+    var msg = 'Per sicurezza rifai l\'accesso con la tua password.';
+    if (STATO.sessione && !window.__ANTEPRIMA_SENZA_RICARICA__) {      // v12.21: l'app era già disegnata (anche dalla copia): si riparte puliti
+      if (sessioneScaduta.fatto) return;
+      sessioneScaduta.fatto = true;
+      try { sessionStorage.setItem('app4a_msg', msg); } catch (e) {}
+      location.reload();
+      return;
+    }
     STATO.dati = null;
-    mostraLogin('Per sicurezza rifai l\'accesso con la tua password.');
+    mostraLogin(msg);
   }
 
   Array.prototype.forEach.call(document.querySelectorAll('.occhio'), function (b) {
@@ -3002,6 +3012,7 @@
     // v11.12: chi esce non riceve più le notifiche su questo telefono
     if (leggi(K_NOTIF)) { chiama('notificheSpegni', { fcm: leggi(K_NOTIF) }).catch(function () {}); scrivi(K_NOTIF, ''); scrivi(K_NOTIF_Q, ''); }
     scrivi(CHIAVE_TOKEN, '');
+    togliAvvio();                                                      // v12.21: chi esce non lascia la copia della Home
     if (typeof spegniVista === 'function') spegniVista(true);
     STATO = { dati: null, pagina: 'home', schede: {}, sessione: null, tokenMem: '', sdFotoLocali: {}, sdFotoLink: {}, sdPill: {}, sdRicordati: {}, sdOrdine: {}, sdAperte: {}, sdFumettoVisto: {} };   // v12.6: le cassette dei sondaggi ripartono vuote (prima sparivano: sondaggio aperto dopo Esci = pagina bianca)
     $('contenuto').innerHTML = ''; $('menu').innerHTML = '';
@@ -3091,14 +3102,21 @@
   } else if (leggi(CHIAVE_TOKEN)) {
     precarica();                                                       // v12.19: illustrazioni e dati della Home partono insieme all'accesso
     prechiama('segnaAccesso');                                         // v12.20: l'accesso si conta a parte, così «avvio» risponde prima
-    chiama('avvio', { accessoDopo: true }).then(avvia).catch(function (e) {
-      if (e.codice !== 'SESSIONE') mostraLogin(e.codice === 'RETE' ? e.message : 'Rifai l\'accesso.');
+    var copiaAvvio = avvioSalvato();                                   // v12.21: apertura istantanea dalla copia sul telefono
+    if (copiaAvvio) setTimeout(function () { avvia(copiaAvvio); }, 0);  // appena finito di leggere tutto il codice della pagina
+    chiama('avvio', { accessoDopo: true }).then(function (r) {
+      if (copiaAvvio) avvioVero(r, copiaAvvio); else avvia(r);
+    }).catch(function (e) {
+      if (e.codice === 'SESSIONE') { togliAvvio(); return; }           // chiama ha già riportato al login
+      if (!copiaAvvio) mostraLogin(e.codice === 'RETE' ? e.message : 'Rifai l\'accesso.');   // con la copia si resta nell'app (anche senza rete)
     });
   } else {
-    mostraLogin();
+    var msgPrima = '';                                                 // v12.21: il messaggio dell'accesso scaduto, dopo la ripartenza
+    try { msgPrima = sessionStorage.getItem('app4a_msg') || ''; sessionStorage.removeItem('app4a_msg'); } catch (e) {}
+    if (msgPrima) mostraLogin(msgPrima); else mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.20', SCRIPT_NECESSARIO = '12.13';   // v12.20: accesso più veloce (l'accesso si conta a parte, segnaAccesso); v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.21', SCRIPT_NECESSARIO = '12.13';   // v12.21: apertura istantanea (copia dell'ultimo avvio sul telefono); v12.20: accesso più veloce (l'accesso si conta a parte, segnaAccesso); v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -3145,13 +3163,18 @@
     return x;
   }
   function soloGuardare() { return !!(STATO.sessione && STATO.sessione.preside); }      // v11.24 (n. 71): il preside
-  function avvia(r) {
+  // v12.21: dati della persona e contenuti (da «avvio», da «entra» o dalla copia salvata sul telefono)
+  function datiAvvio(r) {
     STATO.dati = sistemaContenuti(r.contenuti);   // v11.27 (n. 74)
     STATO.versioneScript = r.versione || '';                                            // v11.24: dallo script 11.16
     STATO.sessione = { email: r.utente.email, amministratore: !!r.utente.admin, alunni: r.utente.alunni || [],
       chiave: r.utente.chiave || r.utente.email, mail: r.utente.mail === undefined ? r.utente.email : r.utente.mail, telefono: r.utente.telefono || '',
       primoIngresso: !!r.utente.primoIngresso, nome: r.utente.nome || '', nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '', preside: !!r.utente.preside, sondaggi: !!r.utente.sondaggi };
     STATO.sdVice = !!r.utente.viceSondaggi;                                                   // v12.14: Rossana sa se c'è una rappresentante; sondaggi = profilo Rappresentante   // v11.5: firma della mail del colloquio   // v10.28: nome = primo nome del genitore (saluto del profilo docente); v10.15: password appena ricevuta dalla rappresentante → si apre il profilo
+  }
+  function avvia(r) {
+    salvaAvvio(r);                                                     // v12.21: copia per l'apertura istantanea
+    datiAvvio(r);
     STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null;
     precaricaIll();                                                    // v12.19: illustrazioni della Home (dopo il login con la password)
     var d = caricaDati(false);
@@ -3188,6 +3211,37 @@
     var x = PRIMA; PRIMA = null;
     return x && !VISTA.attiva && x.token === leggi(CHIAVE_TOKEN) ? x : null;
   }
+  // v12.21 (apertura istantanea, decisione di Rossana del 15/11): il telefono ricorda l'ultima risposta di «avvio» (nome, figli,
+  // contenuti delle sezioni; MAI saldi, documenti, sondaggi o password) legata all'accesso. Riaprendo l'app la Home compare subito
+  // da questa copia e lo script controlla dietro: se l'accesso non vale più si torna al login, se qualcosa è cambiato si ridisegna.
+  // Esci, accesso scaduto o un altro accesso la cancellano.
+  // (chiave scritta per intero: questo codice gira prima di arrivare a una riga «var» qui sotto)
+  function salvaAvvio(r) {
+    if (VISTA.attiva || !r || !r.utente || !r.contenuti) return;
+    try { localStorage.setItem('app4a_avvio', JSON.stringify({ token: leggi(CHIAVE_TOKEN), utente: r.utente, contenuti: r.contenuti, versione: r.versione || '' })); } catch (e) {}
+  }
+  function avvioSalvato() {
+    try {
+      var x = JSON.parse(localStorage.getItem('app4a_avvio') || 'null');
+      if (x && x.token && x.token === leggi(CHIAVE_TOKEN) && x.utente && x.contenuti)
+        return { utente: x.utente, contenuti: x.contenuti, versione: x.versione, salvato: true, firma: firmaAvvio(x) };   // firma prima che sistemaContenuti la cambi
+    } catch (e) {}
+    togliAvvio();
+    return null;
+  }
+  function firmaAvvio(r) { return JSON.stringify({ u: r.utente, c: r.contenuti, v: r.versione || '' }); }
+  function togliAvvio() { try { localStorage.removeItem('app4a_avvio'); } catch (e) {} }
+  // la risposta vera di «avvio» dopo l'apertura dalla copia: si salva e, se è diversa, la pagina si ridisegna dov'è
+  function avvioVero(r, prima) {
+    var uguale = firmaAvvio(r) === prima.firma;
+    salvaAvvio(r);
+    if (uguale || VISTA.attiva || !STATO.sessione) return;
+    datiAvvio(r);
+    var tt = titoliTesta();                                            // intestazione come in avviaApp
+    $('titoloApp').textContent = tt.titolo; $('sottotitoloApp').textContent = tt.sotto; $('chipUtente').textContent = STATO.sessione.email; document.title = STATO.dati.titolo;
+    if (occupatoLoSchermo()) STATO.ridisegna = true; else ridisegnaTutto(STATO.pagina);
+  }
+
   // v12.19: i sondaggi per la Home (riquadro «da votare», riquadro Sondaggi dei profili docente) senza aspettare i documenti.
   // Risolve con un oggetto { sondaggi: [...] } come quello di STATO.documenti; con uno script senza l'azione aspetta i documenti.
   function sdListaPronta() {
