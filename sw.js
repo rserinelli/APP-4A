@@ -1,19 +1,24 @@
-// APP "4a primaria" — service worker (v12.2: cambiano il numero e la copia salvata; le notifiche dei sondaggi programmati aprono il messaggio pronto; prima v11.12 e v10.16). v11.12: mostra le notifiche dei colloqui (Firebase) e al tocco apre Ricevimento o la videochiamata.
+// APP "4a primaria" — service worker (v12.19, 15/11/2026: le illustrazioni e le immagini della pagina (.webp, .png, .jpg) si
+// salvano sul telefono: si mostrano subito dalla copia e intanto si scarica quella nuova, così un'immagine cambiata su GitHub arriva
+// all'apertura dopo. Pagina, dati e video come prima. Prima: v12.2: cambiano il numero e la copia salvata; le notifiche dei sondaggi programmati aprono il messaggio pronto; prima v11.12 e v10.16). v11.12: mostra le notifiche dei colloqui (Firebase) e al tocco apre Ricevimento o la videochiamata.
 // Serve a far installare l'app su Android ("Scarica l'app")
 // e ad aprire la pagina anche con poca connessione. Strategia: prima la rete, la copia salvata solo se manca internet.
 // I dati (script Google) e il video NON passano di qui: arrivano sempre dalla rete.
-const CACHE = 'app4a-v12.2';
+const CACHE = 'app4a-v12.19';
+const CACHE_IMG = 'app4a-img';                                     // v12.19: non cambia nome a ogni versione (le immagini restano)
+const ILL_HOME = ['documenti', 'sondaggi', 'megafono', 'cassa', 'calendario', 'libri', 'orario', 'colloqui', 'afterschool', 'divise', 'teatro', 'home'].map(n => n + '.webp');
 const FILE = ['./', 'index.html', 'manifest.webmanifest', 'icona-192.png', 'icona-512.png', 'icona-180.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE)
     .then(c => Promise.all(FILE.map(f => fetch(new Request(f, { cache: 'reload' })).then(r => r.ok ? c.put(f, r) : null).catch(() => null))))
+    .then(() => caches.open(CACHE_IMG)).then(c => Promise.all(ILL_HOME.map(f => fetch(f).then(r => r.ok ? c.put(f, r) : null).catch(() => null))))   // v12.19
     .then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys()
-    .then(k => Promise.all(k.filter(x => x !== CACHE).map(x => caches.delete(x))))
+    .then(k => Promise.all(k.filter(x => x !== CACHE && x !== CACHE_IMG).map(x => caches.delete(x))))
     .then(() => self.clients.claim()));
 });
 
@@ -23,6 +28,14 @@ self.addEventListener('fetch', e => {
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;                         // script Google, font, ecc.: direttamente dalla rete
   if (url.pathname.indexOf('/video/') !== -1) return;                 // il video va dalla rete (Safari)
+  if (/\.(webp|png|jpe?g)$/i.test(url.pathname)) {                   // v12.19: immagini subito dalla copia, aggiornate in sottofondo
+    e.respondWith(caches.open(CACHE_IMG).then(c => c.match(req, { ignoreSearch: true }).then(salvata => {
+      const nuova = fetch(req).then(r => { if (r.ok) c.put(req, r.clone()); return r; });
+      if (salvata) { e.waitUntil(nuova.catch(() => null)); return salvata; }
+      return nuova;
+    })));
+    return;
+  }
   e.respondWith(
     fetch(req).then(r => {
       if (r.ok && (req.mode === 'navigate' || FILE.some(f => url.pathname.endsWith('/' + f.replace('./', ''))))) {

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- pagina 12.19 · 15 novembre 2026: HOME PIÙ VELOCE — con l'accesso già fatto, dati della Home (documenti, sondaggi, fondo cassa, visti) e illustrazioni partono subito insieme ad «avvio» (prima dopo); i sondaggi hanno la loro chiamata in parallelo e «documenti» non li calcola più (script 12.12, campo senzaSondaggi); il riquadro Avvisi non aspetta più i sondaggi; il riquadro largo Sondaggi le famiglie e la maestra principale lo vedono subito (gli altri profili docente solo se invitati, come prima); il riquadro «N sondaggi da votare» non aspetta più i documenti. Con lo script 12.11 funziona lo stesso (un po' meno veloce). Serve sw.js 12.19 (illustrazioni salvate sul telefono) -->
 <!-- pagina 12.18 · 15 novembre 2026: SONDAGGI — REGOLA GENERALE per tutti i tipi (anche Sì · Mi adeguo · No, Sì / No, stelle, scelte, numeri): chi ha già votato e riapre un sondaggio trova i risultati parziali (o definitivi se chiuso) e chi manca, mai la schermata del voto; per rivotare tocca «Cambia il mio voto» (e «Torna ai risultati» per uscire). Anche subito dopo l'invio: «Voto inviato!» con i risultati. Statistiche: «Comunicazioni & Moduli» si chiama «Documenti». Script, contenuti e sw.js invariati -->
 <!-- pagina 12.16 · 14 novembre 2026: SONDAGGI — Sì · Mi adeguo · No (e Sì / No) in UNA SOLA SCHERMATA: matrice con i voti degli altri nei cerchi, la scelta piena (Sì verde, Mi adeguo giallo, No grigio-rosato), la data in testa con cornice blu e nastro «IN TESTA», «Ordina: Per data · Più votate», nomi dietro la freccina, colonna della data compatta, Quanti siete sotto la matrice e «Quanti siete fin qui» per la data in testa (Sì + Mi adeguo · Solo Sì), fumetto «Mi adeguo non vuol dire forse» una volta per apertura. «Se serve» diventa «Mi adeguo» con la spunta tra parentesi. Comprende la 12.15 (classifica 1°–5° e chi manca nei Risultati su WhatsApp). Script, contenuti e sw.js invariati -->
 <!-- pagina 12.13 · 12 novembre 2026: SONDAGGI — chi ha già votato, riaprendo un sondaggio aperto, trova subito «Come sta andando» (la classifica, nei pubblici con i nomi) e chi manca, con «Cambia il mio voto» sotto; la schermata del voto si apre solo toccando quel pulsante (e «Torna ai risultati» per uscire senza cambiare). Anche in Visualizza come. -->
@@ -3085,6 +3086,7 @@
   if (!window.__ANTEPRIMA__ && URL_SCRIPT.indexOf('https://script.google.com/') !== 0) {
     fermo('App non ancora collegata: manca l\'indirizzo dello script (URL_SCRIPT in index.html).');
   } else if (leggi(CHIAVE_TOKEN)) {
+    precarica();                                                       // v12.19: illustrazioni e dati della Home partono insieme all'accesso
     chiama('avvio').then(avvia).catch(function (e) {
       if (e.codice !== 'SESSIONE') mostraLogin(e.codice === 'RETE' ? e.message : 'Rifai l\'accesso.');
     });
@@ -3092,7 +3094,7 @@
     mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.18', SCRIPT_NECESSARIO = '12.11';   // v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.19', SCRIPT_NECESSARIO = '12.12';   // v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -3147,12 +3149,53 @@
       primoIngresso: !!r.utente.primoIngresso, nome: r.utente.nome || '', nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '', preside: !!r.utente.preside, sondaggi: !!r.utente.sondaggi };
     STATO.sdVice = !!r.utente.viceSondaggi;                                                   // v12.14: Rossana sa se c'è una rappresentante; sondaggi = profilo Rappresentante   // v11.5: firma della mail del colloquio   // v10.28: nome = primo nome del genitore (saluto del profilo docente); v10.15: password appena ricevuta dalla rappresentante → si apre il profilo
     STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null;
+    precaricaIll();                                                    // v12.19: illustrazioni della Home (dopo il login con la password)
     var d = caricaDati(false);
-    STATO.documenti = d.documenti; STATO.miei = d.miei; STATO.inArrivo = d.inArrivo;
+    usaCarico(d);                                                      // v12.19
     caricaLibri();                                                     // v10.14: elenco dei libri
     STATO.documenti.then(function (dd) { try { rinnovaNotifiche(colloquiDi(dd)); } catch (e) {} });   // v11.12: codice del telefono aggiornato
     aggiornaContatori();
     avviaApp();
+  }
+
+  // v12.19 (Home più veloce): con l'accesso già fatto, illustrazioni e dati della Home partono SUBITO, insieme ad «avvio» (prima
+  // aspettavano la sua risposta). Le richieste anticipate non toccano il login: se lo script risponde con un errore (accesso scaduto,
+  // rete) si rifanno normali in caricaDati. Valgono una volta sola e solo con lo stesso accesso (non in Visualizza come).
+  // (precarica parte prima di arrivare a queste righe: niente valori iniziali qui, altrimenti si cancellerebbero le richieste già partite)
+  var PRIMA;
+  function prechiama(azione, dati) {
+    var corpo = { azione: azione, token: leggi(CHIAVE_TOKEN) };
+    for (var k in (dati || {})) corpo[k] = dati[k];
+    if (window.__ANTEPRIMA__) return Promise.resolve(window.__ANTEPRIMA__(corpo)).catch(function () { return null; });
+    return fetch(URL_SCRIPT, { method: 'POST', body: JSON.stringify(corpo), redirect: 'follow' })
+      .then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+  }
+  function precarica() {
+    precaricaIll();
+    if (VISTA.attiva || !leggi(CHIAVE_TOKEN)) return;
+    PRIMA = { token: leggi(CHIAVE_TOKEN), documenti: prechiama('documenti', { senzaSondaggi: true }), sondaggi: prechiama('sondaggi'),
+      visti: prechiama('visti'), cassa: prechiama('cassa') };
+  }
+  function precaricaIll() {
+    if (!precarica.ill) precarica.ill = ['documenti', 'sondaggi', 'megafono', 'cassa', 'calendario', 'libri', 'orario', 'colloqui', 'afterschool', 'divise', 'teatro', 'home']
+      .map(function (n) { var i = new Image(); i.decoding = 'async'; i.src = n + '.webp'; return i; });   // tenute qui finché la Home le usa
+  }
+  function prendiPrima() {
+    var x = PRIMA; PRIMA = null;
+    return x && !VISTA.attiva && x.token === leggi(CHIAVE_TOKEN) ? x : null;
+  }
+  // v12.19: i sondaggi per la Home (riquadro «da votare», riquadro Sondaggi dei profili docente) senza aspettare i documenti.
+  // Risolve con un oggetto { sondaggi: [...] } come quello di STATO.documenti; con uno script senza l'azione aspetta i documenti.
+  function sdListaPronta() {
+    var p = STATO.sondaggiP;
+    if (!p) return STATO.documenti;
+    return p.then(function (l) { return l && STATO.sdLista ? { sondaggi: STATO.sdLista } : STATO.documenti; });
+  }
+  // v12.19: i documenti senza aspettare i sondaggi (riquadro Avvisi), finché STATO.documenti è quello di caricaDati
+  function docPronti() { return STATO.docSolo && STATO.docSoloDi === STATO.documenti ? STATO.docSolo : STATO.documenti; }
+  function usaCarico(d) {                                              // v12.19: STATO dai dati appena chiesti a caricaDati
+    STATO.documenti = d.documenti; STATO.miei = d.miei; STATO.inArrivo = d.inArrivo;
+    STATO.docSolo = d.docSolo; STATO.docSoloDi = d.documenti; STATO.sondaggiP = d.sondaggi;
   }
 
   // Documenti, appuntamenti, fondo cassa e "visti" arrivano in parallelo: le pagine si aprono subito.
@@ -3160,19 +3203,42 @@
   // Se lo script non lo sa ancora fare, i bollini tornano al vecchio criterio dei giorni.
   function caricaDati(ricarica) {
     STATO.caricato = Date.now();
-    var visti = chiama('visti').then(function (v) {
+    var prima = ricarica ? null : prendiPrima();                       // v12.19: le richieste partite insieme ad «avvio»
+    var x = function (azione, dati) {
+      var p = prima && prima[azione];
+      if (!p) return chiama(azione, dati);
+      return p.then(function (r) {                                     // rete o accesso scaduto: si rifà normale (il login lo gestisce chiama)
+        if (!r || r.errore === 'SESSIONE') return chiama(azione, dati);
+        if (r.errore) { var e = new Error(r.messaggio || 'Operazione non riuscita'); e.codice = r.errore; throw e; }   // come chiama
+        return r;
+      });
+    };
+    var gen = STATO.sdGen = (STATO.sdGen || 0) + 1;
+    // v12.19: i sondaggi con la loro chiamata, in parallelo (prima arrivavano dentro «documenti», che così era la più lenta)
+    var sond = x('sondaggi').then(function (r) {
+      var l = r && Array.isArray(r.sondaggi) ? r.sondaggi : null;
+      if (l && gen === STATO.sdGen) STATO.sdLista = l;
+      return l;
+    }).catch(function () { return null; });
+    var visti = x('visti').then(function (v) {
       var d = {};
       (v.documenti || []).forEach(function (id) { d[id] = 1; });
       if (STATO.visti) for (var id in STATO.visti.documenti) d[id] = 1;     // aperti qui un attimo fa
       STATO.visti = { documenti: d, calendario: v.calendario || '', divise: v.divise || '' };
     }).catch(function () { if (!ricarica) STATO.visti = null; });
+    var docSolo = Promise.all([x('documenti', { senzaSondaggi: true }), visti]).then(function (r) {   // v12.19: senzaSondaggi (script 12.12)
+      if (r[0] && r[0].novita !== undefined) STATO.novita = r[0].novita;   // v11.7: numero delle novità di questi dati
+      if (r[0] && !r[0].errore) STATO.datiDocumenti = r[0];               // v11.27: documenti degli appuntamenti e degli avvisi
+      return r[0];
+    }).catch(function () { return { errore: 'non disponibile' }; });
     return {
-      documenti: Promise.all([chiama('documenti'), visti]).then(function (r) {
-        if (r[0] && r[0].novita !== undefined) STATO.novita = r[0].novita;   // v11.7: numero delle novità di questi dati
-        if (r[0] && !r[0].errore) STATO.datiDocumenti = r[0];               // v11.27: documenti degli appuntamenti e degli avvisi
-        return r[0];
-      }).catch(function () { return { errore: 'non disponibile' }; }),
-      miei: chiama('cassa').catch(function () { return { errore: 'non disponibile' }; }),
+      documenti: Promise.all([docSolo, sond]).then(function (r) {        // v12.19: documenti + sondaggi (con lo script vecchio arrivano già dentro)
+        var d = r[0];
+        if (d && !d.errore && r[1]) d.sondaggi = r[1];
+        return d;
+      }),
+      docSolo: docSolo, sondaggi: sond,
+      miei: x('cassa').catch(function () { return { errore: 'non disponibile' }; }),
       // v10.12: file nella cartella IN ARRIVO (solo la rappresentante); null = funzione non disponibile
       inArrivo: STATO.sessione && STATO.sessione.amministratore
         ? chiama('inArrivo').then(function (r) { return Array.isArray(r.file) ? r.file : null; }, function () { return null; })
@@ -3196,7 +3262,7 @@
       var cambiato = JSON.stringify(r[0]) !== JSON.stringify(r[2]) || JSON.stringify(r[1]) !== JSON.stringify(r[3])
         || JSON.stringify(r[4]) !== JSON.stringify(r[5])
         || primaVisti !== (STATO.visti ? Object.keys(STATO.visti.documenti).length : -1);
-      STATO.documenti = nuovi.documenti; STATO.miei = nuovi.miei; STATO.inArrivo = nuovi.inArrivo; STATO.casse = {};
+      usaCarico(nuovi); STATO.casse = {};                                   // v12.19: anche docSolo e sondaggiP
       if (r[2] && r[2].orario) STATO.orarioSalvato = null;                       // v11.23: da qui vale l'orario riletto
       aggiornaContatori();
       if (cambiato && !PAGINE_FISSE[STATO.pagina]) { if (occupatoLoSchermo()) STATO.ridisegna = true; else vaiA(STATO.pagina, true); }
@@ -3425,7 +3491,8 @@
     preside: { e: '🏫', n: 'Preside' }, prova: { e: '🧪', n: 'Maestra di prova' }, rappresentante: { e: '🗳️', n: 'Rappresentante' } };   // v12.14   // v11.24 (n. 71)
   function fotografia() {
     return { sessione: STATO.sessione, dati: STATO.dati, visti: STATO.visti, calPrima: STATO.calPrima, divPrima: STATO.divPrima,
-      documenti: STATO.documenti, miei: STATO.miei, inArrivo: STATO.inArrivo, casse: STATO.casse, pagina: STATO.pagina, caricato: STATO.caricato, novita: STATO.novita };
+      documenti: STATO.documenti, miei: STATO.miei, inArrivo: STATO.inArrivo, casse: STATO.casse, pagina: STATO.pagina, caricato: STATO.caricato, novita: STATO.novita,
+      docSolo: STATO.docSolo, docSoloDi: STATO.docSoloDi, sondaggiP: STATO.sondaggiP, sdLista: STATO.sdLista, sdGen: (STATO.sdGen || 0) + 1000 };   // v12.19
   }
   function ripristina(f) { for (var k in f) STATO[k] = f[k]; }
   function etichettaVista() {
@@ -3453,8 +3520,9 @@
         primoIngresso: false, vista: r.utente.vista || scelta.tipo, nomeIntero: r.utente.nomeIntero || '', ruolo: r.utente.ruolo || '', nome: r.utente.nome || '', preside: !!r.utente.preside, sondaggi: !!r.utente.sondaggi };   // v11.24: preside; v12.14: rappresentante   // v11.10: nome del saluto
       if (r.utente.manca) toast('Email della maestra non trovata nel foglio accessi: controlla “accessi” in Contenuti.gs');
       STATO.visti = null; STATO.calPrima = null; STATO.divPrima = null; STATO.casse = {};
+      STATO.sdLista = null;                                              // v12.19: i sondaggi della persona mostrata, non quelli di Rossana
       var d = caricaDati(false);
-      STATO.documenti = d.documenti; STATO.miei = d.miei; STATO.inArrivo = d.inArrivo;
+      usaCarico(d);                                                      // v12.19
       ridisegnaTutto(dove);
       window.scrollTo(0, 0);
     }).catch(function (e) {
@@ -4213,9 +4281,10 @@
     if (doc) larghe.appendChild(doc);
     larghe.appendChild(sond);
     // i profili docente vedono Sondaggi solo se sono invitati a un sondaggio (Votano anche le maestre); con lo script vecchio solo Rossana
-    if (!STATO.sessione.amministratore) {
+    // v12.19: famiglie e maestra principale lo vedono subito (prima aspettavano la risposta più lenta); gli altri profili docente aspettano la lista
+    if (!STATO.sessione.amministratore && soloSenzaAlunno() && !maestraPrincipale()) {
       sond.hidden = true; sond.style.display = 'none';
-      STATO.documenti.then(function (d) {
+      sdListaPronta().then(function (d) {
         var l = sondaggiDi(d);
         var si = l && (!soloSenzaAlunno() || l.length || maestraPrincipale());   // v12.9: la maestra principale sempre
         if (si) { sond.hidden = false; sond.style.display = ''; if (doc) doc.style.gridColumn = ''; }
@@ -9507,6 +9576,7 @@
     if (!r || !Array.isArray(r.sondaggi)) return Promise.resolve();
     return STATO.documenti.then(function (d) {
       if (d && !d.errore) d.sondaggi = r.sondaggi;
+      STATO.sdLista = r.sondaggi; STATO.sdGen = (STATO.sdGen || 0) + 1;   // v12.19: anche la lista della Home; una lettura più vecchia ancora in viaggio non la sovrascrive
       aggiornaContatori();
       if (STATO.pagina === 'sondaggi' || STATO.pagina === 'home') vaiA(STATO.pagina, true);
     });
@@ -9983,7 +10053,7 @@
   // ---------- Home: riquadro «1 sondaggio da votare» ----------
   function sdBloccoHome() {
     var box = el('div');
-    STATO.documenti.then(function (dati) {
+    sdListaPronta().then(function (dati) {                              // v12.19: senza aspettare i documenti
       var lista = (sondaggiDi(dati) || []).filter(function (s) { return s.stato === 'aperto'; });
       box.innerHTML = '';
       if (!lista.length) return;
@@ -10896,7 +10966,7 @@
       var admin = STATO.sessione.amministratore;
       var titolo = b.titolo || 'Avvisi';
       var box = el('div');
-      Promise.all([STATO.documenti, STATO.inArrivo || Promise.resolve(null)]).then(function (r) {
+      Promise.all([docPronti(), STATO.inArrivo || Promise.resolve(null)]).then(function (r) {   // v12.19: senza aspettare i sondaggi
         var tutti = avvisiDi(r[0]), arrivo = r[1];
         var cerca = STATO.avvisoDaMostrare; STATO.avvisoDaMostrare = null;
         var festa = compleanniDiOggi(r[0]);                                    // v10.24: avviso festoso del giorno, dal calendario
