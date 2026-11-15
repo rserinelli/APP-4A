@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<!-- pagina 12.22 · 15 novembre 2026: SONDAGGI, la schermata del voto non torna più in cima a ogni tocco (date, Quanti siete, stelle…). Comprende la 12.21 —
+<!-- pagina 12.23 · 15 novembre 2026: SONDAGGI, LA DISTINTA sotto Quanti siete (famiglia per famiglia, solo pubblici; serve lo script 12.14) e FRECCETTA dei nomi dorata e più visibile. Comprende la 12.22 —
+     pagina 12.22 · 15 novembre 2026: SONDAGGI, la schermata del voto non torna più in cima a ogni tocco (date, Quanti siete, stelle…). Comprende la 12.21 —
      pagina 12.21 · 15 novembre 2026: APERTURA ISTANTANEA (decisione di Rossana: il telefono può ricordare l'ultima Home) — il telefono tiene l'ultima risposta di «avvio» (nome, figli, contenuti delle sezioni; mai saldi, documenti, sondaggi o password), legata all'accesso: riaprendo l'app la Home compare subito e lo script controlla dietro (accesso scaduto → login; qualcosa di cambiato → la pagina si ridisegna dov'è). Esci e accesso scaduto la cancellano. Senza rete l'app si apre lo stesso dalla copia. Script 12.13 e sw.js 12.19 invariati. Comprende 12.19 e 12.20 -->
 <!-- pagina 12.20 · 15 novembre 2026: ACCESSO PIÙ VELOCE — «avvio» (apertura dell'app) ed «entra» (password) chiedono allo script di rispondere senza scrivere l'accesso nella scheda Sistema (accessoDopo); l'accesso si conta con la chiamata «segnaAccesso», in parallelo (script 12.13). Con lo script vecchio funziona come prima. Comprende la 12.19 (Home più veloce). sw.js 12.19 invariato -->
 <!-- pagina 12.19 · 15 novembre 2026: HOME PIÙ VELOCE — con l'accesso già fatto, dati della Home (documenti, sondaggi, fondo cassa, visti) e illustrazioni partono subito insieme ad «avvio» (prima dopo); i sondaggi hanno la loro chiamata in parallelo e «documenti» non li calcola più (script 12.12, campo senzaSondaggi); il riquadro Avvisi non aspetta più i sondaggi; il riquadro largo Sondaggi le famiglie e la maestra principale lo vedono subito (gli altri profili docente solo se invitati, come prima); il riquadro «N sondaggi da votare» non aspetta più i documenti. Con lo script 12.11 funziona lo stesso (un po' meno veloce). Serve sw.js 12.19 (illustrazioni salvate sul telefono) -->
@@ -2514,8 +2515,14 @@
   .sd-nc { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: #eef3f8; color: #15243b; font-size: 17px; font-weight: 900; }
   .sd-nc.zero { color: #9aa8b8; }
   .sd-nc.si.mio { background: #1e9e57; color: #fff; } .sd-nc.forse.mio { background: #FDCA0D; color: #1c4587; } .sd-nc.no.mio { background: #8c7b7b; color: #fff; }
-  .sd-chev { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 1.5px solid #78c5f1; border-radius: 50%; background: #fff; color: #1c4587; cursor: pointer; }
+  .sd-chev { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 2px solid #c99a00; border-radius: 50%; background: #fdca0d; color: #1c4587; cursor: pointer; box-shadow: 0 2px 5px rgba(28,69,135,.28); }   /* v12.23: freccetta dorata piena, si vede che si tocca */
+  .sd-chev svg { width: 18px; height: 18px; stroke-width: 3.4; }
   .sd-chev svg { transition: transform .15s; }
+  .sd-distinta { margin-top: 10px; border-top: 1px solid #e3ecf7; }   /* v12.23: chi viene, famiglia per famiglia */
+  .sd-dist-riga { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 7px 2px; border-bottom: 1px solid #eef3fa; font-size: 14px; }
+  .sd-dist-riga b { color: #1c4587; min-width: 0; overflow-wrap: anywhere; }
+  .sd-dist-riga span { flex: none; color: #4a5a72; white-space: nowrap; }
+  .sd-dist-riga.mio { background: #fff6d6; border-radius: 8px; padding-left: 8px; padding-right: 8px; border-bottom-color: transparent; }
   .sd-chev.su { background: #1c4587; border-color: #1c4587; color: #fff; }
   .sd-chev.su svg { transform: rotate(180deg); }
   .sd-tab-sotto { min-width: 0; }
@@ -3117,7 +3124,7 @@
     if (msgPrima) mostraLogin(msgPrima); else mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.22', SCRIPT_NECESSARIO = '12.13';   // v12.21: apertura istantanea (copia dell'ultimo avvio sul telefono); v12.20: accesso più veloce (l'accesso si conta a parte, segnaAccesso); v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.23', SCRIPT_NECESSARIO = '12.14';   // v12.21: apertura istantanea (copia dell'ultimo avvio sul telefono); v12.20: accesso più veloce (l'accesso si conta a parte, segnaAccesso); v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -9866,8 +9873,24 @@
     });
     return wrap;
   }
+  /** v12.23: la distinta sotto Quanti siete (solo pubblici; script 12.14): «Adele · 2 adulti · 1 bambino», la propria riga dorata.
+   *  idData + pill: con le date solo le famiglie che entrano in quel conto. */
+  function sdDistinta(s, idData, pill) {
+    if (!Array.isArray(s.distinta)) return null;
+    var voci = (sdStrato(s, 'quanti') || {}).voci || [], io = s.io ? s.io.k : null;
+    var l = s.distinta.filter(function (x) { return idData == null || (x.d && (x.d[idData] || []).indexOf(pill) >= 0); });
+    if (!l.length || !voci.length) return null;
+    var una = function (nome, n) { var t = String(nome || '').toLowerCase(); return n === 1 ? t.replace(/i$/, 'o').replace(/e$/, 'a') : t; };
+    l = l.slice().sort(function (a, b) { return a.k === io ? -1 : b.k === io ? 1 : String(a.nome).localeCompare(String(b.nome), 'it'); });
+    return el('div', { classe: 'sd-distinta', 'data-distinta': String(l.length) }, l.map(function (x) {
+      var mio = x.k === io;
+      return el('div', { classe: 'sd-dist-riga' + (mio ? ' mio' : ''), 'data-chi': x.nome }, [
+        el('b', { testo: x.nome + (mio ? ' · tu' : '') }),
+        el('span', { testo: voci.filter(function (v) { return x.n && x.n[v.id]; }).map(function (v) { return x.n[v.id] + ' ' + una(v.nome, x.n[v.id]); }).join(' · ') })]);
+    }));
+  }
   /** v12.16: «Quanti siete fin qui» (o «Quanti siete» a sondaggio chiuso) per la data in testa, con le pillole Sì + Mi adeguo · Solo Sì. */
-  function sdQuantiTesta(s, m, qd, c, chiuso) {
+  function sdQuantiTesta(s, m, qd, c, chiuso, conDistinta) {
     var holder = el('div', { classe: 'sd-qt-box' });
     function riempi() {
       holder.innerHTML = '';
@@ -9883,7 +9906,8 @@
         m.modo === 'perData' && m.tipo !== 'sino' ? el('div', { classe: 'sd-qt-pill', role: 'group', 'aria-label': 'Chi contare' }, SD_PILLOLE.map(function (p) {
           return el('button', { type: 'button', classe: p[0] === pill ? 'on' : '', 'data-pill': p[0], 'aria-pressed': p[0] === pill ? 'true' : 'false',
             onclick: function () { STATO.sdPill[s.id] = p[0]; riempi(); } }, [p[1]]); })) : null,
-        el('div', { classe: 'sd-qt-num' }, caselle)]);
+        el('div', { classe: 'sd-qt-num' }, caselle),
+        conDistinta ? sdDistinta(s, testa.id, pill) : null]);         // v12.23
       holder.appendChild(card);
     }
     riempi();
@@ -9928,6 +9952,7 @@
             el('div', { classe: 'sd-traccia' }, [el('i', { style: 'width:' + (mx ? Math.round(n / mx * 100) : 0) + '%;background:#1c4587' })])]));
         });
         if (voci.length > 1) card.appendChild(el('div', { classe: 'sd-tutti piccolo', 'data-quanti-tot': String(tot) }, ['In tutto ' + tot]));
+        var dist = sdDistinta(s, null); if (dist) card.appendChild(dist);   // v12.23
         return;
       }
       if (q.tipo === 'stelle') {
@@ -9943,7 +9968,7 @@
       }
       card.appendChild(sdCommentiBox(s, !!opz.admin));
     });
-    if (qdData) card.appendChild(sdQuantiTesta(s, princ.m, s.quantiDate, c, !!opz.chiuso));   // v12.16: Quanti siete per la data in testa
+    if (qdData) card.appendChild(sdQuantiTesta(s, princ.m, s.quantiDate, c, !!opz.chiuso, true));   // v12.16: Quanti siete per la data in testa; v12.23: con la distinta
     return card;
   }
   function sdRisScelta(card, s, m, opz, mio) {
