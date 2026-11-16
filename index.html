@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- pagina 12.27 · 16 novembre 2026: SONDAGGI, le date sempre in ordine di giorno e ora (anche quelle proposte dalle famiglie, che prima finivano in fondo), nel voto, nei risultati, in «Tutti insieme», su WhatsApp e nella torta quando si salva. Script, contenuti e sw.js invariati -->
 <!-- pagina 12.26 · 15 novembre 2026: SONDAGGI, «TUTTI INSIEME» (tela «Sondaggi: tabella «Tutti insieme» (idea da Doodle)», scelta B di Rossana): in fondo ai risultati, per tutti i tipi di sondaggio, una tabella con una riga per bambino e una colonna per ogni risposta (date, risposte scritte, foto, stelle), Totale, Persone (Quanti siete), chi non ha votato; chiusa di base, «Mostra tutti insieme» / «Nascondi tutti insieme»; toccando una colonna le righe si riordinano. Solo dove si vede chi ha votato cosa (famiglie: pubblici; Rossana: pubblici e riservati; mai negli anonimi). Tolti i nomi sotto ogni risposta («Chi ha votato» sotto le date, nomi sotto le barre e le stelle): ora stanno nella tabella. Script, contenuti e sw.js invariati -->
 <!-- pagina 12.25 · 15 novembre 2026: SONDAGGI, UNA SOLA SCHERMATA in stile Calendario per tutti i sondaggi (tela «Sondaggi: voto e risultati in stile Calendario», versione 2). Sì · Mi adeguo · No e Sì / No: foglietto della data largo e pulsanti con la parola; i voti degli altri ACCANTO ai pulsanti (numero e barretta), non dentro. Chi ha già votato trova il suo voto BLOCCATO col lucchetto: «Modifica il voto» nel riquadro dorato lo sblocca lì (niente cambio di schermata), «Annulla, tengo il voto di prima», «Salva il nuovo voto». Niente più «Cambia il mio voto» / «Torna ai risultati». Script, contenuti e sw.js invariati -->
 <!-- pagina 12.24 · 15 novembre 2026: SONDAGGI, chi ha già votato vede in cima il TITOLO grande, poi «Hai già votato» con il pulsante «Cambia il mio voto», poi «RISULTATI PARZIALI» e chi manca. Comprende la
@@ -3258,7 +3259,7 @@
     if (msgPrima) mostraLogin(msgPrima); else mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.26', SCRIPT_NECESSARIO = '12.14';   // v12.26: «Tutti insieme» in fondo ai risultati dei sondaggi; v12.21: apertura istantanea (copia dell'ultimo avvio sul telefono); v12.20: accesso più veloce (l'accesso si conta a parte, segnaAccesso); v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.27', SCRIPT_NECESSARIO = '12.14';   // v12.27: nei sondaggi le date in ordine di giorno e ora (anche le proposte delle famiglie); v12.26: «Tutti insieme» in fondo ai risultati dei sondaggi; v12.21: apertura istantanea (copia dell'ultimo avvio sul telefono); v12.20: accesso più veloce (l'accesso si conta a parte, segnaAccesso); v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -9332,6 +9333,7 @@
     }
     if (date.length) {
       date = date.concat(prop.filter(function (p) { return p.data; }).map(function (p) { return { id: p.id, data: p.data, dalle: p.dalle, prop: p }; }));
+      date = sdInOrdineDiData(date);                                     // v12.27: date (anche quelle proposte dalle famiglie) in ordine di giorno e ora
       if (scelta) {
         m.modo = 'lista';
         m.voci = date.map(function (d) { return { k: d.id, nome: sdDataLabel(d), prop: d.prop || null, d: d }; });
@@ -9357,6 +9359,11 @@
       m.proponi = '';
     }
     return m;
+  }
+  /** v12.27: le date in ordine di giorno e ora (a pari giorno prima quella senza ora); a parità resta l'ordine di prima. */
+  function sdInOrdineDiData(lista) {
+    return lista.map(function (d, i) { return { d: d, i: i, k: String(d.data || '') + ' ' + String(d.dalle || '') }; })
+      .sort(function (a, b) { return a.k < b.k ? -1 : a.k > b.k ? 1 : a.i - b.i; }).map(function (x) { return x.d; });
   }
   /** v12.4: ordine casuale ma fisso per quella famiglia (la prima della lista non è avvantaggiata). */
   function sdMescola(lista, seme) {
@@ -10931,7 +10938,7 @@
     return { titolo: e.titolo, livello: e.livello, risultati: e.risultati, chiude: e.chiude, cambia: e.cambia, maestre: e.maestre, esce: e.programma ? e.esce : '',
       strati: e.strati.map(function (x) {
         if (x.tipo === 'quanti') return { tipo: 'quanti', titolo: x.titolo, voci: x.voci.map(function (v) { return { id: v.id, nome: v.nome }; }) };   // v12.2
-        if (x.tipo === 'date') return { tipo: 'date', titolo: x.titolo, date: x.date.filter(function (d) { return d.data; }).map(function (d) { return { id: d.id, data: d.data, dalle: d.dalle || '' }; }) };
+        if (x.tipo === 'date') return { tipo: 'date', titolo: x.titolo, date: sdInOrdineDiData(x.date.filter(function (d) { return d.data; }).map(function (d) { return { id: d.id, data: d.data, dalle: d.dalle || '' }; })) };   // v12.27: salvate in ordine di data
         if (x.tipo === 'una' || x.tipo === 'piu' || x.tipo === 'punti') return { tipo: x.tipo, titolo: x.titolo, max: x.tipo === 'piu' ? (x.max || 0) : 0,
           risposte: haDate && x.tipo !== 'punti' ? [] : x.risposte.map(function (r) { return { id: r.id, testo: r.testo, sotto: r.sotto || '', foto: x.foto ? r.foto || '' : '' }; }) };
         if (x.tipo === 'proposte') return { tipo: 'proposte', titolo: x.titolo, approvo: !!x.approvo };   // v12.4
