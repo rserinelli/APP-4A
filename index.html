@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<!-- pagina 12.29 · 16 novembre 2026: SONDAGGI, «TUTTI INSIEME» CON I TOTALI IN ALTO (Rossana): le righe Totale (Stelle) e Persone subito sotto le risposte, poi la riga blu e la distinta per alunno. Comprende la 12.28 (mai caricata). Serve lo script 12.15. Contenuti e sw.js invariati -->
+<!-- pagina 12.28 · 16 novembre 2026: STATISTICHE, «TUTTI INSIEME» DEI SONDAGGI A PARTE (Rossana: «quanto viene utilizzata la tabella del tutto insieme, come statistica a parte»): aprendo «Mostra tutti insieme» la pagina lo dice allo script (azione tuttiInsieme; non in Visualizza come né nell'Anteprima della torta); in Gestione accessi → Statistiche, sotto «Sezioni più usate», il riquadro «Tutti insieme» con le aperture, le famiglie (su quelle che aprono i Sondaggi), le maestre e gli ultimi mesi. Serve lo script 12.15. Contenuti e sw.js invariati -->
 <!-- pagina 12.27 · 16 novembre 2026: SONDAGGI, le date sempre in ordine di giorno e ora (anche quelle proposte dalle famiglie, che prima finivano in fondo), nel voto, nei risultati, in «Tutti insieme», su WhatsApp e nella torta quando si salva. Script, contenuti e sw.js invariati -->
 <!-- pagina 12.26 · 15 novembre 2026: SONDAGGI, «TUTTI INSIEME» (tela «Sondaggi: tabella «Tutti insieme» (idea da Doodle)», scelta B di Rossana): in fondo ai risultati, per tutti i tipi di sondaggio, una tabella con una riga per bambino e una colonna per ogni risposta (date, risposte scritte, foto, stelle), Totale, Persone (Quanti siete), chi non ha votato; chiusa di base, «Mostra tutti insieme» / «Nascondi tutti insieme»; toccando una colonna le righe si riordinano. Solo dove si vede chi ha votato cosa (famiglie: pubblici; Rossana: pubblici e riservati; mai negli anonimi). Tolti i nomi sotto ogni risposta («Chi ha votato» sotto le date, nomi sotto le barre e le stelle): ora stanno nella tabella. Script, contenuti e sw.js invariati -->
 <!-- pagina 12.25 · 15 novembre 2026: SONDAGGI, UNA SOLA SCHERMATA in stile Calendario per tutti i sondaggi (tela «Sondaggi: voto e risultati in stile Calendario», versione 2). Sì · Mi adeguo · No e Sì / No: foglietto della data largo e pulsanti con la parola; i voti degli altri ACCANTO ai pulsanti (numero e barretta), non dentro. Chi ha già votato trova il suo voto BLOCCATO col lucchetto: «Modifica il voto» nel riquadro dorato lo sblocca lì (niente cambio di schermata), «Annulla, tengo il voto di prima», «Salva il nuovo voto». Niente più «Cambia il mio voto» / «Torna ai risultati». Script, contenuti e sw.js invariati -->
@@ -1452,6 +1454,20 @@
   .ga-mesi-nomi { display: flex; gap: 10px; padding: 4px 4px 0; }
   .ga-mesi-nomi span { flex: 1; min-width: 0; text-align: center; font-size: 12.5px; font-weight: 700; color: var(--muted); }
   .ga-tend { margin: 10px 0 0; font-size: 13px; font-weight: 700; color: #1e6b3d; }
+  /* v12.28: «Tutti insieme» dei sondaggi, statistica a parte */
+  .ga-ti { padding-bottom: 14px; }
+  .ga-ti .ga-h3 { display: flex; align-items: center; gap: 8px; }
+  .ga-ti .ga-h3 .ico { flex: none; display: inline-flex; color: #1f5f99; }
+  .ga-ti-num { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 10px; margin: 4px 0 8px; }
+  .ga-ti-num .t { min-width: 0; padding: 10px 12px; border-radius: 12px; background: #eaf4fc; }
+  .ga-ti-num b { display: block; font-size: 26px; line-height: 1.1; font-weight: 900; color: #1c4587; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ga-ti-num small { display: block; font-size: 12.5px; font-weight: 700; color: var(--muted); overflow-wrap: anywhere; }
+  .ga-ti-num .ga-bar { margin-top: 6px; }
+  .ga-ti-num .ga-bar i { background: #1f5f99; }
+  .ga-ti.zero .ga-ti-num b { color: #7a8798; }
+  .ga-ti-su { margin: 0 0 12px; font-size: 12px; color: var(--muted); }
+  .ga-ti .ga-mesi { height: 96px; }
+  .ga-ti .ga-mesi .col.ora i { background: #1f5f99; }
   .ga-tend.cala { color: var(--danger); }
   .gestione > .ga-stat:first-of-type { margin-top: 0; }
   .ga-voce { display: block; width: 100%; padding: 12px 0; border: 0; border-top: 1px solid var(--line); background: none; font: inherit; color: var(--ink); text-align: left; cursor: pointer; }
@@ -2598,7 +2614,8 @@
   .sd-ti-c.st { width: auto; min-width: 38px; height: 28px; padding: 0 6px; border-radius: 999px; background: #fff4d4; border: 1px solid #FDCA0D; color: #1c4587; font-size: 13px; }
   .sd-ti-c.st.cinque { background: #FDCA0D; }
   .sd-ti-c.zero { width: auto; height: auto; color: #8a97a5; font-size: 14px; }
-  .sd-ti-g.tot { border-top: 2px solid #1c4587; }
+  .sd-ti-g.tot { border-top: 1px solid #b9d3e8; }
+  .sd-ti-g.fine-tot { border-bottom: 2px solid #1c4587; }   /* v12.29: totali in alto, poi la distinta per alunno */
   .sd-ti-g.tot, .sd-ti-g.tot .sd-ti-nome, .sd-ti-g.tot .sd-ti-x { background: #f3faff; }
   .sd-ti-g.pers, .sd-ti-g.pers .sd-ti-nome, .sd-ti-g.pers .sd-ti-x { background: #fff6d6; }
   .sd-ti-g.pers { border-top: 1px solid #FDCA0D; }
@@ -2968,7 +2985,7 @@
   var CHIAVE_TOKEN = 'app4a_sessione', CHIAVE_EMAIL = 'app4a_email';
   // v10.24: Visualizza come. attiva = la pagina mostra la vista scelta; admin / persona = dati messi da parte per passare dall'una all'altra
   var VISTA = { attiva: false, scelta: null, admin: null, persona: null };
-  var VISTA_SALTA = { visto: 1, pagina: 1, visita: 1, passwordConfermata: 1, colloquioVisto: 1, notificheAttiva: 1, notificheSpegni: 1 };   // v11.12: notifiche   // v11.6
+  var VISTA_SALTA = { tuttiInsieme: 1, visto: 1, pagina: 1, visita: 1, passwordConfermata: 1, colloquioVisto: 1, notificheAttiva: 1, notificheSpegni: 1 };   // v11.12: notifiche   // v11.6
   var STATO = { dati: null, pagina: 'home', schede: {}, sessione: null, tokenMem: '' };
   var $ = function (id) { return document.getElementById(id); };
   // Immagini incorporate (stemma della classe e loghi dei collegamenti)
@@ -3259,7 +3276,7 @@
     if (msgPrima) mostraLogin(msgPrima); else mostraLogin();
   }
 
-  var VERSIONE_PAGINA = '12.27', SCRIPT_NECESSARIO = '12.14';   // v12.27: nei sondaggi le date in ordine di giorno e ora (anche le proposte delle famiglie); v12.26: «Tutti insieme» in fondo ai risultati dei sondaggi; v12.21: apertura istantanea (copia dell'ultimo avvio sul telefono); v12.20: accesso più veloce (l'accesso si conta a parte, segnaAccesso); v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
+  var VERSIONE_PAGINA = '12.29', SCRIPT_NECESSARIO = '12.15';   // v12.29: in «Tutti insieme» i totali in alto, poi la distinta; v12.28: «Tutti insieme» dei sondaggi contato a parte nelle statistiche (script 12.15); v12.27: nei sondaggi le date in ordine di giorno e ora (anche le proposte delle famiglie); v12.26: «Tutti insieme» in fondo ai risultati dei sondaggi; v12.21: apertura istantanea (copia dell'ultimo avvio sul telefono); v12.20: accesso più veloce (l'accesso si conta a parte, segnaAccesso); v12.19: Home più veloce (sondaggi in parallelo, dati e illustrazioni insieme all'accesso); v12.18: chi ha già votato vede sempre i risultati (tutti i sondaggi), «Comunicazioni & Moduli» → «Documenti» nelle statistiche; v12.17: statistiche di uso (In breve, pillole Visite / Famiglie, dettaglio del genitore; Sondaggi contato una volta per visita); v12.16: matrice in una sola schermata, Mi adeguo; v12.15: classifica e chi manca su WhatsApp; v12.14: profilo Rappresentante che gestisce i sondaggi, Visualizza come → Rappresentante (script 12.10); v12.13: chi ha già votato vede subito i risultati; v12.12: Flipper della festa, gioco del compleanno di Francesco Lotti; v12.11: Torta golosa, gioco del compleanno di Ludovica; v12.10: numero rosso di Documenti e Sondaggi dentro il riquadro, in alto a destra; v12.9: sondaggi per la maestra principale, foto nelle proposte, numero rosso dei sondaggi da votare; v12.8: Classe e ricevute nascosta al profilo docente; v12.7: avvisi dei colloqui tolti; v12.6: Esci non fa più sparire le cassette dei sondaggi; v12.5: Quanti siete per data e voto a tabella; v12.4: stelle a ogni risposta, proposte senza approvazione, orari 8–21; v12.3: bordo dorato su Avvisi, Fondo cassa e Prossimi 7 giorni; v12.2: sondaggi, step 2; v12.0: sondaggi (n. 8)                          // v11.24: in Il mio profilo, solo per Rossana
   function versioneMaggiore(a, b) {                                                     // true se a >= b ("11.16" >= "11.9")
     var x = String(a || '').split('.'), y = String(b || '').split('.');
     for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (+x[i] || 0) - (+y[i] || 0); if (d) return d > 0; }
@@ -10119,7 +10136,10 @@
       var aperto = !!STATO.sdTiAperto[s.id];
       var ico = el('span', { classe: 'ico' }); ico.innerHTML = SD_TI_ICO;
       holder.appendChild(el('button', { type: 'button', classe: 'sd-ti-btn' + (aperto ? ' su' : ''), 'data-azione': 'tutti-insieme', 'aria-expanded': aperto ? 'true' : 'false',
-        onclick: function () { STATO.sdTiAperto[s.id] = !aperto; riempi(); } }, [ico,
+        onclick: function () {
+          STATO.sdTiAperto[s.id] = !aperto;
+          if (!aperto && !o.anteprima) chiama('tuttiInsieme', { sondaggio: s.id }).catch(function () {});   // v12.28: statistica a parte (Rossana non si conta: lo decide lo script)
+          riempi(); } }, [ico,
         el('span', { classe: 'tx' }, [el('b', { testo: aperto ? 'Nascondi tutti insieme' : 'Mostra tutti insieme' }),
           el('small', { testo: punti ? 'Le stelle di ogni famiglia a ogni idea' : 'Chi ha votato cosa, ' + (date ? 'per ogni data' : m.modo === 'bottoni' ? 'famiglia per famiglia' : 'per ogni risposta') })]),
         sdSvg('giu', 'fr')]));
@@ -10170,6 +10190,29 @@
           onclick: function () { STATO.sdTiOrd[s.id] = i === ci ? null : x.id; riempi(); } }, dentro));
       });
       tab.appendChild(testaG);
+      // Totale (o Stelle) — v12.29: subito sotto le risposte, prima della distinta per alunno (Rossana, 16/11)
+      var tot = el('div', { classe: 'sd-ti-g tot', style: griglia }, [el('div', { classe: 'sd-ti-nome' }, [el('b', { testo: punti ? 'Stelle' : 'Totale' }),
+        el('small', { testo: punti ? 'in tutto' : tre ? (m.tipo === 'sino' ? 'solo i Sì' : 'Sì + Mi adeguo') : 'voti' })])]);
+      cols.forEach(function (x) {
+        var grande = punti ? '★ ' + x.pt : String(x.pt), piccolo = punti ? '5★ × ' + x.si : tre ? (m.tipo === 'sino' ? 'Sì' : x.si + ' + ' + (x.pt - x.si)) : (x.pt === 1 ? 'voto' : 'voti');
+        tot.appendChild(el('div', { classe: 'sd-ti-x' + (best[x.id] ? ' best' : ''), 'data-tot': x.id }, [el('span', { classe: 'sd-ti-num' }, [el('b', { testo: grande }), el('small', { testo: piccolo })])]));
+      });
+      tab.appendChild(tot);
+      // Persone (Quanti siete)
+      if (conPers) {
+        var contati = pill === 'sise' ? { si: 1, forse: 1 } : { si: 1, x: 1 };
+        var pg = el('div', { classe: 'sd-ti-g pers', style: griglia }, [el('div', { classe: 'sd-ti-nome' }, [el('b', { testo: 'Persone' }),
+          el('small', { testo: tre ? (m.tipo === 'sino' || pill === 'si' ? 'solo i Sì' : 'Sì + Mi adeguo') : 'chi l\'ha scelta' })])]);
+        cols.forEach(function (x) {
+          var t = 0, n = {};
+          voci.forEach(function (v) { n[v.id] = 0; });
+          elenco.forEach(function (r) { var p = pers[r.nome]; if (r.manca || !p || !contati[x.cella(r)]) return; t += p.tot; voci.forEach(function (v) { n[v.id] += p.n[v.id] || 0; }); });
+          pg.appendChild(el('div', { classe: 'sd-ti-x' + (best[x.id] ? ' best' : ''), 'data-pers': x.id }, [el('span', { classe: 'sd-ti-num' }, [el('b', { testo: String(t) })].concat(voci.length > 1 ? voci.map(function (v) {
+            return el('small', { testo: n[v.id] + ' ' + sdTiUna(v.nome, n[v.id]) }); }) : []))]));
+        });
+        tab.appendChild(pg);
+      }
+      tab.lastChild.classList.add('fine-tot');                               // v12.29: riga blu che separa i totali dalla distinta
       // una riga per bambino
       var TXT = { si: 'Sì', forse: 'Mi adeguo', no: 'No', x: 'Scelta', '': 'Nessuna risposta' };
       lista.forEach(function (r) {
@@ -10195,28 +10238,6 @@
         });
         tab.appendChild(g);
       });
-      // Totale (o Stelle)
-      var tot = el('div', { classe: 'sd-ti-g tot', style: griglia }, [el('div', { classe: 'sd-ti-nome' }, [el('b', { testo: punti ? 'Stelle' : 'Totale' }),
-        el('small', { testo: punti ? 'in tutto' : tre ? (m.tipo === 'sino' ? 'solo i Sì' : 'Sì + Mi adeguo') : 'voti' })])]);
-      cols.forEach(function (x) {
-        var grande = punti ? '★ ' + x.pt : String(x.pt), piccolo = punti ? '5★ × ' + x.si : tre ? (m.tipo === 'sino' ? 'Sì' : x.si + ' + ' + (x.pt - x.si)) : (x.pt === 1 ? 'voto' : 'voti');
-        tot.appendChild(el('div', { classe: 'sd-ti-x' + (best[x.id] ? ' best' : ''), 'data-tot': x.id }, [el('span', { classe: 'sd-ti-num' }, [el('b', { testo: grande }), el('small', { testo: piccolo })])]));
-      });
-      tab.appendChild(tot);
-      // Persone (Quanti siete)
-      if (conPers) {
-        var contati = pill === 'sise' ? { si: 1, forse: 1 } : { si: 1, x: 1 };
-        var pg = el('div', { classe: 'sd-ti-g pers', style: griglia }, [el('div', { classe: 'sd-ti-nome' }, [el('b', { testo: 'Persone' }),
-          el('small', { testo: tre ? (m.tipo === 'sino' || pill === 'si' ? 'solo i Sì' : 'Sì + Mi adeguo') : 'chi l\'ha scelta' })])]);
-        cols.forEach(function (x) {
-          var t = 0, n = {};
-          voci.forEach(function (v) { n[v.id] = 0; });
-          elenco.forEach(function (r) { var p = pers[r.nome]; if (r.manca || !p || !contati[x.cella(r)]) return; t += p.tot; voci.forEach(function (v) { n[v.id] += p.n[v.id] || 0; }); });
-          pg.appendChild(el('div', { classe: 'sd-ti-x' + (best[x.id] ? ' best' : ''), 'data-pers': x.id }, [el('span', { classe: 'sd-ti-num' }, [el('b', { testo: String(t) })].concat(voci.length > 1 ? voci.map(function (v) {
-            return el('small', { testo: n[v.id] + ' ' + sdTiUna(v.nome, n[v.id]) }); }) : []))]));
-        });
-        tab.appendChild(pg);
-      }
       corpo.appendChild(el('div', { classe: 'sd-ti-scroll' }, [tab]));
       // legenda
       var leg = el('div', { classe: 'sd-ti-leg' });
@@ -12541,6 +12562,27 @@
           });
           box.appendChild(el('div', { classe: 'card ga-stat' }, [el('h3', { classe: 'ga-h3', testo: t.usoTitolo || 'Sezioni più usate dalla classe' }),
             el('p', { classe: 'ga-sub', testo: perFam ? (t.usoFamiglie || '') : (t.usoVisite || '') }), pillole, righeU, cl && cl.nota ? el('p', { classe: 'classe-nota', testo: cl.nota }) : null]));
+          // v12.28: «Tutti insieme» dei sondaggi, statistica a parte (script 12.15)
+          var ti = uso.tuttiInsieme;
+          if (ti) {
+            var tiIco = el('span', { classe: 'ico' }); tiIco.innerHTML = SD_TI_ICO;
+            var suF = ti.sondaggi || totF, pctF = suF ? Math.min(100, Math.round(ti.famiglie / suF * 100)) : 0;
+            var tiCard = el('div', { classe: 'card ga-stat ga-ti' + (ti.aperture ? '' : ' zero'), 'data-stat': 'tutti-insieme' }, [
+              el('h3', { classe: 'ga-h3' }, [tiIco, el('span', { testo: t.tiTitolo || 'Tutti insieme (sondaggi)' })]),
+              el('div', { classe: 'ga-ti-num' }, [
+                el('div', { classe: 't' }, [el('b', { testo: String(ti.aperture) }), el('small', { testo: ti.aperture === 1 ? 'apertura' : 'aperture' })]),
+                el('div', { classe: 't' }, [el('b', { testo: ti.famiglie + ' su ' + suF }), el('small', { testo: 'famiglie' + (ti.maestre ? ' · + ' + (ti.maestre === 1 ? '1 maestra' : ti.maestre + ' maestre') : '') }),
+                  el('span', { classe: 'ga-bar' }, [el('i', { style: 'width:' + pctF + '%' })])])]),
+              el('p', { classe: 'ga-ti-su', testo: '🗳️ ' + suF + ' = famiglie che aprono i Sondaggi' + (ti.dal ? ' · dal ' + ti.dal : '') })]);
+            if (ti.mesi && ti.mesi.length > 1) {
+              var maxT = Math.max.apply(null, ti.mesi.map(function (m) { return m.n; }).concat([1]));
+              tiCard.appendChild(el('div', { classe: 'ga-mesi' }, ti.mesi.map(function (m) {
+                return el('div', { classe: 'col' + (m.ora ? ' ora' : '') }, [el('span', { classe: 'ga-num', testo: String(m.n) }), el('i', { style: 'height:' + Math.max(4, Math.round(m.n / maxT * 80)) + 'px' })]);
+              })));
+              tiCard.appendChild(el('div', { classe: 'ga-mesi-nomi' }, ti.mesi.map(function (m) { return el('span', { testo: m.nome }); })));
+            }
+            box.appendChild(tiCard);
+          }
         } else if (voci.some(function (x) { return x.valore > 0; })) {
           var max = Math.max.apply(null, voci.map(function (x) { return x.valore; })), barre = el('div', { classe: 'barre' });
           voci.forEach(function (x) {
